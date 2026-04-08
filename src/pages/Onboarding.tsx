@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { GlowOrb } from '@/components/GlowOrb';
+import { AgentPresence } from '@/components/AgentPresence';
 import { saveProfile } from '@/lib/storage';
 import type { UserProfile, OnboardingStep, ToneStyle, FaithFamiliarity, UseCase, ReadingPreference } from '@/types';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
@@ -67,10 +67,10 @@ export default function Onboarding() {
       <div className="w-full max-w-sm animate-fade-in">
         {currentStep === 'welcome' && (
           <div className="text-center space-y-6">
-            <GlowOrb size="lg" className="mx-auto" />
-            <h1 className="text-3xl font-serif font-semibold text-foreground">Lampstand</h1>
+            <AgentPresence size="lg" className="mx-auto" />
+            <h1 className="text-3xl font-serif font-semibold text-foreground">LampStand</h1>
             <p className="text-muted-foreground leading-relaxed">
-              A gentle companion for your journey through scripture. No pressure, no judgment — just light for the path ahead.
+              A gentle companion for your journey through scripture. No pressure, no judgment - just light for the path ahead.
             </p>
             <Button onClick={next} className="w-full mt-4 gap-2">
               Begin <ArrowRight className="h-4 w-4" />
@@ -120,7 +120,7 @@ export default function Onboarding() {
         {currentStep === 'faith' && (
           <div className="space-y-4">
             <h2 className="text-2xl font-serif font-semibold">Your faith journey</h2>
-            <p className="text-muted-foreground text-sm">No right or wrong answer — this just helps us meet you where you are.</p>
+            <p className="text-muted-foreground text-sm">No right or wrong answer - this just helps us meet you where you are.</p>
             <div className="space-y-3">
               <OptionButton selected={faith === 'new'} onClick={() => setFaith('new')}>
                 <p className="font-medium">New or Returning</p>
@@ -142,7 +142,7 @@ export default function Onboarding() {
         {currentStep === 'use' && (
           <div className="space-y-4">
             <h2 className="text-2xl font-serif font-semibold">What brings you here?</h2>
-            <p className="text-muted-foreground text-sm">Select all that apply — you can change this later.</p>
+            <p className="text-muted-foreground text-sm">Select all that apply - you can change this later.</p>
             <div className="space-y-3">
               {([
                 ['daily', 'Daily Encouragement', 'A gentle word each morning'],
@@ -185,7 +185,7 @@ export default function Onboarding() {
           <div className="space-y-6">
             <h2 className="text-2xl font-serif font-semibold">Daily Light Notification</h2>
             <p className="text-muted-foreground text-sm">
-              A gentle reminder to receive your daily scripture and reflection. No guilt — just a nudge.
+              A gentle reminder to receive your daily scripture and reflection. No guilt - just a nudge.
             </p>
             <div className="space-y-3">
               <OptionButton selected={notifications} onClick={() => setNotifications(true)}>
@@ -229,15 +229,15 @@ export default function Onboarding() {
 
         {currentStep === 'complete' && (
           <div className="text-center space-y-6">
-            <GlowOrb size="md" className="mx-auto" />
+            <AgentPresence size="md" className="mx-auto" />
             <h2 className="text-2xl font-serif font-semibold">
               Welcome{firstName ? `, ${firstName}` : ''}
             </h2>
             <p className="text-muted-foreground leading-relaxed">
-              Your Lampstand is lit. Come as you are, whenever you're ready. There's no rush and no test — just light for the way.
+              Your LampStand is lit. Come as you are, whenever you're ready. There's no rush and no test - just light for the way.
             </p>
             <Button onClick={finish} className="w-full gap-2">
-              Enter Lampstand <ArrowRight className="h-4 w-4" />
+              Enter LampStand <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         )}
