@@ -1,7 +1,10 @@
 {
   "name": "lampstand",
-  "pages_build_output_dir": "dist",
   "compatibility_date": "2024-04-01",
+  "assets": {
+    "directory": "./dist"
+  },
+  "pages_build_output_dir": "dist",
   "observability": {
     "enabled": true
   }
