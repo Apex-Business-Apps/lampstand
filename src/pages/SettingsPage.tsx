@@ -1,17 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData } from '@/lib/storage';
-import type { UserProfile, ToneStyle, ReadingPreference } from '@/types';
+import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData, getConsentSettings, saveConsentSettings } from '@/lib/storage';
+import type { UserProfile, ToneStyle, ReadingPreference, ConsentSettings } from '@/types';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Trash2, RotateCcw, Info } from 'lucide-react';
+import { Trash2, RotateCcw } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
+  const { session, signOut } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [showPrivacy, setShowPrivacy] = useState(false);
-  const [showReset, setShowReset] = useState(false);
+  const [consent, setConsent] = useState<ConsentSettings>(getConsentSettings());
 
   useEffect(() => {
     const p = getProfile();
@@ -22,130 +23,66 @@ export default function SettingsPage() {
   if (!profile) return null;
 
   function update(partial: Partial<UserProfile>) {
-    const updated = { ...profile!, ...partial };
+    const updated = { ...profile, ...partial };
     setProfile(updated);
     saveProfile(updated);
   }
 
-  function handleResetKnowledge() {
-    clearKnowledge();
-    setShowReset(false);
+  async function toggleNotifications() {
+    if (!consent.notifications && 'Notification' in window) {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') return;
+    }
+    const next = { ...consent, notifications: !consent.notifications };
+    setConsent(next);
+    saveConsentSettings(next);
   }
 
-  function handleResetAll() {
-    resetAllData();
-    navigate('/onboarding');
+  function toggleConsent<K extends keyof ConsentSettings>(key: K) {
+    const next = { ...consent, [key]: !consent[key] };
+    setConsent(next);
+    saveConsentSettings(next);
   }
-
-  const knowledge = getKnowledge();
-
-  const Select = ({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) => (
-    <div className="flex gap-2 flex-wrap">
-      {options.map(o => (
-        <button
-          key={o.value}
-          onClick={() => onChange(o.value)}
-          className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-            value === o.value ? 'border-primary bg-accent/60 text-foreground' : 'border-border text-muted-foreground hover:border-primary/40'
-          }`}
-        >
-          {o.label}
-        </button>
-      ))}
-    </div>
-  );
 
   return (
     <AppShell>
-      <div className="px-5 pt-8 pb-6 space-y-8">
-        <h1 className="text-2xl font-serif font-semibold">Settings</h1>
+      <div className="px-4 pt-8 pb-6 space-y-8 max-w-2xl mx-auto">
+        <h1 className="text-2xl font-display font-semibold">Settings</h1>
+
+        <Section title="Account">
+          <p className="text-sm text-muted-foreground">{session?.user?.email ? `Signed in as ${session.user.email}` : 'Guest mode is active.'}</p>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => navigate('/auth')}>Manage sign in</Button>
+            {session && <Button variant="outline" onClick={signOut}>Sign out</Button>}
+          </div>
+        </Section>
 
         <Section title="Profile">
-          <Field label="First Name">
-            <Input value={profile.firstName} onChange={e => update({ firstName: e.target.value })} maxLength={50} />
+          <Field label="First name">
+            <Input value={profile.firstName} onChange={(e) => update({ firstName: e.target.value })} maxLength={50} />
+          </Field>
+          <Field label="Tone style">
+            <Select value={profile.toneStyle} onChange={(v) => update({ toneStyle: v as ToneStyle })} options={[{ value: 'gentle', label: 'Gentle' }, { value: 'balanced', label: 'Balanced' }, { value: 'traditional', label: 'Traditional' }]} />
+          </Field>
+          <Field label="Reading style">
+            <Select value={profile.readingPreference} onChange={(v) => update({ readingPreference: v as ReadingPreference })} options={[{ value: 'modern', label: 'Modern' }, { value: 'balanced', label: 'Balanced' }, { value: 'traditional', label: 'Traditional' }]} />
           </Field>
         </Section>
 
-        <Section title="Preferences">
-          <Field label="Tone Style">
-            <Select
-              value={profile.toneStyle}
-              onChange={v => update({ toneStyle: v as ToneStyle })}
-              options={[
-                { value: 'gentle', label: 'Gentle' },
-                { value: 'balanced', label: 'Balanced' },
-                { value: 'traditional', label: 'Traditional' },
-              ]}
-            />
-          </Field>
-          <Field label="Reading Style">
-            <Select
-              value={profile.readingPreference}
-              onChange={v => update({ readingPreference: v as ReadingPreference })}
-              options={[
-                { value: 'modern', label: 'Modern' },
-                { value: 'balanced', label: 'Balanced' },
-                { value: 'traditional', label: 'Traditional' },
-              ]}
-            />
-          </Field>
-          <Field label="Kids Mode">
-            <button
-              onClick={() => update({ kidsMode: !profile.kidsMode })}
-              className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-                profile.kidsMode ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'
-              }`}
-            >
-              {profile.kidsMode ? 'Enabled' : 'Disabled'}
-            </button>
-          </Field>
+        <Section title="Consent and permissions">
+          <ConsentRow label="Store local memory" value={consent.localMemory} onToggle={() => toggleConsent('localMemory')} hint="Controls local journaling and personalization storage." />
+          <ConsentRow label="Notifications" value={consent.notifications} onToggle={toggleNotifications} hint="Asks browser permission before enabling." />
+          <ConsentRow label="Microphone" value={consent.microphone} onToggle={() => toggleConsent('microphone')} hint="Required for voice input." />
+          <ConsentRow label="Voice playback" value={consent.voicePlayback} onToggle={() => toggleConsent('voicePlayback')} hint="Enables text-to-speech readback." />
+          <ConsentRow label="Cloud sync" value={consent.cloudSync} onToggle={() => toggleConsent('cloudSync')} hint="Opt-in only. Local-first remains default." />
+          <ConsentRow label="Kids mode voice" value={consent.kidsVoiceEnabled} onToggle={() => toggleConsent('kidsVoiceEnabled')} hint="Disabled by default for safety." />
         </Section>
 
-        <Section title="Notifications">
-          <Field label="Daily Light">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => update({ notificationsEnabled: !profile.notificationsEnabled })}
-                className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
-                  profile.notificationsEnabled ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'
-                }`}
-              >
-                {profile.notificationsEnabled ? 'On' : 'Off'}
-              </button>
-              {profile.notificationsEnabled && (
-                <Input type="time" value={profile.notificationTime} onChange={e => update({ notificationTime: e.target.value })} className="w-32" />
-              )}
-            </div>
-          </Field>
-        </Section>
-
-        <Section title="Privacy & Data">
-          <button onClick={() => setShowPrivacy(!showPrivacy)} className="flex items-center gap-2 text-sm text-primary">
-            <Shield className="h-4 w-4" /> Your data stays on your device
-          </button>
-          {showPrivacy && (
-            <div className="bg-secondary/50 rounded-lg p-4 space-y-2 animate-fade-in">
-              <p className="text-xs text-muted-foreground">
-                <strong>Lampstand</strong> stores all your preferences, saved passages, journal entries, and learning data locally on your device. Nothing is shared, uploaded, or used to train any model.
-              </p>
-              <p className="text-xs text-muted-foreground">Your adaptive knowledge (streak: {knowledge.streak}, interactions: {knowledge.interactionCount}) helps personalize your experience and never leaves your device.</p>
-            </div>
-          )}
-
-          <div className="space-y-3 pt-2">
-            <Button variant="outline" size="sm" className="w-full gap-2" onClick={() => setShowReset(!showReset)}>
-              <RotateCcw className="h-3.5 w-3.5" /> Reset Learning Data
-            </Button>
-            {showReset && (
-              <div className="bg-accent/40 rounded-lg p-4 space-y-3 animate-fade-in">
-                <p className="text-xs text-muted-foreground">This clears your adaptive knowledge (preferences, streak, interaction history). Your saved passages and journal entries will be preserved.</p>
-                <Button variant="outline" size="sm" onClick={handleResetKnowledge}>Confirm Reset</Button>
-              </div>
-            )}
-            <Button variant="outline" size="sm" className="w-full gap-2 text-destructive border-destructive/30 hover:bg-destructive/10" onClick={handleResetAll}>
-              <Trash2 className="h-3.5 w-3.5" /> Reset Everything & Start Over
-            </Button>
-          </div>
+        <Section title="Data controls">
+          <p className="text-sm text-muted-foreground">Raw audio is not stored. Transcripts are local-only unless you opt in to cloud sync.</p>
+          <Button variant="outline" className="w-full gap-2" onClick={clearKnowledge}><RotateCcw className="h-4 w-4" />Reset local memory</Button>
+          <Button variant="outline" className="w-full gap-2 text-destructive border-destructive/30" onClick={() => { resetAllData(); navigate('/onboarding'); }}><Trash2 className="h-4 w-4" />Delete all local history</Button>
+          <p className="text-xs text-muted-foreground">Interactions tracked locally: {getKnowledge().interactionCount}</p>
         </Section>
       </div>
     </AppShell>
@@ -153,19 +90,33 @@ export default function SettingsPage() {
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return <section className="space-y-4"><h2 className="text-lg font-display font-semibold">{title}</h2>{children}</section>;
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return <div className="space-y-1"><label className="text-sm text-muted-foreground">{label}</label>{children}</div>;
+}
+
+function Select({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg font-serif font-semibold text-foreground">{title}</h2>
-      {children}
+    <div className="flex gap-2 flex-wrap">
+      {options.map((o) => (
+        <button key={o.value} onClick={() => onChange(o.value)} className={`rounded-lg border px-3 py-1.5 text-sm ${value === o.value ? 'border-primary bg-accent/60' : 'border-border'}`}>{o.label}</button>
+      ))}
     </div>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function ConsentRow({ label, value, onToggle, hint }: { label: string; value: boolean; onToggle: () => void; hint: string }) {
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-muted-foreground">{label}</label>
-      {children}
+    <div className="rounded-lg border border-border p-3">
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <p className="font-medium">{label}</p>
+          <p className="text-xs text-muted-foreground">{hint}</p>
+        </div>
+        <Button size="sm" variant={value ? 'default' : 'outline'} onClick={onToggle}>{value ? 'Enabled' : 'Disabled'}</Button>
+      </div>
     </div>
   );
 }

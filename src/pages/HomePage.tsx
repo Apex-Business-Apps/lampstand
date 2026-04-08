@@ -33,7 +33,7 @@ export default function HomePage() {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-muted-foreground">{greeting}</p>
-            <h1 className="text-2xl font-serif font-semibold text-foreground">Lampstand</h1>
+            <h1 className="text-2xl font-display font-semibold text-foreground">LampStand</h1>
           </div>
           {knowledge.streak > 0 && (
             <div className="flex items-center gap-1.5 bg-accent/60 px-3 py-1.5 rounded-full">
@@ -76,7 +76,7 @@ export default function HomePage() {
         {saved.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-serif font-semibold">Saved Passages</h2>
+              <h2 className="text-lg font-display font-semibold">Saved Passages</h2>
               <button onClick={() => navigate('/saved')} className="text-xs text-primary font-medium">View all</button>
             </div>
             <div className="space-y-2">

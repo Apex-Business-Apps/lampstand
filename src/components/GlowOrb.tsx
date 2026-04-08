@@ -1,4 +1,4 @@
-import lampstandPresence from '@/assets/lampstand-presence.png';
+import lampstandPresence from '@/assets/lampstand-hero-flame.svg';
 
 interface GlowOrbProps {
   size?: 'sm' | 'md' | 'lg';
@@ -19,8 +19,8 @@ export function GlowOrb({ size = 'md', className = '', showImage = true }: GlowO
       {showImage && (
         <img
           src={lampstandPresence}
-          alt="Lampstand — a warm, sacred presence"
-          className={`relative z-10 ${sizes[size]} object-contain opacity-90`}
+          alt="LampStand sacred presence"
+          className={`relative z-10 ${sizes[size]} object-contain opacity-95 drop-shadow-[0_0_24px_rgba(242,177,81,0.35)]`}
         />
       )}
     </div>

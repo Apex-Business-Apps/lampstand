@@ -151,3 +151,13 @@ export interface NotificationConfig {
 
 // ─── Onboarding ───
 export type OnboardingStep = 'welcome' | 'name' | 'tone' | 'faith' | 'use' | 'kids' | 'notifications' | 'reading' | 'complete';
+
+
+export interface ConsentSettings {
+  localMemory: boolean;
+  notifications: boolean;
+  microphone: boolean;
+  voicePlayback: boolean;
+  cloudSync: boolean;
+  kidsVoiceEnabled: boolean;
+}

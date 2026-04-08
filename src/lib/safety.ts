@@ -109,3 +109,27 @@ export function shouldCircuitBreak(): boolean {
     return recent.length >= CIRCUIT_BREAKER_THRESHOLD;
   } catch { return false; }
 }
+
+
+const BANNED_OUTPUT_PATTERNS = [
+  /Absolutely\b/i,
+  /Certainly\b/i,
+  /Of course\b/i,
+  /Let[’']s\b/i,
+  /I hear you\b/i,
+  /I appreciate that\b/i,
+  /That[’']s a great question\b/i,
+  /I[’']m here for you\b/i,
+  /It[’']s important to note\b/i,
+  /At the end of the day\b/i,
+  /—|–/,
+];
+
+export function validateGeneratedOutput(output: string): SafetyCheckResult {
+  for (const pattern of BANNED_OUTPUT_PATTERNS) {
+    if (pattern.test(output)) {
+      return { safe: false, type: 'unsafe', reason: 'Generated output did not pass style and safety constraints.' };
+    }
+  }
+  return { safe: true };
+}

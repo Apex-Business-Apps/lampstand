@@ -1,0 +1,20 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <path d="M259 84C301 140 343 187 343 253C343 315 304 368 256 392C208 368 169 315 169 253C169 198 196 157 232 122C235 164 250 186 277 211C285 173 278 130 259 84Z" fill="url(#flame)"/>
+  <path d="M256 174C278 206 299 236 299 271C299 304 278 334 256 346C234 334 213 304 213 271C213 241 227 218 246 199C248 222 256 234 270 247C274 227 270 201 256 174Z" fill="url(#inner)"/>
+  <defs>
+    <linearGradient id="bg" x1="64" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#28190F"/>
+      <stop offset="1" stop-color="#1A120B"/>
+    </linearGradient>
+    <linearGradient id="flame" x1="169" y1="84" x2="343" y2="392" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5D08E"/>
+      <stop offset="0.55" stop-color="#E89E3E"/>
+      <stop offset="1" stop-color="#B75A21"/>
+    </linearGradient>
+    <linearGradient id="inner" x1="213" y1="174" x2="299" y2="346" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF1CC"/>
+      <stop offset="1" stop-color="#F7BF62"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,3 +1,4 @@
+import tailwindcssAnimate from "tailwindcss-animate";
 import type { Config } from "tailwindcss";
 
 export default {
@@ -12,8 +13,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["var(--font-serif)"],
-        sans: ["var(--font-sans)"],
+        serif: ["var(--font-display)"],
+        sans: ["var(--font-ui)"],
+        body: ["var(--font-body)"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -87,5 +89,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;

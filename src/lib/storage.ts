@@ -1,5 +1,5 @@
 import type {
-  UserProfile, SavedPassage, JournalEntry, LocalKnowledge, SafetyEvent, DailyLight
+  UserProfile, SavedPassage, JournalEntry, LocalKnowledge, SafetyEvent, DailyLight, ConsentSettings
 } from '@/types';
 
 const KEYS = {
@@ -9,6 +9,7 @@ const KEYS = {
   knowledge: 'lampstand_knowledge',
   safety: 'lampstand_safety',
   dailyCache: 'lampstand_daily_cache',
+  consent: 'lampstand_consent',
 } as const;
 
 function get<T>(key: string, fallback: T): T {
@@ -93,3 +94,16 @@ export function setCachedDaily(d: DailyLight) { set(KEYS.dailyCache, d); }
 export function resetAllData() {
   Object.values(KEYS).forEach(k => localStorage.removeItem(k));
 }
+
+
+const defaultConsent: ConsentSettings = {
+  localMemory: false,
+  notifications: false,
+  microphone: false,
+  voicePlayback: false,
+  cloudSync: false,
+  kidsVoiceEnabled: false,
+};
+
+export function getConsentSettings(): ConsentSettings { return get(KEYS.consent, defaultConsent); }
+export function saveConsentSettings(settings: ConsentSettings) { set(KEYS.consent, settings); }
