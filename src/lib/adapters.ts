@@ -1,3 +1,4 @@
+import { GroqAIAdapter } from './groq';
 import type { IRetrievalAdapter, IAIAdapter, RetrievalRequest, RetrievalResult, ScripturePassage, ToneStyle, Sermon, GuidanceResult } from '@/types';
 import { SEED_PASSAGES, SEED_SERMONS, SEED_GUIDANCE_MAP } from '@/data/seed';
 
@@ -88,7 +89,7 @@ export class LocalAIAdapter implements IAIAdapter {
 
 // ─── Singleton instances ───
 let retrievalAdapter: IRetrievalAdapter = new LocalRetrievalAdapter();
-let aiAdapter: IAIAdapter = new LocalAIAdapter();
+let aiAdapter: IAIAdapter = import.meta.env.VITE_GROQ_API_KEY ? new GroqAIAdapter() : new LocalAIAdapter();
 
 export function getRetrievalAdapter(): IRetrievalAdapter { return retrievalAdapter; }
 export function getAIAdapter(): IAIAdapter { return aiAdapter; }

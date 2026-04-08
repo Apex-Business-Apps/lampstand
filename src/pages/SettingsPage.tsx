@@ -119,6 +119,7 @@ export default function SettingsPage() {
           </Field>
         </Section>
 
+
         <Section title="Privacy & Data">
           <button onClick={() => setShowPrivacy(!showPrivacy)} className="flex items-center gap-2 text-sm text-primary">
             <Shield className="h-4 w-4" /> Your data stays on your device
@@ -126,13 +127,17 @@ export default function SettingsPage() {
           {showPrivacy && (
             <div className="bg-secondary/50 rounded-lg p-4 space-y-2 animate-fade-in">
               <p className="text-xs text-muted-foreground">
-                <strong>Lampstand</strong> stores all your preferences, saved passages, journal entries, and learning data locally on your device. Nothing is shared, uploaded, or used to train any model.
+                <strong>LampStand</strong> stores all your preferences, saved passages, journal entries, and learning data locally on your device. Nothing is shared, uploaded, or used to train any model by default.
               </p>
               <p className="text-xs text-muted-foreground">Your adaptive knowledge (streak: {knowledge.streak}, interactions: {knowledge.interactionCount}) helps personalize your experience and never leaves your device.</p>
+              <div className="pt-2">
+                <Button variant="link" className="p-0 h-auto text-xs text-primary" onClick={() => navigate('/legal')}>
+                  View full Legal & Privacy documentation
+                </Button>
+              </div>
             </div>
           )}
-
-          <div className="space-y-3 pt-2">
+<div className="space-y-3 pt-2">
             <Button variant="outline" size="sm" className="w-full gap-2" onClick={() => setShowReset(!showReset)}>
               <RotateCcw className="h-3.5 w-3.5" /> Reset Learning Data
             </Button>

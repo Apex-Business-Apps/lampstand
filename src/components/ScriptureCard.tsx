@@ -16,7 +16,7 @@ export function ScriptureCard({ passage, onSave, onShare, saved, className = '' 
       <p className="scripture-text mb-4">{passage.text}</p>
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium text-muted-foreground">
-          — {passage.reference} <span className="text-xs opacity-60">({passage.translation})</span>
+          - {passage.reference} <span className="text-xs opacity-60">({passage.translation})</span>
         </p>
         <div className="flex gap-1">
           {onSave && (

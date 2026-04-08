@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { ScriptureCard } from '@/components/ScriptureCard';
 import { ReflectionBlock } from '@/components/ReflectionBlock';
-import { GlowOrb } from '@/components/GlowOrb';
+import { AgentPresence } from '@/components/AgentPresence';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { getAIAdapter } from '@/lib/adapters';
 import { getProfile, savePassage } from '@/lib/storage';
 import { checkInputSafety, shouldCircuitBreak, SAFE_FALLBACK_RESPONSE } from '@/lib/safety';
 import type { GuidanceResult, SavedPassage } from '@/types';
-import { Send, AlertCircle } from 'lucide-react';
+import { Send, AlertCircle, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
+import { sttAdapter, ttsAdapter } from '@/lib/voice';
+import type { AgentMode } from '@/components/AgentPresence';
 
 export default function GuidancePage() {
   const [input, setInput] = useState('');
@@ -17,6 +19,46 @@ export default function GuidancePage() {
   const [loading, setLoading] = useState(false);
   const [safetyMessage, setSafetyMessage] = useState('');
   const [saved, setSaved] = useState(false);
+
+  const [isListening, setIsListening] = useState(false);
+  const [agentMode, setAgentMode] = useState<AgentMode>('idle');
+
+  // Voice integration
+  ttsAdapter.onStateChange = (state) => {
+    if (state === 'speaking') setAgentMode('speaking');
+    else if (state === 'idle') setAgentMode('idle');
+  };
+
+
+
+  async function toggleListening() {
+    if (isListening) {
+      sttAdapter.stopListening();
+      setIsListening(false);
+      setAgentMode('idle');
+    } else {
+      try {
+        setIsListening(true);
+        setAgentMode('listening');
+        const text = await sttAdapter.startListening();
+        setInput(prev => prev + ' ' + text);
+        setIsListening(false);
+        setAgentMode('idle');
+      } catch (err) {
+        setIsListening(false);
+        setAgentMode('error');
+        setTimeout(() => setAgentMode('idle'), 2000);
+      }
+    }
+  }
+
+  function toggleSpeech() {
+    if (agentMode === 'speaking') {
+      ttsAdapter.stop();
+    } else if (result) {
+      ttsAdapter.speak(result.pastoralFraming);
+    }
+  }
 
   async function handleSubmit() {
     if (!input.trim()) return;
@@ -55,14 +97,20 @@ export default function GuidancePage() {
     }
 
     setLoading(true);
+    setAgentMode('thinking');
+    ttsAdapter.stop();
     try {
       const profile = getProfile();
       const ai = getAIAdapter();
       const guidance = await ai.generateGuidance(input, profile?.toneStyle || 'balanced');
       setResult(guidance);
       setInput('');
+      setAgentMode('idle');
+      // Auto-read response
+      ttsAdapter.speak(guidance.pastoralFraming);
     } finally {
       setLoading(false);
+      if (agentMode === 'thinking') setAgentMode('idle');
     }
   }
 
@@ -82,7 +130,7 @@ export default function GuidancePage() {
     <AppShell>
       <div className="px-5 pt-8 pb-6 space-y-6">
         <div className="text-center space-y-2">
-          <GlowOrb size="sm" className="mx-auto" />
+          <AgentPresence size="sm" className="mx-auto cursor-pointer" mode={agentMode} onClick={toggleSpeech} />
           <h1 className="text-2xl font-serif font-semibold">Guidance</h1>
           <p className="text-sm text-muted-foreground">Share what's on your heart. I'll offer scripture and a gentle reflection.</p>
         </div>
@@ -95,10 +143,15 @@ export default function GuidancePage() {
             className="min-h-[100px] resize-none bg-card"
             maxLength={500}
           />
-          <Button onClick={handleSubmit} disabled={loading || !input.trim()} className="w-full gap-2">
+          <div className="flex gap-2">
+            <Button onClick={toggleListening} variant={isListening ? "destructive" : "outline"} className="shrink-0" disabled={loading}>
+              {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+            </Button>
+            <Button onClick={handleSubmit} disabled={loading || !input.trim()} className="w-full gap-2">
             <Send className="h-4 w-4" />
             {loading ? 'Finding light...' : 'Seek Guidance'}
           </Button>
+          </div>
         </div>
 
         {safetyMessage && (
