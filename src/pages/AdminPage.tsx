@@ -53,10 +53,10 @@ export default function AdminPage() {
               Translation configs, safety rules, and content versioning hooks are designed as pluggable interfaces. Connect your content management system or admin API here.
             </p>
             <div className="mt-3 space-y-1">
-              <p className="text-xs font-mono text-muted-foreground">• IRetrievalAdapter — scripture retrieval</p>
-              <p className="text-xs font-mono text-muted-foreground">• IAIAdapter — AI inference</p>
-              <p className="text-xs font-mono text-muted-foreground">• ContentTheme — curated themes</p>
-              <p className="text-xs font-mono text-muted-foreground">• TranslationConfig — translation management</p>
+              <p className="text-xs font-mono text-muted-foreground">• IRetrievalAdapter - scripture retrieval</p>
+              <p className="text-xs font-mono text-muted-foreground">• IAIAdapter - AI inference</p>
+              <p className="text-xs font-mono text-muted-foreground">• ContentTheme - curated themes</p>
+              <p className="text-xs font-mono text-muted-foreground">• TranslationConfig - translation management</p>
             </div>
           </div>
         </Section>

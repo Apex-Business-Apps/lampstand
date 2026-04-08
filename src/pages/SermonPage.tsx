@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { ScriptureCard } from '@/components/ScriptureCard';
 import { ReflectionBlock } from '@/components/ReflectionBlock';
-import { GlowOrb } from '@/components/GlowOrb';
+import { AgentPresence } from '@/components/AgentPresence';
 import { SEED_SERMONS } from '@/data/seed';
 import { SEED_PASSAGES } from '@/data/seed';
 import { getAIAdapter } from '@/lib/adapters';
@@ -32,7 +32,7 @@ export default function SermonPage() {
     <AppShell>
       <div className="px-5 pt-8 pb-6 space-y-6">
         <div className="text-center space-y-2">
-          <GlowOrb size="sm" className="mx-auto" />
+          <AgentPresence size="sm" className="mx-auto" />
           <h1 className="text-2xl font-serif font-semibold">Sermon Mode</h1>
           <p className="text-sm text-muted-foreground">A scripture-anchored reflection for your moment</p>
         </div>
