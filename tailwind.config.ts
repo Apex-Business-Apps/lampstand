@@ -8,11 +8,13 @@ export default {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      screens: { "2xl": "1400px" },
     },
     extend: {
+      fontFamily: {
+        serif: ["var(--font-serif)"],
+        sans: ["var(--font-sans)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -47,6 +49,18 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        "warm-glow": "hsl(var(--warm-glow))",
+        "warm-glow-soft": "hsl(var(--warm-glow-soft))",
+        "sacred-gold": "hsl(var(--sacred-gold))",
+        "sacred-gold-soft": "hsl(var(--sacred-gold-soft))",
+        sage: "hsl(var(--sage))",
+        "sage-soft": "hsl(var(--sage-soft))",
+        cream: "hsl(var(--cream))",
+        ivory: "hsl(var(--ivory))",
+        ember: "hsl(var(--ember))",
+        "ember-soft": "hsl(var(--ember-soft))",
+        "kids-primary": "hsl(var(--kids-primary))",
+        "kids-accent": "hsl(var(--kids-accent))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -64,22 +78,8 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
-        "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
-        },
-        "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
-        },
+        "accordion-down": { from: { height: "0" }, to: { height: "var(--radix-accordion-content-height)" } },
+        "accordion-up": { from: { height: "var(--radix-accordion-content-height)" }, to: { height: "0" } },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
