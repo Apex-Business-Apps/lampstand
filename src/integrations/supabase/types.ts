@@ -14,7 +14,105 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      journal_entries: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          mood: string | null
+          related_passage: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          mood?: string | null
+          related_passage?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          mood?: string | null
+          related_passage?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          faith_familiarity: string | null
+          first_name: string | null
+          id: string
+          kids_mode: boolean | null
+          onboarding_complete: boolean | null
+          reading_preference: string | null
+          tone_style: string | null
+          updated_at: string
+          user_id: string
+          voice_gender: string | null
+        }
+        Insert: {
+          created_at?: string
+          faith_familiarity?: string | null
+          first_name?: string | null
+          id?: string
+          kids_mode?: boolean | null
+          onboarding_complete?: boolean | null
+          reading_preference?: string | null
+          tone_style?: string | null
+          updated_at?: string
+          user_id: string
+          voice_gender?: string | null
+        }
+        Update: {
+          created_at?: string
+          faith_familiarity?: string | null
+          first_name?: string | null
+          id?: string
+          kids_mode?: boolean | null
+          onboarding_complete?: boolean | null
+          reading_preference?: string | null
+          tone_style?: string | null
+          updated_at?: string
+          user_id?: string
+          voice_gender?: string | null
+        }
+        Relationships: []
+      }
+      saved_passages: {
+        Row: {
+          id: string
+          note: string | null
+          passage_data: Json
+          passage_ref: string
+          saved_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          note?: string | null
+          passage_data: Json
+          passage_ref: string
+          saved_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          note?: string | null
+          passage_data?: Json
+          passage_ref?: string
+          saved_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
