@@ -31,7 +31,7 @@ export class SafetyGate {
   }
 
   cleanOutput(output: string): string {
-    let cleaned = output.replace(/—/g, ',').replace(/–/g, ',');
+    const cleaned = output.replace(/—/g, ',').replace(/–/g, ',');
     return cleaned;
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export class BrowserSTTAdapter {
   private recognition: any = null;
 
@@ -32,7 +33,7 @@ export class BrowserSTTAdapter {
     try {
       this.recognition.start();
     } catch (e: any) {
-      onError(e.message);
+      if (e instanceof Error) { onError(e.message); } else { onError(String(e)); }
     }
   }
 

@@ -20,5 +20,5 @@ export interface TurnResult {
   response: string;
   isFallback: boolean;
   circuitBroken: boolean;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export class VoiceManager {
   private synth = window.speechSynthesis;
   private recognition: any = null;
@@ -43,7 +44,7 @@ export class VoiceManager {
       this.recognition.start();
       this.isListening = true;
     } catch (e: any) {
-      onError(e.message);
+      if (e instanceof Error) { onError(e.message); } else { onError(String(e)); }
     }
   }
 

@@ -11,7 +11,7 @@ export class AgentRuntime {
     this.orchestrator = new ConversationOrchestrator(provider);
   }
 
-  async runGuidanceTurn(userMessage: string, history: any[] = []): Promise<string> {
+  async runGuidanceTurn(userMessage: string, history: { role: "user" | "assistant" | "system", content: string }[] = []): Promise<string> {
     const result = await this.orchestrator.runTurn(userMessage, {
       sessionId: 'default',
       mode: 'guidance',
