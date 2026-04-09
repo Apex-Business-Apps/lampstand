@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { AgentPresence } from './AgentPresence';
+import { FullscreenAgent } from './FullscreenAgent';
 import { Button } from './ui/button';
-import { Mic, MicOff, Volume2, VolumeX, X, MessageCircle } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, X, MessageCircle, Maximize2 } from 'lucide-react';
 import { sttAdapter, ttsAdapter } from '@/lib/voice';
 import { getProfile } from '@/lib/storage';
 import { cn } from '@/lib/utils';
