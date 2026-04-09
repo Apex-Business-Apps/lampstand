@@ -43,6 +43,15 @@ export function AppShell({ children, kidsMode }: AppShellProps) {
           })}
         </div>
       </nav>
+      {/* Global Footer */}
+      <footer className="text-center text-xs text-muted-foreground pb-24 pt-4 border-t bg-card">
+        <div className="space-x-4 mb-2">
+          <button onClick={() => navigate("/legal/privacy")} className="hover:text-primary">Privacy Policy</button>
+          <button onClick={() => navigate("/legal/terms")} className="hover:text-primary">Terms of Service</button>
+          <button onClick={() => navigate("/legal/disclaimer")} className="hover:text-primary">AI Disclaimer</button>
+        </div>
+        <p>© {new Date().getFullYear()} APEX Business Systems LTD.</p>
+      </footer>
     </div>
   );
 }

@@ -19,6 +19,8 @@ function get<T>(key: string, fallback: T): T {
 }
 
 function set(key: string, value: unknown) {
+  const hasConsent = localStorage.getItem("lampstand_consent_storage") === "true";
+  if (!hasConsent && key !== KEYS.profile) return;
   localStorage.setItem(key, JSON.stringify(value));
 }
 

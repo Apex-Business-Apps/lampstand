@@ -3,25 +3,36 @@ import { AppShell } from '@/components/AppShell';
 import { ScriptureCard } from '@/components/ScriptureCard';
 import { ReflectionBlock } from '@/components/ReflectionBlock';
 import { GlowOrb } from '@/components/GlowOrb';
+import { AgentPresence } from '@/components/AgentPresence';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { getAIAdapter } from '@/lib/adapters';
 import { getProfile, savePassage } from '@/lib/storage';
 import { checkInputSafety, shouldCircuitBreak, SAFE_FALLBACK_RESPONSE } from '@/lib/safety';
 import type { GuidanceResult, SavedPassage } from '@/types';
-import { Send, AlertCircle } from 'lucide-react';
+import { Send, AlertCircle, Volume2, VolumeX } from 'lucide-react';
+import { VoiceInput } from "@/components/VoiceInput";
+import { voiceOrchestrator as voiceManager } from "@/lib/voice/VoiceOrchestrator";
+
+import { useEffect } from "react";
 
 export default function GuidancePage() {
+  useEffect(() => {
+    return () => voiceManager.stopSpeaking();
+  }, []);
   const [input, setInput] = useState('');
   const [result, setResult] = useState<GuidanceResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [safetyMessage, setSafetyMessage] = useState('');
   const [saved, setSaved] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   async function handleSubmit() {
     if (!input.trim()) return;
     setSafetyMessage('');
     setSaved(false);
+    voiceManager.stopSpeaking();
+    setIsSpeaking(false);
 
     if (shouldCircuitBreak()) {
       setSafetyMessage("Let's take a gentle pause. Here is a passage to rest with.");
@@ -95,11 +106,14 @@ export default function GuidancePage() {
             className="min-h-[100px] resize-none bg-card"
             maxLength={500}
           />
-          <Button onClick={handleSubmit} disabled={loading || !input.trim()} className="w-full gap-2">
+          <div className="flex gap-2 w-full">
+            <VoiceInput onResult={setInput} />
+            <Button onClick={handleSubmit} disabled={loading || !input.trim()} className="flex-1 gap-2">
             <Send className="h-4 w-4" />
             {loading ? 'Finding light...' : 'Seek Guidance'}
           </Button>
         </div>
+      </div>
 
         {safetyMessage && (
           <div className="flex items-start gap-2 bg-accent/60 rounded-lg p-4 animate-fade-in">

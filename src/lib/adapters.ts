@@ -25,7 +25,7 @@ export class LocalRetrievalAdapter implements IRetrievalAdapter {
 }
 
 // ─── Local AI Adapter (uses seed content, swappable for Groq/OpenAI/etc) ───
-export class LocalAIAdapter implements IAIAdapter {
+export class LocalAIAdapterBase implements IAIAdapter {
   async generateReflection(passage: ScripturePassage, tone: ToneStyle): Promise<string> {
     const toneMap = {
       gentle: 'In this quiet moment, consider what these words might mean for you today. There is no rush — just let them rest in your heart.',
@@ -88,9 +88,42 @@ export class LocalAIAdapter implements IAIAdapter {
 
 // ─── Singleton instances ───
 let retrievalAdapter: IRetrievalAdapter = new LocalRetrievalAdapter();
-let aiAdapter: IAIAdapter = new LocalAIAdapter();
+let aiAdapter: IAIAdapter = new LocalAIAdapterBase();
 
 export function getRetrievalAdapter(): IRetrievalAdapter { return retrievalAdapter; }
 export function getAIAdapter(): IAIAdapter { return aiAdapter; }
 export function setRetrievalAdapter(a: IRetrievalAdapter) { retrievalAdapter = a; }
 export function setAIAdapter(a: IAIAdapter) { aiAdapter = a; }
+
+import { AgentRuntime } from './ai/AgentRuntime';
+
+export class GroqAIAdapter extends LocalAIAdapterBase {
+  private runtime = new AgentRuntime();
+
+  async generateGuidance(concern: string, tone: ToneStyle): Promise<GuidanceResult> {
+    const rawOutput = await this.runtime.runGuidanceTurn(concern);
+    // Parse the raw output assuming it's text.
+    // Let's create a synthesized result
+    return {
+      id: crypto.randomUUID(),
+      concern,
+      themes: ['guidance'],
+      passage: {
+        id: crypto.randomUUID(),
+        reference: "A word of reflection",
+        book: "Reflection",
+        chapter: 1,
+        verse: 1,
+        text: rawOutput.substring(0, 150) + "..."
+      },
+      reflection: rawOutput,
+      prayer: "Lord, grant us wisdom and peace in this reflection. Amen.",
+      createdAt: new Date().toISOString()
+    };
+  }
+}
+
+// Override the AI adapter injection if GROQ API key is present
+if (import.meta.env.VITE_GROQ_API_KEY) {
+  setAIAdapter(new GroqAIAdapter());
+}

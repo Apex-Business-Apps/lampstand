@@ -12,8 +12,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["var(--font-serif)"],
-        sans: ["var(--font-sans)"],
+        serif: ["var(--font-display)"],
+        sans: ["var(--font-ui)"],
+        body: ["var(--font-body)"],
+        display: ["var(--font-display)"],
       },
       colors: {
         border: "hsl(var(--border))",

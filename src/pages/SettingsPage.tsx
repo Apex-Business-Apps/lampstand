@@ -6,6 +6,7 @@ import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData } f
 import type { UserProfile, ToneStyle, ReadingPreference } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Trash2, RotateCcw, Info } from 'lucide-react';
+import { DataManagementSettings } from "@/components/DataManagementSettings";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
