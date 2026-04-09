@@ -1,11 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { ScriptureCard } from '@/components/ScriptureCard';
 import { ReflectionBlock } from '@/components/ReflectionBlock';
 import { AgentPresence } from '@/components/AgentPresence';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { getAIAdapter } from '@/lib/adapters';
 import { getProfile, savePassage } from '@/lib/storage';
 import { checkInputSafety, shouldCircuitBreak, SAFE_FALLBACK_RESPONSE } from '@/lib/safety';
 import type { GuidanceResult, SavedPassage } from '@/types';
@@ -13,6 +12,7 @@ import { Send, AlertCircle, Mic, MicOff, Volume2, VolumeX, PictureInPicture2 } f
 import { sttAdapter, ttsAdapter } from '@/lib/voice';
 import type { AgentMode } from '@/components/AgentPresence';
 import type { VoiceGender } from '@/lib/voice';
+import { AgentRuntime } from '@/lib/runtime/agentRuntime';
 
 export default function GuidancePage() {
   const [input, setInput] = useState('');
@@ -26,6 +26,16 @@ export default function GuidancePage() {
 
   const profile = getProfile();
   const voiceGender: VoiceGender = profile?.voiceGender || 'male';
+  const runtime = useMemo(
+    () =>
+      new AgentRuntime({
+        voice: {
+          speak: (text) => ttsAdapter.speak(text, voiceGender),
+          stop: () => ttsAdapter.stop(),
+        },
+      }),
+    [voiceGender],
+  );
 
   // Wire TTS state to agent mode
   ttsAdapter.onStateChange = (state) => {
@@ -36,8 +46,8 @@ export default function GuidancePage() {
 
   const speakText = useCallback((text: string) => {
     if (!isSpeechEnabled) return;
-    ttsAdapter.speak(text, voiceGender);
-  }, [isSpeechEnabled, voiceGender]);
+    runtime.speak(text);
+  }, [isSpeechEnabled, runtime]);
 
   async function toggleListening() {
     if (isListening) {
@@ -120,8 +130,13 @@ export default function GuidancePage() {
     setLoading(true);
     setAgentMode('thinking');
     try {
-      const ai = getAIAdapter();
-      const guidance = await ai.generateGuidance(input, profile?.toneStyle || 'balanced');
+      const guidance = await runtime.handleTextTurn({
+        input,
+        tone: profile?.toneStyle || 'balanced',
+      });
+      if (guidance.id === 'circuit-breaker-fallback') {
+        setSafetyMessage("Let's take a gentle pause. Here is a passage to rest with.");
+      }
       setResult(guidance);
       setInput('');
       setAgentMode('idle');

@@ -31,6 +31,22 @@ export default function AuthPage() {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/`,
+        },
+      });
+      if (error) throw error;
+    } catch (error: unknown) {
+      toast.error((error as Error).message || 'Failed to start Google sign-in');
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-5">
       <button onClick={() => navigate(-1)} className="absolute top-6 left-6 text-muted-foreground hover:text-foreground">
@@ -59,6 +75,9 @@ export default function AuthPage() {
           <Button type="submit" disabled={loading} className="w-full gap-2">
             <Mail className="h-4 w-4" />
             {loading ? 'Sending...' : 'Send Magic Link'}
+          </Button>
+          <Button type="button" variant="outline" onClick={handleGoogleSignIn} disabled={loading} className="w-full">
+            Continue with Google
           </Button>
         </form>
 

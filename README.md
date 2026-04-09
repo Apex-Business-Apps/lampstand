@@ -1,4 +1,4 @@
-# Lampstand
+# LampStand
 
 > A warm, modern Bible companion for re-engaging with scripture.
 
@@ -10,18 +10,30 @@
 
 ## Overview
 
-Lampstand is a Roman Catholic-friendly, web-first, mobile-responsive Bible companion. It helps users engage with scripture through pastoral guidance, daily readings, journaling, and an immersive burning-bush voice agent.
+LampStand is a Roman Catholic-friendly, web-first, mobile-responsive Bible companion. It helps users engage with scripture through pastoral guidance, daily readings, journaling, and an immersive burning-bush voice agent.
 
 ## Architecture
 
 | Layer | Technology |
 |---|---|
-| Frontend | React 18 · Vite 5 · TypeScript 5 · Tailwind CSS 3 |
+| Frontend | React 18 · Vite 6 · TypeScript 5 · Tailwind CSS 3 |
 | Backend | Supabase (Auth, Postgres, Edge Functions) |
-| AI | Groq (llama-3.3-70b) with local seed fallback |
+| AI | Groq (llama-3.3-70b) via modular runtime adapters with local seed fallback |
 | TTS | ElevenLabs (George/Matilda voices) → browser SpeechSynthesis fallback |
 | STT | Web Speech API (free, browser-native) |
-| Hosting | Cloudflare Pages via Wrangler |
+| Hosting | Cloudflare Pages via explicit Wrangler config and static dist deploy |
+
+### Runtime pipeline
+
+LampStand now includes a modular agent runtime layer:
+
+- `AgentRuntime`
+- `TurnPipeline`
+- `SessionStateMachine`
+- `CircuitBreaker`
+- `SafetyGate`
+- `RetrievalOrchestrator`
+- `ConversationOrchestrator`
 
 ## Key Features
 
@@ -77,7 +89,7 @@ npm install
 npm run dev
 
 # Type-check
-npx tsc --noEmit
+npm run typecheck
 
 # Run tests
 npx vitest run
@@ -85,8 +97,11 @@ npx vitest run
 # Build for production
 npm run build
 
-# Deploy to Cloudflare
+# Deploy to Cloudflare (interactive/local)
 npm run deploy
+
+# Deploy to Cloudflare (CI)
+npm run deploy:ci
 ```
 
 ## Project Structure
@@ -115,9 +130,16 @@ src/
 ## Privacy & Compliance
 
 - Local-first: full guest functionality without account creation
-- Cloud sync opt-in via Supabase Auth (magic link)
+- Cloud sync opt-in via Supabase Auth (magic link or Google OAuth)
 - No tracking pixels, no third-party analytics
 - Legal/terms pages require human counsel review (marked TODO)
+
+## Cloudflare Deployment Notes
+
+- This project does not rely on Wrangler framework auto-detection.
+- Build output is `dist`.
+- SPA fallback is configured with `public/_redirects`.
+- Deploy command is explicit: `wrangler pages deploy dist --project-name lampstand`.
 
 ## Changelog
 

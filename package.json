@@ -7,11 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "deploy": "vite build && wrangler pages deploy dist"
+    "deploy": "npm run build && wrangler pages deploy dist --project-name lampstand",
+    "deploy:ci": "npm run build && wrangler pages deploy dist --project-name lampstand --commit-dirty=true"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
