@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { supabase } from '@/integrations/supabase/client';
+
+// ─── Browser STT (unchanged) ───
 export class SpeechToTextAdapter {
   private recognition: any = null;
 
@@ -41,50 +44,101 @@ export class SpeechToTextAdapter {
   }
 }
 
-export class TextToSpeechAdapter {
-  private synth: SpeechSynthesis;
-  public onStateChange?: (state: 'idle' | 'speaking' | 'paused') => void;
+// ─── ElevenLabs TTS Adapter ───
+export type VoiceGender = 'male' | 'female';
 
-  constructor() {
-    this.synth = window.speechSynthesis;
+export class ElevenLabsTTSAdapter {
+  private audio: HTMLAudioElement | null = null;
+  private abortController: AbortController | null = null;
+  public onStateChange?: (state: 'idle' | 'speaking' | 'loading') => void;
+
+  async speak(text: string, voice: VoiceGender = 'male', onEnd?: () => void) {
+    this.stop();
+    this.onStateChange?.('loading');
+
+    try {
+      this.abortController = new AbortController();
+
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ text, voice }),
+          signal: this.abortController.signal,
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`TTS request failed: ${response.status}`);
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+
+      this.audio = new Audio(audioUrl);
+      this.audio.onplay = () => this.onStateChange?.('speaking');
+      this.audio.onended = () => {
+        this.onStateChange?.('idle');
+        URL.revokeObjectURL(audioUrl);
+        onEnd?.();
+      };
+      this.audio.onerror = () => {
+        this.onStateChange?.('idle');
+        URL.revokeObjectURL(audioUrl);
+        onEnd?.();
+      };
+
+      await this.audio.play();
+    } catch (err: any) {
+      if (err?.name === 'AbortError') return;
+      console.error('ElevenLabs TTS error:', err);
+      this.onStateChange?.('idle');
+      // Fall back to browser TTS
+      this.fallbackSpeak(text, onEnd);
+    }
   }
 
-  isSupported() {
-    return 'speechSynthesis' in window;
-  }
-
-  speak(text: string, onEnd?: () => void) {
-    if (!this.synth) return;
-    this.synth.cancel();
-
+  /** Browser SpeechSynthesis fallback when ElevenLabs is unavailable */
+  private fallbackSpeak(text: string, onEnd?: () => void) {
+    if (!('speechSynthesis' in window)) {
+      onEnd?.();
+      return;
+    }
+    const synth = window.speechSynthesis;
+    synth.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    const voices = this.synth.getVoices();
-    const preferredVoice = voices.find(v => v.name.includes('Google UK English Male') || v.name.includes('Daniel') || v.name.includes('Karen') || v.lang === 'en-GB');
-    if (preferredVoice) utterance.voice = preferredVoice;
-
     utterance.rate = 0.9;
     utterance.pitch = 0.9;
-
     utterance.onstart = () => this.onStateChange?.('speaking');
-    utterance.onend = () => {
-      this.onStateChange?.('idle');
-      onEnd?.();
-    };
-    utterance.onerror = () => {
-      this.onStateChange?.('idle');
-      onEnd?.();
-    };
-
-    this.synth.speak(utterance);
+    utterance.onend = () => { this.onStateChange?.('idle'); onEnd?.(); };
+    utterance.onerror = () => { this.onStateChange?.('idle'); onEnd?.(); };
+    synth.speak(utterance);
   }
 
   stop() {
-    if (this.synth) {
-      this.synth.cancel();
-      this.onStateChange?.('idle');
+    if (this.abortController) {
+      this.abortController.abort();
+      this.abortController = null;
     }
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+      this.audio = null;
+    }
+    window.speechSynthesis?.cancel();
+    this.onStateChange?.('idle');
+  }
+
+  get isSpeaking(): boolean {
+    return this.audio ? !this.audio.paused : false;
   }
 }
 
+// ─── Singletons ───
 export const sttAdapter = new SpeechToTextAdapter();
-export const ttsAdapter = new TextToSpeechAdapter();
+export const ttsAdapter = new ElevenLabsTTSAdapter();

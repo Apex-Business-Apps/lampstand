@@ -4,6 +4,8 @@ export type FaithFamiliarity = 'new' | 'familiar' | 'very-familiar';
 export type UseCase = 'daily' | 'learning' | 'crisis' | 'prayer' | 'family';
 export type ReadingPreference = 'modern' | 'balanced' | 'traditional';
 
+export type VoiceGender = 'male' | 'female';
+
 export interface UserProfile {
   id: string;
   firstName: string;
@@ -12,6 +14,7 @@ export interface UserProfile {
   preferredUses: UseCase[];
   kidsMode: boolean;
   readingPreference: ReadingPreference;
+  voiceGender: VoiceGender;
   notificationsEnabled: boolean;
   notificationTime: string; // HH:mm
   onboardingComplete: boolean;
