@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AgentPresence } from '@/components/AgentPresence';
 import { saveProfile } from '@/lib/storage';
-import type { UserProfile, ToneStyle, FaithFamiliarity, ReadingPreference } from '@/types';
+import type { UserProfile, ToneStyle, FaithFamiliarity, ReadingPreference, VoiceGender } from '@/types';
 import { ArrowRight } from 'lucide-react';
 
 export default function Onboarding() {
@@ -14,6 +14,7 @@ export default function Onboarding() {
   const [tone, setTone] = useState<ToneStyle>('balanced');
   const [faith, setFaith] = useState<FaithFamiliarity>('familiar');
   const [readingPref, setReadingPref] = useState<ReadingPreference>('balanced');
+  const [voiceGender, setVoiceGender] = useState<VoiceGender>('male');
 
   function finish() {
     const profile: UserProfile = {
@@ -24,6 +25,7 @@ export default function Onboarding() {
       preferredUses: ['daily'],
       kidsMode: false,
       readingPreference: readingPref,
+      voiceGender,
       notificationsEnabled: false,
       notificationTime: '07:00',
       onboardingComplete: true,
@@ -111,6 +113,15 @@ export default function Onboarding() {
               <Chip selected={readingPref === 'modern'} onClick={() => setReadingPref('modern')}>Modern</Chip>
               <Chip selected={readingPref === 'balanced'} onClick={() => setReadingPref('balanced')}>Balanced</Chip>
               <Chip selected={readingPref === 'traditional'} onClick={() => setReadingPref('traditional')}>Traditional</Chip>
+            </div>
+          </div>
+
+          {/* Voice */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Companion voice</label>
+            <div className="flex flex-wrap gap-2">
+              <Chip selected={voiceGender === 'male'} onClick={() => setVoiceGender('male')}>Male (George)</Chip>
+              <Chip selected={voiceGender === 'female'} onClick={() => setVoiceGender('female')}>Female (Matilda)</Chip>
             </div>
           </div>
 

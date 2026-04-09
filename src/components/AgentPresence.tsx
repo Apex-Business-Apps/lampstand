@@ -24,9 +24,9 @@ export function AgentPresence({ mode = 'idle', className = '', size = 'md', inte
       case 'speaking': return 'transition-all duration-150';
       case 'muted': return 'opacity-40 scale-90 grayscale-[30%] transition-all duration-1000';
       case 'disabled': return 'opacity-20 grayscale transition-all duration-1000';
-      case 'error': return 'animate-pulse opacity-50 bg-destructive/20';
+      case 'error': return 'animate-pulse opacity-50';
       case 'idle':
-      default: return 'animate-glow-pulse opacity-80 transition-all duration-1000';
+      default: return 'animate-glow-pulse opacity-90 transition-all duration-1000';
     }
   };
 
@@ -38,6 +38,7 @@ export function AgentPresence({ mode = 'idle', className = '', size = 'md', inte
 
   return (
     <div className={cn('relative flex items-center justify-center', sizes[size], className)}>
+      {/* Glow backdrop */}
       <div
         className={cn(
           "absolute inset-0 rounded-full blur-[40px] transition-all duration-500",
@@ -47,14 +48,15 @@ export function AgentPresence({ mode = 'idle', className = '', size = 'md', inte
         )}
         style={speakingStyle}
       />
+      {/* Flame image — NO mix-blend-screen so it's visible on light backgrounds */}
       <img
         src={presenceImg}
         alt="LampStand Presence"
         className={cn(
-          'relative z-10 w-full h-full object-contain mix-blend-screen transition-all duration-500',
-          mode === 'muted' || mode === 'disabled' ? 'opacity-40' : 'opacity-90',
-          mode === 'listening' ? 'scale-105 filter drop-shadow-[0_0_15px_rgba(255,200,100,0.6)]' : '',
-          mode === 'thinking' ? 'opacity-70 scale-95 filter drop-shadow-[0_0_8px_rgba(255,180,50,0.4)]' : ''
+          'relative z-10 w-full h-full object-contain transition-all duration-500',
+          mode === 'muted' || mode === 'disabled' ? 'opacity-40' : 'opacity-100',
+          mode === 'listening' ? 'scale-105 drop-shadow-[0_0_15px_rgba(255,200,100,0.6)]' : '',
+          mode === 'thinking' ? 'opacity-70 scale-95 drop-shadow-[0_0_8px_rgba(255,180,50,0.4)]' : ''
         )}
         style={mode === 'speaking' ? speakingStyle : {}}
       />
