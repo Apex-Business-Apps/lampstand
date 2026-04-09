@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { supabase } from '@/integrations/supabase/client';
+import { audioAnalyzer } from '@/lib/audioAnalyzer';
 
 // ─── Browser STT (unchanged) ───
 export class SpeechToTextAdapter {
