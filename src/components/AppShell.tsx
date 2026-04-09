@@ -28,6 +28,12 @@ export function AppShell({ children, kidsMode }: AppShellProps) {
       <main className="flex-1 pb-20 max-w-lg mx-auto w-full pt-6">
         {children}
       </main>
+      <footer className="max-w-lg mx-auto w-full px-4 pb-20 pt-2 text-[11px] text-muted-foreground flex flex-wrap gap-3 justify-center">
+        <button onClick={() => navigate('/legal/privacy')} className="hover:text-foreground">Privacy</button>
+        <button onClick={() => navigate('/legal/terms')} className="hover:text-foreground">Terms</button>
+        <button onClick={() => navigate('/legal/aup')} className="hover:text-foreground">AUP</button>
+        <button onClick={() => navigate('/legal/disclaimer')} className="hover:text-foreground">AI Disclaimer</button>
+      </footer>
       <nav className="fixed bottom-0 inset-x-0 bg-card/95 backdrop-blur-md border-t border-border z-50">
         <div className="max-w-lg mx-auto flex justify-around py-2">
           {navItems.map(item => {

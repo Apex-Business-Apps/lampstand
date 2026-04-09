@@ -72,6 +72,7 @@ The Groq adapter is tuned for minimal token consumption:
 | `VITE_SUPABASE_URL` | Yes | Supabase project URL |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | Yes | Supabase anon/publishable key |
 | `VITE_GROQ_API_KEY` | No | Groq API key (falls back to local seed data) |
+| `VITE_STRIPE_PUBLISHABLE_KEY` | No | Stripe publishable key for client billing flows |
 
 ### Supabase Secrets (Edge Functions)
 
@@ -93,6 +94,9 @@ npm run typecheck
 
 # Run tests
 npx vitest run
+
+# Run responsive route audit
+npm run test:e2e
 
 # Build for production
 npm run build
@@ -132,14 +136,15 @@ src/
 - Local-first: full guest functionality without account creation
 - Cloud sync opt-in via Supabase Auth (magic link or Google OAuth)
 - No tracking pixels, no third-party analytics
+- Dedicated policy routes: `/legal/privacy`, `/legal/terms`, `/legal/aup`, `/legal/disclaimer`
 - Legal/terms pages require human counsel review (marked TODO)
 
 ## Cloudflare Deployment Notes
 
 - This project does not rely on Wrangler framework auto-detection.
 - Build output is `dist`.
-- SPA fallback is configured with `public/_redirects`.
-- Deploy command is explicit: `wrangler pages deploy dist --project-name lampstand`.
+- SPA fallback is configured in `wrangler.json` with `assets.not_found_handling = "single-page-application"`.
+- Deploy command is explicit: `wrangler versions upload`.
 
 ## Changelog
 

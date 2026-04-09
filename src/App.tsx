@@ -16,7 +16,7 @@ import JournalPage from "./pages/JournalPage";
 import SettingsPage from "./pages/SettingsPage";
 import AdminPage from "./pages/AdminPage";
 import AuthPage from "./pages/AuthPage";
-import LegalPage from "./pages/LegalPage";
+import LegalDocumentsPage from "./pages/legalDocuments";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,7 +40,8 @@ const App = () => (
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/auth" element={<AuthPage />} />
-            <Route path="/legal" element={<LegalPage />} />
+            <Route path="/legal" element={<LegalDocumentsPage />} />
+            <Route path="/legal/:doc" element={<LegalDocumentsPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <FloatingAgent />

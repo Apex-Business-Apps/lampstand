@@ -12,8 +12,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name lampstand",
-    "deploy:ci": "npm run build && wrangler pages deploy dist --project-name lampstand --commit-dirty=true"
+    "test:e2e": "playwright test",
+    "deploy": "npm run build && wrangler versions upload",
+    "deploy:ci": "npm run build && wrangler versions upload"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

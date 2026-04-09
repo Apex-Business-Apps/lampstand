@@ -5,13 +5,15 @@ import { Input } from '@/components/ui/input';
 import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData } from '@/lib/storage';
 import type { UserProfile, ToneStyle, ReadingPreference } from '@/types';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Trash2, RotateCcw, Info } from 'lucide-react';
+import { Shield, Trash2, RotateCcw } from 'lucide-react';
+import { getConsent, saveConsent, resetConsent, type ConsentState } from '@/lib/consent';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showReset, setShowReset] = useState(false);
+  const [consent, setConsent] = useState<ConsentState>(getConsent());
 
   useEffect(() => {
     const p = getProfile();
@@ -34,7 +36,28 @@ export default function SettingsPage() {
 
   function handleResetAll() {
     resetAllData();
+    resetConsent();
     navigate('/onboarding');
+  }
+
+  async function requestNotificationsConsent(enabled: boolean) {
+    if (!enabled) {
+      const next = saveConsent({ notifications: false });
+      setConsent(next);
+      update({ notificationsEnabled: false });
+      return;
+    }
+    if (!('Notification' in window)) return;
+    const permission = await Notification.requestPermission();
+    const approved = permission === 'granted';
+    const next = saveConsent({ notifications: approved });
+    setConsent(next);
+    update({ notificationsEnabled: approved });
+  }
+
+  function toggleConsent<K extends keyof ConsentState>(key: K, value?: boolean) {
+    const next = saveConsent({ [key]: value ?? !consent[key] });
+    setConsent(next);
   }
 
   const knowledge = getKnowledge();
@@ -105,7 +128,7 @@ export default function SettingsPage() {
           <Field label="Daily Light">
             <div className="flex items-center gap-3">
               <button
-                onClick={() => update({ notificationsEnabled: !profile.notificationsEnabled })}
+                onClick={() => requestNotificationsConsent(!profile.notificationsEnabled)}
                 className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
                   profile.notificationsEnabled ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'
                 }`}
@@ -119,6 +142,30 @@ export default function SettingsPage() {
           </Field>
         </Section>
 
+        <Section title="Consent & Permissions">
+          <Field label="Local memory storage">
+            <button onClick={() => toggleConsent('localMemory')} className={`px-3 py-1.5 rounded-lg text-sm border ${consent.localMemory ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'}`}>
+              {consent.localMemory ? 'Opted in' : 'Not enabled'}
+            </button>
+          </Field>
+          <Field label="Microphone permissions">
+            <button onClick={() => toggleConsent('microphone')} className={`px-3 py-1.5 rounded-lg text-sm border ${consent.microphone ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'}`}>
+              {consent.microphone ? 'Allowed' : 'Not allowed'}
+            </button>
+            <p className="text-xs text-muted-foreground">Raw audio is never stored by default. Transcripts are local only unless cloud sync is enabled.</p>
+          </Field>
+          <Field label="Cloud sync">
+            <button onClick={() => toggleConsent('cloudSync')} className={`px-3 py-1.5 rounded-lg text-sm border ${consent.cloudSync ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'}`}>
+              {consent.cloudSync ? 'Enabled' : 'Disabled'}
+            </button>
+          </Field>
+          <Field label="Kids mode voice">
+            <button onClick={() => toggleConsent('voiceForKidsMode')} className={`px-3 py-1.5 rounded-lg text-sm border ${consent.voiceForKidsMode ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'}`}>
+              {consent.voiceForKidsMode ? 'Enabled' : 'Disabled by default'}
+            </button>
+          </Field>
+        </Section>
+
 
         <Section title="Privacy & Data">
           <button onClick={() => setShowPrivacy(!showPrivacy)} className="flex items-center gap-2 text-sm text-primary">
@@ -126,12 +173,10 @@ export default function SettingsPage() {
           </button>
           {showPrivacy && (
             <div className="bg-secondary/50 rounded-lg p-4 space-y-2 animate-fade-in">
-              <p className="text-xs text-muted-foreground">
-                <strong>LampStand</strong> stores all your preferences, saved passages, journal entries, and learning data locally on your device. Nothing is shared, uploaded, or used to train any model by default.
-              </p>
+              <p className="text-xs text-muted-foreground"><strong>LampStand</strong> stores preferences and activity locally. Cloud sync is off until you enable it.</p>
               <p className="text-xs text-muted-foreground">Your adaptive knowledge (streak: {knowledge.streak}, interactions: {knowledge.interactionCount}) helps personalize your experience and never leaves your device.</p>
               <div className="pt-2">
-                <Button variant="link" className="p-0 h-auto text-xs text-primary" onClick={() => navigate('/legal')}>
+                <Button variant="link" className="p-0 h-auto text-xs text-primary" onClick={() => navigate('/legal/privacy')}>
                   View full Legal & Privacy documentation
                 </Button>
               </div>
