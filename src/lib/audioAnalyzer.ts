@@ -28,7 +28,7 @@ export class AudioAnalyzer {
   /** Returns current amplitude 0-1 */
   getAmplitude(): number {
     if (!this.analyser) return 0;
-    this.analyser.getByteTimeDomainData(this.data);
+    this.analyser.getByteTimeDomainData(this.data as unknown as Uint8Array<ArrayBuffer>);
     let sum = 0;
     for (let i = 0; i < this.data.length; i++) {
       const v = (this.data[i] - 128) / 128;
