@@ -1,6 +1,7 @@
 import { Home, Sun, BookOpen, MessageCircle, User } from 'lucide-react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
+import { AuthStatus } from './AuthStatus';
 
 interface AppShellProps {
   children: ReactNode;
@@ -21,7 +22,10 @@ export function AppShell({ children, kidsMode }: AppShellProps) {
 
   return (
     <div className={`min-h-screen flex flex-col ${kidsMode ? 'kids-mode' : ''}`}>
-      <main className="flex-1 pb-24 md:pb-20 max-w-4xl mx-auto w-full">{children}</main>
+      <header className="absolute top-0 w-full flex justify-end p-4 z-50">
+        <AuthStatus />
+      </header>
+      <main className="flex-1 pb-24 md:pb-20 max-w-4xl mx-auto w-full pt-6">{children}</main>
       <footer className="px-4 pb-2 text-center text-xs text-muted-foreground">
         <div className="flex flex-wrap justify-center gap-3 py-2">
           <Link to="/legal/privacy">Privacy</Link>
