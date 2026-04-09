@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export class SpeechToTextAdapter {
-  private recognition: unknown = null;
+  private recognition: any = null;
 
   constructor() {
-    if ('webkitSpeechRecognition' in window) {
-      const SpeechRecognition = window.webkitSpeechRecognition;
+    const w = window as any;
+    if (w.webkitSpeechRecognition || w.SpeechRecognition) {
+      const SpeechRecognition = w.SpeechRecognition || w.webkitSpeechRecognition;
       this.recognition = new SpeechRecognition();
       this.recognition.continuous = false;
       this.recognition.interimResults = false;
@@ -18,12 +21,12 @@ export class SpeechToTextAdapter {
     return new Promise((resolve, reject) => {
       if (!this.recognition) return reject(new Error('Speech recognition not supported'));
 
-      this.recognition.onresult = (event: unknown) => {
+      this.recognition.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
         resolve(transcript);
       };
 
-      this.recognition.onerror = (event: unknown) => {
+      this.recognition.onerror = (event: any) => {
         reject(new Error(event.error));
       };
 
@@ -52,15 +55,14 @@ export class TextToSpeechAdapter {
 
   speak(text: string, onEnd?: () => void) {
     if (!this.synth) return;
-    this.synth.cancel(); // Cancel unknown ongoing speech
+    this.synth.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
-    // Find a good voice
     const voices = this.synth.getVoices();
     const preferredVoice = voices.find(v => v.name.includes('Google UK English Male') || v.name.includes('Daniel') || v.name.includes('Karen') || v.lang === 'en-GB');
     if (preferredVoice) utterance.voice = preferredVoice;
 
-    utterance.rate = 0.9; // Slightly slower, calmer
+    utterance.rate = 0.9;
     utterance.pitch = 0.9;
 
     utterance.onstart = () => this.onStateChange?.('speaking');
