@@ -1,5 +1,5 @@
 import { Home, Sun, BookOpen, MessageCircle, User, Sparkles } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { AuthStatus } from './AuthStatus';
 
@@ -28,6 +28,14 @@ export function AppShell({ children, kidsMode }: AppShellProps) {
       <main className="flex-1 pb-20 max-w-lg mx-auto w-full pt-6">
         {children}
       </main>
+      <footer className="px-4 pb-24 pt-6 text-center text-xs text-muted-foreground">
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <Link to="/legal/privacy" className="hover:text-foreground">Privacy</Link>
+          <Link to="/legal/terms" className="hover:text-foreground">Terms</Link>
+          <Link to="/legal/acceptable-use" className="hover:text-foreground">AUP</Link>
+          <Link to="/legal/disclaimer" className="hover:text-foreground">AI Disclaimer</Link>
+        </div>
+      </footer>
       <nav className="fixed bottom-0 inset-x-0 bg-card/95 backdrop-blur-md border-t border-border z-50">
         <div className="max-w-lg mx-auto flex justify-around py-2">
           {navItems.map(item => {

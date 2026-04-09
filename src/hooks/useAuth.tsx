@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext, type ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { saveAuthState } from '@/lib/storage';
 import type { Session, User } from '@supabase/supabase-js';
 
 interface AuthContextType {
@@ -24,6 +25,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // Set up listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
+      saveAuthState(session?.user ? { mode: 'authenticated', userId: session.user.id, email: session.user.email } : { mode: 'guest' });
       setLoading(false);
     });
 
@@ -38,6 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    saveAuthState({ mode: 'guest' });
   };
 
   return (
