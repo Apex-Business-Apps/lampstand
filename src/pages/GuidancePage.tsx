@@ -130,7 +130,9 @@ export default function GuidancePage() {
     <AppShell>
       <div className="px-5 pt-8 pb-6 space-y-6">
         <div className="text-center space-y-2">
-          <AgentPresence size="sm" className="mx-auto cursor-pointer" mode={agentMode} onClick={toggleSpeech} />
+          <div onClick={toggleSpeech} className="cursor-pointer">
+            <AgentPresence size="sm" className="mx-auto" mode={agentMode} />
+          </div>
           <h1 className="text-2xl font-serif font-semibold">Guidance</h1>
           <p className="text-sm text-muted-foreground">Share what's on your heart. I'll offer scripture and a gentle reflection.</p>
         </div>
