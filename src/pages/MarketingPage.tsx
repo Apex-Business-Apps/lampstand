@@ -58,7 +58,6 @@ export default function MarketingPage() {
       <div className="mx-auto max-w-6xl px-6 py-8 sm:px-10 lg:px-16">
         <header className="mb-12 flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.24em] text-muted-foreground">APEX Business Apps</p>
             <h1 className="text-3xl font-semibold sm:text-4xl">LampStand</h1>
           </div>
           <div className="flex gap-2">
@@ -154,6 +153,9 @@ export default function MarketingPage() {
             <span>·</span>
             <Link to="/legal/disclaimer" className="hover:text-foreground">AI Disclaimer</Link>
           </div>
+          <p className="mt-2 text-[11px] uppercase tracking-[0.12em] text-muted-foreground/90">
+            APEX Business Systems Ltd. · Edmonton, AB Canada
+          </p>
         </footer>
       </div>
     </div>
