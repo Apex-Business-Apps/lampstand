@@ -3,7 +3,7 @@ import { Sun, BookOpen, MessageCircle, PlayCircle, Baby, Flame } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { AgentPresence } from '@/components/AgentPresence';
 import { AppShell } from '@/components/AppShell';
-import { getProfile, getKnowledge, getSavedPassages, updateStreak } from '@/lib/storage';
+import { getProfile, getKnowledge, getSavedPassages, updateStreak, getPresenceScore } from '@/lib/storage';
 import { SEED_DAILY_LIGHTS } from '@/data/seed';
 import { useEffect, useState } from 'react';
 import type { UserProfile } from '@/types';
@@ -13,6 +13,7 @@ export default function HomePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const knowledge = getKnowledge();
   const saved = getSavedPassages();
+  const presence = getPresenceScore();
 
   useEffect(() => {
     const p = getProfile();
@@ -28,7 +29,7 @@ export default function HomePage() {
 
   return (
     <AppShell kidsMode={profile.kidsMode}>
-      <div className="px-5 pt-8 pb-6 space-y-6">
+      <div className={`px-5 pt-8 pb-6 space-y-6 ${presence.state === 'ember' ? 'opacity-95' : ''}`}>
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
@@ -45,7 +46,7 @@ export default function HomePage() {
 
         {/* Daily Light Hero */}
         <button onClick={() => navigate('/daily')} className="w-full text-left">
-          <div className="glow-card rounded-2xl p-6 space-y-4 animate-slide-up">
+          <div className={`glow-card rounded-2xl p-6 space-y-4 animate-slide-up ${presence.state === 'radiance' || presence.state === 'sacred-heart' ? 'shadow-[0_0_45px_rgba(250,180,80,0.35)]' : ''}`}>
             <div className="flex items-center gap-3">
               <AgentPresence size="sm"  />
               <div>
@@ -65,6 +66,8 @@ export default function HomePage() {
           <ActionCard icon={MessageCircle} label="Ask for Guidance" onClick={() => navigate('/guidance')} />
           <ActionCard icon={BookOpen} label="Continue Reading" onClick={() => navigate('/saved')} />
         </div>
+
+        <Button variant="outline" className="w-full" onClick={() => navigate('/return')}>The Return</Button>
 
         {profile.kidsMode && (
           <Button variant="outline" className="w-full gap-2 border-2" onClick={() => navigate('/kids')}>

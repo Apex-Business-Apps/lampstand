@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData } from '@/lib/storage';
+import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData, getConsentState, saveConsentState, getVoicePreferences, saveVoicePreferences, clearVoiceHistory, saveSyncState } from '@/lib/storage';
 import type { UserProfile, ToneStyle, ReadingPreference } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Trash2, RotateCcw } from 'lucide-react';
@@ -216,6 +216,18 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     <div className="space-y-2">
       <label className="text-sm font-medium text-muted-foreground">{label}</label>
       {children}
+    </div>
+  );
+}
+
+
+function ConsentToggle({ label, value, onChange }: { label: string; value: boolean; onChange: (next: boolean) => void }) {
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
+      <span className="text-sm">{label}</span>
+      <button onClick={() => onChange(!value)} className={`px-3 py-1 rounded-md text-xs border ${value ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'}`}>
+        {value ? 'Opted in' : 'Opted out'}
+      </button>
     </div>
   );
 }

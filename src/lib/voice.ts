@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { audioAnalyzer } from '@/lib/audioAnalyzer';
+import { getConsentState, getVoicePreferences, pushVoiceTranscript } from '@/lib/storage';
 
 export type VoiceGender = 'male' | 'female';
 
@@ -30,9 +31,7 @@ class BrowserSpeechToTextAdapter implements SpeechToTextPort {
     }
   }
 
-  isSupported() {
-    return this.recognition !== null;
-  }
+  isSupported() { return this.recognition !== null; }
 
   async startListening(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -60,6 +59,11 @@ class NullSpeechToTextAdapter implements SpeechToTextPort {
   stopListening() {
     // Intentional no-op fallback adapter.
   }
+
+class NullSpeechToTextAdapter implements SpeechToTextPort {
+  isSupported() { return false; }
+  async startListening(): Promise<string> { throw new Error('Speech recognition unavailable'); }
+  stopListening() {}
 }
 
 class BrowserTextToSpeechAdapter implements TextToSpeechPort {

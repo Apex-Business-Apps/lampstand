@@ -14,6 +14,21 @@ export default function DailyLightPage() {
   const [showDeeper, setShowDeeper] = useState(false);
   const [saved, setSaved] = useState(() => getSavedPassages().some(s => s.passage.reference === today.passage.reference));
 
+
+
+  async function handleShare() {
+    const shareText = `${today.passage.reference}
+
+${today.passage.text}
+
+Reflection: ${today.reflection}`;
+    if (navigator.share) {
+      await navigator.share({ title: 'LampStand Daily Light', text: shareText });
+      return;
+    }
+    await navigator.clipboard.writeText(shareText);
+  }
+
   function handleSave() {
     if (saved) return;
     const entry: SavedPassage = {
@@ -36,7 +51,7 @@ export default function DailyLightPage() {
           </p>
         </div>
 
-        <ScriptureCard passage={today.passage} onSave={handleSave} saved={saved} />
+        <ScriptureCard passage={today.passage} onSave={handleSave} onShare={handleShare} saved={saved} />
 
         <ReflectionBlock label="Reflection" content={today.reflection} variant="reflection" />
 
