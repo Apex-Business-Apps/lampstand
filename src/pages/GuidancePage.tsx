@@ -41,6 +41,7 @@ export default function GuidancePage() {
       setRuntimeState('error');
     } finally {
       setLoading(false);
+      if (agentMode === 'thinking') setAgentMode('idle');
     }
   }
 

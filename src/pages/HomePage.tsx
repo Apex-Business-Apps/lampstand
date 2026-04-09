@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Sun, BookOpen, MessageCircle, PlayCircle, Baby, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { GlowOrb } from '@/components/GlowOrb';
+import { AgentPresence } from '@/components/AgentPresence';
 import { AppShell } from '@/components/AppShell';
 import { getProfile, getKnowledge, getSavedPassages, updateStreak } from '@/lib/storage';
 import { SEED_DAILY_LIGHTS } from '@/data/seed';
@@ -48,14 +48,14 @@ export default function HomePage() {
         <button onClick={() => navigate('/daily')} className="w-full text-left">
           <div className="glow-card rounded-2xl p-6 space-y-4 animate-slide-up">
             <div className="flex items-center gap-3">
-              <GlowOrb size="sm" showImage={false} />
+              <AgentPresence size="sm"  />
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wider text-primary">Today's Light</p>
                 <p className="text-sm text-muted-foreground">{today.theme}</p>
               </div>
             </div>
             <p className="scripture-text text-base line-clamp-3">{today.passage.text}</p>
-            <p className="text-xs text-muted-foreground">— {today.passage.reference}</p>
+            <p className="text-xs text-muted-foreground">- {today.passage.reference}</p>
           </div>
         </button>
 
