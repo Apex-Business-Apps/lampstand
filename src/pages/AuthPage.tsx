@@ -19,7 +19,7 @@ export default function AuthPage() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo: `${window.location.origin}/entry?source=auth`,
         },
       });
       if (error) throw error;
@@ -64,7 +64,7 @@ export default function AuthPage() {
 
         <div className="pt-4 text-xs text-muted-foreground space-y-2">
           <p>LampStand is local-first. You do not need to sign in to use it.</p>
-          <button onClick={() => navigate('/')} className="text-primary hover:underline">
+          <button onClick={() => navigate('/entry?entry=onboarding&source=web')} className="text-primary hover:underline">
             Continue as Guest
           </button>
         </div>
