@@ -1,3 +1,4 @@
+// HomePage - daily devotional hub with GlowOrb and profile management
 import { useNavigate } from 'react-router-dom';
 import { Sun, BookOpen, MessageCircle, PlayCircle, Baby, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
