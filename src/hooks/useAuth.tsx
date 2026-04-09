@@ -1,6 +1,7 @@
-import { useState, useEffect, createContext, useContext, type ReactNode } from 'react';
+import { useState, useEffect, useCallback, createContext, useContext, type ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { saveAuthState } from '@/lib/storage';
+import { runFullSync } from '@/lib/supabaseSync';
 import type { Session, User } from '@supabase/supabase-js';
 
 interface AuthContextType {
@@ -21,22 +22,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const handleSession = useCallback((s: Session | null) => {
+    setSession(s);
+    if (s?.user) {
+      saveAuthState({ mode: 'authenticated', userId: s.user.id, email: s.user.email });
+      // Background sync — non-blocking
+      runFullSync(s.user.id).catch(() => {});
+    } else {
+      saveAuthState({ mode: 'guest' });
+    }
+    setLoading(false);
+  }, []);
+
   useEffect(() => {
-    // Set up listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      saveAuthState(session?.user ? { mode: 'authenticated', userId: session.user.id, email: session.user.email } : { mode: 'guest' });
-      setLoading(false);
+      handleSession(session);
     });
 
-    // Then check existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
+      handleSession(session);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [handleSession]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
