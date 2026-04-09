@@ -1,0 +1,22 @@
+{
+  "name": "lampstand",
+  "main": "src/workers/static-spa.ts",
+  "compatibility_date": "2026-04-09",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "routes": [
+    {
+      "pattern": "thelampstand.icu/*",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.thelampstand.icu/*",
+      "custom_domain": true
+    }
+  ]
+}
