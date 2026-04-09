@@ -65,6 +65,11 @@ export function FloatingAgent() {
     }
   }, [agentMode, lastText, isSpeechEnabled, voiceGender]);
 
+  // Fullscreen mode
+  if (fullscreen) {
+    return <FullscreenAgent onClose={() => setFullscreen(false)} />;
+  }
+
   if (!expanded) {
     return (
       <button
