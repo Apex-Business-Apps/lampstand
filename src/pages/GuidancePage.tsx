@@ -1,3 +1,4 @@
+// GuidancePage - AI guidance with voice, runtime, consent controls
 import { useMemo, useState } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { ScriptureCard } from '@/components/ScriptureCard';
