@@ -1,5 +1,15 @@
 import type {
-  UserProfile, SavedPassage, JournalEntry, LocalKnowledge, SafetyEvent, DailyLight
+  UserProfile,
+  SavedPassage,
+  JournalEntry,
+  LocalKnowledge,
+  SafetyEvent,
+  DailyLight,
+  ConsentState,
+  AuthState,
+  VoicePreference,
+  SyncState,
+  PresenceScore,
 } from '@/types';
 
 const KEYS = {
@@ -9,51 +19,59 @@ const KEYS = {
   knowledge: 'lampstand_knowledge',
   safety: 'lampstand_safety',
   dailyCache: 'lampstand_daily_cache',
+  consent: 'lampstand_consent',
+  authState: 'lampstand_auth_state',
+  voicePrefs: 'lampstand_voice_preferences',
+  syncState: 'lampstand_sync_state',
+  presenceScore: 'lampstand_presence_score',
+  voiceHistory: 'lampstand_voice_history',
 } as const;
 
 function get<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(key);
     return raw ? JSON.parse(raw) : fallback;
-  } catch { return fallback; }
+  } catch {
+    return fallback;
+  }
 }
 
 function set(key: string, value: unknown) {
-  const hasConsent = localStorage.getItem("lampstand_consent_storage") === "true";
-  if (!hasConsent && key !== KEYS.profile) return;
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-// ─── Profile ───
 export function getProfile(): UserProfile | null {
   return get<UserProfile | null>(KEYS.profile, null);
 }
 export function saveProfile(p: UserProfile) { set(KEYS.profile, p); }
 export function clearProfile() { localStorage.removeItem(KEYS.profile); }
 
-// ─── Saved Passages ───
 export function getSavedPassages(): SavedPassage[] { return get(KEYS.saved, []); }
 export function savePassage(p: SavedPassage) {
   const all = getSavedPassages();
-  if (!all.find(s => s.id === p.id)) { all.unshift(p); set(KEYS.saved, all); }
+  if (!all.find((s) => s.id === p.id)) {
+    all.unshift(p);
+    set(KEYS.saved, all);
+    incrementPresenceScore(3);
+  }
 }
 export function removePassage(id: string) {
-  set(KEYS.saved, getSavedPassages().filter(p => p.id !== id));
+  set(KEYS.saved, getSavedPassages().filter((p) => p.id !== id));
 }
 
-// ─── Journal ───
 export function getJournalEntries(): JournalEntry[] { return get(KEYS.journal, []); }
 export function saveJournalEntry(e: JournalEntry) {
   const all = getJournalEntries();
-  const idx = all.findIndex(j => j.id === e.id);
-  if (idx >= 0) all[idx] = e; else all.unshift(e);
+  const idx = all.findIndex((j) => j.id === e.id);
+  if (idx >= 0) all[idx] = e;
+  else all.unshift(e);
   set(KEYS.journal, all);
+  incrementPresenceScore(4);
 }
 export function removeJournalEntry(id: string) {
-  set(KEYS.journal, getJournalEntries().filter(e => e.id !== id));
+  set(KEYS.journal, getJournalEntries().filter((e) => e.id !== id));
 }
 
-// ─── Local Knowledge ───
 const defaultKnowledge: LocalKnowledge = {
   preferredReflectionLength: 'medium',
   frequentTopics: [],
@@ -75,10 +93,10 @@ export function updateStreak() {
   if (k.lastStreakDate === today) return;
   const streak = k.lastStreakDate === yesterday ? k.streak + 1 : 1;
   updateKnowledge({ streak, lastStreakDate: today, lastActive: today, interactionCount: k.interactionCount + 1 });
+  incrementPresenceScore(5);
 }
 export function clearKnowledge() { set(KEYS.knowledge, defaultKnowledge); }
 
-// ─── Safety Events ───
 export function getSafetyEvents(): SafetyEvent[] { return get(KEYS.safety, []); }
 export function logSafetyEvent(e: SafetyEvent) {
   const all = getSafetyEvents();
@@ -87,11 +105,78 @@ export function logSafetyEvent(e: SafetyEvent) {
   set(KEYS.safety, all);
 }
 
-// ─── Daily Cache ───
 export function getCachedDaily(): DailyLight | null { return get(KEYS.dailyCache, null); }
 export function setCachedDaily(d: DailyLight) { set(KEYS.dailyCache, d); }
 
-// ─── Full Reset ───
+const defaultConsent: ConsentState = {
+  localAdaptiveMemory: true,
+  localJournalStorage: true,
+  optionalCloudSync: false,
+  notifications: false,
+  microphone: false,
+  voiceOutput: false,
+  analyticsTelemetry: false,
+  accountLinkedPersistence: false,
+  updatedAt: new Date(0).toISOString(),
+};
+export function getConsentState(): ConsentState { return get(KEYS.consent, defaultConsent); }
+export function saveConsentState(partial: Partial<ConsentState>) {
+  set(KEYS.consent, { ...getConsentState(), ...partial, updatedAt: new Date().toISOString() });
+}
+
+const defaultAuthState: AuthState = { mode: 'guest', updatedAt: new Date(0).toISOString() };
+export function getAuthState(): AuthState { return get(KEYS.authState, defaultAuthState); }
+export function saveAuthState(partial: Partial<AuthState>) {
+  set(KEYS.authState, { ...getAuthState(), ...partial, updatedAt: new Date().toISOString() });
+}
+
+const defaultVoice: VoicePreference = { enabled: false, muted: false, speed: 1, allowKidsModeVoice: false };
+export function getVoicePreferences(): VoicePreference { return get(KEYS.voicePrefs, defaultVoice); }
+export function saveVoicePreferences(partial: Partial<VoicePreference>) {
+  set(KEYS.voicePrefs, { ...getVoicePreferences(), ...partial });
+}
+
+const defaultSync: SyncState = { enabled: false, provider: 'none' };
+export function getSyncState(): SyncState { return get(KEYS.syncState, defaultSync); }
+export function saveSyncState(partial: Partial<SyncState>) {
+  set(KEYS.syncState, { ...getSyncState(), ...partial });
+}
+
+const defaultPresence: PresenceScore = { score: 10, state: 'ember', lastActivityAt: new Date().toISOString() };
+export function getPresenceScore(): PresenceScore {
+  const value = get(KEYS.presenceScore, defaultPresence);
+  const daysAway = Math.floor((Date.now() - new Date(value.lastActivityAt).getTime()) / 86400000);
+  if (daysAway <= 2) return value;
+  const decayed = Math.max(5, value.score - daysAway * 2);
+  const state = derivePresenceState(decayed);
+  const updated = { score: decayed, state, lastActivityAt: value.lastActivityAt };
+  set(KEYS.presenceScore, updated);
+  return updated;
+}
+
+export function incrementPresenceScore(delta: number) {
+  const current = getPresenceScore();
+  const score = Math.min(100, current.score + delta);
+  set(KEYS.presenceScore, { score, state: derivePresenceState(score), lastActivityAt: new Date().toISOString() });
+}
+
+function derivePresenceState(score: number): PresenceScore['state'] {
+  if (score >= 85) return 'sacred-heart';
+  if (score >= 60) return 'radiance';
+  if (score >= 30) return 'flame';
+  return 'ember';
+}
+
+export function pushVoiceTranscript(transcript: string) {
+  const history = get<string[]>(KEYS.voiceHistory, []);
+  history.unshift(transcript.slice(0, 1000));
+  set(KEYS.voiceHistory, history.slice(0, 50));
+}
+
+export function clearVoiceHistory() {
+  localStorage.removeItem(KEYS.voiceHistory);
+}
+
 export function resetAllData() {
-  Object.values(KEYS).forEach(k => localStorage.removeItem(k));
+  Object.values(KEYS).forEach((k) => localStorage.removeItem(k));
 }

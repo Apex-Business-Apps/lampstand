@@ -4,6 +4,8 @@ export type FaithFamiliarity = 'new' | 'familiar' | 'very-familiar';
 export type UseCase = 'daily' | 'learning' | 'crisis' | 'prayer' | 'family';
 export type ReadingPreference = 'modern' | 'balanced' | 'traditional';
 
+export type VoiceGender = 'male' | 'female';
+
 export interface UserProfile {
   id: string;
   firstName: string;
@@ -12,6 +14,7 @@ export interface UserProfile {
   preferredUses: UseCase[];
   kidsMode: boolean;
   readingPreference: ReadingPreference;
+  voiceGender: VoiceGender;
   notificationsEnabled: boolean;
   notificationTime: string; // HH:mm
   onboardingComplete: boolean;
@@ -151,3 +154,47 @@ export interface NotificationConfig {
 
 // ─── Onboarding ───
 export type OnboardingStep = 'welcome' | 'name' | 'tone' | 'faith' | 'use' | 'kids' | 'notifications' | 'reading' | 'complete';
+
+// ─── Consent/Auth/Sync Extensions ───
+export interface ConsentState {
+  localAdaptiveMemory: boolean;
+  localJournalStorage: boolean;
+  optionalCloudSync: boolean;
+  notifications: boolean;
+  microphone: boolean;
+  voiceOutput: boolean;
+  analyticsTelemetry: boolean;
+  accountLinkedPersistence: boolean;
+  updatedAt: string;
+}
+
+export interface AuthState {
+  mode: 'guest' | 'authenticated';
+  userId?: string;
+  email?: string;
+  updatedAt: string;
+}
+
+export interface NotificationPreference {
+  enabled: boolean;
+  time: string;
+}
+
+export interface VoicePreference {
+  enabled: boolean;
+  muted: boolean;
+  speed: number;
+  allowKidsModeVoice: boolean;
+}
+
+export interface SyncState {
+  enabled: boolean;
+  lastSyncedAt?: string;
+  provider: 'none' | 'supabase';
+}
+
+export interface PresenceScore {
+  score: number;
+  state: 'ember' | 'flame' | 'radiance' | 'sacred-heart';
+  lastActivityAt: string;
+}

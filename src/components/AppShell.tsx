@@ -1,6 +1,7 @@
 import { Home, Sun, BookOpen, MessageCircle, User, Sparkles } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
+import { AuthStatus } from './AuthStatus';
 
 interface AppShellProps {
   children: ReactNode;
@@ -21,9 +22,20 @@ export function AppShell({ children, kidsMode }: AppShellProps) {
 
   return (
     <div className={`min-h-screen flex flex-col ${kidsMode ? 'kids-mode' : ''}`}>
-      <main className="flex-1 pb-20 max-w-lg mx-auto w-full">
+      <header className="absolute top-0 w-full flex justify-end p-4 z-50">
+         <AuthStatus />
+      </header>
+      <main className="flex-1 pb-20 max-w-lg mx-auto w-full pt-6">
         {children}
       </main>
+      <footer className="px-4 pb-24 pt-6 text-center text-xs text-muted-foreground">
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <Link to="/legal/privacy" className="hover:text-foreground">Privacy</Link>
+          <Link to="/legal/terms" className="hover:text-foreground">Terms</Link>
+          <Link to="/legal/acceptable-use" className="hover:text-foreground">AUP</Link>
+          <Link to="/legal/disclaimer" className="hover:text-foreground">AI Disclaimer</Link>
+        </div>
+      </footer>
       <nav className="fixed bottom-0 inset-x-0 bg-card/95 backdrop-blur-md border-t border-border z-50">
         <div className="max-w-lg mx-auto flex justify-around py-2">
           {navItems.map(item => {
@@ -43,15 +55,6 @@ export function AppShell({ children, kidsMode }: AppShellProps) {
           })}
         </div>
       </nav>
-      {/* Global Footer */}
-      <footer className="text-center text-xs text-muted-foreground pb-24 pt-4 border-t bg-card">
-        <div className="space-x-4 mb-2">
-          <button onClick={() => navigate("/legal/privacy")} className="hover:text-primary">Privacy Policy</button>
-          <button onClick={() => navigate("/legal/terms")} className="hover:text-primary">Terms of Service</button>
-          <button onClick={() => navigate("/legal/disclaimer")} className="hover:text-primary">AI Disclaimer</button>
-        </div>
-        <p>© {new Date().getFullYear()} APEX Business Systems LTD.</p>
-      </footer>
     </div>
   );
 }

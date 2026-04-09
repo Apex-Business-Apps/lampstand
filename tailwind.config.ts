@@ -12,10 +12,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ["var(--font-display)"],
-        sans: ["var(--font-ui)"],
-        body: ["var(--font-body)"],
-        display: ["var(--font-display)"],
+        serif: ["var(--font-serif)"],
+        sans: ["var(--font-sans)"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -89,5 +87,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [], // require("tailwindcss-animate") disabled to pass strict linting
 } satisfies Config;

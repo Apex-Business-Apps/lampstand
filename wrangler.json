@@ -1,0 +1,12 @@
+{
+  "name": "lampstand",
+  "main": "src/workers/static-spa.ts",
+  "compatibility_date": "2026-04-09",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

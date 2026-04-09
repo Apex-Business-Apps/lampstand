@@ -10,7 +10,8 @@ describe('Cloudflare Deployment Config', () => {
 
   it('should have wrangler.jsonc configured for static pages', () => {
     const content = fs.readFileSync(path.resolve(__dirname, '../../wrangler.jsonc'), 'utf-8');
-    expect(content).toContain('pages_build_output_dir');
-    expect(content).toContain('"dist"');
+    expect(content).toContain('assets');
+    expect(content).toContain('"directory"');
+    expect(content).toContain('"./dist"');
   });
 });
