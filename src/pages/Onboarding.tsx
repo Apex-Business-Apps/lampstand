@@ -116,6 +116,15 @@ export default function Onboarding() {
             </div>
           </div>
 
+          {/* Voice */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Companion voice</label>
+            <div className="flex flex-wrap gap-2">
+              <Chip selected={voiceGender === 'male'} onClick={() => setVoiceGender('male')}>Male (George)</Chip>
+              <Chip selected={voiceGender === 'female'} onClick={() => setVoiceGender('female')}>Female (Matilda)</Chip>
+            </div>
+          </div>
+
           <Button onClick={finish} className="w-full gap-2 mt-2">
             Enter LampStand <ArrowRight className="h-4 w-4" />
           </Button>
