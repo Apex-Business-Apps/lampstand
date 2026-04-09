@@ -109,7 +109,7 @@ export async function syncJournalToCloud(userId: string): Promise<void> {
     user_id: userId,
     content: e.content,
     mood: e.mood || null,
-    related_passage: e.relatedPassage ? (e.relatedPassage as unknown as Record<string, unknown>) : null,
+    related_passage: e.relatedPassage ? (JSON.parse(JSON.stringify(e.relatedPassage)) as Json) : null,
   }));
 
   const { error } = await supabase.from('journal_entries').upsert(rows, { onConflict: 'id', ignoreDuplicates: true });
