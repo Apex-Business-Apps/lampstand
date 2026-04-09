@@ -81,6 +81,10 @@ export class ElevenLabsTTSAdapter {
       const audioUrl = URL.createObjectURL(audioBlob);
 
       this.audio = new Audio(audioUrl);
+
+      // Attach audio analyzer for visualizations
+      try { audioAnalyzer.attach(this.audio); } catch { /* ok */ }
+
       this.audio.onplay = () => this.onStateChange?.('speaking');
       this.audio.onended = () => {
         this.onStateChange?.('idle');
