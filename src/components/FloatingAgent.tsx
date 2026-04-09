@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { AgentPresence } from './AgentPresence';
+import { FullscreenAgent } from './FullscreenAgent';
 import { Button } from './ui/button';
-import { Mic, MicOff, Volume2, VolumeX, X, MessageCircle } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, X, MessageCircle, Maximize2 } from 'lucide-react';
 import { sttAdapter, ttsAdapter } from '@/lib/voice';
 import { getProfile } from '@/lib/storage';
 import { cn } from '@/lib/utils';
@@ -10,6 +11,7 @@ import type { VoiceGender } from '@/lib/voice';
 
 export function FloatingAgent() {
   const [expanded, setExpanded] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
   const [agentMode, setAgentMode] = useState<AgentMode>('idle');
   const [isListening, setIsListening] = useState(false);
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(true);
@@ -62,6 +64,11 @@ export function FloatingAgent() {
       ttsAdapter.speak(lastText, voiceGender);
     }
   }, [agentMode, lastText, isSpeechEnabled, voiceGender]);
+
+  // Fullscreen mode
+  if (fullscreen) {
+    return <FullscreenAgent onClose={() => setFullscreen(false)} />;
+  }
 
   if (!expanded) {
     return (
@@ -130,6 +137,15 @@ export function FloatingAgent() {
           title="Open Guidance"
         >
           <MessageCircle className="h-3.5 w-3.5" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-8 w-8"
+          onClick={() => setFullscreen(true)}
+          title="Fullscreen agent"
+        >
+          <Maximize2 className="h-3.5 w-3.5" />
         </Button>
       </div>
 
