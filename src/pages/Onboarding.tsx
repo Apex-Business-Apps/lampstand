@@ -14,6 +14,7 @@ export default function Onboarding() {
   const [tone, setTone] = useState<ToneStyle>('balanced');
   const [faith, setFaith] = useState<FaithFamiliarity>('familiar');
   const [readingPref, setReadingPref] = useState<ReadingPreference>('balanced');
+  const [voiceGender, setVoiceGender] = useState<VoiceGender>('male');
 
   function finish() {
     const profile: UserProfile = {
