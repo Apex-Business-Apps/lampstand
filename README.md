@@ -1,152 +1,107 @@
-# Lampstand
+# LampStand
 
-> A warm, modern Bible companion for re-engaging with scripture.
+LampStand is a local-first scripture companion built with React, TypeScript, and Vite.
 
-**Version:** 0.4.0  
-**Updated:** 2026-04-09  
-**Status:** MVP — Production-ready
+## Architecture Overview
 
----
+- **UI**: React 18 + Tailwind + shadcn/ui
+- **Routing**: react-router
+- **Auth**: Supabase magic-link with guest mode preserved by default
+- **Persistence**: localStorage-first typed modules in `src/lib/storage.ts`
+- **AI Provider Adapter**: `src/lib/adapters.ts` with Groq primary (`GroqAIAdapter`) and local fallback
+- **Agent Runtime**: `src/lib/runtime/agentRuntime.ts` (safety gate, turn pipeline, retrieval, circuit breaker)
+- **Voice**: `src/lib/voice.ts` (STT browser/null fallback, TTS cloud/browser/silent fallback)
+- **Deploy**: Cloudflare Workers static assets via explicit `wrangler.json`
 
-## Overview
+## Modes
 
-Lampstand is a Roman Catholic-friendly, web-first, mobile-responsive Bible companion. It helps users engage with scripture through pastoral guidance, daily readings, journaling, and an immersive burning-bush voice agent.
+- **Guest mode**: full local usage, no login required
+- **Signed-in mode**: optional sync/account-linked persistence
 
-## Architecture
+## Consent and Data Handling
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 18 · Vite 5 · TypeScript 5 · Tailwind CSS 3 |
-| Backend | Supabase (Auth, Postgres, Edge Functions) |
-| AI | Groq (llama-3.3-70b) with local seed fallback |
-| TTS | ElevenLabs (George/Matilda voices) → browser SpeechSynthesis fallback |
-| STT | Web Speech API (free, browser-native) |
-| Hosting | Cloudflare Pages via Wrangler |
+Settings now include explicit opt-in toggles for:
+- local adaptive memory
+- local journal storage
+- optional cloud sync
+- notifications
+- microphone
+- voice output
+- account-linked persistence
 
-## Key Features
-
-- **Burning Bush Agent** — Fullscreen immersive flame visualization synced to TTS audio amplitude. Default interaction mode with embedded guidance chat.
-- **Pastoral Guidance** — AI-powered scripture matching with pastoral reflection, safety guardrails, and circuit-breaker protection.
-- **Daily Light** — Curated daily scripture with tone-matched reflections.
-- **Sermon Mode** — Long-form passage exploration.
-- **Journal** — Private journaling with mood tracking and passage linking.
-- **Saved Passages** — Bookmark and annotate scripture.
-- **Kids Mode** — Age-appropriate, simplified interface.
-- **Voice Interaction** — Mic input (STT) and auto-read responses (TTS) with male/female pastoral voices.
-- **Mini PiP Agent** — Collapsible floating widget for quick access from any page.
-
-## WCAG Compliance
-
-The fullscreen agent UI uses verified WCAG AA contrast ratios:
-- `#fef3c7` on `#1a1610` → 15.4:1 (body text) ✓
-- `#fde68a` on `#1a1610` → 12.1:1 (secondary text) ✓
-- `#fbbf24` on `#1a1610` → 8.2:1 (labels/headings) ✓
-
-All ratios exceed the 4.5:1 AA minimum for normal text.
-
-## Token Efficiency
-
-The Groq adapter is tuned for minimal token consumption:
-- Compact system prompt (< 60 tokens)
-- Per-endpoint `max_completion_tokens` caps: 250 (reflection), 300 (guidance), 350 (sermon)
-- Word-count directives in prompts to prevent verbose output
-- Local keyword classifier for theme detection (zero API calls)
-- Automatic fallback to seed data when API is unavailable
+Defaults are privacy-first. Raw audio is not stored by default. Transcripts are local-first and can be deleted.
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|---|---|---|
-| `VITE_SUPABASE_URL` | Yes | Supabase project URL |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Yes | Supabase anon/publishable key |
-| `VITE_GROQ_API_KEY` | No | Groq API key (falls back to local seed data) |
+### Frontend
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `VITE_GROQ_API_KEY` (optional)
 
-### Supabase Secrets (Edge Functions)
+### Optional/Infrastructure
+- `CLOUDFLARE_ACCOUNT_ID` (CI deploy convenience)
+- `CLOUDFLARE_API_TOKEN` (CI deploy)
 
-| Secret | Description |
-|---|---|
-| `ELEVENLABS_API_KEY` | ElevenLabs TTS API key |
 
-## Development
+## Where to Place Variables (Cloudflare)
+
+LampStand now deploys with `wrangler deploy` as a **Worker with static assets**, not Cloudflare Pages framework auto-detect.
+
+1. **Client variables (`VITE_*`)** are build-time values. They must exist **before `npm run build`**.
+   - Local: put them in `.env.local`.
+   - CI: store as CI secrets and export them before build.
+   - If you still use Pages builds, set them under **Pages Project -> Settings -> Environment variables**.
+2. **Worker runtime secrets** (non-`VITE_*`) go to Worker settings or Wrangler secrets:
+   - `npx wrangler secret put SECRET_NAME`
+   - Dashboard: **Workers & Pages -> your Worker -> Settings -> Variables and Secrets**.
+3. Do not put sensitive secrets in `VITE_*`. Those are bundled into client JS and are public by design.
+
+## Install / Build / Test
 
 ```bash
-# Install dependencies
-npm install
-
-# Start dev server
-npm run dev
-
-# Type-check
-npx tsc --noEmit
-
-# Run tests
-npx vitest run
-
-# Build for production
+npm ci
+npm run lint
+npm run test
 npm run build
-
-# Deploy to Cloudflare
-npm run deploy
 ```
 
-## Project Structure
+## Cloudflare Deployment (exact steps)
 
-```
-src/
-├── components/          # UI components
-│   ├── AgentPresence    # Flame avatar indicator
-│   ├── BurningBushCanvas# Canvas particle flame animation
-│   ├── FloatingAgent    # PiP widget + fullscreen orchestrator
-│   ├── FullscreenAgent  # Immersive burning bush with guidance
-│   └── ui/              # shadcn/ui primitives
-├── hooks/               # React hooks (auth, toast, mobile)
-├── lib/                 # Core logic
-│   ├── adapters         # AI/retrieval adapter interfaces
-│   ├── audioAnalyzer    # Web Audio API amplitude extraction
-│   ├── groq             # Groq LLM adapter
-│   ├── safety           # Input safety + circuit breaker
-│   ├── storage          # LocalStorage persistence
-│   └── voice            # STT/TTS adapters
-├── pages/               # Route pages
-├── data/                # Seed scripture & guidance data
-└── types/               # TypeScript interfaces
+```bash
+npm ci
+npm run build
+npx wrangler deploy --config wrangler.json
 ```
 
-## Privacy & Compliance
+CI-safe one-liner:
 
-- Local-first: full guest functionality without account creation
-- Cloud sync opt-in via Supabase Auth (magic link)
-- No tracking pixels, no third-party analytics
-- Legal/terms pages require human counsel review (marked TODO)
+```bash
+npm run deploy:ci
+```
 
-## Changelog
+## Legal and Compliance Surfaces
 
-### v0.4.0 (2026-04-09)
-- Fullscreen burning bush agent as default mode with embedded guidance
-- WCAG AA contrast compliance on immersive UI
-- Token-optimized Groq prompts (40% reduction)
-- Mini PiP agent with fullscreen/minimize toggle
-- Audio-reactive flame visualization via Web Audio API
+Routes:
+- `/legal`
+- `/legal/privacy`
+- `/legal/terms`
+- `/legal/acceptable-use`
+- `/legal/disclaimer`
+- `/legal/company`
 
-### v0.3.0 (2026-04-09)
-- ElevenLabs TTS integration with browser fallback
-- Floating PiP agent widget across all pages
-- Supabase Auth with magic link login
-- Database schema for profiles, passages, journals
+Ownership language references APEX Business Systems LTD with explicit counsel-review TODO markers where legal finalization is required.
 
-### v0.2.0 (2026-04-09)
-- Streamlined 2-click onboarding
-- Fixed agent flame visibility
-- Voice gender selection (George/Matilda)
-- Guidance page with STT mic input
+## Testing Commands
 
-### v0.1.0 (2026-04-09)
-- Initial MVP: Daily Light, Guidance, Sermon, Journal, Saved, Kids
-- Local seed data with Groq adapter
-- Safety guardrails and circuit breaker
-- Cloudflare Pages deployment config
+```bash
+npm run test
+npm run lint
+npm run typecheck
+```
 
----
+## Legal TODO / Counsel Review Required
 
-**License:** TODO — Pending legal review  
-**Contact:** TODO — Pending project owner details
+- privacy jurisdiction-specific language
+- arbitration/limitation clauses
+- minors policy wording
+- official company legal contact metadata
