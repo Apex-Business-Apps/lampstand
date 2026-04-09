@@ -62,9 +62,10 @@
     --sidebar-border: 36 20% 88%;
     --sidebar-ring: 36 70% 50%;
 
-    --font-display: 'Cormorant Garamond', Georgia, serif;
-    --font-body: 'EB Garamond', Georgia, serif;
-    --font-sans: 'Inter', system-ui, sans-serif;
+    --font-display: "Cormorant Garamond", "Times New Roman", serif;
+    --font-body: "EB Garamond", Georgia, serif;
+    --font-ui: Inter, ui-sans-serif, system-ui, sans-serif;
+    --font-sans: var(--font-ui);
   }
 
   .dark {

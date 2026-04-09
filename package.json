@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "deploy": "vite build && wrangler pages deploy dist"
+    "deploy": "npm run build && wrangler deploy --config wrangler.json",
+    "typecheck": "tsc --noEmit",
+    "deploy:ci": "npm ci && npm run deploy"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -90,5 +92,6 @@
     "vite": "^6.3.5",
     "vitest": "^3.2.4",
     "wrangler": "^4.81.0"
-  }
+  },
+  "packageManager": "npm@10.9.2"
 }
