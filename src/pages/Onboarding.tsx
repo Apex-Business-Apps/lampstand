@@ -32,7 +32,7 @@ export default function Onboarding() {
       createdAt: new Date().toISOString(),
     };
     saveProfile(profile);
-    navigate('/');
+    navigate('/app');
   }
 
   const Chip = ({ selected, onClick, children }: { selected: boolean; onClick: () => void; children: React.ReactNode }) => (

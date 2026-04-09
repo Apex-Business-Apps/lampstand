@@ -8,6 +8,9 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { FloatingAgent } from "@/components/FloatingAgent";
 
 // Lazy-load all pages for optimal code splitting
+const EntryPage = lazy(() => import("./pages/EntryPage"));
+const MarketingPage = lazy(() => import("./pages/MarketingPage"));
+const LiteLandingPage = lazy(() => import("./pages/LiteLandingPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
 const Onboarding = lazy(() => import("./pages/Onboarding"));
 const DailyLightPage = lazy(() => import("./pages/DailyLightPage"));
@@ -47,7 +50,10 @@ const App = () => (
         <BrowserRouter>
           <Suspense fallback={<PageFallback />}>
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<EntryPage />} />
+              <Route path="/welcome" element={<MarketingPage />} />
+              <Route path="/lite" element={<LiteLandingPage />} />
+              <Route path="/app" element={<HomePage />} />
               <Route path="/onboarding" element={<Onboarding />} />
               <Route path="/daily" element={<DailyLightPage />} />
               <Route path="/sermon" element={<SermonPage />} />

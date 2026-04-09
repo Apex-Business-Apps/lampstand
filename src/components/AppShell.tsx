@@ -1,4 +1,4 @@
-import { Home, Sun, BookOpen, MessageCircle, User, Sparkles } from 'lucide-react';
+import { Home, Sun, BookOpen, MessageCircle, User } from 'lucide-react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { AuthStatus } from './AuthStatus';
@@ -9,7 +9,7 @@ interface AppShellProps {
 }
 
 const navItems = [
-  { path: '/', icon: Home, label: 'Home' },
+  { path: '/app', icon: Home, label: 'Home' },
   { path: '/daily', icon: Sun, label: 'Daily Light' },
   { path: '/guidance', icon: MessageCircle, label: 'Guidance' },
   { path: '/saved', icon: BookOpen, label: 'Saved' },
