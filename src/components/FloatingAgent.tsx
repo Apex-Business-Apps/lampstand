@@ -9,9 +9,10 @@ import { cn } from '@/lib/utils';
 import type { AgentMode } from './AgentPresence';
 import type { VoiceGender } from '@/lib/voice';
 
+type ViewMode = 'fullscreen' | 'mini-collapsed' | 'mini-expanded';
+
 export function FloatingAgent() {
-  const [expanded, setExpanded] = useState(false);
-  const [fullscreen, setFullscreen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>('fullscreen');
   const [agentMode, setAgentMode] = useState<AgentMode>('idle');
   const [isListening, setIsListening] = useState(false);
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(true);
@@ -51,9 +52,7 @@ export function FloatingAgent() {
   }, [isListening]);
 
   const toggleSpeech = useCallback(() => {
-    if (agentMode === 'speaking') {
-      ttsAdapter.stop();
-    }
+    if (agentMode === 'speaking') ttsAdapter.stop();
     setIsSpeechEnabled(prev => !prev);
   }, [agentMode]);
 
@@ -65,15 +64,16 @@ export function FloatingAgent() {
     }
   }, [agentMode, lastText, isSpeechEnabled, voiceGender]);
 
-  // Fullscreen mode
-  if (fullscreen) {
-    return <FullscreenAgent onClose={() => setFullscreen(false)} />;
+  // Fullscreen mode (default)
+  if (viewMode === 'fullscreen') {
+    return <FullscreenAgent onMinimize={() => setViewMode('mini-collapsed')} />;
   }
 
-  if (!expanded) {
+  // Mini collapsed — small flame button
+  if (viewMode === 'mini-collapsed') {
     return (
       <button
-        onClick={() => setExpanded(true)}
+        onClick={() => setViewMode('mini-expanded')}
         className={cn(
           'fixed bottom-20 right-4 z-[60] rounded-full shadow-lg',
           'bg-card/95 backdrop-blur-md border border-border',
@@ -87,6 +87,7 @@ export function FloatingAgent() {
     );
   }
 
+  // Mini expanded — widget with controls
   return (
     <div className={cn(
       'fixed bottom-20 right-4 z-[60]',
@@ -97,9 +98,21 @@ export function FloatingAgent() {
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <span className="text-xs font-medium text-muted-foreground">Companion</span>
-        <button onClick={() => setExpanded(false)} className="text-muted-foreground hover:text-foreground">
-          <X className="h-3.5 w-3.5" />
-        </button>
+        <div className="flex gap-1">
+          <button
+            onClick={() => setViewMode('fullscreen')}
+            className="text-muted-foreground hover:text-foreground p-0.5"
+            title="Fullscreen mode"
+          >
+            <Maximize2 className="h-3 w-3" />
+          </button>
+          <button
+            onClick={() => setViewMode('mini-collapsed')}
+            className="text-muted-foreground hover:text-foreground p-0.5"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
       </div>
 
       {/* Agent */}
@@ -133,16 +146,7 @@ export function FloatingAgent() {
           variant="outline"
           size="icon"
           className="h-8 w-8"
-          onClick={() => { setExpanded(false); window.location.href = '/guidance'; }}
-          title="Open Guidance"
-        >
-          <MessageCircle className="h-3.5 w-3.5" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-8 w-8"
-          onClick={() => setFullscreen(true)}
+          onClick={() => setViewMode('fullscreen')}
           title="Fullscreen agent"
         >
           <Maximize2 className="h-3.5 w-3.5" />
