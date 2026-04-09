@@ -1,3 +1,4 @@
+// Tailwind config - merged with main branch typography and animation plugins
 import tailwindcssAnimate from "tailwindcss-animate";
 import type { Config } from "tailwindcss";
 
