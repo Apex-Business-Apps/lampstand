@@ -1,3 +1,4 @@
+// AuthPage - sign in with magic link, Google, or guest mode
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/AppShell';
