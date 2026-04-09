@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AgentPresence } from '@/components/AgentPresence';
 import { saveProfile } from '@/lib/storage';
-import type { UserProfile, ToneStyle, FaithFamiliarity, ReadingPreference } from '@/types';
+import type { UserProfile, ToneStyle, FaithFamiliarity, ReadingPreference, VoiceGender } from '@/types';
 import { ArrowRight } from 'lucide-react';
 
 export default function Onboarding() {
