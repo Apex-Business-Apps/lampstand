@@ -138,6 +138,15 @@ export function FloatingAgent() {
         >
           <MessageCircle className="h-3.5 w-3.5" />
         </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          className="h-8 w-8"
+          onClick={() => setFullscreen(true)}
+          title="Fullscreen agent"
+        >
+          <Maximize2 className="h-3.5 w-3.5" />
+        </Button>
       </div>
 
       {/* Status */}
