@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { audioAnalyzer } from '@/lib/audioAnalyzer';
+import { getConsentState, getVoicePreferences, pushVoiceTranscript } from '@/lib/storage';
 
 export type VoiceGender = 'male' | 'female';
 
@@ -30,9 +31,7 @@ class BrowserSpeechToTextAdapter implements SpeechToTextPort {
     }
   }
 
-  isSupported() {
-    return this.recognition !== null;
-  }
+  isSupported() { return this.recognition !== null; }
 
   async startListening(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -46,7 +45,6 @@ class BrowserSpeechToTextAdapter implements SpeechToTextPort {
   stopListening() {
     this.recognition?.stop();
   }
-}
 
 class NullSpeechToTextAdapter implements SpeechToTextPort {
   isSupported() { return false; }
@@ -102,6 +100,10 @@ class CloudTextToSpeechAdapter implements TextToSpeechPort {
     this.audio.onended = () => { URL.revokeObjectURL(audioUrl); onEnd?.(); };
     this.audio.onerror = () => { URL.revokeObjectURL(audioUrl); onEnd?.(); };
     await this.audio.play();
+  }
+
+  replay(voice: VoiceGender = 'male', onEnd?: () => void) {
+    if (this.lastText) this.speak(this.lastText, voice, onEnd);
   }
 
   stop() {

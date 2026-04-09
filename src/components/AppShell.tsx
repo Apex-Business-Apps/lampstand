@@ -1,5 +1,5 @@
 import { Home, Sun, BookOpen, MessageCircle, User, Sparkles } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { AuthStatus } from './AuthStatus';
 

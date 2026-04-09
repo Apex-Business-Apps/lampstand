@@ -18,6 +18,7 @@ import AdminPage from "./pages/AdminPage";
 import AuthPage from "./pages/AuthPage";
 import LegalDocumentsPage from "./pages/legalDocuments";
 import NotFound from "./pages/NotFound";
+import ReturnPage from "./pages/ReturnPage";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/saved" element={<SavedPage />} />
             <Route path="/journal" element={<JournalPage />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/return" element={<ReturnPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/legal" element={<LegalDocumentsPage />} />

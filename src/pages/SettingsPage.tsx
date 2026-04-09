@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData } from '@/lib/storage';
+import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData, getConsentState, saveConsentState, getVoicePreferences, saveVoicePreferences, clearVoiceHistory, saveSyncState } from '@/lib/storage';
 import type { UserProfile, ToneStyle, ReadingPreference } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Trash2, RotateCcw } from 'lucide-react';
@@ -167,6 +167,31 @@ export default function SettingsPage() {
         </Section>
 
 
+
+
+        <Section title="Consent & Permissions">
+          <ConsentToggle label="Local adaptive memory" value={consent.localAdaptiveMemory} onChange={(v) => { const next = { ...consent, localAdaptiveMemory: v }; setConsent(next); saveConsentState({ localAdaptiveMemory: v }); }} />
+          <ConsentToggle label="Local journal storage" value={consent.localJournalStorage} onChange={(v) => { const next = { ...consent, localJournalStorage: v }; setConsent(next); saveConsentState({ localJournalStorage: v }); }} />
+          <ConsentToggle label="Optional cloud sync" value={consent.optionalCloudSync} onChange={(v) => { const next = { ...consent, optionalCloudSync: v, accountLinkedPersistence: v }; setConsent(next); saveConsentState({ optionalCloudSync: v, accountLinkedPersistence: v }); saveSyncState({ enabled: v, provider: v ? 'supabase' : 'none' }); }} />
+          <ConsentToggle label="Notifications" value={consent.notifications} onChange={(v) => { const next = { ...consent, notifications: v }; setConsent(next); saveConsentState({ notifications: v }); }} />
+          <ConsentToggle label="Microphone" value={consent.microphone} onChange={(v) => { const next = { ...consent, microphone: v }; setConsent(next); saveConsentState({ microphone: v }); }} />
+          <ConsentToggle label="Voice output" value={consent.voiceOutput} onChange={(v) => { const next = { ...consent, voiceOutput: v }; setConsent(next); saveConsentState({ voiceOutput: v }); const voice = { ...voicePrefs, enabled: v && voicePrefs.enabled }; setVoicePrefs(voice); saveVoicePreferences(voice); }} />
+
+          <Field label="Voice behavior">
+            <div className="space-y-2">
+              <ConsentToggle label="Enable voice playback" value={voicePrefs.enabled} onChange={(v) => { const next = { ...voicePrefs, enabled: v }; setVoicePrefs(next); saveVoicePreferences({ enabled: v }); }} />
+              <ConsentToggle label="Mute voice" value={voicePrefs.muted} onChange={(v) => { const next = { ...voicePrefs, muted: v }; setVoicePrefs(next); saveVoicePreferences({ muted: v }); }} />
+              <ConsentToggle label="Allow voice in kids mode" value={voicePrefs.allowKidsModeVoice} onChange={(v) => { const next = { ...voicePrefs, allowKidsModeVoice: v }; setVoicePrefs(next); saveVoicePreferences({ allowKidsModeVoice: v }); }} />
+              <div className="space-y-1">
+                <label className="text-xs text-muted-foreground">Speech speed ({voicePrefs.speed.toFixed(1)}x)</label>
+                <input type="range" min={0.75} max={1.25} step={0.05} value={voicePrefs.speed} onChange={(e) => { const speed = Number(e.target.value); const next = { ...voicePrefs, speed }; setVoicePrefs(next); saveVoicePreferences({ speed }); }} className="w-full" />
+              </div>
+            </div>
+          </Field>
+
+          <Button variant="outline" size="sm" className="w-full" onClick={clearVoiceHistory}>Delete Voice Transcript History</Button>
+        </Section>
+
         <Section title="Privacy & Data">
           <button onClick={() => setShowPrivacy(!showPrivacy)} className="flex items-center gap-2 text-sm text-primary">
             <Shield className="h-4 w-4" /> Your data stays on your device
@@ -216,6 +241,18 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     <div className="space-y-2">
       <label className="text-sm font-medium text-muted-foreground">{label}</label>
       {children}
+    </div>
+  );
+}
+
+
+function ConsentToggle({ label, value, onChange }: { label: string; value: boolean; onChange: (next: boolean) => void }) {
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
+      <span className="text-sm">{label}</span>
+      <button onClick={() => onChange(!value)} className={`px-3 py-1 rounded-md text-xs border ${value ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'}`}>
+        {value ? 'Opted in' : 'Opted out'}
+      </button>
     </div>
   );
 }
