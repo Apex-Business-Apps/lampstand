@@ -35,9 +35,7 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
     }
   }
 
-  isSupported() {
-    return this.recognition !== null;
-  }
+  isSupported() { return this.recognition !== null; }
 
   async startListening(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -68,7 +66,6 @@ class NullSpeechToTextProvider implements SpeechToTextProvider {
   stopListening() {
     // Explicit no-op fallback.
   }
-}
 
 export class SpeechToTextAdapter {
   private providers: SpeechToTextProvider[] = [new BrowserSpeechToTextProvider(), new NullSpeechToTextProvider()];
