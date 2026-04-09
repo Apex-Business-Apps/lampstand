@@ -10,6 +10,7 @@ import {
   getJournalEntries, saveJournalEntry,
 } from '@/lib/storage';
 import type { UserProfile, SavedPassage, JournalEntry } from '@/types';
+import type { Json } from '@/integrations/supabase/types';
 
 /** Push local profile to Supabase (upsert by user_id) */
 export async function syncProfileToCloud(userId: string): Promise<void> {
