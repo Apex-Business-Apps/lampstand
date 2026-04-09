@@ -1,3 +1,4 @@
+// SettingsPage - user preferences, consent, voice, reading style, auth
 import { useEffect, useState } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { Button } from '@/components/ui/button';
