@@ -4,19 +4,14 @@ import { LocalAIAdapter } from './adapters';
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 const MODEL = 'llama-3.3-70b-versatile';
 
-// Rules to enforce on ALL generation
-const BASE_SYSTEM_PROMPT = `You are LampStand, a thoughtful, human, pastor-companion.
-CRITICAL RULES:
-1. NEVER use em dashes. Use regular dashes, commas, or semicolons.
-2. Avoid AI-sounding validation, filler, and customer-support language (e.g. "Absolutely", "Certainly", "Let's", "I hear you", "That's a great question").
-3. Do NOT act like a therapist or use motivational fluff.
-4. Be calm, reverent, restrained, and plain English.
-5. Separate scripture from reflection.`;
+// Compact system prompt — optimised for minimal token overhead
+const SYS = `You are LampStand, a calm pastoral companion.
+Rules: no em dashes; no filler ("Absolutely","I hear you"); no therapy-speak; plain English; separate scripture from reflection; be brief.`;
 
 export class GroqAIAdapter implements IAIAdapter {
   private fallback = new LocalAIAdapter();
 
-  async fetchGroq(messages: {role: string, content: string}[], isJson = false) {
+  private async ask(messages: {role: string, content: string}[], json = false, maxTokens = 400) {
     if (!GROQ_API_KEY) throw new Error("Missing GROQ_API_KEY");
 
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -28,52 +23,44 @@ export class GroqAIAdapter implements IAIAdapter {
       body: JSON.stringify({
         model: MODEL,
         messages,
-        response_format: isJson ? { type: "json_object" } : { type: "text" },
-        temperature: 0.6,
-        max_completion_tokens: 800,
+        response_format: json ? { type: "json_object" } : { type: "text" },
+        temperature: 0.5,
+        max_completion_tokens: maxTokens,
       })
     });
 
-    if (!res.ok) {
-      throw new Error(`Groq API error: ${res.status}`);
-    }
-
+    if (!res.ok) throw new Error(`Groq ${res.status}`);
     const data = await res.json();
     return data.choices[0].message.content;
   }
 
   async generateReflection(passage: ScripturePassage, tone: ToneStyle): Promise<string> {
     try {
-      const content = await this.fetchGroq([
-        { role: 'system', content: BASE_SYSTEM_PROMPT },
-        { role: 'user', content: `Write a short reflection for the passage ${passage.reference}: "${passage.text}". The tone should be ${tone}. Keep it under 3 paragraphs.` }
-      ]);
-      return content || await this.fallback.generateReflection(passage, tone);
-    } catch (err) {
-      console.warn("Groq failed, falling back", err);
+      return await this.ask([
+        { role: 'system', content: SYS },
+        { role: 'user', content: `Reflect on ${passage.reference}: "${passage.text}". Tone: ${tone}. Max 2 short paragraphs.` }
+      ], false, 250) || await this.fallback.generateReflection(passage, tone);
+    } catch (e) {
+      console.warn("Groq fallback", e);
       return this.fallback.generateReflection(passage, tone);
     }
   }
 
   async generateSermon(passage: ScripturePassage, tone: ToneStyle): Promise<Sermon> {
     try {
-      const content = await this.fetchGroq([
-        { role: 'system', content: BASE_SYSTEM_PROMPT + "\nYou must respond in JSON with the exact following keys: title (string), reflection (string), relevance (string), prayer (string)." },
-        { role: 'user', content: `Generate a sermon mode reflection for the passage ${passage.reference}: "${passage.text}". The tone should be ${tone}.` }
-      ], true);
+      const raw = await this.ask([
+        { role: 'system', content: SYS + '\nJSON keys: title, reflection, relevance, prayer. Keep each under 80 words.' },
+        { role: 'user', content: `Sermon reflection for ${passage.reference}: "${passage.text}". Tone: ${tone}.` }
+      ], true, 350);
 
-      const parsed = JSON.parse(content);
+      const p = JSON.parse(raw);
       return {
-        id: crypto.randomUUID(),
-        title: parsed.title || `Reflections on ${passage.reference}`,
-        passage,
-        reflection: parsed.reflection || await this.fallback.generateReflection(passage, tone),
-        relevance: parsed.relevance || 'A timely word.',
-        prayer: parsed.prayer || 'Amen.',
-        createdAt: new Date().toISOString()
+        id: crypto.randomUUID(), title: p.title || `On ${passage.reference}`,
+        passage, reflection: p.reflection || '', relevance: p.relevance || '',
+        prayer: p.prayer || 'Amen.', createdAt: new Date().toISOString()
       };
-    } catch (err) {
-      console.warn("Groq failed, falling back", err);
+    } catch (e) {
+      console.warn("Groq fallback", e);
       return this.fallback.generateSermon(passage, tone);
     }
   }
@@ -81,30 +68,23 @@ export class GroqAIAdapter implements IAIAdapter {
   async generateGuidance(concern: string, tone: ToneStyle): Promise<GuidanceResult> {
     try {
       const themes = await this.classifyConcern(concern);
-      const primaryTheme = themes[0] || 'peace';
+      const raw = await this.ask([
+        { role: 'system', content: SYS + '\nJSON keys: pastoralFraming (max 60 words), reflectionQuestions (max 2, each under 15 words), prayer (max 40 words).' },
+        { role: 'user', content: `Guidance for: "${concern}". Tone: ${tone}.` }
+      ], true, 300);
 
-      const content = await this.fetchGroq([
-        { role: 'system', content: BASE_SYSTEM_PROMPT + "\nYou must respond in JSON with the exact following keys: pastoralFraming (string), reflectionQuestions (array of strings, max 2), prayer (string)." },
-        { role: 'user', content: `The user is seeking guidance about: "${concern}". The tone should be ${tone}. Generate a pastoral response. Do NOT include a passage, just the pastoral framing.` }
-      ], true);
-
-      const parsed = JSON.parse(content);
-
-      // Get fallback to steal a passage
-      const fallbackData = await this.fallback.generateGuidance(concern, tone);
+      const p = JSON.parse(raw);
+      const fb = await this.fallback.generateGuidance(concern, tone);
 
       return {
-        id: crypto.randomUUID(),
-        concern,
-        themes,
-        passage: fallbackData.passage,
-        pastoralFraming: parsed.pastoralFraming || fallbackData.pastoralFraming,
-        reflectionQuestions: parsed.reflectionQuestions || fallbackData.reflectionQuestions,
-        prayer: parsed.prayer,
-        createdAt: new Date().toISOString()
+        id: crypto.randomUUID(), concern, themes,
+        passage: fb.passage,
+        pastoralFraming: p.pastoralFraming || fb.pastoralFraming,
+        reflectionQuestions: p.reflectionQuestions || fb.reflectionQuestions,
+        prayer: p.prayer, createdAt: new Date().toISOString()
       };
-    } catch (err) {
-      console.warn("Groq failed, falling back", err);
+    } catch (e) {
+      console.warn("Groq fallback", e);
       return this.fallback.generateGuidance(concern, tone);
     }
   }

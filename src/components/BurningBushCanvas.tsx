@@ -66,9 +66,9 @@ export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanv
       const h = canvas.clientHeight;
       const amp = intensityRef.current;
 
-      // Clear with fade trail
+      // Clear with fade trail — brighter base (#1a1610)
       ctx.globalCompositeOperation = 'source-over';
-      ctx.fillStyle = 'rgba(10, 8, 5, 0.15)';
+      ctx.fillStyle = 'rgba(26, 22, 16, 0.15)';
       ctx.fillRect(0, 0, w, h);
 
       // Spawn particles — more when speaking
