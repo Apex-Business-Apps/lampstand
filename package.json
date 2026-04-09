@@ -7,11 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings 0",
+    "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "deploy": "vite build && wrangler pages deploy dist"
+    "test:e2e": "playwright test",
+    "deploy": "npm run build && wrangler versions upload",
+    "deploy:ci": "npm run build && wrangler versions upload"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
