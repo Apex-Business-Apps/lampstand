@@ -25,6 +25,7 @@ export default function Onboarding() {
       preferredUses: ['daily'],
       kidsMode: false,
       readingPreference: readingPref,
+      voiceGender,
       notificationsEnabled: false,
       notificationTime: '07:00',
       onboardingComplete: true,
