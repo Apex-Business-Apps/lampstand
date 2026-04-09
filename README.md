@@ -99,8 +99,6 @@ npm run lint
 npm run typecheck
 ```
 
-## Legal TODO / Counsel Review Required
-
 - privacy jurisdiction-specific language
 - arbitration/limitation clauses
 - minors policy wording
