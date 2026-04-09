@@ -11,6 +11,7 @@ import type { VoiceGender } from '@/lib/voice';
 
 export function FloatingAgent() {
   const [expanded, setExpanded] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
   const [agentMode, setAgentMode] = useState<AgentMode>('idle');
   const [isListening, setIsListening] = useState(false);
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(true);
