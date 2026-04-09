@@ -1,0 +1,34 @@
+name: Merge main into PR branch
+
+on:
+  push:
+    branches:
+      - codex/perform-codebase-remediation-and-final-audit
+  workflow_dispatch:
+
+jobs:
+  merge-main:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/perform-codebase-remediation-and-final-audit
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+
+      - name: Merge main into branch
+        run: |
+          git fetch origin main
+          git merge origin/main --strategy-option=ours --no-edit || (
+            git checkout --ours .
+            git add .
+            git commit --no-edit
+          )
+          git push origin codex/perform-codebase-remediation-and-final-audit
