@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "deploy": "vite build && wrangler pages deploy dist",
     "deploy:cloudflare": "npm run build && wrangler pages deploy dist --project-name lampstand",
     "deploy:cloudflare:ci": "npm run build && wrangler pages deploy dist --project-name lampstand --commit-dirty=true"
   },
@@ -88,8 +89,8 @@
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
-    "vite": "^5.4.19",
+    "vite": "^6.3.5",
     "vitest": "^3.2.4",
-    "wrangler": "^4.39.0"
+    "wrangler": "^4.81.0"
   }
 }
