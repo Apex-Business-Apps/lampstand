@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/hooks/useAuth";
+import { FloatingAgent } from "@/components/FloatingAgent";
 import HomePage from "./pages/HomePage";
 import Onboarding from "./pages/Onboarding";
 import DailyLightPage from "./pages/DailyLightPage";
@@ -21,27 +23,30 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/daily" element={<DailyLightPage />} />
-          <Route path="/sermon" element={<SermonPage />} />
-          <Route path="/guidance" element={<GuidancePage />} />
-          <Route path="/kids" element={<KidsPage />} />
-          <Route path="/saved" element={<SavedPage />} />
-          <Route path="/journal" element={<JournalPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/legal" element={<LegalPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/daily" element={<DailyLightPage />} />
+            <Route path="/sermon" element={<SermonPage />} />
+            <Route path="/guidance" element={<GuidancePage />} />
+            <Route path="/kids" element={<KidsPage />} />
+            <Route path="/saved" element={<SavedPage />} />
+            <Route path="/journal" element={<JournalPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/legal" element={<LegalPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <FloatingAgent />
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
