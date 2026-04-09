@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { BurningBushCanvas } from './BurningBushCanvas';
+import { AgentPresence } from './AgentPresence';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { Mic, MicOff, Volume2, VolumeX, Minimize2, Send, AlertCircle, Bookmark } from 'lucide-react';
@@ -17,6 +18,12 @@ interface FullscreenAgentProps {
   onMinimize: () => void;
 }
 
+const quickPrompts = [
+  'I need peace right now',
+  'Help me process anxiety tonight',
+  'Give me a short prayer for strength',
+];
+
 export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
   const [agentMode, setAgentMode] = useState<AgentMode>('idle');
   const [isListening, setIsListening] = useState(false);
@@ -27,9 +34,9 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
   const [result, setResult] = useState<GuidanceResult | null>(null);
   const [safetyMessage, setSafetyMessage] = useState('');
   const [saved, setSaved] = useState(false);
-  const [showPanel, setShowPanel] = useState(false);
   const rafRef = useRef<number>(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const composerRef = useRef<HTMLTextAreaElement>(null);
 
   const profile = getProfile();
   const voiceGender: VoiceGender = profile?.voiceGender || 'male';
@@ -56,15 +63,16 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
       }
       rafRef.current = requestAnimationFrame(poll);
     };
+
     rafRef.current = requestAnimationFrame(poll);
     return () => cancelAnimationFrame(rafRef.current);
   }, [agentMode]);
 
   useEffect(() => {
-    if (result && scrollRef.current) {
+    if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [result]);
+  }, [result, safetyMessage]);
 
   const speakText = useCallback((text: string) => {
     if (!isSpeechEnabled) return;
@@ -76,40 +84,48 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
       sttAdapter.stopListening();
       setIsListening(false);
       setAgentMode('idle');
-    } else {
-      if (!sttAdapter.isSupported()) return;
-      try {
-        setIsListening(true);
-        setAgentMode('listening');
-        const text = await sttAdapter.startListening();
-        setInput(prev => (prev + ' ' + text).trim());
-        setIsListening(false);
-        setAgentMode('idle');
-      } catch {
-        setIsListening(false);
-        setAgentMode('error');
-        setTimeout(() => setAgentMode('idle'), 2000);
-      }
+      return;
+    }
+
+    if (!sttAdapter.isSupported()) return;
+
+    try {
+      setIsListening(true);
+      setAgentMode('listening');
+      const text = await sttAdapter.startListening();
+      setInput((prev) => `${prev} ${text}`.trim());
+      setIsListening(false);
+      setAgentMode('idle');
+      requestAnimationFrame(() => composerRef.current?.focus());
+    } catch {
+      setIsListening(false);
+      setAgentMode('error');
+      setTimeout(() => setAgentMode('idle'), 2000);
     }
   }, [isListening]);
 
   const toggleSpeech = useCallback(() => {
     if (agentMode === 'speaking') ttsAdapter.stop();
-    setIsSpeechEnabled(prev => !prev);
+    setIsSpeechEnabled((prev) => !prev);
   }, [agentMode]);
 
   const handleFlameTap = useCallback(() => {
     if (agentMode === 'speaking') {
       ttsAdapter.stop();
-    } else if (result && isSpeechEnabled) {
-      speakText(result.pastoralFraming);
-    } else {
-      setShowPanel(prev => !prev);
+      return;
     }
+
+    if (result && isSpeechEnabled) {
+      speakText(result.pastoralFraming);
+      return;
+    }
+
+    composerRef.current?.focus();
   }, [agentMode, result, isSpeechEnabled, speakText]);
 
   async function handleSubmit() {
     if (!input.trim()) return;
+
     setSafetyMessage('');
     setSaved(false);
     ttsAdapter.stop();
@@ -117,13 +133,18 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
     if (shouldCircuitBreak()) {
       setSafetyMessage("Let's take a gentle pause. Here is a passage to rest with.");
       const r: GuidanceResult = {
-        id: 'circuit-break', concern: input, themes: ['peace'],
+        id: 'circuit-break',
+        concern: input,
+        themes: ['peace'],
         passage: SAFE_FALLBACK_RESPONSE.passage,
         pastoralFraming: SAFE_FALLBACK_RESPONSE.message,
         reflectionQuestions: ['What do you most need right now?'],
         createdAt: new Date().toISOString(),
       };
-      setResult(r); setInput(''); speakText(r.pastoralFraming); return;
+      setResult(r);
+      setInput('');
+      speakText(r.pastoralFraming);
+      return;
     }
 
     const safety = checkInputSafety(input);
@@ -131,19 +152,28 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
       const msg = safety.reason || 'Let me offer you a scripture instead.';
       setSafetyMessage(msg);
       const r: GuidanceResult = {
-        id: 'safety-fallback', concern: input, themes: ['peace'],
-        passage: SAFE_FALLBACK_RESPONSE.passage, pastoralFraming: msg,
+        id: 'safety-fallback',
+        concern: input,
+        themes: ['peace'],
+        passage: SAFE_FALLBACK_RESPONSE.passage,
+        pastoralFraming: msg,
         reflectionQuestions: ['What would bring you peace right now?'],
         createdAt: new Date().toISOString(),
       };
-      setResult(r); setInput(''); speakText(r.pastoralFraming); return;
+      setResult(r);
+      setInput('');
+      speakText(r.pastoralFraming);
+      return;
     }
 
-    setLoading(true); setAgentMode('thinking'); setShowPanel(true);
+    setLoading(true);
+    setAgentMode('thinking');
+
     try {
       const ai = getAIAdapter();
       const guidance = await ai.generateGuidance(input, profile?.toneStyle || 'balanced');
-      setResult(guidance); setInput(''); setAgentMode('idle');
+      setResult(guidance);
+      setInput('');
       speakText(guidance.pastoralFraming);
     } finally {
       setLoading(false);
@@ -154,175 +184,226 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
   function handleSave() {
     if (!result || saved) return;
     const entry: SavedPassage = {
-      id: crypto.randomUUID(), passage: result.passage,
-      note: result.pastoralFraming, savedAt: new Date().toISOString(),
+      id: crypto.randomUUID(),
+      passage: result.passage,
+      note: result.pastoralFraming,
+      savedAt: new Date().toISOString(),
     };
-    savePassage(entry); setSaved(true);
+    savePassage(entry);
+    setSaved(true);
   }
 
-  const statusLabel = agentMode === 'idle' ? 'Be still and know…'
-    : agentMode === 'listening' ? 'Listening…'
-    : agentMode === 'thinking' ? 'Reflecting…'
-    : agentMode === 'speaking' ? 'Speaking…'
-    : agentMode === 'error' ? 'Something went wrong' : 'Ready';
+  const statusLabel =
+    agentMode === 'idle'
+      ? 'Be still and know'
+      : agentMode === 'listening'
+        ? 'Listening...'
+        : agentMode === 'thinking'
+          ? 'Reflecting...'
+          : agentMode === 'speaking'
+            ? 'Speaking...'
+            : agentMode === 'error'
+              ? 'Something went wrong'
+              : 'Ready';
 
-  // WCAG AA contrast: all text is >= 4.5:1 against #1a1610 bg
-  // #fbbf24 (amber-400) on #1a1610 = 8.2:1 ✓
-  // #fde68a (amber-200) on #1a1610 = 12.1:1 ✓
-  // #fef3c7 (amber-100) on #1a1610 = 15.4:1 ✓
+  const statusHelp =
+    agentMode === 'speaking'
+      ? 'Tap the flame to pause voice'
+      : 'Share one clear thought and receive scripture-first guidance';
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col bg-[#1a1610]">
-      {/* Burning Bush Canvas */}
+    <div className="fixed inset-0 z-[100] bg-[#1a1610] text-[#fef3c7]">
       <div className="absolute inset-0 pointer-events-none">
         <BurningBushCanvas intensity={intensity} className="w-full h-full" />
       </div>
 
-      {/* Top bar */}
-      <div className="relative z-10 flex items-center justify-between px-4 pt-4">
-        <span className="text-xs font-serif text-[#fbbf24] tracking-widest uppercase">Lampstand</span>
-        <button
-          onClick={onMinimize}
-          className="p-2 rounded-full bg-[#1a1610]/60 text-[#fde68a] hover:text-[#fef3c7] hover:bg-[#1a1610]/80 transition-colors"
-          title="Switch to mini mode"
-        >
-          <Minimize2 className="h-4 w-4" />
-        </button>
-      </div>
-
-      {/* Center: Flame + Status */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-0">
-        <button
-          onClick={handleFlameTap}
-          className="w-48 h-48 rounded-full cursor-pointer focus:outline-none"
-          title={agentMode === 'speaking' ? 'Tap to stop' : result ? 'Tap to hear again' : 'Tap to open guidance'}
-          aria-label="Agent flame"
-        />
-        <p className={cn(
-          'mt-2 text-sm font-serif italic tracking-wide transition-opacity duration-700',
-          agentMode === 'idle' ? 'text-[#fde68a]/70' : 'text-[#fef3c7]'
-        )}>
-          {statusLabel}
-        </p>
-      </div>
-
-      {/* Guidance Panel */}
-      <div className={cn(
-        'relative z-10 transition-all duration-500 ease-out',
-        showPanel ? 'max-h-[55vh]' : 'max-h-[120px]'
-      )}>
-        <div className="bg-[#1a1610]/80 backdrop-blur-sm border-t border-[#92400e]/30 rounded-t-2xl px-4 pt-4 pb-6 flex flex-col h-full">
-          {/* Input row */}
-          <div className="flex gap-2 items-end mb-3">
-            <Textarea
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onFocus={() => setShowPanel(true)}
-              placeholder="What's on your heart…"
-              className="min-h-[44px] max-h-[80px] resize-none bg-[#1a1610]/60 border-[#92400e]/40 text-[#fef3c7] placeholder:text-[#fde68a]/40 text-sm"
-              maxLength={500}
-              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSubmit(); } }}
-            />
-            <Button
-              onClick={handleSubmit}
-              disabled={loading || !input.trim()}
-              size="icon"
-              className="h-11 w-11 shrink-0 rounded-full bg-[#b45309] text-[#fef3c7] hover:bg-[#d97706] border-0"
+      <div className="relative z-10 flex h-full flex-col">
+        <header className="border-b border-[#92400e]/25 bg-[#1a1610]/65 px-4 pb-3 pt-4 backdrop-blur-sm">
+          <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-serif uppercase tracking-[0.25em] text-[#fbbf24]">LampStand</span>
+              <span className="rounded-full border border-[#92400e]/40 bg-[#92400e]/20 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.16em] text-[#fde68a]">
+                {agentMode}
+              </span>
+            </div>
+            <button
+              onClick={onMinimize}
+              className="rounded-full border border-[#92400e]/35 bg-[#1a1610]/70 p-2 text-[#fde68a] transition-colors hover:bg-[#1a1610] hover:text-[#fef3c7]"
+              title="Switch to mini mode"
+              aria-label="Minimize fullscreen agent"
             >
-              <Send className="h-4 w-4" />
-            </Button>
+              <Minimize2 className="h-4 w-4" />
+            </button>
           </div>
+        </header>
 
-          {/* Controls row */}
-          <div className="flex gap-2 mb-3">
-            <Button
-              variant={isListening ? 'destructive' : 'outline'}
-              size="icon"
-              className="h-9 w-9 rounded-full bg-[#1a1610]/60 border-[#92400e]/40 text-[#fde68a] hover:bg-[#1a1610]/80 hover:text-[#fef3c7]"
-              onClick={toggleListening}
-              title={isListening ? 'Stop listening' : 'Speak'}
-            >
-              {isListening ? <MicOff className="h-3.5 w-3.5" /> : <Mic className="h-3.5 w-3.5" />}
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-9 w-9 rounded-full bg-[#1a1610]/60 border-[#92400e]/40 text-[#fde68a] hover:bg-[#1a1610]/80 hover:text-[#fef3c7]"
-              onClick={toggleSpeech}
-              title={isSpeechEnabled ? 'Mute voice' : 'Enable voice'}
-            >
-              {isSpeechEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
-            </Button>
-            {loading && (
-              <span className="text-xs text-[#fbbf24] self-center ml-2 font-serif italic">Finding light…</span>
+        <section className="px-4 pt-4">
+          <div className="mx-auto w-full max-w-3xl rounded-2xl border border-[#92400e]/30 bg-[#1a1610]/65 p-4 backdrop-blur-sm sm:p-5">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={handleFlameTap}
+                className="shrink-0 rounded-full border border-[#92400e]/35 bg-[#1a1610]/70 p-2 transition-colors hover:border-[#b45309]/65"
+                title={agentMode === 'speaking' ? 'Tap to stop voice' : 'Tap to replay reflection or focus input'}
+                aria-label="Agent presence"
+              >
+                <AgentPresence size="md" mode={agentMode} intensity={intensity} />
+              </button>
+
+              <div className="min-w-0">
+                <p className="text-sm font-serif italic text-[#fef3c7]">{statusLabel}</p>
+                <p className="mt-1 text-xs text-[#fde68a]/70">{statusHelp}</p>
+              </div>
+            </div>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {quickPrompts.map((prompt) => (
+                <button
+                  key={prompt}
+                  onClick={() => {
+                    setInput(prompt);
+                    requestAnimationFrame(() => composerRef.current?.focus());
+                  }}
+                  className="rounded-full border border-[#92400e]/40 bg-[#1a1610]/60 px-3 py-1.5 text-xs text-[#fde68a] transition-colors hover:border-[#b45309]/70 hover:text-[#fef3c7]"
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <main ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4">
+          <div className="mx-auto w-full max-w-3xl space-y-4">
+            {safetyMessage && (
+              <div className="flex items-start gap-2 rounded-xl border border-[#b45309]/35 bg-[#92400e]/20 p-3">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#fbbf24]" />
+                <p className="text-xs text-[#fde68a]">{safetyMessage}</p>
+              </div>
+            )}
+
+            {!result && (
+              <div className="rounded-2xl border border-[#92400e]/25 bg-[#1a1610]/55 p-5">
+                <p className="text-xs uppercase tracking-[0.18em] text-[#fbbf24]">Conversation Space</p>
+                <p className="mt-2 text-sm leading-relaxed text-[#fde68a]">
+                  Your guidance will appear here in a clear sequence: scripture, reflection, questions, then prayer.
+                </p>
+              </div>
+            )}
+
+            {result && (
+              <>
+                {result.themes.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {result.themes.map((t) => (
+                      <span key={t} className="rounded-full bg-[#92400e]/30 px-2 py-0.5 text-[10px] font-medium capitalize text-[#fde68a]">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <section className="rounded-xl border border-[#92400e]/25 bg-[#92400e]/15 p-4">
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-[#fbbf24]">{result.passage.reference}</p>
+                  <p className="font-serif text-sm leading-relaxed text-[#fef3c7]">{result.passage.text}</p>
+                  <button
+                    onClick={handleSave}
+                    className={cn(
+                      'mt-3 flex items-center gap-1 text-[10px] uppercase tracking-wider transition-colors',
+                      saved ? 'text-[#fbbf24]' : 'text-[#fde68a]/70 hover:text-[#fde68a]'
+                    )}
+                  >
+                    <Bookmark className="h-3 w-3" fill={saved ? 'currentColor' : 'none'} />
+                    {saved ? 'Saved' : 'Save'}
+                  </button>
+                </section>
+
+                <section className="rounded-xl border border-[#92400e]/22 bg-[#92400e]/10 p-4">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#fbbf24]">Pastoral Reflection</p>
+                  <p className="text-sm leading-relaxed text-[#fde68a]">{result.pastoralFraming}</p>
+                </section>
+
+                {result.reflectionQuestions.length > 0 && (
+                  <section className="rounded-xl border border-[#92400e]/22 bg-[#92400e]/10 p-4">
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#fbbf24]">Sit With These</p>
+                    <ul className="space-y-1.5">
+                      {result.reflectionQuestions.map((q, i) => (
+                        <li key={i} className="flex gap-2 text-sm text-[#fde68a]">
+                          <span className="shrink-0 text-[#fbbf24]">{i + 1}.</span>
+                          <span>{q}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                )}
+
+                {result.prayer && (
+                  <section className="rounded-xl border border-[#92400e]/22 bg-[#92400e]/10 p-4">
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#fbbf24]">Prayer</p>
+                    <p className="text-sm italic leading-relaxed text-[#fde68a]">{result.prayer}</p>
+                  </section>
+                )}
+              </>
             )}
           </div>
+        </main>
 
-          {/* Safety message */}
-          {safetyMessage && (
-            <div className="flex items-start gap-2 bg-[#92400e]/20 rounded-lg p-3 mb-3">
-              <AlertCircle className="h-3.5 w-3.5 text-[#fbbf24] mt-0.5 shrink-0" />
-              <p className="text-xs text-[#fde68a]">{safetyMessage}</p>
+        <section className="border-t border-[#92400e]/30 bg-[#1a1610]/78 px-4 pb-4 pt-3 backdrop-blur-md">
+          <div className="mx-auto w-full max-w-3xl space-y-3">
+            <div className="flex items-end gap-2">
+              <Textarea
+                ref={composerRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="What's on your heart..."
+                className="min-h-[52px] max-h-[110px] resize-none border-[#92400e]/45 bg-[#1a1610]/70 text-[#fef3c7] placeholder:text-[#fde68a]/45"
+                maxLength={500}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit();
+                  }
+                }}
+              />
+              <Button
+                onClick={handleSubmit}
+                disabled={loading || !input.trim()}
+                size="icon"
+                className="h-11 w-11 shrink-0 rounded-full border-0 bg-[#b45309] text-[#fef3c7] hover:bg-[#d97706]"
+                title="Send guidance request"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
             </div>
-          )}
 
-          {/* Results */}
-          {result && showPanel && (
-            <div ref={scrollRef} className="overflow-y-auto flex-1 space-y-4 pr-1">
-              {result.themes.length > 0 && (
-                <div className="flex gap-1.5 flex-wrap">
-                  {result.themes.map(t => (
-                    <span key={t} className="text-[10px] px-2 py-0.5 rounded-full bg-[#92400e]/30 text-[#fde68a] font-medium capitalize">{t}</span>
-                  ))}
-                </div>
-              )}
-
-              <div className="bg-[#92400e]/15 rounded-xl p-4 border border-[#92400e]/25">
-                <p className="text-xs font-semibold text-[#fbbf24] uppercase tracking-wider mb-1">
-                  {result.passage.reference}
-                </p>
-                <p className="text-sm text-[#fef3c7] font-serif leading-relaxed">
-                  {result.passage.text}
-                </p>
-                <button
-                  onClick={handleSave}
-                  className={cn(
-                    'mt-2 flex items-center gap-1 text-[10px] uppercase tracking-wider transition-colors',
-                    saved ? 'text-[#fbbf24]' : 'text-[#fde68a]/60 hover:text-[#fde68a]'
-                  )}
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant={isListening ? 'destructive' : 'outline'}
+                  size="icon"
+                  className="h-9 w-9 rounded-full border-[#92400e]/45 bg-[#1a1610]/70 text-[#fde68a] hover:bg-[#1a1610] hover:text-[#fef3c7]"
+                  onClick={toggleListening}
+                  title={isListening ? 'Stop listening' : 'Use microphone'}
                 >
-                  <Bookmark className="h-3 w-3" fill={saved ? 'currentColor' : 'none'} />
-                  {saved ? 'Saved' : 'Save'}
-                </button>
+                  {isListening ? <MicOff className="h-3.5 w-3.5" /> : <Mic className="h-3.5 w-3.5" />}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="h-9 w-9 rounded-full border-[#92400e]/45 bg-[#1a1610]/70 text-[#fde68a] hover:bg-[#1a1610] hover:text-[#fef3c7]"
+                  onClick={toggleSpeech}
+                  title={isSpeechEnabled ? 'Mute voice playback' : 'Enable voice playback'}
+                >
+                  {isSpeechEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+                </Button>
               </div>
 
-              <div className="bg-[#92400e]/10 rounded-xl p-4 border border-[#92400e]/20">
-                <p className="text-xs font-semibold text-[#fbbf24] uppercase tracking-wider mb-2">Pastoral Reflection</p>
-                <p className="text-sm text-[#fde68a] leading-relaxed">{result.pastoralFraming}</p>
+              <div className="flex items-center gap-3 text-[11px] text-[#fde68a]/65">
+                {loading && <span className="font-serif italic text-[#fbbf24]">Finding light...</span>}
+                <span>{input.length}/500</span>
               </div>
-
-              {result.reflectionQuestions.length > 0 && (
-                <div className="bg-[#92400e]/10 rounded-xl p-4 border border-[#92400e]/20">
-                  <p className="text-xs font-semibold text-[#fbbf24] uppercase tracking-wider mb-2">Sit With These</p>
-                  <ul className="space-y-1.5">
-                    {result.reflectionQuestions.map((q, i) => (
-                      <li key={i} className="text-sm text-[#fde68a] flex gap-2">
-                        <span className="text-[#fbbf24] shrink-0">{i + 1}.</span> {q}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {result.prayer && (
-                <div className="bg-[#92400e]/10 rounded-xl p-4 border border-[#92400e]/20">
-                  <p className="text-xs font-semibold text-[#fbbf24] uppercase tracking-wider mb-2">Prayer</p>
-                  <p className="text-sm text-[#fde68a] italic leading-relaxed">{result.prayer}</p>
-                </div>
-              )}
             </div>
-          )}
-        </div>
+          </div>
+        </section>
       </div>
     </div>
   );
