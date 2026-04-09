@@ -6,17 +6,19 @@ import { Mic, MicOff, Volume2, VolumeX, X, MessageCircle, Maximize2 } from 'luci
 import { sttAdapter, ttsAdapter } from '@/lib/voice';
 import { getProfile } from '@/lib/storage';
 import { cn } from '@/lib/utils';
+import { useLocation } from 'react-router-dom';
 import type { AgentMode } from './AgentPresence';
 import type { VoiceGender } from '@/lib/voice';
 
 type ViewMode = 'fullscreen' | 'mini-collapsed' | 'mini-expanded';
 
 export function FloatingAgent() {
-  const [viewMode, setViewMode] = useState<ViewMode>('fullscreen');
+  const [viewMode, setViewMode] = useState<ViewMode>('mini-collapsed');
   const [agentMode, setAgentMode] = useState<AgentMode>('idle');
   const [isListening, setIsListening] = useState(false);
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(true);
   const [lastText, setLastText] = useState('');
+  const location = useLocation();
 
   const profile = getProfile();
   const voiceGender: VoiceGender = profile?.voiceGender || 'male';
@@ -28,6 +30,13 @@ export function FloatingAgent() {
       else setAgentMode('idle');
     };
   }, []);
+
+  useEffect(() => {
+    // Keep fullscreen mode strictly optional and guidance-specific.
+    if (viewMode === 'fullscreen' && location.pathname !== '/guidance') {
+      setViewMode('mini-collapsed');
+    }
+  }, [location.pathname, viewMode]);
 
   const toggleListening = useCallback(async () => {
     if (isListening) {
@@ -63,6 +72,14 @@ export function FloatingAgent() {
       ttsAdapter.speak(lastText, voiceGender);
     }
   }, [agentMode, lastText, isSpeechEnabled, voiceGender]);
+
+  // Prevent widget noise during onboarding and legal/auth pages.
+  if (
+    ['/onboarding', '/auth', '/legal', '/legal/privacy', '/legal/terms', '/legal/acceptable-use', '/legal/disclaimer', '/legal/company']
+      .includes(location.pathname)
+  ) {
+    return null;
+  }
 
   // Fullscreen mode (default)
   if (viewMode === 'fullscreen') {
