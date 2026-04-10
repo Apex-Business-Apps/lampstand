@@ -1,6 +1,7 @@
 import { GroqAIAdapter } from './groq';
 import type { IRetrievalAdapter, IAIAdapter, RetrievalRequest, RetrievalResult, ScripturePassage, ToneStyle, Sermon, GuidanceResult } from '@/types';
 import { SEED_PASSAGES, SEED_SERMONS, SEED_GUIDANCE_MAP } from '@/data/seed';
+import { checkInputSafety } from './safety';
 
 // ─── Tokenization helpers for fuzzy retrieval ───
 function tokenize(text: string): string[] {
@@ -126,7 +127,7 @@ export class LocalAIAdapter implements IAIAdapter {
   }
 
   async validateSafety(input: string): Promise<{ safe: boolean; reason?: string }> {
-    return { safe: true };
+    return checkInputSafety(input);
   }
 }
 
