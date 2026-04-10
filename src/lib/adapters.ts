@@ -1,6 +1,7 @@
 import { GroqAIAdapter } from './groq';
 import type { IRetrievalAdapter, IAIAdapter, RetrievalRequest, RetrievalResult, ScripturePassage, ToneStyle, Sermon, GuidanceResult } from '@/types';
 import { SEED_PASSAGES, SEED_SERMONS, SEED_GUIDANCE_MAP } from '@/data/seed';
+import { checkInputSafety } from './safety';
 
 // ─── Local Retrieval Adapter (seed data, swappable for RAG) ───
 export class LocalRetrievalAdapter implements IRetrievalAdapter {
@@ -82,8 +83,7 @@ export class LocalAIAdapter implements IAIAdapter {
   }
 
   async validateSafety(input: string): Promise<{ safe: boolean; reason?: string }> {
-    // Delegated to safety.ts — this is the adapter stub for remote validation
-    return { safe: true };
+    return checkInputSafety(input);
   }
 }
 
