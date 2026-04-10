@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { BurningBushCanvas } from './BurningBushCanvas';
 import { AgentPresence } from './AgentPresence';
 import { Button } from './ui/button';
@@ -38,7 +38,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
 
-  const profile = getProfile();
+  const profile = useMemo(() => getProfile(), []);
   const voiceGender: VoiceGender = profile?.voiceGender || 'male';
 
   useEffect(() => {

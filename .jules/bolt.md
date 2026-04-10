@@ -1,0 +1,3 @@
+## 2024-05-23 - Synchronous LocalStorage in Hot Paths
+**Learning:** Found a specific codebase pattern where `getProfile()` and other `localStorage` helpers are called synchronously during component rendering. While harmless in static views, in components with rapidly changing state (like controlled inputs in `GuidancePage` or `FullscreenAgent`), this causes blocking `localStorage.getItem` and `JSON.parse` operations on every single re-render.
+**Action:** When a component has state that changes frequently (like typing in a text input), avoid calling `localStorage` helpers in the main render body. Use `useMemo` or lazy initializers `useState(() => getProfile())` to cache these values and prevent performance bottlenecks.

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { AgentPresence } from './AgentPresence';
 import { FullscreenAgent } from './FullscreenAgent';
 import { Button } from './ui/button';
@@ -20,7 +20,7 @@ export function FloatingAgent() {
   const [lastText, setLastText] = useState('');
   const location = useLocation();
 
-  const profile = getProfile();
+  const profile = useMemo(() => getProfile(), []);
   const voiceGender: VoiceGender = profile?.voiceGender || 'male';
 
   useEffect(() => {
