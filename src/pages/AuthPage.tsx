@@ -26,7 +26,7 @@ export default function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/entry?source=auth` },
+          options: { emailRedirectTo: `${window.location.origin}/?source=auth` },
         });
         if (error) throw error;
         toast.success('Account created! Check your email to confirm.');
@@ -34,7 +34,7 @@ export default function AuthPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success('Signed in successfully.');
-        navigate('/app');
+        navigate('/?source=auth', { replace: true });
       }
     } catch (error: unknown) {
       toast.error((error as Error).message || 'Authentication failed');
@@ -50,7 +50,7 @@ export default function AuthPage() {
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: `${window.location.origin}/entry?source=auth` },
+        options: { emailRedirectTo: `${window.location.origin}/?source=auth` },
       });
       if (error) throw error;
       toast.success('Magic link sent! Check your email.');
@@ -141,6 +141,9 @@ export default function AuthPage() {
                   <button type="button" onClick={() => setMode('signup')} className="text-primary hover:underline">
                     Don't have an account? Sign up
                   </button>
+                  <button type="button" onClick={() => navigate('/reset-password')} className="text-muted-foreground hover:underline">
+                    Forgot password?
+                  </button>
                   <button type="button" onClick={() => setMode('magic-link')} className="text-muted-foreground hover:underline">
                     Use magic link instead
                   </button>
@@ -156,7 +159,7 @@ export default function AuthPage() {
 
         <div className="pt-4 text-xs text-muted-foreground space-y-2">
           <p>LampStand is local-first. You do not need to sign in to use it.</p>
-          <button onClick={() => navigate('/entry?entry=onboarding&source=web')} className="text-primary hover:underline">
+          <button onClick={() => navigate('/?entry=onboarding&source=web')} className="text-primary hover:underline">
             Continue as Guest
           </button>
         </div>

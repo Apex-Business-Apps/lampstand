@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { Button } from '@/components/ui/button';
-import { SEED_DAILY_LIGHTS } from '@/data/seed';
+import { getDailyLight } from '@/lib/dailyLight';
 import { ReflectionBlock } from '@/components/ReflectionBlock';
 import { ScriptureCard } from '@/components/ScriptureCard';
 import { incrementPresenceScore } from '@/lib/storage';
@@ -12,7 +12,7 @@ const timeOptions = ['3 minutes', '7 minutes', '15 minutes'];
 export default function ReturnPage() {
   const [time, setTime] = useState<string>('7 minutes');
   const [need, setNeed] = useState<string>('Peace');
-  const daily = SEED_DAILY_LIGHTS[0];
+  const daily = getDailyLight();
 
   function handleRekindle() {
     incrementPresenceScore(6);

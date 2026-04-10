@@ -6,10 +6,10 @@ import { Textarea } from './ui/textarea';
 import { Mic, MicOff, Volume2, VolumeX, Minimize2, Send, AlertCircle, Bookmark } from 'lucide-react';
 import { sttAdapter, ttsAdapter } from '@/lib/voice';
 import { audioAnalyzer } from '@/lib/audioAnalyzer';
-import { getAIAdapter } from '@/lib/adapters';
-import { getProfile, savePassage } from '@/lib/storage';
+import { getProfile, incrementPresenceScore, savePassage } from '@/lib/storage';
 import { checkInputSafety, shouldCircuitBreak, SAFE_FALLBACK_RESPONSE } from '@/lib/safety';
 import { cn } from '@/lib/utils';
+import { agentRuntime } from '@/lib/runtime/agentRuntime';
 import type { AgentMode } from './AgentPresence';
 import type { VoiceGender } from '@/lib/voice';
 import type { GuidanceResult, SavedPassage } from '@/types';
@@ -33,6 +33,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<GuidanceResult | null>(null);
   const [safetyMessage, setSafetyMessage] = useState('');
+  const [voiceMessage, setVoiceMessage] = useState('');
   const [saved, setSaved] = useState(false);
   const rafRef = useRef<number>(0);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -73,10 +74,14 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
 
   const speakText = useCallback((text: string) => {
     if (!isSpeechEnabled) return;
-    ttsAdapter.speak(text, voiceGender);
+    void ttsAdapter.speak(text, voiceGender).catch(() => {
+      setVoiceMessage('Voice playback is unavailable right now. You can keep reading below.');
+    });
   }, [isSpeechEnabled, voiceGender]);
 
   const toggleListening = useCallback(async () => {
+    setVoiceMessage('');
+
     if (isListening) {
       sttAdapter.stopListening();
       setIsListening(false);
@@ -84,6 +89,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
       return;
     }
     if (!sttAdapter.isSupported()) {
+      setVoiceMessage('Speech recognition is not supported on this device. You can still type your request.');
       setAgentMode('error');
       setTimeout(() => setAgentMode('idle'), 2500);
       return;
@@ -96,7 +102,8 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
       setIsListening(false);
       setAgentMode('idle');
       requestAnimationFrame(() => composerRef.current?.focus());
-    } catch {
+    } catch (error) {
+      setVoiceMessage((error as Error).message || 'Microphone unavailable. You can still type your request.');
       setIsListening(false);
       setAgentMode('error');
       setTimeout(() => setAgentMode('idle'), 2000);
@@ -117,6 +124,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
   async function handleSubmit() {
     if (!input.trim()) return;
     setSafetyMessage('');
+    setVoiceMessage('');
     setSaved(false);
     ttsAdapter.stop();
 
@@ -148,12 +156,30 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
     setLoading(true);
     setAgentMode('thinking');
     try {
-      const ai = getAIAdapter();
-      const guidance = await ai.generateGuidance(input, profile?.toneStyle || 'balanced');
-      setResult(guidance); setInput(''); speakText(guidance.pastoralFraming);
+      const concern = input.trim();
+      const guidance = await agentRuntime.runGuidance(concern, profile?.toneStyle || 'balanced');
+      setResult(guidance);
+      setInput('');
+      incrementPresenceScore(4);
+      speakText(guidance.pastoralFraming);
+    } catch {
+      const fallback: GuidanceResult = {
+        id: 'fullscreen-fallback',
+        concern: input,
+        themes: ['peace'],
+        passage: SAFE_FALLBACK_RESPONSE.passage,
+        pastoralFraming: SAFE_FALLBACK_RESPONSE.message,
+        reflectionQuestions: ['What would help you slow down for one minute right now?'],
+        prayer: 'Lord, steady my thoughts and keep me near your peace. Amen.',
+        createdAt: new Date().toISOString(),
+      };
+      setSafetyMessage('I had trouble preparing guidance, so I switched to a safe fallback.');
+      setResult(fallback);
+      setInput('');
+      speakText(fallback.pastoralFraming);
     } finally {
       setLoading(false);
-      if (agentMode === 'thinking') setAgentMode('idle');
+      setAgentMode('idle');
     }
   }
 
@@ -247,6 +273,13 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
               <div className="flex items-start gap-2 rounded-xl border border-[#b45309]/35 bg-[#92400e]/20 p-3">
                 <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#fbbf24]" />
                 <p className="text-xs text-[#fde68a]">{safetyMessage}</p>
+              </div>
+            )}
+
+            {voiceMessage && (
+              <div className="flex items-start gap-2 rounded-xl border border-[#b45309]/35 bg-[#1a1610]/60 p-3">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#fbbf24]" />
+                <p className="text-xs text-[#fde68a]">{voiceMessage}</p>
               </div>
             )}
 

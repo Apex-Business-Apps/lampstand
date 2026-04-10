@@ -13,7 +13,7 @@ import type { VoiceGender } from '@/lib/voice';
 type ViewMode = 'fullscreen' | 'mini-collapsed' | 'mini-expanded';
 
 const HIDDEN_PATHS = [
-  '/onboarding', '/auth', '/legal', '/legal/privacy', '/legal/terms',
+  '/onboarding', '/auth', '/reset-password', '/legal', '/legal/privacy', '/legal/terms',
   '/legal/acceptable-use', '/legal/disclaimer', '/legal/company',
 ];
 

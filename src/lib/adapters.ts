@@ -1,6 +1,7 @@
 import { GroqAIAdapter } from './groq';
 import type { IRetrievalAdapter, IAIAdapter, RetrievalRequest, RetrievalResult, ScripturePassage, ToneStyle, Sermon, GuidanceResult } from '@/types';
-import { SEED_PASSAGES, SEED_SERMONS, SEED_GUIDANCE_MAP } from '@/data/seed';
+import { SEED_SERMONS } from '@/data/seed';
+import { CONTENT_PASSAGES, pickGuidanceVariant } from '@/data/contentLibrary';
 import { checkInputSafety } from './safety';
 
 // ─── Tokenization helpers for fuzzy retrieval ───
@@ -46,7 +47,7 @@ export class LocalRetrievalAdapter implements IRetrievalAdapter {
     const query = req.query.toLowerCase();
 
     // Score all passages using fuzzy token matching
-    const scored = SEED_PASSAGES
+    const scored = CONTENT_PASSAGES
       .map(p => ({ passage: p, score: computeScore(query, p) }))
       .sort((a, b) => b.score - a.score);
 
@@ -56,7 +57,7 @@ export class LocalRetrievalAdapter implements IRetrievalAdapter {
 
     if (matches.length === 0) {
       // Return a random passage as fallback
-      const random = SEED_PASSAGES[Math.floor(Math.random() * SEED_PASSAGES.length)];
+      const random = CONTENT_PASSAGES[Math.floor(Math.random() * CONTENT_PASSAGES.length)];
       return { passages: [random], confidence: 0.3, source: 'local-seed-fallback' };
     }
 
@@ -66,7 +67,7 @@ export class LocalRetrievalAdapter implements IRetrievalAdapter {
   }
 
   async getByReference(ref: string): Promise<ScripturePassage | null> {
-    return SEED_PASSAGES.find(p => p.reference === ref) || null;
+    return CONTENT_PASSAGES.find(p => p.reference === ref) || null;
   }
 }
 
@@ -98,11 +99,8 @@ export class LocalAIAdapter implements IAIAdapter {
   async generateGuidance(concern: string, tone: ToneStyle): Promise<GuidanceResult> {
     const themes = await this.classifyConcern(concern);
     const primaryTheme = themes[0] || 'peace';
-    const mapped = SEED_GUIDANCE_MAP[primaryTheme];
-    if (mapped) return { ...mapped, id: crypto.randomUUID(), concern, themes, createdAt: new Date().toISOString() };
-
-    const fallback = SEED_GUIDANCE_MAP['peace'];
-    return { ...fallback, id: crypto.randomUUID(), concern, themes, createdAt: new Date().toISOString() };
+    const mapped = pickGuidanceVariant(primaryTheme, concern);
+    return { ...mapped, id: crypto.randomUUID(), concern, themes, createdAt: new Date().toISOString() };
   }
 
   async classifyConcern(input: string): Promise<string[]> {
