@@ -37,11 +37,6 @@ export function FloatingAgent() {
   }, []);
 
   // On /guidance, allow fullscreen. On other paths, collapse.
-  useEffect(() => {
-    if (viewMode === 'fullscreen' && location.pathname !== '/guidance') {
-      setViewMode('mini-collapsed');
-    }
-  }, [location.pathname, viewMode]);
 
   const toggleListening = useCallback(async () => {
     if (isListening) {

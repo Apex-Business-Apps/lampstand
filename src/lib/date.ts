@@ -15,9 +15,9 @@ export function getRelativeLocalDate(offsetDays: number, baseDate = new Date()) 
 export function parseStoredDate(dateStr: string): Date | null {
   if (!dateStr) return null;
 
-  const dmy = dateStr.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{2,4})$/);
+  const dmy = dateStr.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/);
   if (dmy) {
-    let [, d, m, y] = dmy;
+    const [, d, m, y] = dmy;
     let year = Number(y);
     if (year < 100) year += 2000;
 
