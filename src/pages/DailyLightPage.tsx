@@ -4,13 +4,13 @@ import { ScriptureCard } from '@/components/ScriptureCard';
 import { ReflectionBlock } from '@/components/ReflectionBlock';
 import { AgentPresence } from '@/components/AgentPresence';
 import { Button } from '@/components/ui/button';
-import { SEED_DAILY_LIGHTS } from '@/data/seed';
+import { getDailyLight } from '@/lib/dailyLight';
 import { savePassage, getSavedPassages } from '@/lib/storage';
 import type { SavedPassage } from '@/types';
 import { ChevronDown } from 'lucide-react';
 
 export default function DailyLightPage() {
-  const today = SEED_DAILY_LIGHTS[0];
+  const today = getDailyLight();
   const [showDeeper, setShowDeeper] = useState(false);
   const [saved, setSaved] = useState(() => getSavedPassages().some(s => s.passage.reference === today.passage.reference));
 

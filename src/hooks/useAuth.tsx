@@ -22,17 +22,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const hydrateAuthenticatedSession = useCallback(async (user: User) => {
+    try {
+      await runFullSync(user.id);
+    } catch {
+      // Keep auth usable even if sync fails.
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const handleSession = useCallback((s: Session | null) => {
     setSession(s);
     if (s?.user) {
+      setLoading(true);
       saveAuthState({ mode: 'authenticated', userId: s.user.id, email: s.user.email });
-      // Background sync — non-blocking
-      runFullSync(s.user.id).catch(() => {});
+      void hydrateAuthenticatedSession(s.user);
     } else {
       saveAuthState({ mode: 'guest' });
+      setLoading(false);
     }
-    setLoading(false);
-  }, []);
+  }, [hydrateAuthenticatedSession]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {

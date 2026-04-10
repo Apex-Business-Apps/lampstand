@@ -4,11 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AgentPresence } from '@/components/AgentPresence';
 import { saveProfile } from '@/lib/storage';
+import { syncProfileToCloud } from '@/lib/supabaseSync';
+import { useAuth } from '@/hooks/useAuth';
 import type { UserProfile, ToneStyle, FaithFamiliarity, ReadingPreference, VoiceGender } from '@/types';
 import { ArrowRight } from 'lucide-react';
 
 export default function Onboarding() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [step, setStep] = useState<'welcome' | 'setup' | 'complete'>('welcome');
   const [firstName, setFirstName] = useState('');
   const [tone, setTone] = useState<ToneStyle>('balanced');
@@ -16,7 +19,7 @@ export default function Onboarding() {
   const [readingPref, setReadingPref] = useState<ReadingPreference>('balanced');
   const [voiceGender, setVoiceGender] = useState<VoiceGender>('male');
 
-  function finish() {
+  async function finish() {
     const profile: UserProfile = {
       id: crypto.randomUUID(),
       firstName: firstName.trim() || 'Friend',
@@ -32,7 +35,10 @@ export default function Onboarding() {
       createdAt: new Date().toISOString(),
     };
     saveProfile(profile);
-    navigate('/app');
+    if (user) {
+      await syncProfileToCloud(user.id).catch(() => undefined);
+    }
+    navigate('/app', { replace: true });
   }
 
   const Chip = ({ selected, onClick, children }: { selected: boolean; onClick: () => void; children: React.ReactNode }) => (

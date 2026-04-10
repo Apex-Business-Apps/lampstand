@@ -4,27 +4,41 @@ import { Button } from '@/components/ui/button';
 import { AgentPresence } from '@/components/AgentPresence';
 import { AppShell } from '@/components/AppShell';
 import { getProfile, getKnowledge, getSavedPassages, updateStreak, getPresenceScore } from '@/lib/storage';
-import { SEED_DAILY_LIGHTS } from '@/data/seed';
+import { getDailyLight } from '@/lib/dailyLight';
+import { useAuth } from '@/hooks/useAuth';
 import { useEffect, useState } from 'react';
 import type { UserProfile } from '@/types';
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const knowledge = getKnowledge();
   const saved = getSavedPassages();
   const presence = getPresenceScore();
 
   useEffect(() => {
+    if (authLoading) return;
+
     const p = getProfile();
-    if (!p || !p.onboardingComplete) { navigate('/onboarding'); return; }
+    if (!p || !p.onboardingComplete) {
+      navigate('/onboarding', { replace: true });
+      return;
+    }
+
     setProfile(p);
     updateStreak();
-  }, [navigate]);
+  }, [authLoading, navigate, user]);
 
-  if (!profile) return null;
+  if (authLoading || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
-  const today = SEED_DAILY_LIGHTS[0];
+  const today = getDailyLight();
   const greeting = getGreeting(profile.firstName);
 
   return (

@@ -11,6 +11,7 @@ import type {
   SyncState,
   PresenceScore,
 } from '@/types';
+import { formatLocalDate, getRelativeLocalDate } from '@/lib/date';
 
 const KEYS = {
   profile: 'lampstand_profile',
@@ -88,8 +89,8 @@ export function updateKnowledge(partial: Partial<LocalKnowledge>) {
 }
 export function updateStreak() {
   const k = getKnowledge();
-  const today = new Date().toISOString().split('T')[0];
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+  const today = formatLocalDate();
+  const yesterday = getRelativeLocalDate(-1);
   if (k.lastStreakDate === today) return;
   const streak = k.lastStreakDate === yesterday ? k.streak + 1 : 1;
   updateKnowledge({ streak, lastStreakDate: today, lastActive: today, interactionCount: k.interactionCount + 1 });

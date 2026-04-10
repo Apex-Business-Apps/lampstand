@@ -6,9 +6,11 @@ import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData, ge
 import type { UserProfile, ToneStyle, ReadingPreference } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Trash2, RotateCcw } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showReset, setShowReset] = useState(false);
@@ -16,12 +18,20 @@ export default function SettingsPage() {
   const [voicePrefs, setVoicePrefs] = useState(getVoicePreferences());
 
   useEffect(() => {
-    const p = getProfile();
-    if (!p) { navigate('/onboarding'); return; }
-    setProfile(p);
-  }, [navigate]);
+    if (authLoading) return;
 
-  if (!profile) return null;
+    const p = getProfile();
+    if (!p) { navigate('/onboarding', { replace: true }); return; }
+    setProfile(p);
+  }, [authLoading, navigate, user]);
+
+  if (authLoading || !profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   function update(partial: Partial<UserProfile>) {
     const updated = { ...profile!, ...partial };

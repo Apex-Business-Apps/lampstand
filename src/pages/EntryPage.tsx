@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 import { getProfile } from "@/lib/storage";
 
 function isStandaloneDisplayMode() {
@@ -11,9 +12,17 @@ function isStandaloneDisplayMode() {
 export default function EntryPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
+    if (loading) return;
+
     const profile = getProfile();
+    if (user) {
+      navigate(profile?.onboardingComplete ? "/app" : "/onboarding", { replace: true });
+      return;
+    }
+
     if (profile?.onboardingComplete) {
       navigate("/app", { replace: true });
       return;
@@ -37,7 +46,7 @@ export default function EntryPage() {
     }
 
     navigate("/welcome", { replace: true });
-  }, [location.search, navigate]);
+  }, [loading, location.search, navigate, user]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">

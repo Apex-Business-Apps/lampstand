@@ -72,8 +72,8 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
 }
 
 class NullSpeechToTextProvider implements SpeechToTextProvider {
-  isSupported() { return true; }
-  async startListening() { return ''; }
+  isSupported() { return false; }
+  async startListening() { throw new Error('Speech recognition is not supported on this device. You can still type your request.'); }
   stopListening() {}
 }
 
@@ -82,7 +82,7 @@ export class SpeechToTextAdapter {
   private activeProvider: SpeechToTextProvider | null = null;
 
   isSupported() {
-    return this.providers.some((p) => p.isSupported());
+    return this.providers.some((p) => p instanceof BrowserSpeechToTextProvider && p.isSupported());
   }
 
   async startListening(): Promise<string> {
@@ -94,6 +94,7 @@ export class SpeechToTextAdapter {
       this.activeProvider = provider;
       try {
         const transcript = await provider.startListening();
+        if (!transcript.trim()) throw new Error('No speech detected. Please try again or type your request.');
         if (transcript) pushVoiceTranscript(transcript);
         return transcript;
       } catch (err) {
