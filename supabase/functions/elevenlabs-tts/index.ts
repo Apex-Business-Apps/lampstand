@@ -1,9 +1,20 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-};
+const ALLOWED_ORIGINS = [
+  "https://thelampstand.icu",
+  "https://www.thelampstand.icu",
+];
+
+function getCorsHeaders(req: Request) {
+  const origin = req.headers.get("origin") || "";
+  const isAllowed = ALLOWED_ORIGINS.includes(origin) ||
+    origin.startsWith("http://localhost:");
+  return {
+    "Access-Control-Allow-Origin": isAllowed ? origin : ALLOWED_ORIGINS[0],
+    "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+    "Vary": "Origin",
+  };
+}
 
 // Pastoral, warm, friendly voices — not authoritative
 const VOICES = {
@@ -12,8 +23,10 @@ const VOICES = {
 } as const;
 
 serve(async (req) => {
+  const cors = getCorsHeaders(req);
+
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { headers: cors });
   }
 
   try {
@@ -21,16 +34,16 @@ serve(async (req) => {
     const ELEVENLABS_API_KEY = Deno.env.get("ELEVENLABS_API_KEY");
 
     if (!ELEVENLABS_API_KEY) {
-      return new Response(JSON.stringify({ error: "ELEVENLABS_API_KEY not configured" }), {
+      return new Response(JSON.stringify({ error: "Service configuration error" }), {
         status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...cors, "Content-Type": "application/json" },
       });
     }
 
     if (!text || text.length > 5000) {
       return new Response(JSON.stringify({ error: "Text required (max 5000 chars)" }), {
         status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...cors, "Content-Type": "application/json" },
       });
     }
 
@@ -59,11 +72,10 @@ serve(async (req) => {
     );
 
     if (!response.ok) {
-      const errText = await response.text();
-      console.error("ElevenLabs error:", errText);
-      return new Response(JSON.stringify({ error: "TTS generation failed" }), {
+      console.error("ElevenLabs error:", await response.text());
+      return new Response(JSON.stringify({ error: "Voice generation temporarily unavailable" }), {
         status: 502,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...cors, "Content-Type": "application/json" },
       });
     }
 
@@ -71,7 +83,7 @@ serve(async (req) => {
 
     return new Response(audioBuffer, {
       headers: {
-        ...corsHeaders,
+        ...cors,
         "Content-Type": "audio/mpeg",
         "Cache-Control": "public, max-age=3600",
       },
@@ -80,7 +92,7 @@ serve(async (req) => {
     console.error("TTS edge function error:", err);
     return new Response(JSON.stringify({ error: "Internal error" }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: { ...cors, "Content-Type": "application/json" },
     });
   }
 });

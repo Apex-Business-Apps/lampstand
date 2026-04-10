@@ -25,3 +25,8 @@ dist-ssr
 
 # Runtime
 *.pid
+
+# Environment variables
+.env
+.env.*
+!.env.example
