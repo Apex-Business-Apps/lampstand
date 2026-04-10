@@ -4,8 +4,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/hooks/useAuth";
+import { AuthGuard } from "@/components/AuthGuard";
 import { FloatingAgent } from "@/components/FloatingAgent";
+import { ConsentModal } from "@/components/ConsentModal";
 
 // Lazy-load all pages for optimal code splitting
 const EntryPage = lazy(() => import("./pages/EntryPage"));
@@ -31,7 +34,16 @@ const CompanyPage = lazy(() => import("./pages/CompanyPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ReturnPage = lazy(() => import("./pages/ReturnPage"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes before refetch
+      gcTime: 30 * 60 * 1000,   // 30 minutes garbage collection
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function PageFallback() {
   return (
@@ -42,6 +54,7 @@ function PageFallback() {
 }
 
 const App = () => (
+  <ErrorBoundary>
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <TooltipProvider>
@@ -63,7 +76,7 @@ const App = () => (
               <Route path="/journal" element={<JournalPage />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/return" element={<ReturnPage />} />
-              <Route path="/admin" element={<AdminPage />} />
+              <Route path="/admin" element={<AuthGuard><AdminPage /></AuthGuard>} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/legal" element={<LegalPage />} />
               <Route path="/legal/privacy" element={<PrivacyPolicyPage />} />
@@ -75,10 +88,12 @@ const App = () => (
             </Routes>
           </Suspense>
           <FloatingAgent />
+          <ConsentModal />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>
   </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

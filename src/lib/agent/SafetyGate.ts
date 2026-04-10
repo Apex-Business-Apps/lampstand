@@ -8,22 +8,41 @@ export class SafetyGate {
     /—/, /–/ // Em and En dashes
   ];
 
+  private injectionPatterns = [
+    /ignore\s+(all\s+)?previous/i,
+    /disregard\s+(all\s+)?instructions/i,
+    /you\s+are\s+now/i,
+    /pretend\s+to\s+be/i,
+    /act\s+as\s+(if|a)/i,
+    /system\s*prompt/i,
+    /\bDAN\b/,
+    /jailbreak/i,
+    /bypass\s+(safety|filter|guard)/i,
+    /override\s+(safety|system)/i,
+    /repeat\s+after\s+me/i,
+    /translate\s+.+\s+to\s+.+:/i,
+    /do\s+not\s+follow\s+(any|your)/i,
+    /new\s+instructions?:/i,
+    /forget\s+(everything|all|your)/i,
+    /reveal\s+(your|the)\s+(system|prompt|instructions)/i,
+  ];
+
   async preClassification(input: string): Promise<SafetyCheckResult> {
-    // Basic malicious prompt check
-    const lowerInput = input.toLowerCase();
-    if (lowerInput.includes('ignore previous instructions') || lowerInput.includes('system prompt')) {
-      return { isSafe: false, reason: 'prompt_injection' };
+    const trimmed = input.trim();
+    if (!trimmed) return { isSafe: true };
+
+    for (const pattern of this.injectionPatterns) {
+      if (pattern.test(trimmed)) {
+        return { isSafe: false, reason: 'prompt_injection' };
+      }
     }
+
     return { isSafe: true };
   }
 
   async validateOutput(output: string): Promise<SafetyCheckResult> {
-    // Check for banned AI phrasing
     for (const pattern of this.bannedPatterns) {
       if (pattern.test(output)) {
-        console.warn(`SafetyGate Triggered: Banned pattern matched -> ${pattern}`);
-        // In a real strict environment, we might reject. For now, we clean it.
-        // We'll return false to let the orchestrator know it needs cleaning or fallback.
         return { isSafe: false, reason: 'banned_pattern' };
       }
     }
@@ -31,7 +50,6 @@ export class SafetyGate {
   }
 
   cleanOutput(output: string): string {
-    const cleaned = output.replace(/—/g, ',').replace(/–/g, ',');
-    return cleaned;
+    return output.replace(/—/g, ',').replace(/–/g, ',');
   }
 }
