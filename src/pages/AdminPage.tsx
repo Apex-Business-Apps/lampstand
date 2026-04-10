@@ -1,9 +1,36 @@
 import { AppShell } from '@/components/AppShell';
 import { SEED_THEMES } from '@/data/seed';
 import { getSafetyEvents } from '@/lib/storage';
-import { Shield, BookOpen, Settings2 } from 'lucide-react';
+import { Shield, BookOpen, Settings2, Lock } from 'lucide-react';
+import { useAdminRole } from '@/hooks/useAdminRole';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function AdminPage() {
+  const { user, loading: authLoading } = useAuth();
+  const { isAdmin, loading: roleLoading } = useAdminRole();
+
+  if (authLoading || roleLoading) {
+    return (
+      <AppShell>
+        <div className="flex items-center justify-center h-64">
+          <p className="text-muted-foreground animate-pulse">Verifying access…</p>
+        </div>
+      </AppShell>
+    );
+  }
+
+  if (!user || !isAdmin) {
+    return (
+      <AppShell>
+        <div className="flex flex-col items-center justify-center h-64 gap-3">
+          <Lock className="h-8 w-8 text-muted-foreground" />
+          <p className="text-muted-foreground font-medium">Access denied</p>
+          <p className="text-sm text-muted-foreground/70">You do not have admin privileges.</p>
+        </div>
+      </AppShell>
+    );
+  }
+
   const safetyEvents = getSafetyEvents();
 
   return (
@@ -50,7 +77,7 @@ export default function AdminPage() {
         <Section icon={Settings2} title="Configuration Hooks">
           <div className="bg-secondary/50 rounded-lg p-4">
             <p className="text-xs text-muted-foreground">
-              Translation configs, safety rules, and content versioning hooks are designed as pluggable interfaces. Connect your content management system or admin API here.
+              Translation configs, safety rules, and content versioning hooks are designed as pluggable interfaces.
             </p>
             <div className="mt-3 space-y-1">
               <p className="text-xs font-mono text-muted-foreground">• IRetrievalAdapter - scripture retrieval</p>

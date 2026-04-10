@@ -3,22 +3,66 @@ import type { IRetrievalAdapter, IAIAdapter, RetrievalRequest, RetrievalResult, 
 import { SEED_PASSAGES, SEED_SERMONS, SEED_GUIDANCE_MAP } from '@/data/seed';
 import { checkInputSafety } from './safety';
 
+// ─── Tokenization helpers for fuzzy retrieval ───
+function tokenize(text: string): string[] {
+  return text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
+}
+
+function stem(word: string): string {
+  return word
+    .replace(/(ing|ed|ly|ness|ment|tion|sion|ful|less|able|ible|ous|ive|ity)$/i, '')
+    .replace(/ies$/, 'y')
+    .replace(/([^s])s$/, '$1');
+}
+
+function computeScore(query: string, passage: ScripturePassage): number {
+  const queryTokens = tokenize(query).map(stem);
+  const passageText = `${passage.text} ${passage.book} ${passage.reference}`.toLowerCase();
+  const passageTokens = tokenize(passageText).map(stem);
+  const passageSet = new Set(passageTokens);
+
+  let score = 0;
+  for (const token of queryTokens) {
+    if (passageSet.has(token)) {
+      score += 2; // exact stem match
+    } else {
+      // partial substring match
+      for (const pt of passageSet) {
+        if (pt.includes(token) || token.includes(pt)) {
+          score += 1;
+          break;
+        }
+      }
+    }
+  }
+
+  // Normalize by query length to avoid bias toward longer queries
+  return queryTokens.length > 0 ? score / queryTokens.length : 0;
+}
+
 // ─── Local Retrieval Adapter (seed data, swappable for RAG) ───
 export class LocalRetrievalAdapter implements IRetrievalAdapter {
   async search(req: RetrievalRequest): Promise<RetrievalResult> {
     const query = req.query.toLowerCase();
-    const matches = SEED_PASSAGES.filter(p =>
-      p.text.toLowerCase().includes(query) ||
-      p.book.toLowerCase().includes(query) ||
-      p.reference.toLowerCase().includes(query)
-    ).slice(0, req.topK || 3);
+
+    // Score all passages using fuzzy token matching
+    const scored = SEED_PASSAGES
+      .map(p => ({ passage: p, score: computeScore(query, p) }))
+      .sort((a, b) => b.score - a.score);
+
+    const topK = req.topK || 3;
+    const threshold = 0.3;
+    const matches = scored.filter(s => s.score >= threshold).slice(0, topK);
 
     if (matches.length === 0) {
       // Return a random passage as fallback
       const random = SEED_PASSAGES[Math.floor(Math.random() * SEED_PASSAGES.length)];
       return { passages: [random], confidence: 0.3, source: 'local-seed-fallback' };
     }
-    return { passages: matches, confidence: 0.8, source: 'local-seed' };
+
+    const topScore = matches[0].score;
+    const confidence = Math.min(0.95, 0.5 + topScore * 0.15);
+    return { passages: matches.map(m => m.passage), confidence, source: 'local-seed' };
   }
 
   async getByReference(ref: string): Promise<ScripturePassage | null> {
@@ -64,16 +108,16 @@ export class LocalAIAdapter implements IAIAdapter {
   async classifyConcern(input: string): Promise<string[]> {
     const lower = input.toLowerCase();
     const themeKeywords: Record<string, string[]> = {
-      fear: ['afraid', 'scared', 'fear', 'worry', 'anxious', 'anxiety', 'panic'],
-      grief: ['loss', 'grief', 'died', 'death', 'mourning', 'miss', 'gone'],
-      loneliness: ['alone', 'lonely', 'isolated', 'nobody', 'no one'],
-      forgiveness: ['forgive', 'forgiveness', 'guilt', 'sorry', 'regret', 'ashamed'],
-      purpose: ['purpose', 'meaning', 'why', 'direction', 'lost', 'confused'],
-      gratitude: ['thankful', 'grateful', 'blessed', 'gratitude', 'appreciate'],
-      temptation: ['tempt', 'struggle', 'weak', 'failing', 'addiction'],
-      conflict: ['fight', 'argument', 'conflict', 'disagree', 'angry', 'anger'],
-      peace: ['peace', 'calm', 'rest', 'still', 'quiet'],
-      uncertainty: ['uncertain', 'unsure', 'doubt', 'don\'t know', 'confused'],
+      fear: ['afraid', 'scared', 'fear', 'worry', 'anxious', 'anxiety', 'panic', 'nervous', 'dread', 'terrified'],
+      grief: ['loss', 'grief', 'died', 'death', 'mourning', 'miss', 'gone', 'funeral', 'passed away', 'bereaved'],
+      loneliness: ['alone', 'lonely', 'isolated', 'nobody', 'no one', 'disconnected', 'abandoned'],
+      forgiveness: ['forgive', 'forgiveness', 'guilt', 'sorry', 'regret', 'ashamed', 'shame', 'blame'],
+      purpose: ['purpose', 'meaning', 'why', 'direction', 'lost', 'confused', 'calling', 'vocation'],
+      gratitude: ['thankful', 'grateful', 'blessed', 'gratitude', 'appreciate', 'thanksgiving'],
+      temptation: ['tempt', 'struggle', 'weak', 'failing', 'addiction', 'urge', 'resist'],
+      conflict: ['fight', 'argument', 'conflict', 'disagree', 'angry', 'anger', 'resentment', 'frustrat'],
+      peace: ['peace', 'calm', 'rest', 'still', 'quiet', 'serene', 'tranquil'],
+      uncertainty: ['uncertain', 'unsure', 'doubt', 'don\'t know', 'confused', 'indecisive', 'hesitant'],
     };
     const found: string[] = [];
     for (const [theme, keywords] of Object.entries(themeKeywords)) {

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { ScriptureCard } from '@/components/ScriptureCard';
 import { ReflectionBlock } from '@/components/ReflectionBlock';
@@ -23,7 +23,7 @@ export default function GuidancePage() {
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(true);
   const [transcriptPreview, setTranscriptPreview] = useState('');
 
-  const profile = getProfile();
+  const profile = useMemo(() => getProfile(), []);
   const voiceGender: VoiceGender = profile?.voiceGender || 'male';
 
   ttsAdapter.onStateChange = (state) => {
