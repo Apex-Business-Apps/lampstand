@@ -74,7 +74,7 @@ export const ConsentModal = () => {
           </div>
 
           <div className="text-xs text-muted-foreground bg-secondary/50 p-3 rounded border">
-            By continuing, you agree to our <a href="/legal/terms" className="underline hover:text-primary" target="_blank" rel="noreferrer">Terms of Service</a> and acknowledge our <a href="/legal/privacy" className="underline hover:text-primary" target="_blank" rel="noreferrer">Privacy Policy</a>. LampStand is an AI companion and does not replace professional counseling or medical advice.
+            By continuing, you agree to our <a href="/legal/terms" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Terms of Service</a> and acknowledge our <a href="/legal/privacy" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Privacy Policy</a>. Lampstand is an AI companion and does not replace professional counseling or medical advice.
           </div>
         </div>
 
