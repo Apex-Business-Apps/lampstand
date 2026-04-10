@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { saveConsentState } from "@/lib/storage";
+
+const CONSENT_KEY = "lampstand_consent_given";
 
 export const ConsentModal = () => {
   const [open, setOpen] = useState(false);
@@ -9,16 +12,21 @@ export const ConsentModal = () => {
   const [consentVoice, setConsentVoice] = useState(false);
 
   useEffect(() => {
-    const hasConsented = localStorage.getItem("lampstand_consent_given");
+    const hasConsented = localStorage.getItem(CONSENT_KEY);
     if (!hasConsented) {
       setOpen(true);
     }
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem("lampstand_consent_given", "true");
-    localStorage.setItem("lampstand_consent_storage", consentStorage ? "true" : "false");
-    localStorage.setItem("lampstand_consent_voice", consentVoice ? "true" : "false");
+    localStorage.setItem(CONSENT_KEY, "true");
+    // Sync to centralized consent state store
+    saveConsentState({
+      localAdaptiveMemory: consentStorage,
+      localJournalStorage: consentStorage,
+      microphone: consentVoice,
+      voiceOutput: consentVoice,
+    });
     setOpen(false);
   };
 
@@ -26,9 +34,9 @@ export const ConsentModal = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="font-serif text-2xl">Welcome to Lampstand</DialogTitle>
+          <DialogTitle className="font-serif text-2xl">Welcome to LampStand</DialogTitle>
           <DialogDescription className="font-sans text-base mt-2">
-            Before we begin, we want to be transparent about how Lampstand works and ask for your permission regarding your data.
+            Before we begin, we want to be transparent about how LampStand works and ask for your permission regarding your data.
           </DialogDescription>
         </DialogHeader>
 
@@ -44,7 +52,7 @@ export const ConsentModal = () => {
                 Local Storage & Adaptive Memory
               </label>
               <p className="text-sm text-muted-foreground">
-                Allow Lampstand to store your journal entries and conversation history locally on this device. You can clear this data at any time.
+                Allow LampStand to store your journal entries and conversation history locally on this device. You can clear this data at any time in Settings.
               </p>
             </div>
           </div>
@@ -60,7 +68,7 @@ export const ConsentModal = () => {
                 Voice Input (Microphone)
               </label>
               <p className="text-sm text-muted-foreground">
-                Allow Lampstand to access your microphone for voice interaction. Audio is transcribed locally or via an anonymous cloud service and raw audio is not saved.
+                Allow LampStand to access your microphone for voice interaction. Audio is transcribed locally via your browser and raw audio is never stored or transmitted.
               </p>
             </div>
           </div>

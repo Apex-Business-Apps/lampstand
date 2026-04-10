@@ -27,13 +27,21 @@ export class ConversationOrchestrator {
 
     const systemPrompt = `${Prompts.style}\n\n${Prompts[context.mode]}\n\nRelevant Scripture:\n${contextText}`;
 
+    // Build multi-turn messages for conversational memory
+    const historyWindow = (context.history || []).slice(-6);
+    const fullPrompt = historyWindow.length > 0
+      ? `Previous conversation:\n${historyWindow.map(m => `${m.role}: ${m.content}`).join('\n')}\n\nUser: ${input}`
+      : input;
+
     try {
-      let output = await this.provider.generateText(input, systemPrompt);
+      let output = await this.provider.generateText(fullPrompt, systemPrompt);
 
       const postCheck = await this.safetyGate.validateOutput(output);
       if (!postCheck.isSafe) {
         output = this.safetyGate.cleanOutput(output);
       }
+
+      this.circuitBreaker.recordSuccess();
 
       return {
         id: crypto.randomUUID(),
