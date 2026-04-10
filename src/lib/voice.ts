@@ -73,7 +73,7 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
 
 class NullSpeechToTextProvider implements SpeechToTextProvider {
   isSupported() { return false; }
-  async startListening() { throw new Error('Speech recognition is not supported on this device. You can still type your request.'); }
+  async startListening(): Promise<string> { throw new Error('Speech recognition is not supported on this device. You can still type your request.'); }
   stopListening() {}
 }
 
