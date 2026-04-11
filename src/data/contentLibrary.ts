@@ -212,6 +212,102 @@ const EXTRA_PASSAGES: ScripturePassage[] = [
     text: '"There is an appointed time for everything, and a time for every affair under the heavens."',
     translation: 'NABRE', reference: 'Ecclesiastes 3:1',
   },
+  {
+    passage: passagesById['psalm-139-13-14'],
+    reflection: 'You were not assembled carelessly. Every part of you was intended. On days when you feel like too much or not enough, remember you are the deliberate work of a loving Creator.',
+    prayer: 'God who formed me, quiet the voice that says I am not enough and remind me I am wonderfully made. Amen.',
+    theme: 'identity',
+  },
+  {
+    passage: passagesById['micah-6-8'],
+    reflection: 'Faithfulness does not always require grand gestures. Sometimes it looks like being fair, being kind, and walking through the day without pretending you have all the answers.',
+    prayer: 'Lord, make my steps humble, my hands just, and my heart kind today. Amen.',
+    theme: 'justice',
+  },
+  {
+    passage: passagesById['psalm-91-1-2'],
+    reflection: 'Shelter is not always a physical location. It can be a posture of the heart — turning toward God before turning toward anxiety.',
+    prayer: 'Most High God, be my refuge today when the world feels exposing. Amen.',
+    theme: 'shelter',
+  },
+  {
+    passage: passagesById['isaiah-43-1-2'],
+    reflection: 'God does not promise the absence of deep water. He promises presence in the middle of it. That is a different kind of safety — one that does not require circumstances to cooperate.',
+    prayer: 'Lord, walk with me through what I cannot go around. Amen.',
+    theme: 'presence',
+  },
+  {
+    passage: passagesById['rom-12-2'],
+    reflection: 'Transformation is not one dramatic moment. It is the quiet daily practice of letting God reshape how you see, think, and respond.',
+    prayer: 'God, renew my mind today and help me see clearly what is good. Amen.',
+    theme: 'transformation',
+  },
+  {
+    passage: passagesById['psalm-103-2-4'],
+    reflection: 'Memory can be short when it comes to grace. This psalm is a deliberate act of remembering — every pardon, every healing, every rescue from the pit.',
+    prayer: 'Generous God, keep my memory of your mercy long and my gratitude fresh. Amen.',
+    theme: 'remembrance',
+  },
+  {
+    passage: passagesById['matt-6-33-34'],
+    reflection: 'Tomorrow is not yours to carry today. There is enough grace for this day, this hour, this decision. Let the rest wait.',
+    prayer: 'Jesus, free me from borrowing tomorrow's worries and teach me to live today. Amen.',
+    theme: 'trust',
+  },
+  {
+    passage: passagesById['john-15-4-5'],
+    reflection: 'Productivity culture says bear fruit faster. Jesus says remain connected. The fruitfulness will follow, but only from rootedness, not from rushing.',
+    prayer: 'Lord, keep me rooted in you before I try to be useful to anyone else. Amen.',
+    theme: 'abiding',
+  },
+  {
+    passage: passagesById['eph-3-20-21'],
+    reflection: 'Your imagination is not the ceiling. God works beyond what you can picture, through power that is already at work within you — not someday, but now.',
+    prayer: 'God of immeasurably more, stretch my expectations and surprise me with your faithfulness. Amen.',
+    theme: 'abundance',
+  },
+  {
+    passage: passagesById['psalm-16-8-9'],
+    reflection: 'Stability is not the absence of disruption. It is keeping the Lord before you so that when disruption comes, your center holds.',
+    prayer: 'Lord, be at my right hand today and keep my heart glad in your nearness. Amen.',
+    theme: 'stability',
+  },
+  {
+    passage: passagesById['isaiah-40-31'],
+    reflection: 'Waiting on God is not idleness. It is the active choice to trade your exhaustion for a strength that outlasts your own capacity.',
+    prayer: 'God of renewal, lift me above the fatigue and give me strength I cannot manufacture. Amen.',
+    theme: 'endurance',
+  },
+  {
+    passage: passagesById['psalm-37-4-5'],
+    reflection: 'Delight is not a performance requirement. It is an invitation to enjoy God before you ask God for things. The desires of your heart may change in the presence of that kind of enjoyment.',
+    prayer: 'Lord, teach me to delight in you and trust you with the desires I carry. Amen.',
+    theme: 'delight',
+  },
+  {
+    passage: passagesById['2-tim-1-7'],
+    reflection: 'The spirit you received is not one of timidity. Power, love, and self-control — these are already part of your equipment. Use them.',
+    prayer: 'God, activate the courage and love you have already placed inside me. Amen.',
+    theme: 'boldness',
+  },
+  {
+    passage: passagesById['josh-1-9'],
+    reflection: 'This command to be strong is not issued to shame your weakness. It is backed by a promise: God is with you wherever you go. Strength comes from companionship, not willpower.',
+    prayer: 'Lord of hosts, go with me into every room, every meeting, every unknown today. Amen.',
+    theme: 'strength',
+  },
+  {
+    passage: passagesById['eccl-3-1'],
+    reflection: 'Not every season demands the same thing from you. Some seasons are for planting, some for resting, some for letting go. Honor the one you are in.',
+    prayer: 'God of all seasons, give me the wisdom to honor the time I am in right now. Amen.',
+    theme: 'seasons',
+  },
+  {
+    passage: passagesById['rom-8-28'],
+    reflection: 'This verse is not a promise that everything will feel good. It is a promise that nothing is wasted — not the pain, not the confusion, not the waiting.',
+    prayer: 'Lord, help me trust that you are weaving good from what I cannot yet understand. Amen.',
+    theme: 'providence',
+  },
 ];
 
 export const CONTENT_PASSAGES: ScripturePassage[] = [...SEED_PASSAGES, ...EXTRA_PASSAGES];
