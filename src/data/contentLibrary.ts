@@ -287,7 +287,7 @@ const EXTRA_PASSAGES: ScripturePassage[] = [
   {
     id: 'john-20-27',
     book: 'John', chapter: 20, verseStart: 27, verseEnd: 27,
-    text: '"Then he said to Thomas, \"Put your finger here and see my hands, and bring your hand and put it into my side, and do not be unbelieving, but believe.\""',
+    text: '"Then he said to Thomas, "Put your finger here and see my hands, and bring your hand and put it into my side, and do not be unbelieving, but believe.""',
     translation: 'NABRE', reference: 'John 20:27',
   },
   {
