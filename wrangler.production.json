@@ -11,11 +11,11 @@
   },
   "routes": [
     {
-      "pattern": "thelampstand.icu/*",
+      "pattern": "thelampstand.icu",
       "custom_domain": true
     },
     {
-      "pattern": "www.thelampstand.icu/*",
+      "pattern": "www.thelampstand.icu",
       "custom_domain": true
     }
   ]
