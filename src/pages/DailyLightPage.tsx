@@ -1,27 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { ScriptureCard } from '@/components/ScriptureCard';
 import { ReflectionBlock } from '@/components/ReflectionBlock';
 import { AgentPresence } from '@/components/AgentPresence';
 import { Button } from '@/components/ui/button';
-import { getDailyLight } from '@/lib/dailyLight';
+import { getDailyLight, getDailyLightWithHistory } from '@/lib/dailyLight';
 import { savePassage, getSavedPassages } from '@/lib/storage';
-import type { SavedPassage } from '@/types';
+import { useAuth } from '@/hooks/useAuth';
+import type { DailyLight, SavedPassage } from '@/types';
 import { ChevronDown } from 'lucide-react';
 
 export default function DailyLightPage() {
-  const today = getDailyLight();
+  const { user } = useAuth();
+  const [today, setToday] = useState<DailyLight>(() => getDailyLight());
   const [showDeeper, setShowDeeper] = useState(false);
   const [saved, setSaved] = useState(() => getSavedPassages().some(s => s.passage.reference === today.passage.reference));
 
-
+  useEffect(() => {
+    if (!user?.id) return;
+    let cancelled = false;
+    getDailyLightWithHistory(user.id).then(d => {
+      if (!cancelled) {
+        setToday(d);
+        setSaved(getSavedPassages().some(s => s.passage.reference === d.passage.reference));
+      }
+    });
+    return () => { cancelled = true; };
+  }, [user?.id]);
 
   async function handleShare() {
-    const shareText = `${today.passage.reference}
-
-${today.passage.text}
-
-Reflection: ${today.reflection}`;
+    const shareText = `${today.passage.reference}\n\n${today.passage.text}\n\nReflection: ${today.reflection}`;
     if (navigator.share) {
       await navigator.share({ title: 'LampStand Daily Light', text: shareText });
       return;

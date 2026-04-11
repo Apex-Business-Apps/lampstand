@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      daily_light_history: {
+        Row: {
+          created_at: string
+          id: string
+          passage_ref: string
+          shown_date: string
+          theme: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          passage_ref: string
+          shown_date?: string
+          theme?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          passage_ref?: string
+          shown_date?: string
+          theme?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       journal_entries: {
         Row: {
           content: string
