@@ -122,6 +122,258 @@ const EXTRA_PASSAGES: ScripturePassage[] = [
     translation: 'NABRE',
     reference: 'Hebrews 4:15-16',
   },
+  {
+    id: 'psalm-139-13-14',
+    book: 'Psalms', chapter: 139, verseStart: 13, verseEnd: 14,
+    text: '"You formed my inmost being; you knit me in my mother\'s womb. I praise you, because I am wonderfully made; wonderful are your works!"',
+    translation: 'NABRE', reference: 'Psalm 139:13-14',
+  },
+  {
+    id: 'micah-6-8',
+    book: 'Micah', chapter: 6, verseStart: 8, verseEnd: 8,
+    text: '"You have been told, O mortal, what is good, and what the LORD requires of you: Only to do justice and to love goodness, and to walk humbly with your God."',
+    translation: 'NABRE', reference: 'Micah 6:8',
+  },
+  {
+    id: 'psalm-91-1-2',
+    book: 'Psalms', chapter: 91, verseStart: 1, verseEnd: 2,
+    text: '"You who dwell in the shelter of the Most High, who abide in the shade of the Almighty, say to the LORD, \'My refuge and fortress, my God in whom I trust.\'"',
+    translation: 'NABRE', reference: 'Psalm 91:1-2',
+  },
+  {
+    id: 'isaiah-43-1-2',
+    book: 'Isaiah', chapter: 43, verseStart: 1, verseEnd: 2,
+    text: '"Fear not, for I have redeemed you; I have called you by name: you are mine. When you pass through waters, I will be with you."',
+    translation: 'NABRE', reference: 'Isaiah 43:1-2',
+  },
+  {
+    id: 'rom-12-2',
+    book: 'Romans', chapter: 12, verseStart: 2, verseEnd: 2,
+    text: '"Do not conform yourselves to this age but be transformed by the renewal of your mind, that you may discern what is the will of God, what is good and pleasing and perfect."',
+    translation: 'NABRE', reference: 'Romans 12:2',
+  },
+  {
+    id: 'psalm-103-2-4',
+    book: 'Psalms', chapter: 103, verseStart: 2, verseEnd: 4,
+    text: '"Bless the LORD, my soul; and do not forget all his gifts, who pardons all your sins, and heals all your ills, who redeems your life from the pit, and crowns you with mercy and compassion."',
+    translation: 'NABRE', reference: 'Psalm 103:2-4',
+  },
+  {
+    id: 'matt-6-33-34',
+    book: 'Matthew', chapter: 6, verseStart: 33, verseEnd: 34,
+    text: '"But seek first the kingdom of God and his righteousness, and all these things will be given you besides. Do not worry about tomorrow; tomorrow will take care of itself."',
+    translation: 'NABRE', reference: 'Matthew 6:33-34',
+  },
+  {
+    id: 'john-15-4-5',
+    book: 'John', chapter: 15, verseStart: 4, verseEnd: 5,
+    text: '"Remain in me, as I remain in you. Just as a branch cannot bear fruit on its own unless it remains on the vine, so neither can you unless you remain in me. I am the vine, you are the branches."',
+    translation: 'NABRE', reference: 'John 15:4-5',
+  },
+  {
+    id: 'eph-3-20-21',
+    book: 'Ephesians', chapter: 3, verseStart: 20, verseEnd: 21,
+    text: '"Now to him who is able to accomplish far more than all we ask or imagine, by the power at work within us, to him be glory in the church and in Christ Jesus."',
+    translation: 'NABRE', reference: 'Ephesians 3:20-21',
+  },
+  {
+    id: 'psalm-16-8-9',
+    book: 'Psalms', chapter: 16, verseStart: 8, verseEnd: 9,
+    text: '"I keep the LORD always before me; with him at my right hand, I shall never be shaken. Therefore my heart is glad, my soul rejoices; my body also dwells secure."',
+    translation: 'NABRE', reference: 'Psalm 16:8-9',
+  },
+  {
+    id: 'isaiah-40-31',
+    book: 'Isaiah', chapter: 40, verseStart: 31, verseEnd: 31,
+    text: '"They that hope in the LORD will renew their strength, they will soar on eagles\' wings; they will run and not grow weary, walk and not grow faint."',
+    translation: 'NABRE', reference: 'Isaiah 40:31',
+  },
+  {
+    id: 'psalm-37-4-5',
+    book: 'Psalms', chapter: 37, verseStart: 4, verseEnd: 5,
+    text: '"Find your delight in the LORD who will give you your heart\'s desire. Commit your way to the LORD; trust in him and he will act."',
+    translation: 'NABRE', reference: 'Psalm 37:4-5',
+  },
+  {
+    id: '2-tim-1-7',
+    book: '2 Timothy', chapter: 1, verseStart: 7, verseEnd: 7,
+    text: '"For God did not give us a spirit of cowardice but rather of power and love and self-control."',
+    translation: 'NABRE', reference: '2 Timothy 1:7',
+  },
+  {
+    id: 'josh-1-9',
+    book: 'Joshua', chapter: 1, verseStart: 9, verseEnd: 9,
+    text: '"I command you: be strong and steadfast! Do not fear nor be dismayed, for the LORD, your God, is with you wherever you go."',
+    translation: 'NABRE', reference: 'Joshua 1:9',
+  },
+  {
+    id: 'eccl-3-1',
+    book: 'Ecclesiastes', chapter: 3, verseStart: 1, verseEnd: 1,
+    text: '"There is an appointed time for everything, and a time for every affair under the heavens."',
+    translation: 'NABRE', reference: 'Ecclesiastes 3:1',
+  },
+  {
+    id: 'rom-8-1',
+    book: 'Romans', chapter: 8, verseStart: 1, verseEnd: 1,
+    text: '"There is now no condemnation for those who are in Christ Jesus."',
+    translation: 'NABRE', reference: 'Romans 8:1',
+  },
+  {
+    id: 'rom-8-38-39',
+    book: 'Romans', chapter: 8, verseStart: 38, verseEnd: 39,
+    text: '"For I am convinced that neither death, nor life, nor angels, nor principalities, nor present things, nor future things, nor powers, nor height, nor depth, nor any other creature will be able to separate us from the love of God in Christ Jesus our Lord."',
+    translation: 'NABRE', reference: 'Romans 8:38-39',
+  },
+  {
+    id: 'rom-8-15-16',
+    book: 'Romans', chapter: 8, verseStart: 15, verseEnd: 16,
+    text: '"For you did not receive a spirit of slavery to fall back into fear, but you received a spirit of adoption, through which we cry, Abba, Father! The Spirit itself bears witness with our spirit that we are children of God."',
+    translation: 'NABRE', reference: 'Romans 8:15-16',
+  },
+  {
+    id: 'psalm-42-1-2',
+    book: 'Psalms', chapter: 42, verseStart: 1, verseEnd: 2,
+    text: '"As the deer longs for streams of water, so my soul longs for you, O God. My soul thirsts for God, the living God. When can I enter and see the face of God?"',
+    translation: 'NABRE', reference: 'Psalm 42:1-2',
+  },
+  {
+    id: 'psalm-130-1-4',
+    book: 'Psalms', chapter: 130, verseStart: 1, verseEnd: 4,
+    text: '"Out of the depths I call to you, LORD; Lord, hear my cry! May your ears be attentive to my cry for mercy. If you, LORD, keep account of sins, Lord, who can stand? But with you is forgiveness, and so you are revered."',
+    translation: 'NABRE', reference: 'Psalm 130:1-4',
+  },
+  {
+    id: 'psalm-131-1-2',
+    book: 'Psalms', chapter: 131, verseStart: 1, verseEnd: 2,
+    text: '"LORD, my heart is not proud; nor are my eyes haughty. I do not busy myself with great matters, with things too sublime for me. Rather, I have stilled my soul, like a weaned child to its mother; weaned is my soul."',
+    translation: 'NABRE', reference: 'Psalm 131:1-2',
+  },
+  {
+    id: 'psalm-55-22',
+    book: 'Psalms', chapter: 55, verseStart: 22, verseEnd: 22,
+    text: '"Cast your care upon the LORD, who will give you support. He will never allow the righteous to stumble."',
+    translation: 'NABRE', reference: 'Psalm 55:22',
+  },
+  {
+    id: 'psalm-145-18',
+    book: 'Psalms', chapter: 145, verseStart: 18, verseEnd: 18,
+    text: '"The LORD is near to all who call upon him, to all who call upon him in truth."',
+    translation: 'NABRE', reference: 'Psalm 145:18',
+  },
+  {
+    id: 'psalm-73-25-26',
+    book: 'Psalms', chapter: 73, verseStart: 25, verseEnd: 26,
+    text: '"Whom else have I in the heavens? None beside you delights me on earth. Though my flesh and my heart fail, God is the rock of my heart, my portion forever."',
+    translation: 'NABRE', reference: 'Psalm 73:25-26',
+  },
+  {
+    id: 'psalm-147-3',
+    book: 'Psalms', chapter: 147, verseStart: 3, verseEnd: 3,
+    text: '"He heals the brokenhearted, binds up their wounds."',
+    translation: 'NABRE', reference: 'Psalm 147:3',
+  },
+  {
+    id: 'luke-15-20',
+    book: 'Luke', chapter: 15, verseStart: 20, verseEnd: 20,
+    text: '"While he was still a long way off, his father caught sight of him, and was filled with compassion. He ran to his son, embraced him and kissed him."',
+    translation: 'NABRE', reference: 'Luke 15:20',
+  },
+  {
+    id: 'matt-5-3-4',
+    book: 'Matthew', chapter: 5, verseStart: 3, verseEnd: 4,
+    text: '"Blessed are the poor in spirit, for theirs is the kingdom of heaven. Blessed are they who mourn, for they will be comforted."',
+    translation: 'NABRE', reference: 'Matthew 5:3-4',
+  },
+  {
+    id: 'john-20-27',
+    book: 'John', chapter: 20, verseStart: 27, verseEnd: 27,
+    text: '"Then he said to Thomas, "Put your finger here and see my hands, and bring your hand and put it into my side, and do not be unbelieving, but believe.""',
+    translation: 'NABRE', reference: 'John 20:27',
+  },
+  {
+    id: 'isaiah-49-15-16',
+    book: 'Isaiah', chapter: 49, verseStart: 15, verseEnd: 16,
+    text: '"Can a mother forget her infant, be without tenderness for the child of her womb? Even should she forget, I will never forget you. See, upon the palms of my hands I have engraved you."',
+    translation: 'NABRE', reference: 'Isaiah 49:15-16',
+  },
+  {
+    id: 'isaiah-26-3',
+    book: 'Isaiah', chapter: 26, verseStart: 3, verseEnd: 3,
+    text: '"A nation of firm purpose you keep in peace; in peace, for its trust in you."',
+    translation: 'NABRE', reference: 'Isaiah 26:3',
+  },
+  {
+    id: 'isaiah-58-11',
+    book: 'Isaiah', chapter: 58, verseStart: 11, verseEnd: 11,
+    text: '"The LORD will guide you always and satisfy your thirst in parched places, will give strength to your bones. You shall be like a watered garden, like a flowing spring whose waters never fail."',
+    translation: 'NABRE', reference: 'Isaiah 58:11',
+  },
+  {
+    id: 'jer-17-7-8',
+    book: 'Jeremiah', chapter: 17, verseStart: 7, verseEnd: 8,
+    text: '"Blessed are those who trust in the LORD; the LORD will be their trust. They are like a tree planted beside the waters that stretches out its roots to the stream: It does not fear heat when it comes; its leaves stay green."',
+    translation: 'NABRE', reference: 'Jeremiah 17:7-8',
+  },
+  {
+    id: 'lam-3-25-26',
+    book: 'Lamentations', chapter: 3, verseStart: 25, verseEnd: 26,
+    text: '"Good is the LORD to the one who waits for him, to the soul that seeks him; it is good to wait in silence for the LORD\'s salvation."',
+    translation: 'NABRE', reference: 'Lamentations 3:25-26',
+  },
+  {
+    id: 'zeph-3-17',
+    book: 'Zephaniah', chapter: 3, verseStart: 17, verseEnd: 17,
+    text: '"The LORD, your God, is in your midst, a mighty savior. He will rejoice over you with gladness, and renew you in his love; he will sing joyfully because of you."',
+    translation: 'NABRE', reference: 'Zephaniah 3:17',
+  },
+  {
+    id: '2-cor-1-3-4',
+    book: '2 Corinthians', chapter: 1, verseStart: 3, verseEnd: 4,
+    text: '"Blessed be the God and Father of our Lord Jesus Christ, the Father of compassion and God of all encouragement, who encourages us in our every affliction, so that we may be able to encourage those who are in any affliction with the encouragement with which we ourselves are encouraged by God."',
+    translation: 'NABRE', reference: '2 Corinthians 1:3-4',
+  },
+  {
+    id: '2-cor-4-8-9',
+    book: '2 Corinthians', chapter: 4, verseStart: 8, verseEnd: 9,
+    text: '"We are afflicted in every way, but not constrained; perplexed, but not driven to despair; persecuted, but not abandoned; struck down, but not destroyed."',
+    translation: 'NABRE', reference: '2 Corinthians 4:8-9',
+  },
+  {
+    id: 'eph-4-26',
+    book: 'Ephesians', chapter: 4, verseStart: 26, verseEnd: 26,
+    text: '"Be angry but do not sin; do not let the sun set on your anger."',
+    translation: 'NABRE', reference: 'Ephesians 4:26',
+  },
+  {
+    id: 'eph-4-32',
+    book: 'Ephesians', chapter: 4, verseStart: 32, verseEnd: 32,
+    text: '"Be kind to one another, compassionate, forgiving one another as God has forgiven you in Christ."',
+    translation: 'NABRE', reference: 'Ephesians 4:32',
+  },
+  {
+    id: 'phil-4-11-12',
+    book: 'Philippians', chapter: 4, verseStart: 11, verseEnd: 12,
+    text: '"I have learned, in whatever state I am, to be content. I know how to live humbly, and I know how to live in abundance. In every circumstance and in all things I have learned the secret of being well fed and of going hungry, of living in abundance and of being in need."',
+    translation: 'NABRE', reference: 'Philippians 4:11-12',
+  },
+  {
+    id: '1-pet-5-7',
+    book: '1 Peter', chapter: 5, verseStart: 7, verseEnd: 7,
+    text: '"Cast all your worries upon him because he cares for you."',
+    translation: 'NABRE', reference: '1 Peter 5:7',
+  },
+  {
+    id: '1-john-4-18',
+    book: '1 John', chapter: 4, verseStart: 18, verseEnd: 18,
+    text: '"There is no fear in love, but perfect love drives out fear because fear has to do with punishment, and so one who fears is not yet perfect in love."',
+    translation: 'NABRE', reference: '1 John 4:18',
+  },
+  {
+    id: 'heb-11-1',
+    book: 'Hebrews', chapter: 11, verseStart: 1, verseEnd: 1,
+    text: '"Faith is the realization of what is hoped for and evidence of things not seen."',
+    translation: 'NABRE', reference: 'Hebrews 11:1',
+  },
 ];
 
 export const CONTENT_PASSAGES: ScripturePassage[] = [...SEED_PASSAGES, ...EXTRA_PASSAGES];
@@ -131,7 +383,7 @@ const passagesById = Object.fromEntries(CONTENT_PASSAGES.map((passage) => [passa
 type GuidanceTemplate = Omit<GuidanceResult, 'id' | 'concern' | 'themes' | 'createdAt'>;
 type DailyLightTemplate = Omit<DailyLight, 'id' | 'date'>;
 
-function hashString(value: string) {
+export function hashString(value: string) {
   let hash = 0;
   for (let index = 0; index < value.length; index += 1) {
     hash = (hash << 5) - hash + value.charCodeAt(index);
@@ -225,6 +477,271 @@ export const DAILY_LIGHT_LIBRARY: DailyLightTemplate[] = [
     prayer: 'Jesus, meet me with mercy and teach me to come to you without hiding. Amen.',
     theme: 'mercy',
   },
+  {
+    passage: passagesById['psalm-139-13-14'],
+    reflection: 'You were not assembled carelessly. Every part of you was intended. On days when you feel like too much or not enough, remember you are the deliberate work of a loving Creator.',
+    prayer: 'God who formed me, quiet the voice that says I am not enough and remind me I am wonderfully made. Amen.',
+    theme: 'identity',
+  },
+  {
+    passage: passagesById['micah-6-8'],
+    reflection: 'Faithfulness does not always require grand gestures. Sometimes it looks like being fair, being kind, and walking through the day without pretending you have all the answers.',
+    prayer: 'Lord, make my steps humble, my hands just, and my heart kind today. Amen.',
+    theme: 'justice',
+  },
+  {
+    passage: passagesById['psalm-91-1-2'],
+    reflection: 'Shelter is not always a physical location. It can be a posture of the heart — turning toward God before turning toward anxiety.',
+    prayer: 'Most High God, be my refuge today when the world feels exposing. Amen.',
+    theme: 'shelter',
+  },
+  {
+    passage: passagesById['isaiah-43-1-2'],
+    reflection: 'God does not promise the absence of deep water. He promises presence in the middle of it. That is a different kind of safety — one that does not require circumstances to cooperate.',
+    prayer: 'Lord, walk with me through what I cannot go around. Amen.',
+    theme: 'presence',
+  },
+  {
+    passage: passagesById['rom-12-2'],
+    reflection: 'Transformation is not one dramatic moment. It is the quiet daily practice of letting God reshape how you see, think, and respond.',
+    prayer: 'God, renew my mind today and help me see clearly what is good. Amen.',
+    theme: 'transformation',
+  },
+  {
+    passage: passagesById['psalm-103-2-4'],
+    reflection: 'Memory can be short when it comes to grace. This psalm is a deliberate act of remembering — every pardon, every healing, every rescue from the pit.',
+    prayer: 'Generous God, keep my memory of your mercy long and my gratitude fresh. Amen.',
+    theme: 'remembrance',
+  },
+  {
+    passage: passagesById['matt-6-33-34'],
+    reflection: 'Tomorrow is not yours to carry today. There is enough grace for this day, this hour, this decision. Let the rest wait.',
+    prayer: "Jesus, free me from borrowing tomorrow's worries and teach me to live today. Amen.",
+    theme: 'trust',
+  },
+  {
+    passage: passagesById['john-15-4-5'],
+    reflection: 'Productivity culture says bear fruit faster. Jesus says remain connected. The fruitfulness will follow, but only from rootedness, not from rushing.',
+    prayer: 'Lord, keep me rooted in you before I try to be useful to anyone else. Amen.',
+    theme: 'abiding',
+  },
+  {
+    passage: passagesById['eph-3-20-21'],
+    reflection: 'Your imagination is not the ceiling. God works beyond what you can picture, through power that is already at work within you — not someday, but now.',
+    prayer: 'God of immeasurably more, stretch my expectations and surprise me with your faithfulness. Amen.',
+    theme: 'abundance',
+  },
+  {
+    passage: passagesById['psalm-16-8-9'],
+    reflection: 'Stability is not the absence of disruption. It is keeping the Lord before you so that when disruption comes, your center holds.',
+    prayer: 'Lord, be at my right hand today and keep my heart glad in your nearness. Amen.',
+    theme: 'stability',
+  },
+  {
+    passage: passagesById['isaiah-40-31'],
+    reflection: 'Waiting on God is not idleness. It is the active choice to trade your exhaustion for a strength that outlasts your own capacity.',
+    prayer: 'God of renewal, lift me above the fatigue and give me strength I cannot manufacture. Amen.',
+    theme: 'endurance',
+  },
+  {
+    passage: passagesById['psalm-37-4-5'],
+    reflection: 'Delight is not a performance requirement. It is an invitation to enjoy God before you ask God for things. The desires of your heart may change in the presence of that kind of enjoyment.',
+    prayer: 'Lord, teach me to delight in you and trust you with the desires I carry. Amen.',
+    theme: 'delight',
+  },
+  {
+    passage: passagesById['2-tim-1-7'],
+    reflection: 'The spirit you received is not one of timidity. Power, love, and self-control — these are already part of your equipment. Use them.',
+    prayer: 'God, activate the courage and love you have already placed inside me. Amen.',
+    theme: 'boldness',
+  },
+  {
+    passage: passagesById['josh-1-9'],
+    reflection: 'This command to be strong is not issued to shame your weakness. It is backed by a promise: God is with you wherever you go. Strength comes from companionship, not willpower.',
+    prayer: 'Lord of hosts, go with me into every room, every meeting, every unknown today. Amen.',
+    theme: 'strength',
+  },
+  {
+    passage: passagesById['eccl-3-1'],
+    reflection: 'Not every season demands the same thing from you. Some seasons are for planting, some for resting, some for letting go. Honor the one you are in.',
+    prayer: 'God of all seasons, give me the wisdom to honor the time I am in right now. Amen.',
+    theme: 'seasons',
+  },
+  {
+    passage: passagesById['rom-8-28'],
+    reflection: 'This verse is not a promise that everything will feel good. It is a promise that nothing is wasted — not the pain, not the confusion, not the waiting.',
+    prayer: 'Lord, help me trust that you are weaving good from what I cannot yet understand. Amen.',
+    theme: 'providence',
+  },
+  // --- expanded library ---
+  {
+    passage: passagesById['rom-8-1'],
+    reflection: 'Condemnation has a voice that sounds like your own. It runs the tape back until you cannot hear anything else. This verse does not argue with the tape. It simply declares it overruled.',
+    prayer: 'Lord, where shame has tried to define me, let your word be the last word. Amen.',
+    theme: 'freedom',
+  },
+  {
+    passage: passagesById['luke-15-20'],
+    reflection: 'The father did not wait with crossed arms. He saw his son while he was still far off, and he ran. This is the shape of the welcome you are offered. You do not need to arrive cleaned up.',
+    prayer: 'Father, let me feel you running toward me before I have finished my speech. Amen.',
+    theme: 'return',
+  },
+  {
+    passage: passagesById['psalm-42-1-2'],
+    reflection: 'Spiritual dryness is not evidence of failure. It is evidence of thirst. A soul that still longs for God in the silence is not far from God. It is pressing toward God.',
+    prayer: 'God, I am thirsty and I do not know where the water is. But I am still asking. Amen.',
+    theme: 'longing',
+  },
+  {
+    passage: passagesById['psalm-130-1-4'],
+    reflection: 'The depths are a legitimate place to pray from. This psalm does not ask you to rise above them before you cry out. It cries from the depths directly, without apology or cleanup.',
+    prayer: 'Lord, hear me from where I actually am, not where I think I should be. Amen.',
+    theme: 'honesty',
+  },
+  {
+    passage: passagesById['2-cor-1-3-4'],
+    reflection: 'God does not explain every affliction. He enters it. The comfort you receive in your darkest places becomes something you can one day give to someone else in theirs. Nothing is wasted entirely.',
+    prayer: 'God of all consolation, meet me here and let your comfort be real, not only distant. Amen.',
+    theme: 'consolation',
+  },
+  {
+    passage: passagesById['phil-4-11-12'],
+    reflection: 'Paul says he learned contentment. Not received it as a gift, not felt it naturally. Learned it. That means it was hard, and it took time. You may be in the middle of that education right now.',
+    prayer: 'Lord, teach me contentment the way you taught Paul, slowly and from the inside. Amen.',
+    theme: 'contentment',
+  },
+  {
+    passage: passagesById['lam-3-25-26'],
+    reflection: 'There is a goodness in God that does not rush to prove itself. Waiting without answers is not easy. But the soul that can be quiet in the waiting is learning something the hurried life never teaches.',
+    prayer: 'God, make my waiting receptive without making it passive. I am here. Amen.',
+    theme: 'waiting',
+  },
+  {
+    passage: passagesById['1-john-4-18'],
+    reflection: 'Fear and love compete for the same interior space. Perfect love does not negotiate with fear. It displaces it. The question is not how to be less afraid but how to receive more love.',
+    prayer: 'Lord, let your love go further in me than fear has gone. Amen.',
+    theme: 'love',
+  },
+  {
+    passage: passagesById['rom-8-15-16'],
+    reflection: 'You did not receive a spirit of slavery. The spirit you carry is one of adoption, of being drawn close enough to use the word a small child uses for its father. You belong here.',
+    prayer: 'Abba, let that word settle in me today. I am yours. Amen.',
+    theme: 'belonging',
+  },
+  {
+    passage: passagesById['2-cor-4-8-9'],
+    reflection: 'Afflicted, perplexed, persecuted, struck down. Paul names each one clearly. Then names what did not happen: not constrained, not in despair, not abandoned, not destroyed. This is not denial. It is a sober count of what held.',
+    prayer: 'Lord, what held in Paul, let it hold in me. I am not done yet. Amen.',
+    theme: 'resilience',
+  },
+  {
+    passage: passagesById['zeph-3-17'],
+    reflection: 'God does not merely accept you. He rejoices over you. He sings because of you. On the days when you feel tolerated at best, this verse is the correction. You are someone\'s joy.',
+    prayer: 'Lord who sings over me, let that be louder in me today than the voice of not-enough. Amen.',
+    theme: 'delight',
+  },
+  {
+    passage: passagesById['psalm-55-22'],
+    reflection: 'There is weight that was never meant to be yours alone. The invitation here is not vague. Cast it. Give it actual motion. Hand it over and do not take it back this hour.',
+    prayer: 'Lord, I give you what I have been carrying that was not mine to carry alone. Amen.',
+    theme: 'release',
+  },
+  {
+    passage: passagesById['jer-17-7-8'],
+    reflection: 'A tree by the water does not panic in drought because its roots still reach the source. Your visible circumstances may look dry right now. But the roots are another matter entirely.',
+    prayer: 'Lord, deepen my roots toward you, even when the ground above looks barren. Amen.',
+    theme: 'rootedness',
+  },
+  {
+    passage: passagesById['psalm-147-3'],
+    reflection: 'Brokenhearted is not a permanent identity. It is a condition God takes seriously and very specifically. He heals. He binds. He treats the wound as something that deserves direct and patient attention.',
+    prayer: 'God who heals the brokenhearted, find the places in me that are still broken. Amen.',
+    theme: 'healing',
+  },
+  {
+    passage: passagesById['matt-5-3-4'],
+    reflection: 'Those who mourn are called blessed. Not because mourning is pleasant, but because mourning done honestly draws comfort close. You are not disqualified by grief. You are met inside it.',
+    prayer: 'Jesus, bring your comfort to what I am mourning. I do not need it explained. I need you near. Amen.',
+    theme: 'mourning',
+  },
+  {
+    passage: passagesById['isaiah-49-15-16'],
+    reflection: 'A mother could forget. God cannot. Your name is engraved, not written in pencil, not remembered out of obligation. Carved permanently into the palms of his hands. That is how permanent this is.',
+    prayer: 'God who carved my name, remind me I am known when I feel invisible to everyone. Amen.',
+    theme: 'known',
+  },
+  {
+    passage: passagesById['isaiah-58-11'],
+    reflection: 'God does not only walk with you through good terrain. He satisfies in parched places specifically. The dry season does not mean God has withdrawn. It may mean he is doing something that requires that kind of landscape.',
+    prayer: 'Lord, satisfy what is parched in me today and do not let the dryness have the last word. Amen.',
+    theme: 'sustaining',
+  },
+  {
+    passage: passagesById['isaiah-26-3'],
+    reflection: 'Peace that depends on circumstances is not peace. It is luck. This verse offers something different: a steadiness that follows from where your mind is fixed, not from what your circumstances are doing.',
+    prayer: 'God, be the fixed point my thoughts return to when they begin to scatter. Amen.',
+    theme: 'peace',
+  },
+  {
+    passage: passagesById['psalm-145-18'],
+    reflection: 'God is near to all who call. The distance you feel is not evidence that God has moved. It is an invitation to call anyway, from exactly where you are right now.',
+    prayer: 'Lord, I am calling. Close the distance I feel and let your nearness be the answer. Amen.',
+    theme: 'nearness',
+  },
+  {
+    passage: passagesById['john-20-27'],
+    reflection: 'Jesus returned for Thomas. He brought his hands into reach and met doubt with presence, not with rebuke. Your doubt has not disqualified you from the same kind of encounter.',
+    prayer: 'Jesus who came back for Thomas, come back for me in whatever form I can receive you. Amen.',
+    theme: 'doubt',
+  },
+  {
+    passage: passagesById['heb-11-1'],
+    reflection: 'Faith is called evidence. Not a leap into darkness, not the forced absence of questions. A kind of evidence itself. What you hope for, unseen, is real. You are not imagining it.',
+    prayer: 'Lord, let my hope be a form of seeing, even when I cannot see clearly yet. Amen.',
+    theme: 'faith',
+  },
+  {
+    passage: passagesById['rom-8-38-39'],
+    reflection: 'Paul lists everything that might plausibly separate you from God\'s love and says, categorically, none of it can. Not death. Not life. Not the future. The list covers fears you have named and fears you have not named yet.',
+    prayer: 'Lord, let this verse reach the part of me that still fears you have run out of patience with me. Amen.',
+    theme: 'love',
+  },
+  {
+    passage: passagesById['psalm-131-1-2'],
+    reflection: 'The weaned child has stopped crying for milk and simply rests against its mother. That is the posture this psalm describes. Not passivity. Not defeat. The stillness of a soul that has learned to be held without demanding.',
+    prayer: 'Lord, still my soul. I do not need to understand everything. I need to rest in you. Amen.',
+    theme: 'stillness',
+  },
+  {
+    passage: passagesById['psalm-73-25-26'],
+    reflection: 'The psalmist does not pretend flesh and heart do not fail. They do. But underneath all of that, there is a portion that does not: God himself as the foundation when everything else gives way.',
+    prayer: 'Lord, be enough when I can feel everything else shifting. Be my portion today. Amen.',
+    theme: 'foundation',
+  },
+  {
+    passage: passagesById['eph-4-26'],
+    reflection: 'Anger is acknowledged here, not forbidden. The concern is not the feeling but where it settles. Let it move through. Do not give it permanent residence inside you.',
+    prayer: 'God, I hand you the anger before I let it harden into something I cannot undo. Amen.',
+    theme: 'anger',
+  },
+  {
+    passage: passagesById['eph-4-32'],
+    reflection: 'Forgiveness is offered here as something you extend because you received it first, not because you manufactured it from goodwill alone. The source of the forgiving is the forgiveness already given to you.',
+    prayer: 'Lord, make what you have given me the reason I can give it to someone else today. Amen.',
+    theme: 'forgiveness',
+  },
+  {
+    passage: passagesById['1-pet-5-7'],
+    reflection: 'The reason given for casting your worry is the simplest possible: because he cares for you. Not because you have earned care, not because the worry is small enough. Because he cares.',
+    prayer: 'Lord, take what I have been carrying unnecessarily. Let your care be enough. Amen.',
+    theme: 'trust',
+  },
+  {
+    passage: passagesById['psalm-130-1-4'],
+    reflection: 'There is a form of prayer that does not know the right words, does not feel its way toward hope, just cries from the bottom. God hears that too. The depth of the cry does not determine the reach of the response.',
+    prayer: 'Lord, hear what I cannot articulate. You know the depths. Meet me there. Amen.',
+    theme: 'prayer',
+  },
 ];
 
 const GUIDANCE_THEME_LIBRARY: Record<string, GuidanceTemplate[]> = {
@@ -241,6 +758,12 @@ const GUIDANCE_THEME_LIBRARY: Record<string, GuidanceTemplate[]> = {
       reflectionQuestions: ['What fear has the loudest voice today?', 'Where do you need courage, not certainty?'],
       prayer: 'Lord my light, keep fear from writing the whole story of this day. Amen.',
     },
+    {
+      passage: passagesById['1-john-4-18'],
+      pastoralFraming: 'Fear that will not leave often has a relationship with feeling unloved or conditionally accepted. Perfect love does not negotiate with fear. It displaces it. The question is what stands between you and receiving that love right now.',
+      reflectionQuestions: ['Is there a part of you that fears God is disappointed or has grown impatient?', 'What would it feel like to be completely loved, without conditions, exactly as you are today?'],
+      prayer: 'God whose love is perfect, let that love do what no effort of mine can manage. Drive out my fear. Amen.',
+    },
   ],
   grief: [
     {
@@ -255,6 +778,12 @@ const GUIDANCE_THEME_LIBRARY: Record<string, GuidanceTemplate[]> = {
       reflectionQuestions: ['What does mercy look like today?', 'What would it mean to be tender with yourself?'],
       prayer: 'God of mercy, carry me through this grief one honest breath at a time. Amen.',
     },
+    {
+      passage: passagesById['matt-5-3-4'],
+      pastoralFraming: 'Jesus does not call mourners to hurry through their grief to reach some more faithful state. He calls them blessed right where they are, in the mourning itself, and he promises comfort. You do not have to be done grieving to receive that.',
+      reflectionQuestions: ['What are you mourning that you have not yet named out loud?', 'Where do you need company more than answers right now?'],
+      prayer: 'Jesus who called mourners blessed, comfort me with presence, not explanations. Amen.',
+    },
   ],
   loneliness: [
     {
@@ -268,6 +797,12 @@ const GUIDANCE_THEME_LIBRARY: Record<string, GuidanceTemplate[]> = {
       pastoralFraming: 'Sometimes loneliness is less about being physically alone and more about feeling unseen. Let this moment begin with the truth that God does not withdraw from your path.',
       reflectionQuestions: ['What makes you feel unseen lately?', 'What small act of connection is possible today?'],
       prayer: 'Lord, be near to me and help me notice the companionship you still provide. Amen.',
+    },
+    {
+      passage: passagesById['zeph-3-17'],
+      pastoralFraming: 'One of the stranger truths in Scripture is that God does not merely tolerate your existence. He rejoices over it. Loneliness tells you that you are forgotten, an afterthought, a burden. Zephaniah offers the direct correction: you are the object of God\'s joy.',
+      reflectionQuestions: ['If you genuinely believed God delighted in you right now, what would change?', 'What makes that truth difficult to receive?'],
+      prayer: 'Lord who sings over me, let that truth reach the places in me that feel most invisible. Amen.',
     },
   ],
   forgiveness: [
@@ -297,6 +832,12 @@ const GUIDANCE_THEME_LIBRARY: Record<string, GuidanceTemplate[]> = {
       reflectionQuestions: ['Where do you need wisdom most?', 'What simple choice would honor God today?'],
       prayer: 'Generous God, shape my decisions with wisdom and quiet conviction. Amen.',
     },
+    {
+      passage: passagesById['jer-17-7-8'],
+      pastoralFraming: 'Purpose often tries to grow from performance: from achievement, from being recognized, from visible results. The tree in this passage grows because of its roots, not its visibility. You may not be seen in this season. But what you are rooted in still determines everything.',
+      reflectionQuestions: ['What is feeding you right now, or what has stopped feeding you?', 'What would it mean to invest in your roots rather than in being recognized?'],
+      prayer: 'Lord, send my roots deeper into trust in you, even in this dry and unnoticed season. Amen.',
+    },
   ],
   peace: [
     {
@@ -310,6 +851,12 @@ const GUIDANCE_THEME_LIBRARY: Record<string, GuidanceTemplate[]> = {
       pastoralFraming: 'Peace often begins when your soul stops asking a dozen places to save it and returns to God as its center again.',
       reflectionQuestions: ['What have you been leaning on too heavily?', 'What helps you return to center?'],
       prayer: 'Lord, gather my scattered attention and rest my soul in you alone. Amen.',
+    },
+    {
+      passage: passagesById['isaiah-26-3'],
+      pastoralFraming: 'Perfect peace is not the absence of complexity. It belongs to the mind that stays fixed on God rather than fixed on the situation. This is not willful ignorance of the problem. It is the discipline of choosing what to remain anchored to while the waters are rough.',
+      reflectionQuestions: ['Where does your mind keep returning when you are trying to rest?', 'What would it look like to keep your attention on God for one hour today?'],
+      prayer: 'Lord, be the fixed point my mind returns to. Keep me in your peace today. Amen.',
     },
   ],
   gratitude: [
@@ -368,6 +915,146 @@ const GUIDANCE_THEME_LIBRARY: Record<string, GuidanceTemplate[]> = {
       prayer: 'Faithful God, keep my hope from unraveling while the path is still unclear. Amen.',
     },
   ],
+  shame: [
+    {
+      passage: passagesById['rom-8-1'],
+      pastoralFraming: 'Shame has a way of making you rehearse what you did until it becomes who you are. That is shame\'s lie. What you carry is real, and it matters. But so is this: there is no condemnation. That is not a consolation prize. It is the foundation on which everything else is built.',
+      reflectionQuestions: ['What would it mean to let this be forgiven rather than just managed?', 'Where is shame keeping you from receiving what is already available to you?'],
+      prayer: 'Lord, where shame has made my world smaller, let your mercy make it larger. Receive me as I am. Amen.',
+    },
+    {
+      passage: passagesById['luke-15-20'],
+      pastoralFraming: 'If there is any story in Scripture for someone carrying shame, it is the one where the father sees his son while he is still far off and runs. Not waits with a speech prepared. Runs. Your return does not need to be elegant or well-rehearsed. It only needs to happen.',
+      reflectionQuestions: ['What would coming home look like for you right now?', 'What is shame telling you that the Father himself would not say?'],
+      prayer: 'God who runs toward me, meet me on the road before I finish my speech. Amen.',
+    },
+  ],
+  exhaustion: [
+    {
+      passage: passagesById['isaiah-58-11'],
+      pastoralFraming: 'Exhaustion is not weakness. It is the honest tax of faithfulness carried a long time. This passage does not ask you to gather more strength from inside yourself. It offers a different kind: the kind that comes from being guided and sustained by something far beyond your own reserves.',
+      reflectionQuestions: ['What have you been running on that is no longer sustaining you?', 'What would it mean to be guided right now rather than to keep pushing forward on your own?'],
+      prayer: 'God who satisfies in parched places, refill what has been emptied. Lead me where I can be restored. Amen.',
+    },
+    {
+      passage: passagesById['lam-3-25-26'],
+      pastoralFraming: 'There is a goodness in stillness that exhaustion cannot access by force. Not because stillness is passive, but because it is willing to stop demanding that God move on your timeline. The soul that has learned to wait quietly is not giving up. It is doing something harder and rarer.',
+      reflectionQuestions: ['What would it feel like to stop trying to force resolution today?', 'What does your body or spirit need that you have been pushing past?'],
+      prayer: 'Lord, teach me the kind of waiting that restores. I am tired. I am still yours. Amen.',
+    },
+  ],
+  doubt: [
+    {
+      passage: passagesById['john-20-27'],
+      pastoralFraming: 'Doubt has been treated as a failure of faith by people who have not read carefully. Jesus did not rebuke Thomas from a distance or refuse to return. He came back. He invited him to reach out and touch the evidence. Your doubt is not a wall between you and God. It may be the very doorway he walks through.',
+      reflectionQuestions: ['What specifically do you doubt: God\'s existence, his goodness, or his nearness to you?', 'What would it take for you to begin to believe again, or to stop demanding proof first?'],
+      prayer: 'Lord who returned for Thomas, return for me in whatever form I can receive you right now. Amen.',
+    },
+    {
+      passage: passagesById['heb-11-1'],
+      pastoralFraming: 'Doubt and faith can occupy the same person at the same time. Faith is not the absence of uncertainty. It is movement in the presence of uncertainty. What you are doing right now, bringing your questions here rather than walking away, is already an act of faith, even if it does not feel like one.',
+      reflectionQuestions: ['What have you stopped hoping for because it felt too unlikely or too far away?', 'Is there a distinction worth making between doubting God\'s existence and doubting his attention to you specifically?'],
+      prayer: 'God of the unseen, hold my faith when I cannot hold it myself. Be enough for what I cannot yet believe. Amen.',
+    },
+  ],
+  anger: [
+    {
+      passage: passagesById['eph-4-26'],
+      pastoralFraming: 'Anger is not the problem. Scripture does not tell you not to feel it. The concern is what you do with it before it hardens into something permanent. There is something honest, and sometimes something right, about anger. The question is whether you can move through it without letting it become your residence.',
+      reflectionQuestions: ['What is your anger actually trying to protect?', 'What honest thing are you afraid to say, and to whom does it need to be said?'],
+      prayer: 'God, I bring my anger without pretending it is not there. Help me speak what is true without doing what is harmful. Amen.',
+    },
+    {
+      passage: passagesById['psalm-130-1-4'],
+      pastoralFraming: 'Anger that has nowhere to go often turns into something colder and harder over time. This psalm does not pretend everything is fine. It cries from the depths, without cleanup, without composure. That is a legitimate starting place. God does not require you to arrive calm.',
+      reflectionQuestions: ['What would it mean to cry out honestly rather than continue managing the anger alone?', 'Underneath the anger, is there grief, fear, or something that was taken from you that you have not named yet?'],
+      prayer: 'Lord, receive my anger. Do not let it become bitterness. Hear me from where I am. Amen.',
+    },
+  ],
+  betrayal: [
+    {
+      passage: passagesById['psalm-55-22'],
+      pastoralFraming: 'Betrayal lands differently than other wounds because the blow comes from someone you trusted. It is a double loss: what happened, and who you thought the person was. You do not have to minimize that or move past it on anyone else\'s schedule. But you also were not meant to carry it without support.',
+      reflectionQuestions: ['What is the heaviest part of this: the act itself, or what it says about who you trusted?', 'What does carrying this alone cost you, in ways you might not have named?'],
+      prayer: 'Lord, take this weight I was not supposed to hold alone. Keep me from going cold inside it. Amen.',
+    },
+    {
+      passage: passagesById['psalm-73-25-26'],
+      pastoralFraming: 'After betrayal it is natural to question what can be trusted at all. This psalm arrives at a startling conclusion: even when flesh and heart fail, even when people prove unreliable, there is still a portion that holds. That is not a bypass around the wound. It is somewhere solid to stand while the wound slowly closes.',
+      reflectionQuestions: ['What feels most shaken right now: your trust in others, or your trust in your own judgment?', 'What would it mean to find your footing in God while you wait for the damage to heal?'],
+      prayer: 'God who does not fail, be my portion when everything else feels uncertain. Amen.',
+    },
+  ],
+  illness: [
+    {
+      passage: passagesById['2-cor-1-3-4'],
+      pastoralFraming: 'Illness puts you in a kind of helplessness that is difficult to explain to people who are not in it. The God described here is not one who explains suffering or makes it smaller by comparison. He is the God who enters it with you, who meets you inside the affliction itself, and who somehow makes what you receive in that darkness into something you can one day offer to someone else.',
+      reflectionQuestions: ['What do you most need from God right now: presence, comfort, or simply to be understood?', 'Where, if anywhere, have you found unexpected grace or companionship in the middle of this?'],
+      prayer: 'God of all consolation, meet me in the particulars of this pain. I cannot see past it right now. Be near. Amen.',
+    },
+    {
+      passage: passagesById['2-cor-4-8-9'],
+      pastoralFraming: 'Illness often whispers that you are losing ground, being diminished, being left behind. Paul writes from a different vantage, one that does not deny hardship but refuses to let it have the final word. Afflicted but not crushed. Struck down but not destroyed. This is not triumphalism. It is the honest testimony of someone who has looked at the worst and found the core still holds.',
+      reflectionQuestions: ['What do you fear most about what is happening to your body or your health?', 'What has held in you, even through this, that you did not necessarily expect to hold?'],
+      prayer: 'Lord, I am in this body and it is not cooperating. Hold what I cannot. Amen.',
+    },
+  ],
+  waiting: [
+    {
+      passage: passagesById['lam-3-25-26'],
+      pastoralFraming: 'Waiting on God is not the same as not knowing what comes next. It is the specific discipline of trusting God\'s timing when your own sense of urgency says it should have happened by now. That gap, between when you wanted it and when it comes, is not empty. Something is happening in it, even when you cannot see what.',
+      reflectionQuestions: ['What are you waiting for, and how long have you been holding this?', 'Is the waiting asking anything of you, even if you did not sign up for the lesson?'],
+      prayer: 'God who is good to those who wait, steady me. I am still here. I still trust you. Amen.',
+    },
+    {
+      passage: passagesById['psalm-131-1-2'],
+      pastoralFraming: 'There is a posture the soul can learn that is neither striving nor despair. The psalmist calls it being like a weaned child with its mother: no longer demanding to be fed, simply content to be held. This is not naivety or resignation. It is the far side of a long struggle with what you cannot control.',
+      reflectionQuestions: ['What does it look like for your soul to be quiet rather than pushing right now?', 'What are you still trying to force that you might instead release?'],
+      prayer: 'Lord, still my soul the way only you know how. I give this back to you. Amen.',
+    },
+  ],
+  depression: [
+    {
+      passage: passagesById['psalm-42-1-2'],
+      pastoralFraming: 'Depression often makes God feel absent, the spiritual well dry, the familiar practices hollow. Notice that Psalm 42 does not call this failure. It calls it thirst. The soul that longs for God and finds the longing unmet is not spiritually dead. It is hungry. And that hunger is itself a form of fidelity, even when it does not feel like one.',
+      reflectionQuestions: ['When did you last feel close to God, and what was different about that time?', 'What small thing could you do today, not to fix this, but to acknowledge that the longing is still alive in you?'],
+      prayer: 'God, my soul is dry. I still come to you, even from the dryness. Do not let me give up. Amen.',
+    },
+    {
+      passage: passagesById['psalm-130-1-4'],
+      pastoralFraming: 'The depths are real. This psalm does not deny them or rush out of them to reach a more presentable spiritual state. It cries from the depths, loudly and honestly, without pretense. It does not wait for the feeling of rescue before it speaks. The cry itself is the beginning of the return. That is where you start.',
+      reflectionQuestions: ['What have you not said aloud about how this actually feels, to anyone?', 'Who in your life knows the real weight of what you are carrying right now?'],
+      prayer: 'Lord, I am calling from the depths. Hear me. I am still reaching toward you even in this. Amen.',
+    },
+  ],
+  returning: [
+    {
+      passage: passagesById['luke-15-20'],
+      pastoralFraming: 'Some people come to God for the first time with great relief and joy. Others come back after a long absence carrying a great deal of shame about where they have been. This passage is for the second group specifically. The father does not wait at the door with a prepared speech about what the son did wrong. He runs.',
+      reflectionQuestions: ['What has kept you from returning sooner?', 'What do you imagine God\'s posture toward you actually is, right now, as you are?'],
+      prayer: 'Father, I have come back. I am not sure what I deserve. Run anyway. Amen.',
+    },
+    {
+      passage: passagesById['rom-8-1'],
+      pastoralFraming: 'Re-entering faith after a long time away often triggers a painful internal audit: what you did, who you became, how long you were gone and whether it is too late. Before any of that, hear this first: no condemnation. Not as a reward for returning, not as a grace to be earned by future performance. It is where you begin.',
+      reflectionQuestions: ['What would it look like to receive this without trying to earn it or qualify for it first?', 'What do you want your life with God to look like from here?'],
+      prayer: 'God, I come back with less than I left with. Receive what I am bringing. Amen.',
+    },
+  ],
+  abandonment: [
+    {
+      passage: passagesById['isaiah-49-15-16'],
+      pastoralFraming: 'The feeling of being abandoned by God is among the most isolating spiritual experiences there is. Isaiah does not argue against the feeling or tell you to feel differently. He answers it with something stronger and more permanent: I have engraved your name on my palms. Not written. Not remembered when convenient. Engraved. That does not wash off.',
+      reflectionQuestions: ['When did God\'s absence begin to feel like abandonment?', 'What would it mean to be truly known and truly not forgotten, in the deepest sense?'],
+      prayer: 'God who engraves, remind me of my name in your hands when I cannot feel you near. Amen.',
+    },
+    {
+      passage: passagesById['psalm-145-18'],
+      pastoralFraming: 'Sometimes what feels like abandonment is the silence of a God who is actually closer than the feeling suggests. This verse is direct and unqualified: God is near to all who call. Not near to those who call with the right words, or who have maintained a certain standard. All who call. The distance you feel and the distance that actually exists may not be the same.',
+      reflectionQuestions: ['What would it cost you to call out honestly, even without being sure you will be heard?', 'Have there been moments, even small ones, when God was present and you almost missed it?'],
+      prayer: 'Lord, I am calling. Be what this verse says you are. Amen.',
+    },
+  ],
 };
 
 export function pickGuidanceVariant(theme: string, concern: string): GuidanceTemplate {
@@ -376,4 +1063,3 @@ export function pickGuidanceVariant(theme: string, concern: string): GuidanceTem
   return options[hashString(`${normalizedTheme}:${concern.toLowerCase()}`) % options.length];
 }
 
-export { hashString };
