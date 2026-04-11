@@ -122,6 +122,96 @@ const EXTRA_PASSAGES: ScripturePassage[] = [
     translation: 'NABRE',
     reference: 'Hebrews 4:15-16',
   },
+  {
+    id: 'psalm-139-13-14',
+    book: 'Psalms', chapter: 139, verseStart: 13, verseEnd: 14,
+    text: '"You formed my inmost being; you knit me in my mother\'s womb. I praise you, because I am wonderfully made; wonderful are your works!"',
+    translation: 'NABRE', reference: 'Psalm 139:13-14',
+  },
+  {
+    id: 'micah-6-8',
+    book: 'Micah', chapter: 6, verseStart: 8, verseEnd: 8,
+    text: '"You have been told, O mortal, what is good, and what the LORD requires of you: Only to do justice and to love goodness, and to walk humbly with your God."',
+    translation: 'NABRE', reference: 'Micah 6:8',
+  },
+  {
+    id: 'psalm-91-1-2',
+    book: 'Psalms', chapter: 91, verseStart: 1, verseEnd: 2,
+    text: '"You who dwell in the shelter of the Most High, who abide in the shade of the Almighty, say to the LORD, \'My refuge and fortress, my God in whom I trust.\'"',
+    translation: 'NABRE', reference: 'Psalm 91:1-2',
+  },
+  {
+    id: 'isaiah-43-1-2',
+    book: 'Isaiah', chapter: 43, verseStart: 1, verseEnd: 2,
+    text: '"Fear not, for I have redeemed you; I have called you by name: you are mine. When you pass through waters, I will be with you."',
+    translation: 'NABRE', reference: 'Isaiah 43:1-2',
+  },
+  {
+    id: 'rom-12-2',
+    book: 'Romans', chapter: 12, verseStart: 2, verseEnd: 2,
+    text: '"Do not conform yourselves to this age but be transformed by the renewal of your mind, that you may discern what is the will of God, what is good and pleasing and perfect."',
+    translation: 'NABRE', reference: 'Romans 12:2',
+  },
+  {
+    id: 'psalm-103-2-4',
+    book: 'Psalms', chapter: 103, verseStart: 2, verseEnd: 4,
+    text: '"Bless the LORD, my soul; and do not forget all his gifts, who pardons all your sins, and heals all your ills, who redeems your life from the pit, and crowns you with mercy and compassion."',
+    translation: 'NABRE', reference: 'Psalm 103:2-4',
+  },
+  {
+    id: 'matt-6-33-34',
+    book: 'Matthew', chapter: 6, verseStart: 33, verseEnd: 34,
+    text: '"But seek first the kingdom of God and his righteousness, and all these things will be given you besides. Do not worry about tomorrow; tomorrow will take care of itself."',
+    translation: 'NABRE', reference: 'Matthew 6:33-34',
+  },
+  {
+    id: 'john-15-4-5',
+    book: 'John', chapter: 15, verseStart: 4, verseEnd: 5,
+    text: '"Remain in me, as I remain in you. Just as a branch cannot bear fruit on its own unless it remains on the vine, so neither can you unless you remain in me. I am the vine, you are the branches."',
+    translation: 'NABRE', reference: 'John 15:4-5',
+  },
+  {
+    id: 'eph-3-20-21',
+    book: 'Ephesians', chapter: 3, verseStart: 20, verseEnd: 21,
+    text: '"Now to him who is able to accomplish far more than all we ask or imagine, by the power at work within us, to him be glory in the church and in Christ Jesus."',
+    translation: 'NABRE', reference: 'Ephesians 3:20-21',
+  },
+  {
+    id: 'psalm-16-8-9',
+    book: 'Psalms', chapter: 16, verseStart: 8, verseEnd: 9,
+    text: '"I keep the LORD always before me; with him at my right hand, I shall never be shaken. Therefore my heart is glad, my soul rejoices; my body also dwells secure."',
+    translation: 'NABRE', reference: 'Psalm 16:8-9',
+  },
+  {
+    id: 'isaiah-40-31',
+    book: 'Isaiah', chapter: 40, verseStart: 31, verseEnd: 31,
+    text: '"They that hope in the LORD will renew their strength, they will soar on eagles\' wings; they will run and not grow weary, walk and not grow faint."',
+    translation: 'NABRE', reference: 'Isaiah 40:31',
+  },
+  {
+    id: 'psalm-37-4-5',
+    book: 'Psalms', chapter: 37, verseStart: 4, verseEnd: 5,
+    text: '"Find your delight in the LORD who will give you your heart\'s desire. Commit your way to the LORD; trust in him and he will act."',
+    translation: 'NABRE', reference: 'Psalm 37:4-5',
+  },
+  {
+    id: '2-tim-1-7',
+    book: '2 Timothy', chapter: 1, verseStart: 7, verseEnd: 7,
+    text: '"For God did not give us a spirit of cowardice but rather of power and love and self-control."',
+    translation: 'NABRE', reference: '2 Timothy 1:7',
+  },
+  {
+    id: 'josh-1-9',
+    book: 'Joshua', chapter: 1, verseStart: 9, verseEnd: 9,
+    text: '"I command you: be strong and steadfast! Do not fear nor be dismayed, for the LORD, your God, is with you wherever you go."',
+    translation: 'NABRE', reference: 'Joshua 1:9',
+  },
+  {
+    id: 'eccl-3-1',
+    book: 'Ecclesiastes', chapter: 3, verseStart: 1, verseEnd: 1,
+    text: '"There is an appointed time for everything, and a time for every affair under the heavens."',
+    translation: 'NABRE', reference: 'Ecclesiastes 3:1',
+  },
 ];
 
 export const CONTENT_PASSAGES: ScripturePassage[] = [...SEED_PASSAGES, ...EXTRA_PASSAGES];
