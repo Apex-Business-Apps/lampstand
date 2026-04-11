@@ -562,4 +562,3 @@ export function pickGuidanceVariant(theme: string, concern: string): GuidanceTem
   return options[hashString(`${normalizedTheme}:${concern.toLowerCase()}`) % options.length];
 }
 
-export { hashString };
