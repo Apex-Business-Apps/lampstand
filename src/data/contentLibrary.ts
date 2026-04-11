@@ -251,7 +251,7 @@ const EXTRA_PASSAGES: ScripturePassage[] = [
   {
     passage: passagesById['matt-6-33-34'],
     reflection: 'Tomorrow is not yours to carry today. There is enough grace for this day, this hour, this decision. Let the rest wait.',
-    prayer: 'Jesus, free me from borrowing tomorrow's worries and teach me to live today. Amen.',
+    prayer: "Jesus, free me from borrowing tomorrow's worries and teach me to live today. Amen.",
     theme: 'trust',
   },
   {
