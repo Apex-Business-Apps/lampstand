@@ -140,7 +140,7 @@ export default function SettingsPage() {
           <ConsentToggle label="Optional cloud sync" value={consent.optionalCloudSync} onChange={(v) => { const next = { ...consent, optionalCloudSync: v, accountLinkedPersistence: v }; setConsent(next); saveConsentState({ optionalCloudSync: v, accountLinkedPersistence: v }); saveSyncState({ enabled: v, provider: v ? 'supabase' : 'none' }); }} />
           <ConsentToggle label="Notifications" value={consent.notifications} onChange={(v) => { const next = { ...consent, notifications: v }; setConsent(next); saveConsentState({ notifications: v }); }} />
           <ConsentToggle label="Microphone" value={consent.microphone} onChange={(v) => { const next = { ...consent, microphone: v }; setConsent(next); saveConsentState({ microphone: v }); }} />
-          <ConsentToggle label="Voice output" value={consent.voiceOutput} onChange={(v) => { const next = { ...consent, voiceOutput: v }; setConsent(next); saveConsentState({ voiceOutput: v }); const voice = { ...voicePrefs, enabled: v && voicePrefs.enabled }; setVoicePrefs(voice); saveVoicePreferences(voice); }} />
+          <ConsentToggle label="Voice output" value={consent.voiceOutput} onChange={(v) => { const next = { ...consent, voiceOutput: v }; setConsent(next); saveConsentState({ voiceOutput: v }); const voice = { ...voicePrefs, enabled: v ? true : false, muted: v ? voicePrefs.muted : true }; setVoicePrefs(voice); saveVoicePreferences(voice); }} />
 
           <Field label="Voice behavior">
             <div className="space-y-2">

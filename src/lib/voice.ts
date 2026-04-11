@@ -13,6 +13,7 @@ export interface SpeechToTextProvider {
 
 class BrowserSpeechToTextProvider implements SpeechToTextProvider {
   private recognition: any = null;
+  private isActive = false;
 
   constructor() {
     try {
@@ -22,6 +23,8 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
         this.recognition = new SpeechRecognition();
         this.recognition.continuous = false;
         this.recognition.interimResults = false;
+        this.recognition.maxAlternatives = 1;
+        this.recognition.lang = navigator.language || 'en-US';
       }
     } catch {
       this.recognition = null;
@@ -33,16 +36,25 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
   async startListening(): Promise<string> {
     return new Promise((resolve, reject) => {
       if (!this.recognition) return reject(new Error('Speech recognition not supported'));
+      let settled = false;
 
       // Timeout safety net — if no result after 15s, reject gracefully
       const timeout = setTimeout(() => {
         try { this.recognition.abort(); } catch { /* noop */ }
-        reject(new Error('Speech recognition timed out. Please try again.'));
+        if (!settled) {
+          settled = true;
+          this.isActive = false;
+          reject(new Error('Speech recognition timed out. Please try again.'));
+        }
       }, 15000);
 
       this.recognition.onresult = (event: any) => {
         clearTimeout(timeout);
-        resolve(event.results[0][0].transcript);
+        if (!settled) {
+          settled = true;
+          this.isActive = false;
+          resolve(event.results?.[0]?.[0]?.transcript || '');
+        }
       };
       this.recognition.onerror = (event: any) => {
         clearTimeout(timeout);
@@ -53,14 +65,28 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
             : event.error === 'network'
               ? 'Network error during speech recognition. Please check your connection.'
               : `Speech recognition error: ${event.error}`;
-        reject(new Error(msg));
+        if (!settled) {
+          settled = true;
+          this.isActive = false;
+          reject(new Error(msg));
+        }
       };
-      this.recognition.onend = () => clearTimeout(timeout);
+      this.recognition.onend = () => {
+        clearTimeout(timeout);
+        if (!settled) {
+          settled = true;
+          this.isActive = false;
+          reject(new Error('No speech detected. Please try again.'));
+        }
+      };
 
       try {
+        if (this.isActive) this.recognition.stop();
+        this.isActive = true;
         this.recognition.start();
       } catch (e: any) {
         clearTimeout(timeout);
+        this.isActive = false;
         reject(new Error(e?.message || 'Failed to start speech recognition'));
       }
     });
@@ -89,6 +115,7 @@ export class SpeechToTextAdapter {
     const consent = getConsentState();
     if (!consent.microphone) throw new Error('Microphone consent is required. Enable it in Settings.');
 
+    let lastError: Error | null = null;
     for (const provider of this.providers) {
       if (!provider.isSupported()) continue;
       this.activeProvider = provider;
@@ -97,13 +124,13 @@ export class SpeechToTextAdapter {
         if (!transcript.trim()) throw new Error('No speech detected. Please try again or type your request.');
         if (transcript) pushVoiceTranscript(transcript);
         return transcript;
-      } catch (err) {
-        // If browser STT fails, try next provider
-        if (provider instanceof BrowserSpeechToTextProvider && this.providers.length > 1) continue;
-        throw err;
+      } catch (err: unknown) {
+        lastError = err instanceof Error ? err : new Error('Speech recognition failed.');
+        // Browser is the only real provider today; preserve the original root error for callers.
+        continue;
       }
     }
-    return '';
+    throw lastError || new Error('Speech recognition is not supported on this device. You can still type your request.');
   }
 
   stopListening() {
@@ -122,7 +149,9 @@ export class TextToSpeechAdapter {
     this.lastText = text;
     const voicePref = getVoicePreferences();
     const consent = getConsentState();
-    if (!voicePref.enabled || voicePref.muted || !consent.voiceOutput) {
+    const hasPersistedVoicePrefs = !!localStorage.getItem('lampstand_voice_preferences');
+    const playbackEnabled = voicePref.enabled || (!hasPersistedVoicePrefs && consent.voiceOutput);
+    if (!playbackEnabled || voicePref.muted || !consent.voiceOutput) {
       onEnd?.();
       return;
     }
