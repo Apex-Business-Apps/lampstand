@@ -221,7 +221,7 @@ const passagesById = Object.fromEntries(CONTENT_PASSAGES.map((passage) => [passa
 type GuidanceTemplate = Omit<GuidanceResult, 'id' | 'concern' | 'themes' | 'createdAt'>;
 type DailyLightTemplate = Omit<DailyLight, 'id' | 'date'>;
 
-function hashString(value: string) {
+export function hashString(value: string) {
   let hash = 0;
   for (let index = 0; index < value.length; index += 1) {
     hash = (hash << 5) - hash + value.charCodeAt(index);
