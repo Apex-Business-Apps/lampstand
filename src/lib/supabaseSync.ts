@@ -6,8 +6,8 @@
 import { supabase } from '@/integrations/supabase/client';
 import {
   getProfile, saveProfile,
-  getSavedPassages, savePassage,
-  getJournalEntries, saveJournalEntry,
+  getSavedPassages, savePassage, savePassages,
+  getJournalEntries, saveJournalEntry, saveJournalEntries,
 } from '@/lib/storage';
 import type { UserProfile, SavedPassage, JournalEntry } from '@/types';
 import type { Json } from '@/integrations/supabase/types';
@@ -88,15 +88,18 @@ export async function pullPassagesFromCloud(userId: string): Promise<void> {
   if (error || !data) return;
 
   const localIds = new Set(getSavedPassages().map(p => p.id));
+  const newPassages: SavedPassage[] = [];
   for (const row of data) {
     if (localIds.has(row.id)) continue;
-    const entry: SavedPassage = {
+    newPassages.push({
       id: row.id,
       passage: row.passage_data as unknown as SavedPassage['passage'],
       note: row.note || undefined,
       savedAt: row.saved_at,
-    };
-    savePassage(entry);
+    });
+  }
+  if (newPassages.length > 0) {
+    savePassages(newPassages);
   }
 }
 
@@ -128,16 +131,19 @@ export async function pullJournalFromCloud(userId: string): Promise<void> {
   if (error || !data) return;
 
   const localIds = new Set(getJournalEntries().map(e => e.id));
+  const newEntries: JournalEntry[] = [];
   for (const row of data) {
     if (localIds.has(row.id)) continue;
-    const entry: JournalEntry = {
+    newEntries.push({
       id: row.id,
       content: row.content,
       mood: row.mood || undefined,
       relatedPassage: row.related_passage as unknown as JournalEntry['relatedPassage'],
       createdAt: row.created_at,
-    };
-    saveJournalEntry(entry);
+    });
+  }
+  if (newEntries.length > 0) {
+    saveJournalEntries(newEntries);
   }
 }
 
