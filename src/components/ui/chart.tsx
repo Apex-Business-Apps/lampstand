@@ -69,18 +69,39 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
     <style
       dangerouslySetInnerHTML={{
         __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
+          .map(([theme, prefix]) => {
+            // Escape values for safe use in CSS and to prevent <style> breakout.
+            // We use \3c for < to prevent any tag-based XSS (e.g., </style>).
+            const escapeCss = (str: string) =>
+              str
+                .replace(/\\/g, "\\\\") // Escape backslashes first
+                .replace(/</g, "\\3c ") // Escape < to prevent </style> breakout
+                .replace(/>/g, "\\3e ")
+                .replace(/{/g, "\\7b ")
+                .replace(/}/g, "\\7d ")
+                .replace(/;/g, "\\3b ")
+                .replace(/:/g, "\\3a ")
+                .replace(/\./g, "\\2e ")
+                .replace(/"/g, "\\22 ")
+                .replace(/'/g, "\\27 ");
+
+            const safeId = escapeCss(id);
+            return `
+${prefix} [data-chart="${safeId}"] {
 ${colorConfig
   .map(([key, itemConfig]) => {
     const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
+    if (!color) return null;
+
+    const safeKey = escapeCss(key);
+    const safeColor = escapeCss(color);
+    return `  --color-${safeKey}: ${safeColor};`;
   })
+  .filter(Boolean)
   .join("\n")}
 }
-`,
-          )
+`;
+          })
           .join("\n"),
       }}
     />
