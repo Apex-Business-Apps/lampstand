@@ -1,9 +1,40 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+interface SpeechRecognitionEvent extends Event {
+  results: {
+    [index: number]: {
+      [index: number]: {
+        transcript: string;
+      };
+    };
+  };
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  onresult: (event: SpeechRecognitionEvent) => void;
+  onerror: (event: SpeechRecognitionErrorEvent) => void;
+  start(): void;
+  stop(): void;
+}
+
+interface Window {
+  SpeechRecognition?: {
+    new (): SpeechRecognition;
+  };
+  webkitSpeechRecognition?: {
+    new (): SpeechRecognition;
+  };
+}
+
 export class BrowserSTTAdapter {
-  private recognition: any = null;
+  private recognition: SpeechRecognition | null = null;
 
   constructor() {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SpeechRecognition = (window as unknown as Window).SpeechRecognition || (window as unknown as Window).webkitSpeechRecognition;
     if (SpeechRecognition) {
       this.recognition = new SpeechRecognition();
       this.recognition.continuous = false;
@@ -21,18 +52,18 @@ export class BrowserSTTAdapter {
       return;
     }
 
-    this.recognition.onresult = (event: any) => {
+    this.recognition.onresult = (event: SpeechRecognitionEvent) => {
       const text = event.results[0][0].transcript;
       onResult(text);
     };
 
-    this.recognition.onerror = (event: any) => {
+    this.recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       onError(event.error);
     };
 
     try {
       this.recognition.start();
-    } catch (e: any) {
+    } catch (e: unknown) {
       if (e instanceof Error) { onError(e.message); } else { onError(String(e)); }
     }
   }
