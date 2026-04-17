@@ -56,6 +56,25 @@ export function savePassage(p: SavedPassage) {
     incrementPresenceScore(3);
   }
 }
+export function savePassages(passages: SavedPassage[]) {
+  if (passages.length === 0) return;
+  const all = getSavedPassages();
+  const existingIds = new Set(all.map((s) => s.id));
+  let addedCount = 0;
+
+  for (const p of passages) {
+    if (!existingIds.has(p.id)) {
+      all.unshift(p);
+      existingIds.add(p.id);
+      addedCount++;
+    }
+  }
+
+  if (addedCount > 0) {
+    set(KEYS.saved, all);
+    incrementPresenceScore(3 * addedCount);
+  }
+}
 export function removePassage(id: string) {
   set(KEYS.saved, getSavedPassages().filter((p) => p.id !== id));
 }
@@ -68,6 +87,31 @@ export function saveJournalEntry(e: JournalEntry) {
   else all.unshift(e);
   set(KEYS.journal, all);
   incrementPresenceScore(4);
+}
+export function saveJournalEntries(entries: JournalEntry[]) {
+  if (entries.length === 0) return;
+  const all = getJournalEntries();
+  let changed = false;
+  let addedCount = 0;
+
+  for (const e of entries) {
+    const idx = all.findIndex((j) => j.id === e.id);
+    if (idx >= 0) {
+      all[idx] = e;
+      changed = true;
+    } else {
+      all.unshift(e);
+      addedCount++;
+      changed = true;
+    }
+  }
+
+  if (changed) {
+    set(KEYS.journal, all);
+    if (addedCount > 0) {
+      incrementPresenceScore(4 * addedCount);
+    }
+  }
 }
 export function removeJournalEntry(id: string) {
   set(KEYS.journal, getJournalEntries().filter((e) => e.id !== id));
