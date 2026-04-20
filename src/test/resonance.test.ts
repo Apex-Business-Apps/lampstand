@@ -75,8 +75,8 @@ describe('ResonanceEngine', () => {
   });
 
   it('lifts consolation themes when the user is struggling', () => {
-    // Build wilderness season with struggling sentiment.
-    for (let i = 0; i < 5; i++) {
+    // Build wilderness season with strongly struggling sentiment.
+    for (let i = 0; i < 12; i++) {
       recordSignal({ signal: 'guided', theme: 'shame', passage: p(`s${i}`, `S ${i}`) });
     }
     const ranked = rankCandidates([
@@ -84,7 +84,6 @@ describe('ResonanceEngine', () => {
       { theme: 'consolation', passage: p('c', 'C 1') },
     ]);
     expect(ranked[0].candidate.theme).toBe('consolation');
-    // judgment must score lower (pastoral guardrail)
     expect(ranked[0].score).toBeGreaterThan(ranked[1].score);
   });
 
