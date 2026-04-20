@@ -171,10 +171,10 @@ export default function SettingsPage() {
         </Section>
 
         <Section title="Notifications">
-          <Field label="Daily Light">
-            <div className="flex items-center gap-3">
+          <Field label="Daily Light reminder">
+            <div className="flex items-center gap-3 flex-wrap">
               <button
-                onClick={() => update({ notificationsEnabled: !profile.notificationsEnabled })}
+                onClick={() => handleToggleNotifications(!profile.notificationsEnabled)}
                 className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
                   profile.notificationsEnabled ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'
                 }`}
@@ -182,12 +182,23 @@ export default function SettingsPage() {
                 {profile.notificationsEnabled ? 'On' : 'Off'}
               </button>
               {profile.notificationsEnabled && (
-                <Input type="time" value={profile.notificationTime} onChange={e => update({ notificationTime: e.target.value })} className="w-32" />
+                <Input type="time" value={profile.notificationTime} onChange={e => handleTimeChange(e.target.value)} className="w-32" />
               )}
             </div>
+            {profile.notificationsEnabled && getPermission() === 'denied' && (
+              <p className="text-xs text-destructive mt-2">
+                Browser notifications are blocked. Re-enable them in your site settings to receive reminders.
+              </p>
+            )}
+            <p className="text-xs text-muted-foreground mt-2">
+              A gentle nudge at your chosen time. Delivered locally — no third-party push service.
+            </p>
           </Field>
         </Section>
 
+        <Section title="Resonance">
+          <ResonanceCard />
+        </Section>
 
 
 
