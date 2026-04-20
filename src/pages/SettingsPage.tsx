@@ -5,8 +5,17 @@ import { Input } from '@/components/ui/input';
 import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData, getConsentState, saveConsentState, getVoicePreferences, saveVoicePreferences, clearVoiceHistory, saveSyncState } from '@/lib/storage';
 import type { UserProfile, ToneStyle, ReadingPreference } from '@/types';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Trash2, RotateCcw } from 'lucide-react';
+import { Shield, Trash2, RotateCcw, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import {
+  armDailyReminder,
+  cancelReminder,
+  getPermission,
+  isNotificationsSupported,
+  requestPermission,
+} from '@/lib/notifications/dailyReminder';
+import { describeFingerprint, resetFingerprint } from '@/lib/resonance/ResonanceEngine';
+import { toast } from '@/hooks/use-toast';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -39,13 +48,61 @@ export default function SettingsPage() {
     saveProfile(updated);
   }
 
+  async function handleToggleNotifications(next: boolean) {
+    if (next) {
+      if (!isNotificationsSupported()) {
+        toast({
+          title: 'Notifications not supported',
+          description: 'This browser does not support web notifications.',
+          variant: 'destructive',
+        });
+        return;
+      }
+      const result = await requestPermission();
+      if (result !== 'granted') {
+        toast({
+          title: 'Permission needed',
+          description: 'Enable notifications in your browser to receive Daily Light reminders.',
+          variant: 'destructive',
+        });
+        return;
+      }
+      update({ notificationsEnabled: true });
+      await armDailyReminder(
+        { enabled: true, time: profile?.notificationTime || '08:00' },
+        { title: `${profile?.firstName ? profile.firstName + ', y' : 'Y'}our Daily Light is ready` },
+      );
+      toast({
+        title: 'Reminder set',
+        description: `You will get a gentle nudge at ${profile?.notificationTime || '08:00'} each day.`,
+      });
+    } else {
+      update({ notificationsEnabled: false });
+      cancelReminder();
+    }
+  }
+
+  async function handleTimeChange(time: string) {
+    update({ notificationTime: time });
+    if (profile?.notificationsEnabled && getPermission() === 'granted') {
+      await armDailyReminder(
+        { enabled: true, time },
+        { title: `${profile?.firstName ? profile.firstName + ', y' : 'Y'}our Daily Light is ready` },
+      );
+    }
+  }
+
   function handleResetKnowledge() {
     clearKnowledge();
+    resetFingerprint();
     setShowReset(false);
+    toast({ title: 'Adaptive memory cleared' });
   }
 
   function handleResetAll() {
     resetAllData();
+    resetFingerprint();
+    cancelReminder();
     navigate('/onboarding');
   }
 
