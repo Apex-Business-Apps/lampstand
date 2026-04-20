@@ -79,7 +79,7 @@ export default function GuidancePage() {
         recordSignal({
           signal: 'guided',
           passage: guidance.passage,
-          theme: guidance.theme,
+          theme: guidance.themes?.[0],
           tone: profile?.toneStyle || 'balanced',
         });
       } catch { /* ignore */ }
@@ -103,8 +103,8 @@ export default function GuidancePage() {
     // on this surface — record it as both 'saved' and 'reflected' so the
     // fingerprint captures both the passage affinity and the depth of intent.
     try {
-      recordSignal({ signal: 'saved', passage: result.passage, theme: result.theme });
-      recordSignal({ signal: 'reflected', passage: result.passage, theme: result.theme });
+      recordSignal({ signal: 'saved', passage: result.passage, theme: result.themes?.[0] });
+      recordSignal({ signal: 'reflected', passage: result.passage, theme: result.themes?.[0] });
     } catch { /* ignore */ }
   }
 
