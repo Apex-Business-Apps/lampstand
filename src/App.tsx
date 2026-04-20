@@ -9,6 +9,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { AuthGuard } from "@/components/AuthGuard";
 import { FloatingAgent } from "@/components/FloatingAgent";
 import { ConsentModal } from "@/components/ConsentModal";
+import { useAppBoot } from "@/hooks/useAppBoot";
 
 // Lazy-load all pages for optimal code splitting
 const EntryPage = lazy(() => import("./pages/EntryPage"));
@@ -54,6 +55,11 @@ function PageFallback() {
   );
 }
 
+function AppBootGate({ children }: { children: React.ReactNode }) {
+  useAppBoot();
+  return <>{children}</>;
+}
+
 const App = () => (
   <ErrorBoundary>
   <QueryClientProvider client={queryClient}>
@@ -62,6 +68,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <AppBootGate>
           <Suspense fallback={<PageFallback />}>
             <Routes>
               <Route path="/" element={<EntryPage />} />
@@ -90,6 +97,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          </AppBootGate>
           <FloatingAgent />
           <ConsentModal />
         </BrowserRouter>

@@ -5,8 +5,17 @@ import { Input } from '@/components/ui/input';
 import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData, getConsentState, saveConsentState, getVoicePreferences, saveVoicePreferences, clearVoiceHistory, saveSyncState } from '@/lib/storage';
 import type { UserProfile, ToneStyle, ReadingPreference } from '@/types';
 import { useNavigate } from 'react-router-dom';
-import { Shield, Trash2, RotateCcw } from 'lucide-react';
+import { Shield, Trash2, RotateCcw, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import {
+  armDailyReminder,
+  cancelReminder,
+  getPermission,
+  isNotificationsSupported,
+  requestPermission,
+} from '@/lib/notifications/dailyReminder';
+import { describeFingerprint, resetFingerprint } from '@/lib/resonance/ResonanceEngine';
+import { toast } from '@/hooks/use-toast';
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -39,13 +48,61 @@ export default function SettingsPage() {
     saveProfile(updated);
   }
 
+  async function handleToggleNotifications(next: boolean) {
+    if (next) {
+      if (!isNotificationsSupported()) {
+        toast({
+          title: 'Notifications not supported',
+          description: 'This browser does not support web notifications.',
+          variant: 'destructive',
+        });
+        return;
+      }
+      const result = await requestPermission();
+      if (result !== 'granted') {
+        toast({
+          title: 'Permission needed',
+          description: 'Enable notifications in your browser to receive Daily Light reminders.',
+          variant: 'destructive',
+        });
+        return;
+      }
+      update({ notificationsEnabled: true });
+      await armDailyReminder(
+        { enabled: true, time: profile?.notificationTime || '08:00' },
+        { title: `${profile?.firstName ? profile.firstName + ', y' : 'Y'}our Daily Light is ready` },
+      );
+      toast({
+        title: 'Reminder set',
+        description: `You will get a gentle nudge at ${profile?.notificationTime || '08:00'} each day.`,
+      });
+    } else {
+      update({ notificationsEnabled: false });
+      cancelReminder();
+    }
+  }
+
+  async function handleTimeChange(time: string) {
+    update({ notificationTime: time });
+    if (profile?.notificationsEnabled && getPermission() === 'granted') {
+      await armDailyReminder(
+        { enabled: true, time },
+        { title: `${profile?.firstName ? profile.firstName + ', y' : 'Y'}our Daily Light is ready` },
+      );
+    }
+  }
+
   function handleResetKnowledge() {
     clearKnowledge();
+    resetFingerprint();
     setShowReset(false);
+    toast({ title: 'Adaptive memory cleared' });
   }
 
   function handleResetAll() {
     resetAllData();
+    resetFingerprint();
+    cancelReminder();
     navigate('/onboarding');
   }
 
@@ -114,10 +171,10 @@ export default function SettingsPage() {
         </Section>
 
         <Section title="Notifications">
-          <Field label="Daily Light">
-            <div className="flex items-center gap-3">
+          <Field label="Daily Light reminder">
+            <div className="flex items-center gap-3 flex-wrap">
               <button
-                onClick={() => update({ notificationsEnabled: !profile.notificationsEnabled })}
+                onClick={() => handleToggleNotifications(!profile.notificationsEnabled)}
                 className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
                   profile.notificationsEnabled ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'
                 }`}
@@ -125,12 +182,23 @@ export default function SettingsPage() {
                 {profile.notificationsEnabled ? 'On' : 'Off'}
               </button>
               {profile.notificationsEnabled && (
-                <Input type="time" value={profile.notificationTime} onChange={e => update({ notificationTime: e.target.value })} className="w-32" />
+                <Input type="time" value={profile.notificationTime} onChange={e => handleTimeChange(e.target.value)} className="w-32" />
               )}
             </div>
+            {profile.notificationsEnabled && getPermission() === 'denied' && (
+              <p className="text-xs text-destructive mt-2">
+                Browser notifications are blocked. Re-enable them in your site settings to receive reminders.
+              </p>
+            )}
+            <p className="text-xs text-muted-foreground mt-2">
+              A gentle nudge at your chosen time. Delivered locally — no third-party push service.
+            </p>
           </Field>
         </Section>
 
+        <Section title="Resonance">
+          <ResonanceCard />
+        </Section>
 
 
 
@@ -223,3 +291,36 @@ function ConsentToggle({ label, value, onChange }: { label: string; value: boole
     </div>
   );
 }
+
+function ResonanceCard() {
+  const fp = describeFingerprint();
+  const seasonLabel: Record<string, string> = {
+    wilderness: 'Wilderness — God meeting you in hard places',
+    waiting: 'Waiting — held in the in-between',
+    steady: 'Steady — ordinary fidelity',
+    flourishing: 'Flourishing — joy and gratitude rising',
+    returning: 'Returning — finding the way back',
+  };
+  return (
+    <div className="rounded-xl border border-border bg-secondary/30 p-4 space-y-3">
+      <div className="flex items-start gap-2">
+        <Sparkles className="h-4 w-4 text-primary mt-0.5" />
+        <div className="flex-1">
+          <p className="text-sm font-medium">Your spiritual fingerprint</p>
+          <p className="text-xs text-muted-foreground">
+            On-device personalization. Stays with you. Learns what resonates as your seasons shift.
+          </p>
+        </div>
+      </div>
+      <div className="grid gap-2 text-xs">
+        <div className="flex justify-between"><span className="text-muted-foreground">Current season</span><span className="font-medium">{seasonLabel[fp.season] ?? fp.season}</span></div>
+        <div className="flex justify-between"><span className="text-muted-foreground">Confidence</span><span className="font-medium">{Math.round(fp.confidence * 100)}%</span></div>
+        <div className="flex justify-between"><span className="text-muted-foreground">Signals captured</span><span className="font-medium">{fp.signalCount}</span></div>
+        {fp.topThemes.length > 0 && (
+          <div className="flex justify-between gap-2"><span className="text-muted-foreground">Resonating themes</span><span className="font-medium text-right truncate">{fp.topThemes.join(', ')}</span></div>
+        )}
+      </div>
+    </div>
+  );
+}
+

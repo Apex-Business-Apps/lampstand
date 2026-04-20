@@ -9,6 +9,7 @@ import { savePassage, getSavedPassages } from '@/lib/storage';
 import { useAuth } from '@/hooks/useAuth';
 import type { DailyLight, SavedPassage } from '@/types';
 import { ChevronDown } from 'lucide-react';
+import { recordSignal } from '@/lib/resonance/ResonanceEngine';
 
 export default function DailyLightPage() {
   const { user } = useAuth();
@@ -32,9 +33,10 @@ export default function DailyLightPage() {
     const shareText = `${today.passage.reference}\n\n${today.passage.text}\n\nReflection: ${today.reflection}`;
     if (navigator.share) {
       await navigator.share({ title: 'LampStand Daily Light', text: shareText });
-      return;
+    } else {
+      await navigator.clipboard.writeText(shareText);
     }
-    await navigator.clipboard.writeText(shareText);
+    recordSignal({ signal: 'shared', passage: today.passage, theme: today.theme });
   }
 
   function handleSave() {
@@ -46,6 +48,12 @@ export default function DailyLightPage() {
     };
     savePassage(entry);
     setSaved(true);
+    recordSignal({ signal: 'saved', passage: today.passage, theme: today.theme });
+  }
+
+  function handleDeeper() {
+    setShowDeeper(true);
+    recordSignal({ signal: 'reflected', passage: today.passage, theme: today.theme });
   }
 
   return (
@@ -66,7 +74,7 @@ export default function DailyLightPage() {
         <ReflectionBlock label="Prayer" content={today.prayer} variant="prayer" />
 
         {!showDeeper ? (
-          <Button variant="outline" className="w-full gap-2" onClick={() => setShowDeeper(true)}>
+          <Button variant="outline" className="w-full gap-2" onClick={handleDeeper}>
             <ChevronDown className="h-4 w-4" /> Reflect Deeper
           </Button>
         ) : (
