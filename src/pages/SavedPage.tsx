@@ -4,17 +4,30 @@ import { getSavedPassages, removePassage, getJournalEntries } from '@/lib/storag
 import { Bookmark, BookOpen, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { recordSignal } from '@/lib/resonance/ResonanceEngine';
 import type { SavedPassage } from '@/types';
 
 export default function SavedPage() {
   const navigate = useNavigate();
   const [passages, setPassages] = useState(getSavedPassages);
   const [tab, setTab] = useState<'saved' | 'journal'>('saved');
+  const [openedRefs, setOpenedRefs] = useState<Set<string>>(new Set());
   const journal = getJournalEntries();
 
   function handleRemove(id: string) {
     removePassage(id);
     setPassages(getSavedPassages());
+  }
+
+  function handleReopen(s: SavedPassage) {
+    // Record a 'returned' signal the first time the user re-opens a saved
+    // passage in this session — feeds the Resonance fingerprint so it learns
+    // which passages keep drawing them back.
+    if (openedRefs.has(s.passage.reference)) return;
+    setOpenedRefs(prev => new Set(prev).add(s.passage.reference));
+    try {
+      recordSignal({ signal: 'returned', passage: s.passage });
+    } catch { /* private mode — ignore */ }
   }
 
   return (
@@ -41,7 +54,12 @@ export default function SavedPage() {
               </div>
             ) : (
               passages.map(s => (
-                <div key={s.id} className="bg-card rounded-xl p-5 border border-border animate-fade-in">
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => handleReopen(s)}
+                  className="w-full text-left bg-card rounded-xl p-5 border border-border animate-fade-in hover:border-primary/40 transition-colors"
+                >
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-sm text-foreground">{s.passage.reference}</p>
@@ -51,11 +69,18 @@ export default function SavedPage() {
                         {new Date(s.savedAt).toLocaleDateString()}
                       </p>
                     </div>
-                    <button onClick={() => handleRemove(s.id)} className="text-muted-foreground hover:text-destructive transition-colors p-1">
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      onClick={(e) => { e.stopPropagation(); handleRemove(s.id); }}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); handleRemove(s.id); } }}
+                      className="text-muted-foreground hover:text-destructive transition-colors p-1 cursor-pointer"
+                      aria-label="Remove saved passage"
+                    >
                       <Trash2 className="h-4 w-4" />
-                    </button>
+                    </span>
                   </div>
-                </div>
+                </button>
               ))
             )}
           </div>
