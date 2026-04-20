@@ -12,6 +12,7 @@ import { sttAdapter, ttsAdapter } from '@/lib/voice';
 import type { AgentMode } from '@/components/AgentPresence';
 import type { VoiceGender } from '@/lib/voice';
 import { agentRuntime } from '@/lib/runtime/agentRuntime';
+import { recordSignal } from '@/lib/resonance/ResonanceEngine';
 
 export default function GuidancePage() {
   const [input, setInput] = useState('');
@@ -73,6 +74,15 @@ export default function GuidancePage() {
       setResult(guidance);
       setInput('');
       incrementPresenceScore(4);
+      // Resonance: user actively sought guidance — informs season + tone.
+      try {
+        recordSignal({
+          signal: 'guided',
+          passage: guidance.passage,
+          theme: guidance.themes?.[0],
+          tone: profile?.toneStyle || 'balanced',
+        });
+      } catch { /* ignore */ }
       speakText(guidance.pastoralFraming);
     } finally {
       setLoading(false);
@@ -89,6 +99,13 @@ export default function GuidancePage() {
     };
     savePassage(entry);
     setSaved(true);
+    // Saving from a guidance result is the strongest engagement signal we get
+    // on this surface — record it as both 'saved' and 'reflected' so the
+    // fingerprint captures both the passage affinity and the depth of intent.
+    try {
+      recordSignal({ signal: 'saved', passage: result.passage, theme: result.themes?.[0] });
+      recordSignal({ signal: 'reflected', passage: result.passage, theme: result.themes?.[0] });
+    } catch { /* ignore */ }
   }
 
   return (
