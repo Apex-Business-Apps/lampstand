@@ -291,3 +291,36 @@ function ConsentToggle({ label, value, onChange }: { label: string; value: boole
     </div>
   );
 }
+
+function ResonanceCard() {
+  const fp = describeFingerprint();
+  const seasonLabel: Record<string, string> = {
+    wilderness: 'Wilderness — God meeting you in hard places',
+    waiting: 'Waiting — held in the in-between',
+    steady: 'Steady — ordinary fidelity',
+    flourishing: 'Flourishing — joy and gratitude rising',
+    returning: 'Returning — finding the way back',
+  };
+  return (
+    <div className="rounded-xl border border-border bg-secondary/30 p-4 space-y-3">
+      <div className="flex items-start gap-2">
+        <Sparkles className="h-4 w-4 text-primary mt-0.5" />
+        <div className="flex-1">
+          <p className="text-sm font-medium">Your spiritual fingerprint</p>
+          <p className="text-xs text-muted-foreground">
+            On-device personalization. Stays with you. Learns what resonates as your seasons shift.
+          </p>
+        </div>
+      </div>
+      <div className="grid gap-2 text-xs">
+        <div className="flex justify-between"><span className="text-muted-foreground">Current season</span><span className="font-medium">{seasonLabel[fp.season] ?? fp.season}</span></div>
+        <div className="flex justify-between"><span className="text-muted-foreground">Confidence</span><span className="font-medium">{Math.round(fp.confidence * 100)}%</span></div>
+        <div className="flex justify-between"><span className="text-muted-foreground">Signals captured</span><span className="font-medium">{fp.signalCount}</span></div>
+        {fp.topThemes.length > 0 && (
+          <div className="flex justify-between gap-2"><span className="text-muted-foreground">Resonating themes</span><span className="font-medium text-right truncate">{fp.topThemes.join(', ')}</span></div>
+        )}
+      </div>
+    </div>
+  );
+}
+
