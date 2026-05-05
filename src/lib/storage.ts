@@ -59,20 +59,25 @@ export function savePassage(p: SavedPassage) {
 export function savePassages(passages: SavedPassage[]) {
   if (passages.length === 0) return;
   const all = getSavedPassages();
-  const existingIds = new Set(all.map((s) => s.id));
-  let addedCount = 0;
+  const existingIds = new Set<string>();
+  for (const s of all) {
+    existingIds.add(s.id);
+  }
 
+  const toAdd: SavedPassage[] = [];
+  const processedNewIds = new Set<string>();
   for (const p of passages) {
-    if (!existingIds.has(p.id)) {
-      all.unshift(p);
-      existingIds.add(p.id);
-      addedCount++;
+    if (!existingIds.has(p.id) && !processedNewIds.has(p.id)) {
+      toAdd.push(p);
+      processedNewIds.add(p.id);
     }
   }
 
-  if (addedCount > 0) {
+  if (toAdd.length > 0) {
+    // Reverse to maintain unshift order if the input was already ordered
+    all.unshift(...toAdd.reverse());
     set(KEYS.saved, all);
-    incrementPresenceScore(3 * addedCount);
+    incrementPresenceScore(3 * toAdd.length);
   }
 }
 export function removePassage(id: string) {
@@ -92,25 +97,34 @@ export function saveJournalEntries(entries: JournalEntry[]) {
   if (entries.length === 0) return;
   const all = getJournalEntries();
   let changed = false;
-  let addedCount = 0;
 
+  const entryMap = new Map<string, number>();
+  for (let i = 0; i < all.length; i++) {
+    entryMap.set(all[i].id, i);
+  }
+
+  const newEntries: JournalEntry[] = [];
+  const processedNewIds = new Set<string>();
   for (const e of entries) {
-    const idx = all.findIndex((j) => j.id === e.id);
-    if (idx >= 0) {
+    const idx = entryMap.get(e.id);
+    if (idx !== undefined) {
       all[idx] = e;
       changed = true;
-    } else {
-      all.unshift(e);
-      addedCount++;
-      changed = true;
+    } else if (!processedNewIds.has(e.id)) {
+      newEntries.push(e);
+      processedNewIds.add(e.id);
     }
+  }
+
+  if (newEntries.length > 0) {
+    // Reverse to maintain unshift order if the input was already ordered
+    all.unshift(...newEntries.reverse());
+    changed = true;
+    incrementPresenceScore(4 * newEntries.length);
   }
 
   if (changed) {
     set(KEYS.journal, all);
-    if (addedCount > 0) {
-      incrementPresenceScore(4 * addedCount);
-    }
   }
 }
 export function removeJournalEntry(id: string) {
