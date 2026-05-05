@@ -87,7 +87,11 @@ export async function pullPassagesFromCloud(userId: string): Promise<void> {
 
   if (error || !data) return;
 
-  const localIds = new Set(getSavedPassages().map(p => p.id));
+  const localIds = new Set<string>();
+  for (const p of getSavedPassages()) {
+    localIds.add(p.id);
+  }
+
   const newPassages: SavedPassage[] = [];
   for (const row of data) {
     if (localIds.has(row.id)) continue;
@@ -130,7 +134,11 @@ export async function pullJournalFromCloud(userId: string): Promise<void> {
 
   if (error || !data) return;
 
-  const localIds = new Set(getJournalEntries().map(e => e.id));
+  const localIds = new Set<string>();
+  for (const e of getJournalEntries()) {
+    localIds.add(e.id);
+  }
+
   const newEntries: JournalEntry[] = [];
   for (const row of data) {
     if (localIds.has(row.id)) continue;
