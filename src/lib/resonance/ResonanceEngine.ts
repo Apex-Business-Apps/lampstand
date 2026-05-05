@@ -192,7 +192,7 @@ export function recordSignal(opts: {
   theme?: string;
   tone?: ToneStyle;
 }): ResonanceFingerprint {
-  let fp = decay(loadFingerprint());
+  const fp = decay(loadFingerprint());
   const weight = SIGNAL_WEIGHTS[opts.signal];
 
   if (opts.theme) {

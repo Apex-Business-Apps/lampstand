@@ -21,14 +21,8 @@ export function getDailyLight(date = new Date()): DailyLight {
   if (fp.signalCount > 0) {
     // Personalized path — let Resonance order candidates and pick the top-ranked
     // one that is not the cached/last-shown reference (novelty already part of score).
-    const ranked = rankCandidates(
-      DAILY_LIGHT_LIBRARY.map((entry) => ({ theme: entry.theme, passage: entry.passage })),
-      fp,
-    );
-    const top = ranked[0]?.candidate;
-    template = DAILY_LIGHT_LIBRARY.find(
-      (e) => e.passage.reference === top?.passage.reference && e.theme === top?.theme,
-    ) ?? DAILY_LIGHT_LIBRARY[hashString(localDate) % DAILY_LIGHT_LIBRARY.length];
+    const ranked = rankCandidates(DAILY_LIGHT_LIBRARY, fp);
+    template = ranked[0]?.candidate ?? DAILY_LIGHT_LIBRARY[hashString(localDate) % DAILY_LIGHT_LIBRARY.length];
   } else {
     // Cold-start path — deterministic by date for guests.
     const seed = hashString(localDate);
@@ -82,14 +76,8 @@ export async function getDailyLightWithHistory(userId: string, date = new Date()
     : lib;
 
   // Rank the eligible pool with the Resonance Engine.
-  const ranked = rankCandidates(
-    eligible.map((entry) => ({ theme: entry.theme, passage: entry.passage })),
-    fp,
-  );
-  const top = ranked[0]?.candidate;
-  const selected = eligible.find(
-    (e) => e.passage.reference === top?.passage.reference && e.theme === top?.theme,
-  ) ?? eligible[hashString(localDate) % eligible.length] ?? lib[0];
+  const ranked = rankCandidates(eligible, fp);
+  const selected = ranked[0]?.candidate ?? eligible[hashString(localDate) % eligible.length] ?? lib[0];
 
   const daily: DailyLight = {
     id: `daily-${selected.passage.id}-${localDate}`,

@@ -4,9 +4,10 @@ import { LocalAIAdapter } from './adapters';
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
 const MODEL = 'llama-3.3-70b-versatile';
 
-// Compact system prompt — optimised for minimal token overhead
-const SYS = `You are LampStand, a calm pastoral companion.
-Rules: no em dashes; no filler ("Absolutely","I hear you"); no therapy-speak; plain English; separate scripture from reflection; be brief.`;
+// System prompt focused on depth, connection, and enlightenment
+const SYS = `You are LampStand, a calm, deeply empathetic, and enlightening pastoral companion.
+Your purpose is to offer profound connection, meaningful explanation, and thoughtful guidance.
+Rules: no em dashes; no therapy-speak; use plain, beautiful English; separate scripture from reflection; be detailed, expansive, and deeply encouraging. Provide paths and nudges toward spiritual enlightenment.`;
 
 export class GroqAIAdapter implements IAIAdapter {
   private fallback = new LocalAIAdapter();
@@ -38,8 +39,8 @@ export class GroqAIAdapter implements IAIAdapter {
     try {
       return await this.ask([
         { role: 'system', content: SYS },
-        { role: 'user', content: `Reflect on ${passage.reference}: "${passage.text}". Tone: ${tone}. Max 2 short paragraphs.` }
-      ], false, 250) || await this.fallback.generateReflection(passage, tone);
+        { role: 'user', content: `Reflect deeply on ${passage.reference}: "${passage.text}". Tone: ${tone}. Provide an enlightening, multi-paragraph reflection that offers genuine connection and a path forward.` }
+      ], false, 800) || await this.fallback.generateReflection(passage, tone);
     } catch (e) {
       console.warn("Groq fallback", e);
       return this.fallback.generateReflection(passage, tone);
@@ -49,9 +50,9 @@ export class GroqAIAdapter implements IAIAdapter {
   async generateSermon(passage: ScripturePassage, tone: ToneStyle): Promise<Sermon> {
     try {
       const raw = await this.ask([
-        { role: 'system', content: SYS + '\nJSON keys: title, reflection, relevance, prayer. Keep each under 80 words.' },
-        { role: 'user', content: `Sermon reflection for ${passage.reference}: "${passage.text}". Tone: ${tone}.` }
-      ], true, 350);
+        { role: 'system', content: SYS + '\nJSON keys: title, reflection (detailed and illuminating), relevance (deep connection to everyday life), prayer (heartfelt). Give detailed, expansive answers.' },
+        { role: 'user', content: `Sermon reflection for ${passage.reference}: "${passage.text}". Tone: ${tone}. Offer deep enlightenment and connection.` }
+      ], true, 1200);
 
       const p = JSON.parse(raw);
       return {
@@ -69,9 +70,9 @@ export class GroqAIAdapter implements IAIAdapter {
     try {
       const themes = await this.classifyConcern(concern);
       const raw = await this.ask([
-        { role: 'system', content: SYS + '\nJSON keys: pastoralFraming (max 60 words), reflectionQuestions (max 2, each under 15 words), prayer (max 40 words).' },
-        { role: 'user', content: `Guidance for: "${concern}". Tone: ${tone}.` }
-      ], true, 300);
+        { role: 'system', content: SYS + '\nJSON keys: pastoralFraming (expansive, offering enlightenment and deep connection), reflectionQuestions (2-3 deeply thought-provoking questions), prayer (meaningful and heartfelt).' },
+        { role: 'user', content: `Guidance for: "${concern}". Tone: ${tone}. Offer deep enlightenment, explanation, and connection.` }
+      ], true, 1000);
 
       const p = JSON.parse(raw);
       const fb = await this.fallback.generateGuidance(concern, tone);
