@@ -51,14 +51,12 @@ export class LocalRetrievalAdapter implements IRetrievalAdapter {
       .map(p => ({ passage: p, score: computeScore(query, p) }))
       .sort((a, b) => b.score - a.score);
 
-    const topK = req.topK || 3;
+    const topK = Math.min(Math.max(req.topK || 3, 1), 5);
     const threshold = 0.3;
     const matches = scored.filter(s => s.score >= threshold).slice(0, topK);
 
     if (matches.length === 0) {
-      // Return a random passage as fallback
-      const random = CONTENT_PASSAGES[Math.floor(Math.random() * CONTENT_PASSAGES.length)];
-      return { passages: [random], confidence: 0.3, source: 'local-seed-fallback' };
+      return { passages: [], confidence: 0, source: 'local-seed-no-match' };
     }
 
     const topScore = matches[0].score;

@@ -33,6 +33,13 @@ function hasFileExtension(pathname: string) {
   return /\.[a-zA-Z0-9]+$/.test(pathname);
 }
 
+function jsonHealthResponse(): Response {
+  return new Response(JSON.stringify({ status: 'healthy', service: 'lampstand-static-spa' }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
 function withSecurityHeaders(response: Response): Response {
   const headers = new Headers(response.headers);
   for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
@@ -47,10 +54,14 @@ function withSecurityHeaders(response: Response): Response {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
+    if (request.method === 'GET' && url.pathname === '/health') {
+      return withSecurityHeaders(jsonHealthResponse());
+    }
+
     const assetResponse = await env.ASSETS.fetch(request);
     if (assetResponse.status !== 404) return withSecurityHeaders(assetResponse);
 
-    const url = new URL(request.url);
     if (!isHtmlNavigation(request) || hasFileExtension(url.pathname)) {
       return withSecurityHeaders(assetResponse);
     }
