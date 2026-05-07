@@ -45,7 +45,7 @@ describe('RetrievalOrchestrator', () => {
 
     expect(mockAdapter.search).toHaveBeenCalledWith({
       query: query,
-      topK: 1
+      topK: 3
     });
     expect(result).toEqual(mockPassages);
   });

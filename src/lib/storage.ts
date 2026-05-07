@@ -41,6 +41,20 @@ function set(key: string, value: unknown) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
+function normalizeIdempotencyKey(value: string): string {
+  return value.toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+function writeListAtomically<T, M extends Record<string, unknown> = Record<string, never>>(
+  key: string,
+  mutate: (current: T[]) => { next: T[]; changed: boolean; meta?: M },
+) {
+  const current = get<T[]>(key, []);
+  const result = mutate([...current]);
+  if (result.changed) set(key, result.next);
+  return result;
+}
+
 export function getProfile(): UserProfile | null {
   return get<UserProfile | null>(KEYS.profile, null);
 }
@@ -49,36 +63,38 @@ export function clearProfile() { localStorage.removeItem(KEYS.profile); }
 
 export function getSavedPassages(): SavedPassage[] { return get(KEYS.saved, []); }
 export function savePassage(p: SavedPassage) {
-  const all = getSavedPassages();
-  if (!all.find((s) => s.id === p.id)) {
-    all.unshift(p);
-    set(KEYS.saved, all);
-    incrementPresenceScore(3);
-  }
+  const passageKey = normalizeIdempotencyKey(p.passage.reference || p.id);
+  const { meta } = writeListAtomically<SavedPassage, { added: boolean }>(KEYS.saved, (all) => {
+    const existingIndex = all.findIndex((s) => s.id === p.id || normalizeIdempotencyKey(s.passage.reference || s.id) === passageKey);
+    if (existingIndex >= 0) {
+      all[existingIndex] = { ...all[existingIndex], ...p, id: all[existingIndex].id, savedAt: all[existingIndex].savedAt };
+      return { next: all, changed: true, meta: { added: false } };
+    }
+
+    return { next: [p, ...all].slice(0, 200), changed: true, meta: { added: true } };
+  });
+  if (meta?.added) incrementPresenceScore(3);
 }
 export function savePassages(passages: SavedPassage[]) {
   if (passages.length === 0) return;
-  const all = getSavedPassages();
-  const existingIds = new Set<string>();
-  for (const s of all) {
-    existingIds.add(s.id);
-  }
+  const { meta } = writeListAtomically<SavedPassage, { added: number }>(KEYS.saved, (all) => {
+    let added = 0;
 
-  const toAdd: SavedPassage[] = [];
-  const processedNewIds = new Set<string>();
-  for (const p of passages) {
-    if (!existingIds.has(p.id) && !processedNewIds.has(p.id)) {
-      toAdd.push(p);
-      processedNewIds.add(p.id);
+    for (const passage of passages) {
+      const referenceKey = normalizeIdempotencyKey(passage.passage.reference || passage.id);
+      const existingIndex = all.findIndex((item) => item.id === passage.id || normalizeIdempotencyKey(item.passage.reference || item.id) === referenceKey);
+      if (existingIndex >= 0) {
+        all[existingIndex] = { ...all[existingIndex], ...passage, id: all[existingIndex].id, savedAt: all[existingIndex].savedAt };
+        continue;
+      }
+
+      all.unshift(passage);
+      added += 1;
     }
-  }
 
-  if (toAdd.length > 0) {
-    // Reverse to maintain unshift order if the input was already ordered
-    all.unshift(...toAdd.reverse());
-    set(KEYS.saved, all);
-    incrementPresenceScore(3 * toAdd.length);
-  }
+    return { next: all.slice(0, 200), changed: added > 0 || passages.length > 0, meta: { added } };
+  });
+  if (meta?.added) incrementPresenceScore(3 * meta.added);
 }
 export function removePassage(id: string) {
   set(KEYS.saved, getSavedPassages().filter((p) => p.id !== id));
@@ -86,12 +102,16 @@ export function removePassage(id: string) {
 
 export function getJournalEntries(): JournalEntry[] { return get(KEYS.journal, []); }
 export function saveJournalEntry(e: JournalEntry) {
-  const all = getJournalEntries();
-  const idx = all.findIndex((j) => j.id === e.id);
-  if (idx >= 0) all[idx] = e;
-  else all.unshift(e);
-  set(KEYS.journal, all);
-  incrementPresenceScore(4);
+  const { meta } = writeListAtomically<JournalEntry, { added: boolean }>(KEYS.journal, (all) => {
+    const idx = all.findIndex((j) => j.id === e.id);
+    if (idx >= 0) {
+      all[idx] = { ...all[idx], ...e, id: all[idx].id, createdAt: all[idx].createdAt };
+      return { next: all.slice(0, 500), changed: true, meta: { added: false } };
+    }
+
+    return { next: [e, ...all].slice(0, 500), changed: true, meta: { added: true } };
+  });
+  if (meta?.added) incrementPresenceScore(4);
 }
 export function saveJournalEntries(entries: JournalEntry[]) {
   if (entries.length === 0) return;
@@ -119,6 +139,7 @@ export function saveJournalEntries(entries: JournalEntry[]) {
   if (newEntries.length > 0) {
     // Reverse to maintain unshift order if the input was already ordered
     all.unshift(...newEntries.reverse());
+    all.splice(500);
     changed = true;
     incrementPresenceScore(4 * newEntries.length);
   }
@@ -158,10 +179,11 @@ export function clearKnowledge() { set(KEYS.knowledge, defaultKnowledge); }
 
 export function getSafetyEvents(): SafetyEvent[] { return get(KEYS.safety, []); }
 export function logSafetyEvent(e: SafetyEvent) {
-  const all = getSafetyEvents();
-  all.push(e);
-  if (all.length > 100) all.shift();
-  set(KEYS.safety, all);
+  writeListAtomically<SafetyEvent>(KEYS.safety, (all) => {
+    if (all.some((event) => event.id === e.id)) return { next: all, changed: false };
+    all.push(e);
+    return { next: all.slice(-100), changed: true };
+  });
 }
 
 export function getCachedDaily(): DailyLight | null { return get(KEYS.dailyCache, null); }

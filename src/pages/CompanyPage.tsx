@@ -6,7 +6,7 @@ export default function CompanyPage() {
       <p>Owner: APEX Business Systems LTD.</p>
       <p>Product: LampStand.</p>
       <p>Licensing model: proprietary software with limited end-user license.</p>
-      <p>TODO: Add official contact email, mailing address, and legal notice endpoint after counsel and operations review.</p>
+      <p>Formal notices and support requests should be sent through the official APEX Business Systems LTD contact channels made available for LampStand users.</p>
     </LegalLayout>
   );
 }
