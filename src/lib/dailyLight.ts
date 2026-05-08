@@ -52,7 +52,7 @@ export async function getDailyLightWithHistory(userId: string, date = new Date()
   if (cached?.date === localDate) return cached;
 
   // Fetch recent history (last 30 days) to avoid repeats
-  let recentRefs: Set<string> = new Set();
+  const recentRefs = new Set<string>();
   try {
     const { data } = await supabase
       .from('daily_light_history')
@@ -61,9 +61,12 @@ export async function getDailyLightWithHistory(userId: string, date = new Date()
       .order('shown_date', { ascending: false })
       .limit(30);
     if (data) {
-      recentRefs = new Set(data.map(r => r.passage_ref));
+      for (const row of data) {
+        recentRefs.add(row.passage_ref);
+      }
     }
-  } catch {
+  } catch (error) {
+    console.warn('[daily-light] history fetch failed:', error);
     // Fall through to local-only selection
   }
 
@@ -87,18 +90,23 @@ export async function getDailyLightWithHistory(userId: string, date = new Date()
 
   setCachedDaily(daily);
 
-  // Record in history (fire and forget)
-  supabase
-    .from('daily_light_history')
-    .upsert({
-      user_id: userId,
-      passage_ref: selected.passage.reference,
-      theme: selected.theme,
-      shown_date: localDate,
-    }, { onConflict: 'user_id,shown_date' })
-    .then(({ error }) => {
-      if (error) console.warn('[daily-light] history write failed:', error.message);
-    });
+  // Record in history (awaited for reliability in serverless environments)
+  try {
+    const { error } = await supabase
+      .from('daily_light_history')
+      .upsert({
+        user_id: userId,
+        passage_ref: selected.passage.reference,
+        theme: selected.theme,
+        shown_date: localDate,
+      }, { onConflict: 'user_id,shown_date' });
+
+    if (error) {
+      console.warn('[daily-light] history write failed:', error.message);
+    }
+  } catch (error) {
+    console.warn('[daily-light] history upsert error:', error);
+  }
 
   return daily;
 }
