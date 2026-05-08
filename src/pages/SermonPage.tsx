@@ -8,6 +8,7 @@ import { SEED_PASSAGES } from '@/data/seed';
 import { getAIAdapter } from '@/lib/adapters';
 import { getProfile } from '@/lib/storage';
 import { Button } from '@/components/ui/button';
+import { getSecureRandomInt } from '@/lib/utils';
 import type { Sermon } from '@/types';
 import { RefreshCw } from 'lucide-react';
 
@@ -19,7 +20,7 @@ export default function SermonPage() {
     setLoading(true);
     try {
       const profile = getProfile();
-      const randomPassage = SEED_PASSAGES[Math.floor(Math.random() * SEED_PASSAGES.length)];
+      const randomPassage = SEED_PASSAGES[getSecureRandomInt(SEED_PASSAGES.length)];
       const ai = getAIAdapter();
       const newSermon = await ai.generateSermon(randomPassage, profile?.toneStyle || 'balanced');
       setSermon(newSermon);
