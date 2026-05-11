@@ -31,3 +31,17 @@ This pass implemented enhancements only in verified modules: local storage write
 - No new paid service or vendor.
 - No database schema migration, because existing local-first and Supabase RLS/primary-key patterns support this pass without destructive changes.
 - No broad UI rewrite.
+
+### APEX-POWER-20X & OMNIDEV-V2 Architectural Upgrades
+
+5. On-Device Prosody to Resonance Engine
+   - Enhanced `audioAnalyzer.ts` to natively calculate clinical prosody metrics (dynamic range, speech rate, pause durations) without network cost.
+   - Integrated a new context pipeline into `ResonanceEngine.ts` where evaluated prosody (elevated, flat, baseline) deterministically influences candidate content scoring.
+
+6. Deterministic Groq NLU & Grounding
+   - Refactored `GroqAdapter.ts` to strictly output `json_object` formats.
+   - Implemented a local NLU intent-matching dictionary mapped against clinical CBT frameworks and scripture within `Grounding.ts` to completely eliminate generative AI drift.
+
+7. Atomic CRDT-Inspired Sync Core
+   - Added logical-timestamp resolution and wrapped database operations in `supabaseSync.ts` using the `CircuitBreaker` pattern to ensure conflict-free, offline-first data replication.
+   - Proven deterministic via robust Concurrent Offline Edit Collision tests in `src/test/storage-idempotency.test.ts`.
