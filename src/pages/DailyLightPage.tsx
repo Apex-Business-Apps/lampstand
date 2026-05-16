@@ -81,7 +81,7 @@ export default function DailyLightPage() {
           <div className="animate-slide-up space-y-4">
             <ReflectionBlock
               label="Going Deeper"
-              content="Take a moment with this passage. Read it again slowly. What word or phrase stands out to you? Don't analyze it - just let it sit. Sometimes scripture speaks most clearly when we stop trying to figure it out and simply listen.\n\nConsider: What is this passage inviting you toward today? Not what you should do - but what you're being drawn to."
+              content={`Take a moment with this passage. Read it again slowly. What word or phrase stands out to you? Don't analyze it - just let it sit. Sometimes scripture speaks most clearly when we stop trying to figure it out and simply listen.\n\nConsider: What is this passage inviting you toward today? Not what you should do - but what you're being drawn to.`}
               variant="reflection"
             />
           </div>
