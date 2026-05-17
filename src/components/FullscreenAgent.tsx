@@ -27,7 +27,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
   const [agentMode, setAgentMode] = useState<AgentMode>('idle');
   const [isListening, setIsListening] = useState(false);
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(true);
-  const [intensity, setIntensity] = useState(0.15);
+  const intensityRef = useRef(0.15);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<GuidanceResult | null>(null);
@@ -53,13 +53,13 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
     const poll = () => {
       const amp = audioAnalyzer.getAmplitude();
       if (agentMode === 'speaking') {
-        setIntensity(Math.max(0.1, amp));
+        intensityRef.current = Math.max(0.1, amp);
       } else if (agentMode === 'listening') {
-        setIntensity(0.3 + Math.sin(Date.now() / 400) * 0.15);
+        intensityRef.current = 0.3 + Math.sin(Date.now() / 400) * 0.15;
       } else if (agentMode === 'thinking') {
-        setIntensity(0.2 + Math.sin(Date.now() / 600) * 0.1);
+        intensityRef.current = 0.2 + Math.sin(Date.now() / 600) * 0.1;
       } else {
-        setIntensity(0.1 + Math.sin(Date.now() / 2000) * 0.05);
+        intensityRef.current = 0.1 + Math.sin(Date.now() / 2000) * 0.05;
       }
       rafRef.current = requestAnimationFrame(poll);
     };
@@ -239,7 +239,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
                 title={agentMode === 'speaking' ? 'Tap to stop voice' : 'Tap to replay reflection or focus input'}
                 aria-label="Agent presence"
               >
-                <BurningBushCanvas intensity={intensity} className="w-full h-full" />
+                <BurningBushCanvas intensityRef={intensityRef} className="w-full h-full" />
               </button>
               <div className="min-w-0">
                 <p className="text-sm font-serif italic text-[#fef3c7]">{statusLabel}</p>

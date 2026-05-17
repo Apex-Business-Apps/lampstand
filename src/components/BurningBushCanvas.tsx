@@ -1,7 +1,7 @@
-import { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 
 interface BurningBushCanvasProps {
-  intensity: number; // 0-1 audio amplitude
+  intensityRef: React.MutableRefObject<number>; // 0-1 audio amplitude
   className?: string;
 }
 
@@ -16,16 +16,10 @@ interface Particle {
   hue: number;
 }
 
-export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanvasProps) {
+export function BurningBushCanvas({ intensityRef, className = '' }: BurningBushCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const particlesRef = useRef<Particle[]>([]);
   const animFrameRef = useRef<number>(0);
-  const intensityRef = useRef(intensity);
-
-  // Keep intensity ref in sync without re-running animation loop
-  useEffect(() => {
-    intensityRef.current = intensity;
-  }, [intensity]);
 
   const createParticle = useCallback((w: number, h: number, amp: number): Particle => {
     const centerX = w / 2;
