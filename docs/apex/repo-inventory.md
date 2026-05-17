@@ -1,45 +1,112 @@
 # LampStand Repo Inventory
 
-Verified on 2026-05-07 from `/workspace/lampstand`.
+Verified on 2026-05-17.
 
 ## Stack
-- Framework: Vite React SPA verified by `vite.config.ts`, `src/main.tsx`, and `src/App.tsx`.
-- Language: TypeScript verified by `tsconfig.json`, `src/**/*.ts`, and `src/**/*.tsx`.
-- Package manager: npm 10.9.2 verified by `package.json` `packageManager` and `package-lock.json`.
-- Runtime/deploy target: Cloudflare Workers static assets verified by `wrangler.json`, `wrangler.jsonc`, and `src/workers/static-spa.ts`.
-- Build script: `npm run build` maps to `vite build` in `package.json`.
-- Test script: `npm test` maps to `vitest run` in `package.json`.
-- Lint script: `npm run lint` maps to `eslint .` in `package.json`.
-- Typecheck script: `npm run typecheck` maps to `tsc --noEmit` in `package.json`.
+
+- Framework: Vite 6 React SPA verified by `vite.config.ts`, `src/main.tsx`, `src/App.tsx`.
+- Language: TypeScript 5 verified by `tsconfig.json`.
+- Package manager: npm 10.9.2 verified by `package.json` `packageManager` field.
+- Runtime/deploy target: Cloudflare Workers static assets verified by `wrangler.json`, `wrangler.jsonc`, `src/workers/static-spa.ts`.
+- Build script: `npm run build` -> `vite build`.
+- Test script: `npm test` -> `vitest run` (97 tests as of 2026-05-17).
+- Lint script: `npm run lint` -> `eslint .`.
+- Typecheck script: `npm run typecheck` -> `tsc --noEmit`.
 
 ## Source Structure
-- App entry and routes: `src/main.tsx`, `src/App.tsx`, `src/pages/`.
-- UI components: `src/components/`, `src/components/ui/`, `src/hooks/`, `src/index.css`, `src/App.css`.
-- AI/chat modules: `src/lib/agent/`, `src/lib/ai/`, `src/lib/runtime/agentRuntime.ts`, `src/lib/groq.ts`.
-- Scripture/content modules: `src/data/contentLibrary.ts`, `src/data/seed.ts`, `src/lib/dailyLight.ts`, `src/components/ScriptureCard.tsx`.
-- Auth/session modules: `src/hooks/useAuth.tsx`, `src/contexts/AuthContext.tsx`, `src/components/AuthGuard.tsx`, `src/components/AuthProviderWrapper.tsx`, `src/integrations/supabase/client.ts`.
-- Data/persistence modules: `src/lib/storage.ts`, `src/lib/supabaseSync.ts`, `src/integrations/supabase/types.ts`, `supabase/migrations/`.
-- Voice modules: `src/lib/voice.ts`, `src/lib/voice/`, `src/components/VoiceInput.tsx`, `src/lib/audioAnalyzer.ts`.
-- Notifications: `src/lib/notifications/dailyReminder.ts`.
-- Tests: `src/test/`, `src/integrations/supabase/client.test.ts`.
+
+### Active AI / Runtime stack (what the UI actually uses)
+
+- `src/lib/runtime/agentRuntime.ts` — ACTIVE runtime. `TurnPipeline.runGuidanceTurn()` is the single entry point for guidance generation. Wired to `GuidancePage.tsx` and `FullscreenAgent.tsx`.
+- `src/lib/groq.ts` — `GroqAIAdapter` with `generateGuidanceWithContext()`. Uses `STYLE_GUIDE` for all Groq calls.
+- `src/lib/adapters.ts` — `IAIAdapter` / `IRetrievalAdapter` singleton factories; `LocalAIAdapter` fallback.
+- `src/lib/guidance/contextAssembler.ts` — Assembles `GuidanceContext` from localStorage and Resonance fingerprint for injection into guidance system prompt. Consent-gated.
+
+### Orphaned AI / Runtime stack (not wired to any page — Phase 2 consolidation target)
+
+- `src/lib/ai/AgentRuntime.ts` — Not consumed by any page.
+- `src/lib/ai/GroqAdapter.ts`, `src/lib/ai/NullAdapter.ts`, `src/lib/ai/types.ts`
+- `src/lib/agent/ConversationOrchestrator.ts`, `src/lib/agent/SafetyGate.ts`
+- `src/lib/agent/Grounding.ts`, `src/lib/agent/Prompts.ts`
+- `src/lib/agent/RetrievalOrchestrator.ts`, `src/lib/agent/CircuitBreaker.ts`, `src/lib/agent/AgentInterfaces.ts`
+
+Do not add new callers to the orphaned stack. See `CLAUDE.md`.
+
+### App entry and routes
+
+- `src/main.tsx`, `src/App.tsx`, `src/pages/`
+
+### UI components
+
+- `src/components/`, `src/components/ui/`, `src/hooks/`, `src/index.css`, `src/App.css`
+- Key: `FullscreenAgent.tsx`, `FloatingAgent.tsx`, `AppShell.tsx`, `ScriptureCard.tsx`, `ReflectionBlock.tsx`, `AgentPresence.tsx`
+
+### Scripture / Content modules
+
+- `src/data/contentLibrary.ts`, `src/data/seed.ts`, `src/lib/dailyLight.ts`, `src/components/ScriptureCard.tsx`
+
+### Personalization
+
+- `src/lib/resonance/ResonanceEngine.ts` — On-device Resonance fingerprint (theme affinity, season inference, sentiment, novelty ranking). Used by Daily Light selection, Guidance passage ranking, and signal recording.
+
+### Auth / Session modules
+
+- `src/hooks/useAuth.tsx`, `src/contexts/AuthContext.tsx`, `src/components/AuthGuard.tsx`
+- `src/integrations/supabase/client.ts`, `src/integrations/supabase/types.ts`
+
+### Data / Persistence modules
+
+- `src/lib/storage.ts`, `src/lib/supabaseSync.ts`, `supabase/migrations/`
+
+### Voice modules
+
+- `src/lib/voice.ts`, `src/lib/voice/`, `src/components/VoiceInput.tsx`, `src/lib/audioAnalyzer.ts`
+
+### Other
+
+- `src/lib/notifications/dailyReminder.ts` — Push notification scheduler
+- `src/lib/examen/` — Ignatian examen flow
+- `src/lib/safety.ts` — Input safety, circuit breaker (active path)
+- `src/lib/date.ts`, `src/lib/utils.ts`
+- `src/hooks/useAppBoot.ts` — Boot-time Resonance hydration + notification arm
+
+### Worker and infrastructure
+
+- `src/workers/static-spa.ts` — Cloudflare Worker: security headers, `/health` endpoint, SPA fallback
+- `wrangler.json` — Staging deploy config
+- `wrangler.production.json` — Production deploy config with domain routes
+- `wrangler.jsonc` — Reference / legacy config
+
+### Tests
+
+- `src/test/` — 25 test files, 97 tests (Vitest + jsdom)
 
 ## Verified Capabilities
-- Bible/scripture content: verified in `src/data/contentLibrary.ts`, `src/data/seed.ts`, and `src/lib/adapters.ts` local retrieval.
-- AI/chat behavior: verified in `src/lib/agent/ConversationOrchestrator.ts`, `src/lib/ai/AgentRuntime.ts`, `src/components/FloatingAgent.tsx`, and `src/components/FullscreenAgent.tsx`.
-- Journaling/reflection features: verified in `src/pages/JournalPage.tsx`, `src/pages/DailyLightPage.tsx`, `src/lib/storage.ts`, and `supabase/migrations/20260409024002_cc641124-4cb0-409b-9d51-fd0093ad2b78.sql`.
-- Sermon/content management: verified in `src/pages/SermonPage.tsx`, `src/data/seed.ts`, and `src/lib/adapters.ts`.
-- Calendar/streak/reminder features: verified in `src/lib/storage.ts`, `src/lib/date.ts`, `src/lib/notifications/dailyReminder.ts`, and `src/pages/SettingsPage.tsx`.
-- Sharing hooks: verified in `src/pages/DailyLightPage.tsx`, `src/components/ScriptureCard.tsx`, and `src/components/FullscreenAgent.tsx`.
-- Offline/PWA/mobile support: verified in `src/pages/InstallPage.tsx`, `public/manifest.json`, `public/sw.js`, and `src/workers/static-spa.ts`.
-- Logging/monitoring/health checks: logging and safety events verified in `src/lib/storage.ts`, `src/lib/runtime/agentRuntime.ts`, and `src/lib/agent/CircuitBreaker.ts`; health check added in `src/workers/static-spa.ts`.
-- Admin/content roles: verified in `src/pages/AdminPage.tsx`, `src/hooks/useAdminRole.ts`, and `supabase/migrations/20260410034137_bfe8b5aa-a592-48f9-ae7c-20d28f64e6b5.sql`.
 
-## Unverified Capabilities
-- UNVERIFIED: referral event persistence not found in repository after inspection. No implementation assumes it exists.
-- UNVERIFIED: hosted vector database or embeddings storage not found in repository after inspection. No implementation assumes it exists.
-- UNVERIFIED: dedicated e2e Playwright spec directory not found in repository after inspection. Existing test tooling is Vitest.
+- Scripture / content: `src/data/contentLibrary.ts`, `src/data/seed.ts`, `src/lib/adapters.ts`
+- AI guidance: `src/lib/runtime/agentRuntime.ts`, `src/lib/groq.ts`, `src/pages/GuidancePage.tsx`, `src/components/FullscreenAgent.tsx`
+- Contextual guidance memory: `src/lib/guidance/contextAssembler.ts` (Phase 1, 2026-05-17)
+- Resonance personalization: `src/lib/resonance/ResonanceEngine.ts`
+- Daily Light: `src/lib/dailyLight.ts` with Resonance ranking and Supabase history dedup
+- Journaling: `src/pages/JournalPage.tsx`, `src/lib/storage.ts`
+- Sermon: `src/pages/SermonPage.tsx`, `src/data/seed.ts`
+- Daily Examen: `src/pages/ExamenPage.tsx`, `src/lib/examen/`
+- Calendar / streak / reminder: `src/lib/storage.ts`, `src/lib/date.ts`, `src/lib/notifications/dailyReminder.ts`
+- Sharing: `src/pages/DailyLightPage.tsx`, `src/components/ScriptureCard.tsx`
+- PWA / offline support: `src/pages/InstallPage.tsx`, `public/manifest.json`, `public/sw.js`
+- Health check: `src/workers/static-spa.ts` `/health` endpoint
+- Admin / content roles: `src/pages/AdminPage.tsx`, `src/hooks/useAdminRole.ts`, migration `20260410034137_...sql`
+- Optional Supabase cloud sync: `src/lib/supabaseSync.ts`
 
-## Existing Dependencies
-Dependencies are verified only from `package.json` and `package-lock.json`. No new dependencies were added.
-- Runtime dependencies include React, React Router, TanStack React Query, Supabase JS, Radix UI components, shadcn-style utilities, zod, date-fns, react-markdown, recharts, lucide-react, sonner, and related UI packages.
-- Dev dependencies include Vite, TypeScript, Vitest, Testing Library, ESLint, Playwright package, Tailwind, Wrangler, and Cloudflare worker types via Wrangler dependencies.
+## Unverified / Not Present
+
+- EPUB parsing, EPUB reader, native mobile (React Native / Expo): NOT in this repository.
+- Hosted vector database or embeddings: NOT in this repository.
+- Referral event persistence: NOT found in repository.
+- Prosody-to-Resonance integration: `src/lib/audioAnalyzer.ts` computes amplitude only; no clinical prosody pipeline exists.
+- CRDT-inspired sync: `src/lib/supabaseSync.ts` uses simple upsert patterns; no CRDT implementation exists.
+- Playwright e2e specs: `playwright.config.ts` exists; no spec files found as of this audit.
+
+## Dependencies
+
+Dependencies verified from `package.json` only. No new runtime dependency added in Phase 1. Key runtime deps: React, React Router, TanStack React Query, Supabase JS, Radix UI, zod, date-fns, react-markdown, recharts, lucide-react, sonner.
