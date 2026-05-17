@@ -149,16 +149,16 @@ export class TextToSpeechAdapter {
     this.lastText = text;
     const voicePref = getVoicePreferences();
     const consent = getConsentState();
-    const hasPersistedVoicePrefs = !!localStorage.getItem('lampstand_voice_preferences');
-    const playbackEnabled = voicePref.enabled || (!hasPersistedVoicePrefs && consent.voiceOutput);
-    if (!playbackEnabled || voicePref.muted || !consent.voiceOutput) {
+
+    // User explicitly muted in settings — respect that globally.
+    if (voicePref.muted) {
       onEnd?.();
       return;
     }
 
-    // 1) Cloud TTS path
-    try {
-      if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+    // 1) Cloud TTS — requires explicit voice consent (sends text to external API).
+    if (consent.voiceOutput && import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+      try {
         this.onStateChange?.('loading');
         this.abortController = new AbortController();
         const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`, {
@@ -193,17 +193,17 @@ export class TextToSpeechAdapter {
         };
         await this.audio.play();
         return;
-      }
-    } catch (err) {
-      // Silently fall through to browser TTS
-      if ((err as Error)?.name === 'AbortError') {
-        this.onStateChange?.('idle');
-        onEnd?.();
-        return;
+      } catch (err) {
+        if ((err as Error)?.name === 'AbortError') {
+          this.onStateChange?.('idle');
+          onEnd?.();
+          return;
+        }
+        // fall through to browser TTS
       }
     }
 
-    // 2) Browser fallback
+    // 2) Browser TTS — local, no external data transmission, always available.
     this.browserSpeak(text, voicePref.speed, onEnd);
   }
 
