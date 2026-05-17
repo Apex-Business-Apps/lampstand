@@ -12,7 +12,9 @@
 import type { ToneStyle, JournalEntry } from '@/types';
 import { saveJournalEntry, getJournalEntries } from '@/lib/storage';
 import { recordSignal } from '@/lib/resonance/ResonanceEngine';
-import { todayKey } from '@/lib/date';
+import { formatLocalDate } from '@/lib/date';
+
+const todayKey = () => formatLocalDate();
 
 export type ExamenStepId =
   | 'presence'
