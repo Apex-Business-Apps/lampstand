@@ -1,7 +1,5 @@
-/// <reference types="@cloudflare/workers-types" />
-
 export interface Env {
-  ASSETS: Fetcher;
+  ASSETS: { fetch: (request: Request) => Promise<Response> };
 }
 
 const SECURITY_HEADERS: Record<string, string> = {
