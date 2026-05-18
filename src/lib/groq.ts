@@ -3,8 +3,8 @@ import { LocalAIAdapter } from './adapters';
 import type { GuidanceContext } from './guidance/contextAssembler';
 import { formatContextForPrompt } from './guidance/contextAssembler';
 
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY;
-const MODEL = 'llama-3.3-70b-versatile';
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 // Shared style guide used for all GroqAIAdapter calls (replaces the old vague SYS string).
 // Kept in sync with src/lib/agent/Prompts.ts — the guidance mode here is tighter
@@ -46,26 +46,21 @@ export class GroqAIAdapter implements IAIAdapter {
   private fallback = new LocalAIAdapter();
 
   private async ask(messages: { role: string; content: string }[], json = false, maxTokens = 400) {
-    if (!GROQ_API_KEY) throw new Error('Missing GROQ_API_KEY');
+    if (!SUPABASE_URL || !SUPABASE_KEY) throw new Error('Missing Supabase configuration');
 
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/groq-guidance`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${GROQ_API_KEY}`,
         'Content-Type': 'application/json',
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
       },
-      body: JSON.stringify({
-        model: MODEL,
-        messages,
-        response_format: json ? { type: 'json_object' } : { type: 'text' },
-        temperature: 0.5,
-        max_completion_tokens: maxTokens,
-      }),
+      body: JSON.stringify({ messages, json, maxTokens }),
     });
 
-    if (!res.ok) throw new Error(`Groq ${res.status}`);
+    if (!res.ok) throw new Error(`groq-guidance ${res.status}`);
     const data = await res.json();
-    return data.choices[0].message.content;
+    return data.content;
   }
 
   async generateReflection(passage: ScripturePassage, tone: ToneStyle): Promise<string> {
