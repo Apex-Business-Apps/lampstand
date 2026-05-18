@@ -24,8 +24,10 @@ describe('rankCandidates — signature contract', () => {
     reference: ref,
   });
 
-  it('accepts exactly one required argument (candidates)', () => {
-    expect(rankCandidates.length).toBe(1);
+  it('declares no more than two parameters (candidates, optional fingerprint)', () => {
+    // Guards against accidentally adding a third positional argument
+    // (the exact regression that produced TS2554 in CI).
+    expect(rankCandidates.length).toBeLessThanOrEqual(2);
   });
 
   it('accepts an optional fingerprint override as the second argument', () => {
