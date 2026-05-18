@@ -1,6 +1,6 @@
-export interface Env {
-  ASSETS: { fetch: (request: Request) => Promise<Response> };
-}
+import type { StaticSpaEnv } from './types';
+
+export type Env = StaticSpaEnv;
 
 const SECURITY_HEADERS: Record<string, string> = {
   "X-Content-Type-Options": "nosniff",
