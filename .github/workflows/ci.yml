@@ -17,19 +17,41 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          bun-version: 1.2.15 # match Cloudflare build image toolchain
+          node-version: '20'
+          cache: 'npm'
 
-      - name: Install dependencies (frozen lockfile)
-        run: bun install --frozen-lockfile
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Security audit (block high/critical in production deps)
+        run: npm audit --omit=dev
 
       - name: Lint
-        run: bun run lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
 
       - name: Unit tests
-        run: bun run test
+        run: npm run test -- --run
 
       - name: Production build
-        run: bun run build
+        run: npm run build
+
+      - name: Verify PWA manifest and icons exist in build output
+        run: |
+          test -f dist/manifest.json || (echo "ERROR: manifest.json missing from build output" && exit 1)
+          test -f dist/icons/icon-192.png || (echo "ERROR: icon-192.png missing from build output" && exit 1)
+          test -f dist/icons/icon-512.png || (echo "ERROR: icon-512.png missing from build output" && exit 1)
+          echo "PWA artifacts verified"
+
+      - name: Verify no private API keys in bundle
+        run: |
+          if grep -r "GROQ_API_KEY\|xi-api-key\|sk-" dist/assets/ --include="*.js" 2>/dev/null; then
+            echo "ERROR: Potential private API key found in bundle"
+            exit 1
+          fi
+          echo "Bundle key scan passed"

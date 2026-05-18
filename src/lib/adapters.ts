@@ -129,9 +129,14 @@ export class LocalAIAdapter implements IAIAdapter {
 
 // ─── Singleton instances ───
 let retrievalAdapter: IRetrievalAdapter = new LocalRetrievalAdapter();
-let aiAdapter: IAIAdapter = import.meta.env.VITE_GROQ_API_KEY ? new GroqAIAdapter() : new LocalAIAdapter();
+let aiAdapter: IAIAdapter | null = null;
 
 export function getRetrievalAdapter(): IRetrievalAdapter { return retrievalAdapter; }
-export function getAIAdapter(): IAIAdapter { return aiAdapter; }
+export function getAIAdapter(): IAIAdapter {
+  if (!aiAdapter) {
+    aiAdapter = import.meta.env.VITE_SUPABASE_URL ? new GroqAIAdapter() : new LocalAIAdapter();
+  }
+  return aiAdapter;
+}
 export function setRetrievalAdapter(a: IRetrievalAdapter) { retrievalAdapter = a; }
 export function setAIAdapter(a: IAIAdapter) { aiAdapter = a; }
