@@ -35,14 +35,14 @@ jobs:
       - name: Type check
         run: npm run typecheck
 
-      - name: Typecheck
-        run: bun run typecheck
-
       - name: Unit tests
         run: npm run test -- --run
 
       - name: Production build
         run: npm run build
+
+      - name: Worker bundle (dry-run)
+        run: npx wrangler deploy --dry-run --config wrangler.json
 
       - name: Verify PWA manifest and icons exist in build output
         run: |
