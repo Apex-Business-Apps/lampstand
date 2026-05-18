@@ -28,8 +28,14 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      - name: Typecheck
+        run: bun run typecheck
+
       - name: Unit tests
         run: bun run test
 
       - name: Production build
         run: bun run build
+
+      - name: Worker bundle (dry-run)
+        run: bunx wrangler deploy --dry-run --config wrangler.json
