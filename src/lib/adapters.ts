@@ -69,6 +69,16 @@ export class LocalRetrievalAdapter implements IRetrievalAdapter {
   }
 }
 
+// ─── Optimized SEED_SERMONS lookup map ───
+let seedSermonsMap: Map<string, Sermon> | null = null;
+
+function getSeedSermonsMap(): Map<string, Sermon> {
+  if (!seedSermonsMap) {
+    seedSermonsMap = new Map(SEED_SERMONS.map(s => [s.passage.reference, s]));
+  }
+  return seedSermonsMap;
+}
+
 // ─── Local AI Adapter (uses seed content, swappable for Groq/OpenAI/etc) ───
 export class LocalAIAdapter implements IAIAdapter {
   async generateReflection(passage: ScripturePassage, tone: ToneStyle): Promise<string> {
@@ -81,7 +91,7 @@ export class LocalAIAdapter implements IAIAdapter {
   }
 
   async generateSermon(passage: ScripturePassage, tone: ToneStyle): Promise<Sermon> {
-    const seed = SEED_SERMONS.find(s => s.passage.reference === passage.reference);
+    const seed = getSeedSermonsMap().get(passage.reference);
     if (seed) return seed;
     return {
       id: crypto.randomUUID(),
