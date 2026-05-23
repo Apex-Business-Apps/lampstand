@@ -4,7 +4,7 @@ import { shouldCircuitBreak, checkInputSafety } from '../lib/safety';
 // Simple localStorage mock for Bun
 if (typeof localStorage === 'undefined') {
   const storage: Record<string, string> = {};
-  (globalThis as any).localStorage = {
+  const mockStorage = {
     getItem: vi.fn((key: string) => storage[key] || null),
     setItem: vi.fn((key: string, value: string) => { storage[key] = value; }),
     removeItem: vi.fn((key: string) => { delete storage[key]; }),
@@ -16,6 +16,11 @@ if (typeof localStorage === 'undefined') {
     key: vi.fn((index: number) => Object.keys(storage)[index] || null),
     length: 0,
   };
+
+  Object.defineProperty(globalThis, 'localStorage', {
+    value: mockStorage,
+    writable: true,
+  });
 }
 
 describe('safety lib', () => {
