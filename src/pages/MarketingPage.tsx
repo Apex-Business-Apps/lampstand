@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Flame, HeartHandshake, PlayCircle, Sparkles, Sun } from "lucide-react";
+import { ArrowRight, Flame, HeartHandshake, PlayCircle, Sun } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
