@@ -1,22 +1,22 @@
-import { ArrowRight, Flame, HeartHandshake, PlayCircle, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Flame, HeartHandshake, PlayCircle, Sparkles, Sun } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 const highlights = [
   {
-    icon: Sparkles,
+    icon: Sun,
     title: "Daily Light",
-    description: "Fresh scripture reflection in minutes, designed for real schedules and real emotions.",
+    description: "A fresh scripture passage and a short, grounded reflection — ready every morning in under three minutes.",
   },
   {
     icon: HeartHandshake,
     title: "Pastoral Guidance",
-    description: "Warm, grounded responses when you need direction, comfort, or a prayerful next step.",
+    description: "Ask anything — doubt, grief, decisions, joy. Get scripture-first answers in a warm, non-judgmental voice.",
   },
   {
     icon: PlayCircle,
     title: "Sermon Mode",
-    description: "Turn passages into structured teaching moments for study groups, devotionals, or personal growth.",
+    description: "Turn any passage into a structured, spoken teaching for study groups, devotionals, or the drive to work.",
   },
 ];
 
@@ -56,91 +56,111 @@ export default function MarketingPage() {
       }}
     >
       <div className="mx-auto max-w-6xl px-6 py-8 sm:px-10 lg:px-16">
-        <header className="mb-12 flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-semibold sm:text-4xl">LampStand</h1>
+        <header className="mb-10 flex items-center justify-between sm:mb-14">
+          <div className="flex items-center gap-3">
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(var(--sacred-gold))] to-[hsl(var(--ember))] shadow-[0_0_24px_hsl(var(--warm-glow)/0.45)]">
+              <Flame className="h-5 w-5 text-primary-foreground" />
+            </div>
+            <span className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">LampStand</span>
           </div>
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => navigate("/lite?source=web")}>Lite Preview</Button>
+            <Button variant="ghost" className="hidden sm:inline-flex" onClick={() => navigate("/lite?source=web")}>Preview</Button>
             <Button onClick={() => navigate("/entry?entry=onboarding&source=web")}>
-              Start
+              Begin
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
         </header>
 
-        <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-card/70 p-8 shadow-[0_20px_80px_-32px_hsl(var(--warm-glow)/0.35)] sm:p-12">
-          <div className="pointer-events-none absolute -right-10 -top-16 h-64 w-64 rounded-full bg-[hsl(var(--warm-glow)/0.18)] blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 left-20 h-72 w-72 rounded-full bg-[hsl(var(--sage)/0.18)] blur-3xl" />
+        <section className="relative overflow-hidden rounded-[2rem] border border-border/70 bg-gradient-to-br from-card/90 via-card/70 to-accent/40 p-8 shadow-[0_30px_120px_-40px_hsl(var(--warm-glow)/0.55)] sm:p-14 lg:p-20">
+          <div className="pointer-events-none absolute -right-24 -top-24 h-[28rem] w-[28rem] rounded-full bg-[hsl(var(--warm-glow)/0.28)] blur-3xl animate-glow-pulse" />
+          <div className="pointer-events-none absolute -bottom-32 -left-16 h-[26rem] w-[26rem] rounded-full bg-[hsl(var(--sacred-gold)/0.22)] blur-3xl" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[hsl(var(--sacred-gold)/0.5)] to-transparent" />
 
-          <div className="relative grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-            <div className="space-y-6 animate-fade-in">
-              <p className="text-sm uppercase tracking-[0.2em] text-primary">Scripture Companion Platform</p>
-              <h2 className="max-w-2xl text-4xl font-semibold leading-tight sm:text-5xl">
-                A calm, intelligent spiritual companion that meets people where they actually are.
-              </h2>
-              <p className="max-w-xl text-lg text-muted-foreground">
-                LampStand blends daily reflection, guided conversation, and structured teaching tools into one local-first experience built for consistency, trust, and growth.
+          <div className="relative space-y-10 animate-fade-in">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[hsl(var(--sacred-gold)/0.35)] bg-background/60 px-4 py-1.5 backdrop-blur">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[hsl(var(--sacred-gold))] opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[hsl(var(--sacred-gold))]" />
+              </span>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-foreground/80">
+                A Catholic-friendly scripture companion · Free forever
               </p>
-              <div className="flex flex-wrap gap-3">
-                <Button size="lg" onClick={() => navigate("/entry?entry=onboarding&source=web")}>Create your path</Button>
-                <Button size="lg" variant="outline" onClick={() => navigate("/lite?source=web")}>Explore lite mode</Button>
-              </div>
             </div>
 
-            <aside className="space-y-3 rounded-2xl border border-border/80 bg-background/80 p-6 backdrop-blur animate-slide-up">
+            <h2 className="font-display max-w-5xl text-5xl font-semibold leading-[1.02] tracking-tight text-foreground sm:text-7xl lg:text-[5.5rem]">
+              Scripture, prayer, and pastoral guidance — <span className="bg-gradient-to-br from-[hsl(var(--ember))] via-[hsl(var(--sacred-gold))] to-[hsl(var(--warm-glow))] bg-clip-text text-transparent italic">that meet you where you are.</span>
+            </h2>
+
+            <p className="max-w-3xl font-body text-xl leading-relaxed text-foreground/75 sm:text-2xl">
+              LampStand is a quiet, intelligent companion for daily scripture, Lectio Divina, the Ignatian Examen, and warm pastoral conversation. No guilt. No noise. Just the word, and a steady voice beside you.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <Button size="lg" className="h-14 px-8 text-base font-semibold shadow-[0_12px_40px_-12px_hsl(var(--warm-glow)/0.7)]" onClick={() => navigate("/entry?entry=onboarding&source=web")}>
+                Light your lamp
+                <ArrowRight className="h-5 w-5" />
+              </Button>
+              <Button size="lg" variant="outline" className="h-14 px-7 text-base" onClick={() => navigate("/lite?source=web")}>
+                Try without signing up
+              </Button>
+            </div>
+
+            <div className="grid gap-3 pt-6 sm:grid-cols-3">
               {stats.map((item) => (
-                <div key={item.label} className="rounded-xl border border-border/70 bg-card px-4 py-3">
-                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{item.label}</p>
-                  <p className="mt-1 text-lg font-semibold text-foreground">{item.value}</p>
+                <div key={item.label} className="rounded-2xl border border-border/60 bg-background/70 px-5 py-4 backdrop-blur">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{item.label}</p>
+                  <p className="mt-1.5 font-display text-xl font-semibold text-foreground">{item.value}</p>
                 </div>
               ))}
-            </aside>
+            </div>
           </div>
         </section>
 
-        <section className="mt-16 grid gap-5 md:grid-cols-3">
+        <section className="mt-20 grid gap-5 md:grid-cols-3">
           {highlights.map((item, index) => (
             <article
               key={item.title}
-              className="rounded-2xl border border-border/70 bg-card/80 p-6 backdrop-blur animate-slide-up"
+              className="group rounded-2xl border border-border/70 bg-card/80 p-7 backdrop-blur transition-all hover:-translate-y-1 hover:border-[hsl(var(--sacred-gold)/0.5)] hover:shadow-[0_20px_60px_-24px_hsl(var(--warm-glow)/0.4)] animate-slide-up"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <item.icon className="mb-4 h-6 w-6 text-primary" />
-              <h3 className="text-2xl font-semibold">{item.title}</h3>
-              <p className="mt-3 text-muted-foreground">{item.description}</p>
+              <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[hsl(var(--sacred-gold-soft))] to-[hsl(var(--warm-glow-soft))] text-primary transition-transform group-hover:scale-110">
+                <item.icon className="h-6 w-6" />
+              </div>
+              <h3 className="font-display text-2xl font-semibold tracking-tight">{item.title}</h3>
+              <p className="mt-3 text-base leading-relaxed text-muted-foreground">{item.description}</p>
             </article>
           ))}
         </section>
 
-        <section className="mt-16 rounded-3xl border border-border/70 bg-card/75 p-8 sm:p-10">
-          <div className="mb-8 flex items-center gap-3">
-            <Flame className="h-5 w-5 text-primary" />
-            <h3 className="text-3xl font-semibold">How LampStand creates momentum</h3>
+        <section className="mt-20 rounded-3xl border border-border/70 bg-card/75 p-8 sm:p-12">
+          <div className="mb-10 flex items-center gap-3">
+            <Flame className="h-6 w-6 text-primary" />
+            <h3 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">How LampStand creates momentum</h3>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             {journey.map((item) => (
-              <div key={item.step} className="rounded-xl border border-border bg-background/70 p-5">
-                <p className="text-xs font-semibold tracking-[0.2em] text-primary">STEP {item.step}</p>
-                <h4 className="mt-2 text-xl font-semibold">{item.title}</h4>
-                <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+              <div key={item.step} className="rounded-2xl border border-border bg-background/70 p-6">
+                <p className="text-xs font-semibold tracking-[0.22em] text-primary">STEP {item.step}</p>
+                <h4 className="mt-3 font-display text-2xl font-semibold tracking-tight">{item.title}</h4>
+                <p className="mt-3 text-base leading-relaxed text-muted-foreground">{item.description}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="mt-16 mb-4 rounded-3xl border border-border/70 bg-gradient-to-br from-card to-accent/30 p-8 sm:p-10">
+        <section className="mt-20 mb-6 overflow-hidden rounded-3xl border border-[hsl(var(--sacred-gold)/0.3)] bg-gradient-to-br from-card via-accent/30 to-[hsl(var(--warm-glow-soft))] p-8 sm:p-12">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div className="max-w-2xl">
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Launch now</p>
-              <h3 className="mt-2 text-3xl font-semibold">Start onboarding in under a minute.</h3>
-              <p className="mt-3 text-muted-foreground">
-                Keep the first step light, then let LampStand personalize everything that follows.
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Begin tonight</p>
+              <h3 className="mt-3 font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">Your lamp is ready. Step into the light.</h3>
+              <p className="mt-4 text-lg text-muted-foreground">
+                One minute of setup. A lifetime companion in the word. Free, forever — a labor of love.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Button onClick={() => navigate("/entry?entry=onboarding&source=web")}>Start onboarding</Button>
-              <Button variant="outline" onClick={() => navigate("/app")}>I already use LampStand</Button>
+              <Button size="lg" className="h-13 px-7 text-base font-semibold" onClick={() => navigate("/entry?entry=onboarding&source=web")}>Begin onboarding</Button>
+              <Button size="lg" variant="outline" className="h-13 px-6 text-base" onClick={() => navigate("/app")}>I&rsquo;m already here</Button>
             </div>
           </div>
         </section>
