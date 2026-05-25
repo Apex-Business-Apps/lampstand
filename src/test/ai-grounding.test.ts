@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { AIProviderAdapter } from '@/lib/ai/types';
 import { ConversationOrchestrator } from '@/lib/agent/ConversationOrchestrator';
-import { getRetrievalAdapter, setRetrievalAdapter } from '@/lib/adapters';
+import { getRetrievalAdapter, setRetrievalAdapter } from '@/lib/ai-provider';
 import type { IRetrievalAdapter, RetrievalResult, ScripturePassage } from '@/types';
 
 const passage: ScripturePassage = {

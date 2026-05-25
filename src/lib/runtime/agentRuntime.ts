@@ -1,5 +1,5 @@
 import type { GuidanceResult, ToneStyle } from '@/types';
-import { getAIAdapter, getRetrievalAdapter } from '@/lib/adapters';
+import { getAIAdapter, getRetrievalAdapter } from '@/lib/ai-provider';
 import { SAFE_FALLBACK_RESPONSE, checkInputSafety, shouldCircuitBreak } from '@/lib/safety';
 import { logSafetyEvent } from '@/lib/storage';
 
