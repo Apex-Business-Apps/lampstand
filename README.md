@@ -1,5 +1,7 @@
 # LampStand
 
+*Version 2.0.0 — Updated: June 2026*
+
 LampStand is a local-first scripture companion built with React, TypeScript, and Vite.
 
 ## Architecture Overview
@@ -9,6 +11,7 @@ LampStand is a local-first scripture companion built with React, TypeScript, and
 - **Auth**: Supabase magic-link with guest mode preserved by default
 - **Persistence**: localStorage-first typed modules in `src/lib/storage.ts`
 - **AI Provider Adapter**: `src/lib/adapters.ts` with Groq primary (`GroqAIAdapter`) and local fallback
+- **Agent Orchestration**: `src/hooks/useAgentController.ts` (headless UI-agnostic runtime state management)
 - **Agent Runtime**: `src/lib/runtime/agentRuntime.ts` (safety gate, turn pipeline, retrieval, circuit breaker)
 - **Voice**: `src/lib/voice.ts` (STT browser/null fallback, TTS cloud/browser/silent fallback)
 - **Deploy**: Cloudflare Workers static assets via explicit `wrangler.json`
@@ -28,6 +31,7 @@ Settings now include explicit opt-in toggles for:
 - microphone
 - voice output
 - account-linked persistence
+- **Gentle Mode** (hides streak visuals and gamification pressure for neurodivergent alignment)
 
 Defaults are privacy-first. Raw audio is not stored by default. Transcripts are local-first and can be deleted.
 
@@ -94,9 +98,10 @@ Ownership language references APEX Business Systems LTD with explicit counsel-re
 ## Testing Commands
 
 ```bash
-npm run test
-npm run lint
-npm run typecheck
+npm run test           # Vitest unit & integration tests
+npm run test:e2e       # Playwright visual snapshots
+npm run lint           # ESLint
+npm run typecheck      # TypeScript validation
 ```
 
 - privacy jurisdiction-specific language
