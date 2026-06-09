@@ -6,7 +6,7 @@ LampStand is a non-profit scripture companion application built as a gift to the
 
 - **No monetization.** LampStand does not charge for access, does not display ads, and does not sell user data.
 - **Privacy-first.** All scripture study data remains local to the user's device. No cloud sync of personal study notes without explicit opt-in.
-- **Accessibility.** LampStand must remain free and accessible to every user regardless of income or location.
+- **Accessibility & Affirmation.** LampStand must remain free, accessible, and neurologically affirming to every user. Gamification and artificial pressures (streaks) are strictly opt-in.
 - **Mission-locked.** This project will never be converted to a commercial product.
 
 ## What This Means for Contributors
