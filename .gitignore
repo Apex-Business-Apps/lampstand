@@ -30,3 +30,9 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# Environment secrets — never commit
+.env
+.env.local
+.env.production
+.env.production.local

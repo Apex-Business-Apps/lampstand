@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -135,6 +133,10 @@
   .glow-orb {
     background: radial-gradient(circle, hsl(var(--warm-glow) / 0.6), hsl(var(--sacred-gold) / 0.2), transparent);
     filter: blur(40px);
+    will-change: transform;
+    transform: translateZ(0);
+    contain: layout style;
+    pointer-events: none;
   }
   .kids-mode .glow-card {
     background: linear-gradient(135deg, hsl(var(--kids-background)), hsl(var(--kids-accent-soft)));
@@ -144,6 +146,12 @@
 @layer utilities {
   .animate-glow-pulse {
     animation: glowPulse 4s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-glow-pulse {
+      animation: none;
+      opacity: 0.6;
+    }
   }
   .animate-fade-in {
     animation: fadeIn 0.5s ease-out;
@@ -169,3 +177,11 @@
 /* Safe area insets for mobile notch/home-bar */
 .safe-top { padding-top: env(safe-area-inset-top, 0px); }
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* Performance: skip off-screen rendering for long-page sections */
+@layer utilities {
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 400px;
+  }
+}

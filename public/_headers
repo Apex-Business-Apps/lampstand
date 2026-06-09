@@ -1,0 +1,30 @@
+# The LampStand — Cloudflare HTTP Cache Policy
+
+# Hashed JS/CSS/font assets: immutable for 1 year
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+# Fonts
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+# SPA HTML shell: always revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Service worker: never cache
+/sw.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# PWA manifest: short-lived
+/manifest.json
+  Cache-Control: public, max-age=3600
+
+# Security headers for all routes
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(self), geolocation=()

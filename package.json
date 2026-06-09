@@ -18,7 +18,8 @@
     "cap:open:android": "npx cap open android",
     "cap:open:ios": "npx cap open ios",
     "android:build": "npm run cap:sync && cd android && ./gradlew assembleRelease",
-    "ios:build": "npm run cap:sync && xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -archivePath ios/App/App.xcarchive archive"
+    "ios:build": "npm run cap:sync && xcodebuild -workspace ios/App/App.xcworkspace -scheme App -configuration Release -archivePath ios/App/App.xcarchive archive",
+    "postbuild": "node scripts/inject-modulepreload.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^6.2.0",
