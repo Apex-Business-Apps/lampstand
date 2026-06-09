@@ -9,29 +9,38 @@ import { getSavedPassages, getJournalEntries, getProfile } from '@/lib/storage';
  */
 export function useAppBoot() {
   useEffect(() => {
-    // Hydrate Resonance from local data — runs once and is no-op after first signal.
-    try {
-      hydrateFingerprintFromLocal({
-        saved: getSavedPassages(),
-        journal: getJournalEntries(),
-      });
-    } catch {
-      /* private mode / quota — ignore */
-    }
+    const run = () => {
+      try {
+        hydrateFingerprintFromLocal({
+          saved: getSavedPassages(),
+          journal: getJournalEntries(),
+        });
+      } catch {
+        /* private mode / quota — ignore */
+      }
 
-    // Register the service worker (used both for reminders and as a future
-    // surface for offline). Best-effort, never blocks render.
-    if (isNotificationsSupported()) {
-      ensureServiceWorker();
-    }
+      if (isNotificationsSupported()) {
+        ensureServiceWorker();
+      }
 
-    // Re-arm the reminder using the user's stored preference.
-    const profile = getProfile();
-    if (profile?.notificationsEnabled && profile.notificationTime) {
-      armDailyReminder(
-        { enabled: true, time: profile.notificationTime },
-        { title: `${profile.firstName ? profile.firstName + ', y' : 'Y'}our Daily Light is ready` },
-      );
+      const profile = getProfile();
+      if (profile?.notificationsEnabled && profile.notificationTime) {
+        armDailyReminder(
+          { enabled: true, time: profile.notificationTime },
+          { title: `${profile.firstName ? profile.firstName + ', y' : 'Y'}our Daily Light is ready` },
+        );
+      }
+    };
+
+    // Yield to the browser's first paint before running boot tasks.
+    // scheduler.postTask (Chrome 94+) is preferred; setTimeout(0) is the
+    // universal fallback. Both defer to after the initial frame is painted.
+    type WithScheduler = { scheduler?: { postTask: (fn: () => void) => void } };
+    if (typeof (globalThis as WithScheduler).scheduler?.postTask === 'function') {
+      (globalThis as WithScheduler).scheduler!.postTask(run);
+    } else {
+      const id = setTimeout(run, 0);
+      return () => clearTimeout(id);
     }
   }, []);
 }

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { BurningBushCanvas } from './BurningBushCanvas';
-import { AgentPresence } from './AgentPresence';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { Mic, MicOff, Volume2, VolumeX, Minimize2, Send, AlertCircle, Bookmark } from 'lucide-react';
@@ -208,11 +207,6 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
 
   return (
     <div className="fixed inset-0 z-[100] bg-[#1a1610] text-[#fef3c7] flex flex-col">
-      {/* Canvas background – absolute, full bleed */}
-      <div className="absolute inset-0 pointer-events-none">
-        <BurningBushCanvas intensity={intensity} className="w-full h-full" />
-      </div>
-
       {/* Content layer */}
       <div className="relative z-10 flex flex-col h-full min-h-0">
         {/* Header */}
@@ -241,11 +235,11 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
             <div className="flex items-center gap-3 sm:gap-4">
               <button
                 onClick={handleFlameTap}
-                className="shrink-0 rounded-full border border-[#92400e]/35 bg-[#1a1610]/70 p-1.5 sm:p-2 transition-colors hover:border-[#b45309]/65"
+                className="shrink-0 rounded-full overflow-hidden border border-[#92400e]/35 w-16 h-16 transition-colors hover:border-[#b45309]/65"
                 title={agentMode === 'speaking' ? 'Tap to stop voice' : 'Tap to replay reflection or focus input'}
                 aria-label="Agent presence"
               >
-                <AgentPresence size="sm" mode={agentMode} intensity={intensity} />
+                <BurningBushCanvas intensity={intensity} className="w-full h-full" />
               </button>
               <div className="min-w-0">
                 <p className="text-sm font-serif italic text-[#fef3c7]">{statusLabel}</p>

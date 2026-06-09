@@ -8,6 +8,10 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     alias: {
       '@': path.resolve(__dirname, './src')
+    },
+    env: {
+      VITE_SUPABASE_URL: 'https://mock.supabase.co',
+      VITE_SUPABASE_PUBLISHABLE_KEY: 'mock-key',
     }
   }
 })

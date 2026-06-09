@@ -22,7 +22,7 @@ export function ReflectionBlock({ label, content, variant = 'reflection', classN
     <div className={`rounded-lg bg-secondary/50 p-5 animate-slide-up ${className}`}>
       <p className={`text-xs font-semibold uppercase tracking-wider mb-3 ${labelColors[variant]}`}>{label}</p>
       <div className={variantStyles[variant]}>
-        {content.split('\n\n').map((para, i) => (
+        {content.replace(/\\n/g, '\n').split('\n\n').map((para, i) => (
           <p key={i} className={i > 0 ? 'mt-3' : ''}>{para}</p>
         ))}
       </div>

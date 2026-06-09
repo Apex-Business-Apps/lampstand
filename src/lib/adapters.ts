@@ -1,3 +1,4 @@
+import { GroqAIAdapter } from './groq';
 import type { IRetrievalAdapter, IAIAdapter, RetrievalRequest, RetrievalResult, ScripturePassage, ToneStyle, Sermon, GuidanceResult } from '@/types';
 import { SEED_SERMONS } from '@/data/seed';
 import { CONTENT_PASSAGES, pickGuidanceVariant } from '@/data/contentLibrary';
@@ -70,15 +71,6 @@ export class LocalRetrievalAdapter implements IRetrievalAdapter {
 
 // ─── Local AI Adapter (uses seed content, swappable for Groq/OpenAI/etc) ───
 export class LocalAIAdapter implements IAIAdapter {
-  private static sermonMap: Map<string, Sermon> | null = null;
-
-  private getSermonMap(): Map<string, Sermon> {
-    if (!LocalAIAdapter.sermonMap) {
-      LocalAIAdapter.sermonMap = new Map(SEED_SERMONS.map(s => [s.passage.reference, s]));
-    }
-    return LocalAIAdapter.sermonMap;
-  }
-
   async generateReflection(passage: ScripturePassage, tone: ToneStyle): Promise<string> {
     const toneMap = {
       gentle: 'In this quiet moment, consider what these words might mean for you today. There is no rush — just let them rest in your heart.',
@@ -89,7 +81,7 @@ export class LocalAIAdapter implements IAIAdapter {
   }
 
   async generateSermon(passage: ScripturePassage, tone: ToneStyle): Promise<Sermon> {
-    const seed = this.getSermonMap().get(passage.reference);
+    const seed = SEED_SERMONS.find(s => s.passage.reference === passage.reference);
     if (seed) return seed;
     return {
       id: crypto.randomUUID(),
@@ -134,3 +126,17 @@ export class LocalAIAdapter implements IAIAdapter {
     return checkInputSafety(input);
   }
 }
+
+// ─── Singleton instances ───
+let retrievalAdapter: IRetrievalAdapter = new LocalRetrievalAdapter();
+let aiAdapter: IAIAdapter | null = null;
+
+export function getRetrievalAdapter(): IRetrievalAdapter { return retrievalAdapter; }
+export function getAIAdapter(): IAIAdapter {
+  if (!aiAdapter) {
+    aiAdapter = import.meta.env.VITE_SUPABASE_URL ? new GroqAIAdapter() : new LocalAIAdapter();
+  }
+  return aiAdapter;
+}
+export function setRetrievalAdapter(a: IRetrievalAdapter) { retrievalAdapter = a; }
+export function setAIAdapter(a: IAIAdapter) { aiAdapter = a; }
