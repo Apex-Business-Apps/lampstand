@@ -200,6 +200,17 @@ const defaultConsent: ConsentState = {
   accountLinkedPersistence: false,
   updatedAt: new Date(0).toISOString(),
 };
+
+const defaultPracticePreferences: PracticePreferences = {
+  practiceLength: 'full',
+  textSize: 'standard',
+  hideStreak: false,
+};
+export function getPracticePreferences(): PracticePreferences { return get(KEYS.practicePrefs, defaultPracticePreferences); }
+export function savePracticePreferences(partial: Partial<PracticePreferences>) {
+  set(KEYS.practicePrefs, { ...getPracticePreferences(), ...partial });
+}
+
 export function getConsentState(): ConsentState { return get(KEYS.consent, defaultConsent); }
 export function saveConsentState(partial: Partial<ConsentState>) {
   set(KEYS.consent, { ...getConsentState(), ...partial, updatedAt: new Date().toISOString() });

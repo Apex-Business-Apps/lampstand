@@ -36,6 +36,10 @@ const CompanyPage = lazy(() => import("./pages/CompanyPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ReturnPage = lazy(() => import("./pages/ReturnPage"));
 const InstallPage = lazy(() => import("./pages/InstallPage"));
+const PrayerCirclesPage = lazy(() => import("./pages/PrayerCirclesPage"));
+const PrayerCircleDetailPage = lazy(() => import("./pages/PrayerCircleDetailPage"));
+const LectioPage = lazy(() => import("./pages/LectioPage"));
+const ExamenPage = lazy(() => import("./pages/ExamenPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -96,6 +100,10 @@ const App = () => (
               <Route path="/legal/acceptable-use" element={<AcceptableUsePage />} />
               <Route path="/legal/disclaimer" element={<DisclaimerPage />} />
               <Route path="/legal/company" element={<CompanyPage />} />
+              <Route path="/circles" element={<PrayerCirclesPage />} />
+              <Route path="/circles/:id" element={<PrayerCircleDetailPage />} />
+              <Route path="/lectio" element={<LectioPage />} />
+              <Route path="/examen" element={<ExamenPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

@@ -152,6 +152,35 @@ export interface NotificationConfig {
   bodyTemplate: string;
 }
 
+
+// ─── Prayer Circles ───
+export interface PrayerCircle {
+  id: string;
+  name: string;
+  createdByUserId: string;
+  createdAt: string;
+  visibility: 'invite-only';
+  maxMembers: number;
+}
+
+export interface PrayerCircleMember {
+  circleId: string;
+  userId: string;
+  displayName: string;
+  role: 'owner' | 'member';
+  joinedAt: string;
+}
+
+export interface PrayerIntention {
+  id: string;
+  circleId: string;
+  authorMemberId: string;
+  title: string;
+  body?: string;
+  createdAt: string;
+  answeredAt?: string;
+}
+
 // ─── Onboarding ───
 export type OnboardingStep = 'welcome' | 'name' | 'tone' | 'faith' | 'use' | 'kids' | 'notifications' | 'reading' | 'complete';
 
