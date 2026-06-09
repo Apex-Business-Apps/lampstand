@@ -5,7 +5,7 @@ import { ReflectionBlock } from '@/components/ReflectionBlock';
 import { AgentPresence } from '@/components/AgentPresence';
 import { SEED_SERMONS } from '@/data/seed';
 import { SEED_PASSAGES } from '@/data/seed';
-import { getAIAdapter } from '@/lib/adapters';
+import { getAIAdapter } from '@/lib/ai-provider';
 import { getProfile } from '@/lib/storage';
 import { Button } from '@/components/ui/button';
 import { getSecureRandomInt } from '@/lib/utils';
