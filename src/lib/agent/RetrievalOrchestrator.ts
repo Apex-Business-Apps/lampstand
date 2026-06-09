@@ -1,4 +1,4 @@
-import { getRetrievalAdapter } from '../adapters';
+import { getRetrievalAdapter } from '../ai-provider';
 import { ScripturePassage } from '@/types';
 
 export class RetrievalOrchestrator {

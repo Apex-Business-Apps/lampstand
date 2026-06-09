@@ -29,8 +29,7 @@ describe('ResonanceEngine', () => {
     ];
 
     const fp = loadFingerprint();
-    void prosodyContext;
-    const ranked = rankCandidates(candidates, fp);
+    const ranked = rankCandidates(candidates, fp, prosodyContext);
     const withoutProsody = rankCandidates(candidates, fp);
 
     // We only care about ensuring that the properties exist without crashing right now

@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Sun, BookOpen, MessageCircle, PlayCircle, Baby, Flame, Moon, BookOpenCheck } from 'lucide-react';
-import { hasCompletedTodayExamen } from '@/lib/examen/examenFlow';
-import { hasCompletedTodayLectio } from '@/lib/lectio/lectioFlow';
+import { Sun, BookOpen, MessageCircle, PlayCircle, Baby, Flame } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AgentPresence } from '@/components/AgentPresence';
 import { AppShell } from '@/components/AppShell';
@@ -42,10 +40,6 @@ export default function HomePage() {
 
   const today = getDailyLight();
   const greeting = getGreeting(profile.firstName);
-  const examenDone = hasCompletedTodayExamen();
-  const lectioDone = hasCompletedTodayLectio();
-  const isEvening = new Date().getHours() >= 17;
-  const isMorning = new Date().getHours() < 12;
 
   return (
     <AppShell kidsMode={profile.kidsMode}>
@@ -88,66 +82,6 @@ export default function HomePage() {
         </div>
 
         <Button variant="outline" className="w-full" onClick={() => navigate('/return')}>The Return</Button>
-
-        <button
-          onClick={() => navigate('/lectio')}
-          className={`w-full text-left rounded-2xl p-5 border transition-all ${
-            lectioDone
-              ? 'bg-card border-border opacity-80'
-              : isMorning
-                ? 'border-primary/50 bg-gradient-to-br from-accent/40 to-card shadow-[0_0_24px_rgba(250,180,80,0.15)]'
-                : 'bg-card border-border hover:border-primary/40'
-          }`}
-          aria-label="Begin Lectio Divina on today's passage"
-        >
-          <div className="flex items-center gap-3">
-            <div className="rounded-full bg-accent/50 p-2.5">
-              <BookOpenCheck className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-foreground">
-                {lectioDone ? 'Today\u2019s Lectio \u2014 Complete' : 'Lectio Divina'}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {lectioDone
-                  ? 'The word is with you today.'
-                  : isMorning
-                    ? 'A 4-movement contemplative reading of today\u2019s passage.'
-                    : 'Read, reflect, pray, rest — guided in four movements.'}
-              </p>
-            </div>
-          </div>
-        </button>
-
-        <button
-          onClick={() => navigate('/examen')}
-          className={`w-full text-left rounded-2xl p-5 border transition-all ${
-            examenDone
-              ? 'bg-card border-border opacity-80'
-              : isEvening
-                ? 'border-primary/50 bg-gradient-to-br from-accent/40 to-card shadow-[0_0_24px_rgba(250,180,80,0.15)]'
-                : 'bg-card border-border hover:border-primary/40'
-          }`}
-          aria-label="Open the Daily Examen"
-        >
-          <div className="flex items-center gap-3">
-            <div className="rounded-full bg-accent/50 p-2.5">
-              <Moon className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-foreground">
-                {examenDone ? 'Today\u2019s Examen — Complete' : 'The Daily Examen'}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {examenDone
-                  ? 'Rest in the quiet you made tonight.'
-                  : isEvening
-                    ? 'A 5-minute Ignatian evening reflection.'
-                    : 'A guided 5-step evening prayer, ready when you are.'}
-              </p>
-            </div>
-          </div>
-        </button>
 
         {profile.kidsMode && (
           <Button variant="outline" className="w-full gap-2 border-2" onClick={() => navigate('/kids')}>

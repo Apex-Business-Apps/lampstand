@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { RetrievalOrchestrator } from '../lib/agent/RetrievalOrchestrator';
-import { setRetrievalAdapter, getRetrievalAdapter } from '../lib/adapters';
+import { setRetrievalAdapter, getRetrievalAdapter } from '../lib/ai-provider';
 import { IRetrievalAdapter, ScripturePassage, RetrievalResult } from '@/types';
 
 describe('RetrievalOrchestrator', () => {

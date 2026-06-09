@@ -1,6 +1,8 @@
-import type { StaticSpaEnv } from './types';
+/// <reference types="@cloudflare/workers-types" />
 
-export type Env = StaticSpaEnv;
+export interface Env {
+  ASSETS: Fetcher;
+}
 
 const SECURITY_HEADERS: Record<string, string> = {
   "X-Content-Type-Options": "nosniff",

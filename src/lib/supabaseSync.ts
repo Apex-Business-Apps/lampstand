@@ -2,24 +2,18 @@
  * Supabase cloud sync — bidirectional persistence for authenticated users.
  * Local-first: writes always go to localStorage immediately,
  * then sync to Supabase in the background when authenticated.
- *
- * CONSENT GATE: All cloud writes are blocked unless the user has explicitly
- * granted optionalCloudSync consent. Reads (pull) are allowed so the user
- * can always retrieve data they previously synced, but new pushes stop.
  */
 import { supabase } from '@/integrations/supabase/client';
 import {
   getProfile, saveProfile,
   getSavedPassages, savePassage, savePassages,
   getJournalEntries, saveJournalEntry, saveJournalEntries,
-  getConsentState,
 } from '@/lib/storage';
 import type { UserProfile, SavedPassage, JournalEntry } from '@/types';
 import type { Json } from '@/integrations/supabase/types';
 
 /** Push local profile to Supabase (upsert by user_id) */
 export async function syncProfileToCloud(userId: string): Promise<void> {
-  if (!getConsentState().optionalCloudSync) return;
   const profile = getProfile();
   if (!profile) return;
 
@@ -67,7 +61,6 @@ export async function pullProfileFromCloud(userId: string): Promise<void> {
 
 /** Push saved passages to Supabase */
 export async function syncPassagesToCloud(userId: string): Promise<void> {
-  if (!getConsentState().optionalCloudSync) return;
   const passages = getSavedPassages();
   if (passages.length === 0) return;
 
@@ -116,7 +109,6 @@ export async function pullPassagesFromCloud(userId: string): Promise<void> {
 
 /** Push journal entries to Supabase */
 export async function syncJournalToCloud(userId: string): Promise<void> {
-  if (!getConsentState().optionalCloudSync) return;
   const entries = getJournalEntries();
   if (entries.length === 0) return;
 
