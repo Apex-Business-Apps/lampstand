@@ -36,6 +36,8 @@ const CompanyPage = lazy(() => import("./pages/CompanyPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ReturnPage = lazy(() => import("./pages/ReturnPage"));
 const InstallPage = lazy(() => import("./pages/InstallPage"));
+const ExamenPage = lazy(() => import("./pages/ExamenPage"));
+const LectioPage = lazy(() => import("./pages/LectioPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,8 +52,17 @@ const queryClient = new QueryClient({
 
 function PageFallback() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+    <div
+      className="min-h-screen flex items-center justify-center bg-background"
+      aria-busy="true"
+      aria-label="Loading page"
+    >
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-ui)' }}>
+          Loading…
+        </p>
+      </div>
     </div>
   );
 }
@@ -87,6 +98,8 @@ const App = () => (
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/return" element={<ReturnPage />} />
               <Route path="/install" element={<InstallPage />} />
+              <Route path="/examen" element={<ExamenPage />} />
+              <Route path="/lectio" element={<LectioPage />} />
               <Route path="/admin" element={<AuthGuard><AdminPage /></AuthGuard>} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />

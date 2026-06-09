@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getAIAdapter, setAIAdapter } from '../lib/ai-provider';
-import { LocalAIAdapter } from '../lib/adapters';
+import { LocalAIAdapter, getAIAdapter, setAIAdapter } from '../lib/adapters';
 
 // Mock localStorage for Bun test runner compatibility if setup.ts isn't preloaded
 if (typeof localStorage === 'undefined') {
