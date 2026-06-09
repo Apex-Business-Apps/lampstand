@@ -32,20 +32,6 @@ export default defineConfig(({ mode }) => ({
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (!id.includes("node_modules")) return undefined;
-          if (
-            id.includes("/react/") ||
-            id.includes("/react-dom/") ||
-            id.includes("/react-router-dom/") ||
-            id.includes("/react-router/")
-          ) return "vendor-react";
-          if (id.includes("/@supabase/")) return "vendor-supabase";
-          if (id.includes("/@radix-ui/")) return "vendor-radix";
-          if (id.includes("/@tanstack/")) return "vendor-query";
-          if (id.includes("/lucide-react/")) return "vendor-icons";
-          return "vendor-misc";
-        },
         entryFileNames: "assets/[name]-[hash].js",
         chunkFileNames: "assets/[name]-[hash].js",
         assetFileNames: "assets/[name]-[hash].[ext]",
