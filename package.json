@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
     "deploy": "npm run build && wrangler deploy --config wrangler.json",
     "typecheck": "tsc --noEmit",
     "deploy:ci": "npm ci && npm run deploy",
