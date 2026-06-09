@@ -2,43 +2,47 @@ import { AIProviderAdapter } from './types';
 
 export class GroqAdapter implements AIProviderAdapter {
   id = 'groq';
-  private supabaseUrl: string;
-  private supabaseKey: string;
+  private apiKey: string;
+  private model: string;
 
   constructor() {
-    this.supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-    this.supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
+    this.apiKey = import.meta.env.VITE_GROQ_API_KEY || '';
+    this.model = 'llama3-70b-8192'; // Using Llama 3 70B as standard
   }
 
   isAvailable(): boolean {
-    return !!(this.supabaseUrl && this.supabaseKey);
+    return !!this.apiKey;
   }
 
   async generateText(prompt: string, systemPrompt?: string): Promise<string> {
-    if (!this.isAvailable()) throw new Error('Supabase configuration missing');
+    if (!this.isAvailable()) throw new Error('Groq API Key not configured');
 
-    const messages: Array<{ role: string; content: string }> = [];
+    const messages = [];
     if (systemPrompt) {
       messages.push({ role: 'system', content: systemPrompt });
     }
     messages.push({ role: 'user', content: prompt });
 
-    const response = await fetch(`${this.supabaseUrl}/functions/v1/groq-guidance`, {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${this.apiKey}`,
         'Content-Type': 'application/json',
-        apikey: this.supabaseKey,
-        Authorization: `Bearer ${this.supabaseKey}`,
       },
-      body: JSON.stringify({ messages, maxTokens: 1024 }),
+      body: JSON.stringify({
+        model: this.model,
+        messages,
+        temperature: 0.7,
+        max_tokens: 1024,
+      }),
     });
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
-      throw new Error(`groq-guidance Error: ${response.status} - ${err.error || 'Unknown error'}`);
+      throw new Error(`Groq Error: ${response.status} - ${err.error?.message || 'Unknown error'}`);
     }
 
     const data = await response.json();
-    return data.content || '';
+    return data.choices[0]?.message?.content || '';
   }
 }

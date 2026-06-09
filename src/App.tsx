@@ -36,8 +36,6 @@ const CompanyPage = lazy(() => import("./pages/CompanyPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ReturnPage = lazy(() => import("./pages/ReturnPage"));
 const InstallPage = lazy(() => import("./pages/InstallPage"));
-const ExamenPage = lazy(() => import("./pages/ExamenPage"));
-const LectioPage = lazy(() => import("./pages/LectioPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -89,8 +87,6 @@ const App = () => (
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/return" element={<ReturnPage />} />
               <Route path="/install" element={<InstallPage />} />
-              <Route path="/examen" element={<ExamenPage />} />
-              <Route path="/lectio" element={<LectioPage />} />
               <Route path="/admin" element={<AuthGuard><AdminPage /></AuthGuard>} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />

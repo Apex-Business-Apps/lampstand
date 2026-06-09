@@ -2,9 +2,6 @@ import type { GuidanceResult, ToneStyle } from '@/types';
 import { getAIAdapter, getRetrievalAdapter } from '@/lib/ai-provider';
 import { SAFE_FALLBACK_RESPONSE, checkInputSafety, shouldCircuitBreak } from '@/lib/safety';
 import { logSafetyEvent } from '@/lib/storage';
-import { rankCandidates } from '@/lib/resonance/ResonanceEngine';
-import { assembleGuidanceContext } from '@/lib/guidance/contextAssembler';
-import type { GroqAIAdapter } from '@/lib/groq';
 
 export class CircuitBreaker {
   isOpen() {
@@ -25,34 +22,14 @@ export class SafetyGate {
 }
 
 export class RetrievalOrchestrator {
-  async retrieve(query: string): Promise<ScripturePassage[]> {
-    const result = await getRetrievalAdapter().search({ query, topK: 5 });
-    return result.passages;
+  async retrieve(query: string) {
+    return getRetrievalAdapter().search({ query, topK: 1 });
   }
 }
 
 export class ConversationOrchestrator {
-  async synthesizeGuidance(
-    input: string,
-    tone: ToneStyle,
-    opts?: {
-      context?: ReturnType<typeof assembleGuidanceContext>;
-      bestPassage?: ScripturePassage | null;
-    },
-  ): Promise<GuidanceResult> {
-    const adapter = getAIAdapter();
-
-    // Use enriched path when context is available and the adapter supports it.
-    if (opts && 'generateGuidanceWithContext' in adapter && typeof (adapter as GroqAIAdapter).generateGuidanceWithContext === 'function') {
-      return (adapter as GroqAIAdapter).generateGuidanceWithContext(
-        input,
-        tone,
-        opts.context ?? null,
-        opts.bestPassage ?? null,
-      );
-    }
-
-    return adapter.generateGuidance(input, tone);
+  async synthesizeGuidance(input: string, tone: ToneStyle): Promise<GuidanceResult> {
+    return getAIAdapter().generateGuidance(input, tone);
   }
 }
 
@@ -90,27 +67,11 @@ export class TurnPipeline {
       };
     }
 
-    // Retrieve candidate passages and apply Resonance ranking to pick the best one.
-    // This fixes the previous bug where the retrieval result was silently discarded.
-    let bestPassage: ScripturePassage | null = null;
-    try {
-      const candidates = await this.retrieval.retrieve(input);
-      if (candidates.length > 0) {
-        const ranked = rankCandidates(candidates.map((p) => ({ passage: p })));
-        bestPassage = ranked[0]?.candidate.passage ?? null;
-      }
-    } catch {
-      // Retrieval failure is non-fatal — the AI adapter has its own fallback passage selection.
-    }
+    await this.retrieval.retrieve(input);
+    const result = await this.conversation.synthesizeGuidance(input, tone);
 
-    // Assemble personal context from localStorage (respects consent flag internally).
-    const context = assembleGuidanceContext();
-
-    const result = await this.conversation.synthesizeGuidance(input, tone, { context, bestPassage });
-
-    // Second-pass safeguard: detect AI filler that slipped through despite prompt rules.
-    const bannedPattern =
-      /(Absolutely|Certainly|Of course|Let's|I hear you|I appreciate that|That's a great question|I'm here for you|It's important to note|At the end of the day)/i;
+    // second-pass safeguard for post-generation hygiene
+    const bannedPattern = /(Absolutely|Certainly|Of course|Let's|I hear you|I appreciate that|That's a great question|I'm here for you|It's important to note|At the end of the day)/i;
     if (bannedPattern.test(result.pastoralFraming)) {
       logSafetyEvent({
         id: crypto.randomUUID(),
@@ -119,8 +80,7 @@ export class TurnPipeline {
         action: 'fallback',
         timestamp: new Date().toISOString(),
       });
-      result.pastoralFraming =
-        'Take a quiet breath. Stay with this passage for one minute. Let the words rest before you respond.';
+      result.pastoralFraming = 'Take a quiet breath. Stay with this passage for one minute. Let the words rest before you respond.';
     }
 
     return result;
