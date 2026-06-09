@@ -1,165 +1,77 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, Volume2 } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
-import { AgentPresence } from '@/components/AgentPresence';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { getProfile, incrementPresenceScore } from '@/lib/storage';
+import { getPracticePreferences, updateStreak } from '@/lib/storage';
 import { getDailyLight } from '@/lib/dailyLight';
-import { ttsAdapter } from '@/lib/voice';
-import { toast } from '@/components/ui/use-toast';
-import {
-  getLectioSteps,
-  completeLectio,
-  hasCompletedTodayLectio,
-  type LectioResponses,
-  type LectioStepId,
-} from '@/lib/lectio/lectioFlow';
-
-const EMPTY: LectioResponses = { lectio: '', meditatio: '', oratio: '', contemplatio: '' };
 
 export default function LectioPage() {
   const navigate = useNavigate();
-  const profile = useMemo(() => getProfile(), []);
-  const tone = profile?.toneStyle || 'balanced';
-  const voice = profile?.voiceGender || 'male';
-  const steps = useMemo(() => getLectioSteps(tone), [tone]);
-  const daily = useMemo(() => getDailyLight(), []);
-  const passage = daily.passage;
+  const prefs = getPracticePreferences();
+  const today = getDailyLight();
 
-  const [index, setIndex] = useState(0);
-  const [responses, setResponses] = useState<LectioResponses>(EMPTY);
-  const [done, setDone] = useState(false);
-  const [agentMode, setAgentMode] = useState<'idle' | 'speaking'>('idle');
+  const [step, setStep] = useState(0);
+  const [expanded, setExpanded] = useState(false);
 
-  useEffect(() => {
-    if (hasCompletedTodayLectio()) setDone(true);
-  }, []);
+  // Steps for full mode
+  const fullSteps = [
+    { title: "Statio (Preparation)", body: "Take a deep breath. Acknowledge that you are in the presence of God. Let the worries of the day begin to quiet." },
+    { title: "Lectio (Reading)", body: `Read the passage slowly: "${today.passage.text}"` },
+    { title: "Meditatio (Meditation)", body: "What word or phrase stands out to you? Let it settle in your mind." },
+    { title: "Oratio (Prayer)", body: "Speak to God about what this word or phrase means for your life today." },
+    { title: "Contemplatio (Contemplation)", body: "Rest quietly in the presence of God. Simply be." }
+  ];
 
-  useEffect(() => {
-    ttsAdapter.onStateChange = (s) => setAgentMode(s === 'speaking' ? 'speaking' : 'idle');
-    return () => { try { ttsAdapter.stop(); } catch { /* ignore */ } };
-  }, []);
+  // Steps for short mode
+  const shortSteps = [
+    { title: "Pause & Read", body: `Take a deep breath. "${today.passage.text}"` },
+    { title: "Respond", body: "What is God saying to you through this passage right now?" }
+  ];
 
-  const step = steps[index];
-  const isLast = index === steps.length - 1;
+  const steps = (prefs.practiceLength === 'short' && !expanded) ? shortSteps : fullSteps;
 
-  function update(id: LectioStepId, value: string) {
-    setResponses((r) => ({ ...r, [id]: value.slice(0, 1500) }));
-  }
-
-  function speakPrompt() {
-    try { ttsAdapter.speak(step.prompt, voice); } catch { /* ignore */ }
-  }
-
-  function speakPassage() {
-    try { ttsAdapter.speak(`${passage.reference}. ${passage.text}`, voice); } catch { /* ignore */ }
-  }
-
-  function next() {
-    if (isLast) {
-      try {
-        completeLectio(responses, passage, tone);
-        incrementPresenceScore(6);
-        setDone(true);
-        toast({ title: 'Lectio complete', description: 'Saved to your journal.' });
-      } catch {
-        toast({ title: 'Could not save', description: 'Please try again.', variant: 'destructive' });
-      }
-      return;
+  const handleNext = () => {
+    if (step < steps.length - 1) {
+      setStep(step + 1);
+    } else {
+      updateStreak();
+      navigate('/app');
     }
-    setIndex((i) => Math.min(i + 1, steps.length - 1));
-  }
-
-  function back() {
-    if (index === 0) { navigate(-1); return; }
-    setIndex((i) => Math.max(0, i - 1));
-  }
-
-  if (done) {
-    return (
-      <AppShell>
-        <div className="px-5 pt-10 pb-8 space-y-6 text-center">
-          <AgentPresence size="lg" className="mx-auto" />
-          <h1 className="text-2xl font-serif font-semibold">Lectio Complete</h1>
-          <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-            Carry the word with you. Your reflection is saved to your journal.
-          </p>
-          <div className="flex flex-col gap-2 max-w-xs mx-auto">
-            <Button onClick={() => navigate('/journal')} variant="outline">Open Journal</Button>
-            <Button onClick={() => navigate('/app')}>Return Home</Button>
-          </div>
-        </div>
-      </AppShell>
-    );
-  }
+  };
 
   return (
     <AppShell>
-      <div className="px-5 pt-8 pb-6 space-y-6">
-        <div className="text-center space-y-2">
-          <AgentPresence size="sm" className="mx-auto" mode={agentMode === 'speaking' ? 'speaking' : 'idle'} />
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">Lectio Divina</p>
-          <h1 className="text-2xl font-serif font-semibold">{step.title}</h1>
-          <p className="text-xs text-muted-foreground italic">{step.latin}</p>
-        </div>
+      <div className="px-5 pt-12 pb-6 max-w-lg mx-auto min-h-[80vh] flex flex-col justify-center animate-fade-in">
 
-        <div className="flex items-center justify-center gap-1.5" aria-label={`Step ${index + 1} of ${steps.length}`}>
-          {steps.map((s, i) => (
-            <span
-              key={s.id}
-              className={`h-1.5 rounded-full transition-all ${i === index ? 'w-8 bg-primary' : i < index ? 'w-4 bg-primary/60' : 'w-4 bg-muted'}`}
-            />
-          ))}
-        </div>
-
-        {/* Scripture anchor — visually distinct from prompts (scripture-integrity rule) */}
-        <div className="bg-accent/30 border border-primary/20 rounded-2xl p-4 space-y-2">
-          <div className="flex items-start justify-between gap-2">
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">{passage.reference}</p>
-            <button
-              onClick={speakPassage}
-              aria-label="Read scripture aloud"
-              className="shrink-0 rounded-full p-1.5 text-primary hover:bg-accent/50"
-            >
-              <Volume2 className="h-3.5 w-3.5" />
+        {prefs.practiceLength === 'short' && !expanded && step === 0 && (
+          <div className="mb-8 flex justify-center">
+            <button onClick={() => setExpanded(true)} className="text-xs text-muted-foreground border border-border px-3 py-1.5 rounded-full hover:bg-surface-elevated transition-colors">
+              Take more time today (Full mode)
             </button>
           </div>
-          <p className="scripture-text text-sm leading-relaxed">{passage.text}</p>
-        </div>
+        )}
 
-        <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
-          <div className="flex items-start gap-3">
-            <p className="text-base flex-1">{step.prompt}</p>
-            <button
-              onClick={speakPrompt}
-              aria-label="Read prompt aloud"
-              className="shrink-0 rounded-full p-2 text-primary hover:bg-accent/50"
-            >
-              <Volume2 className="h-4 w-4" />
-            </button>
-          </div>
-          <Textarea
-            value={responses[step.id]}
-            onChange={(e) => update(step.id, e.target.value)}
-            placeholder={step.placeholder}
-            className="min-h-[140px] resize-none bg-background"
-            maxLength={1500}
-          />
-          <p className="text-[11px] text-muted-foreground text-right">
-            {responses[step.id].length}/1500
+        <div className="flex-1 flex flex-col justify-center space-y-6">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold text-center mb-4">
+            Step {step + 1} of {steps.length}
+          </p>
+          <h2 className="text-3xl font-serif text-foreground text-center">
+            {steps[step].title}
+          </h2>
+          <p className="text-lg text-muted-foreground leading-relaxed text-center script-text">
+            {steps[step].body}
           </p>
         </div>
 
-        <div className="flex gap-2">
-          <Button onClick={back} variant="outline" className="flex-1 gap-2">
-            <ArrowLeft className="h-4 w-4" /> {index === 0 ? 'Exit' : 'Back'}
+        <div className="mt-12 flex flex-col gap-3">
+          <Button onClick={handleNext} size="lg" className="w-full text-lg shadow-sm">
+            {step < steps.length - 1 ? 'Continue' : 'Complete'}
           </Button>
-          <Button onClick={next} className="flex-1 gap-2">
-            {isLast ? (<><Check className="h-4 w-4" /> Complete</>) : (<>Next <ArrowRight className="h-4 w-4" /></>)}
+          <Button variant="ghost" onClick={() => navigate('/app')} className="w-full text-muted-foreground">
+            End early
           </Button>
         </div>
+
       </div>
     </AppShell>
   );

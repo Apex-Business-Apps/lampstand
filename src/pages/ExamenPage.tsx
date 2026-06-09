@@ -1,150 +1,75 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, Volume2 } from 'lucide-react';
 import { AppShell } from '@/components/AppShell';
-import { AgentPresence } from '@/components/AgentPresence';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { getProfile, incrementPresenceScore } from '@/lib/storage';
-import { ttsAdapter } from '@/lib/voice';
-import { toast } from '@/components/ui/use-toast';
-import {
-  getExamenSteps,
-  completeExamen,
-  hasCompletedTodayExamen,
-  type ExamenResponses,
-  type ExamenStepId,
-} from '@/lib/examen/examenFlow';
-
-const EMPTY: ExamenResponses = {
-  presence: '',
-  gratitude: '',
-  review: '',
-  sorrow: '',
-  resolve: '',
-};
+import { getPracticePreferences, updateStreak } from '@/lib/storage';
 
 export default function ExamenPage() {
   const navigate = useNavigate();
-  const profile = useMemo(() => getProfile(), []);
-  const tone = profile?.toneStyle || 'balanced';
-  const voice = profile?.voiceGender || 'male';
-  const steps = useMemo(() => getExamenSteps(tone), [tone]);
+  const prefs = getPracticePreferences();
 
-  const [index, setIndex] = useState(0);
-  const [responses, setResponses] = useState<ExamenResponses>(EMPTY);
-  const [done, setDone] = useState(false);
-  const [agentMode, setAgentMode] = useState<'idle' | 'speaking'>('idle');
+  const [step, setStep] = useState(0);
+  const [expanded, setExpanded] = useState(false);
 
-  // If already completed today, show the gentle "already prayed" state.
-  useEffect(() => {
-    if (hasCompletedTodayExamen()) setDone(true);
-  }, []);
+  // Steps for full mode
+  const fullSteps = [
+    { title: "Presence", body: "Remember that you are in the presence of God. Let the day's noise fade into the background." },
+    { title: "Gratitude", body: "Review the day with gratitude. What are the gifts you received today?" },
+    { title: "Review", body: "Pay attention to your emotions. Where did you feel drawn toward God, and where did you feel pulled away?" },
+    { title: "Response", body: "Choose one feature of the day and pray from it. Is there something you need to ask forgiveness for? Something to celebrate?" },
+    { title: "Resolve", body: "Look toward tomorrow. Ask for grace to see God's presence in the coming day." }
+  ];
 
-  // TTS state hook (non-blocking).
-  useEffect(() => {
-    ttsAdapter.onStateChange = (s) => setAgentMode(s === 'speaking' ? 'speaking' : 'idle');
-    return () => { try { ttsAdapter.stop(); } catch { /* ignore */ } };
-  }, []);
+  // Steps for short mode
+  const shortSteps = [
+    { title: "Review & Gratitude", body: "Look back over your day. What brought you life today? Thank God for it." },
+    { title: "Release & Resolve", body: "What felt difficult or heavy today? Hand it over, and ask for grace for tomorrow." }
+  ];
 
-  const step = steps[index];
-  const isLast = index === steps.length - 1;
+  const steps = (prefs.practiceLength === 'short' && !expanded) ? shortSteps : fullSteps;
 
-  function update(id: ExamenStepId, value: string) {
-    setResponses((r) => ({ ...r, [id]: value.slice(0, 1500) }));
-  }
-
-  function speak() {
-    try { ttsAdapter.speak(step.prompt, voice); } catch { /* ignore */ }
-  }
-
-  function next() {
-    if (isLast) {
-      try {
-        completeExamen(responses, tone);
-        incrementPresenceScore(6);
-        setDone(true);
-        toast({ title: 'Examen complete', description: 'Saved to your journal.' });
-      } catch {
-        toast({ title: 'Could not save', description: 'Please try again.', variant: 'destructive' });
-      }
-      return;
+  const handleNext = () => {
+    if (step < steps.length - 1) {
+      setStep(step + 1);
+    } else {
+      updateStreak();
+      navigate('/app');
     }
-    setIndex((i) => Math.min(i + 1, steps.length - 1));
-  }
-
-  function back() {
-    if (index === 0) { navigate(-1); return; }
-    setIndex((i) => Math.max(0, i - 1));
-  }
-
-  if (done) {
-    return (
-      <AppShell>
-        <div className="px-5 pt-10 pb-8 space-y-6 text-center">
-          <AgentPresence size="lg" className="mx-auto" />
-          <h1 className="text-2xl font-serif font-semibold">Examen Complete</h1>
-          <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-            Rest in the quiet you just made. Your reflection has been saved to your journal.
-          </p>
-          <div className="flex flex-col gap-2 max-w-xs mx-auto">
-            <Button onClick={() => navigate('/journal')} variant="outline">Open Journal</Button>
-            <Button onClick={() => navigate('/app')}>Return Home</Button>
-          </div>
-        </div>
-      </AppShell>
-    );
-  }
+  };
 
   return (
     <AppShell>
-      <div className="px-5 pt-8 pb-6 space-y-6">
-        <div className="text-center space-y-2">
-          <AgentPresence size="sm" className="mx-auto" mode={agentMode === 'speaking' ? 'speaking' : 'idle'} />
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">The Daily Examen</p>
-          <h1 className="text-2xl font-serif font-semibold">{step.title}</h1>
-        </div>
+      <div className="px-5 pt-12 pb-6 max-w-lg mx-auto min-h-[80vh] flex flex-col justify-center animate-fade-in">
 
-        <div className="flex items-center justify-center gap-1.5" aria-label={`Step ${index + 1} of ${steps.length}`}>
-          {steps.map((s, i) => (
-            <span
-              key={s.id}
-              className={`h-1.5 rounded-full transition-all ${i === index ? 'w-8 bg-primary' : i < index ? 'w-4 bg-primary/60' : 'w-4 bg-muted'}`}
-            />
-          ))}
-        </div>
-
-        <div className="bg-card border border-border rounded-2xl p-5 space-y-4">
-          <div className="flex items-start gap-3">
-            <p className="scripture-text text-base flex-1">{step.prompt}</p>
-            <button
-              onClick={speak}
-              aria-label="Read prompt aloud"
-              className="shrink-0 rounded-full p-2 text-primary hover:bg-accent/50"
-            >
-              <Volume2 className="h-4 w-4" />
+        {prefs.practiceLength === 'short' && !expanded && step === 0 && (
+          <div className="mb-8 flex justify-center">
+            <button onClick={() => setExpanded(true)} className="text-xs text-muted-foreground border border-border px-3 py-1.5 rounded-full hover:bg-surface-elevated transition-colors">
+              Take more time today (Full mode)
             </button>
           </div>
-          <Textarea
-            value={responses[step.id]}
-            onChange={(e) => update(step.id, e.target.value)}
-            placeholder={step.placeholder}
-            className="min-h-[140px] resize-none bg-background"
-            maxLength={1500}
-          />
-          <p className="text-[11px] text-muted-foreground text-right">
-            {responses[step.id].length}/1500
+        )}
+
+        <div className="flex-1 flex flex-col justify-center space-y-6">
+          <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold text-center mb-4">
+            Step {step + 1} of {steps.length}
+          </p>
+          <h2 className="text-3xl font-serif text-foreground text-center">
+            {steps[step].title}
+          </h2>
+          <p className="text-lg text-muted-foreground leading-relaxed text-center script-text">
+            {steps[step].body}
           </p>
         </div>
 
-        <div className="flex gap-2">
-          <Button onClick={back} variant="outline" className="flex-1 gap-2">
-            <ArrowLeft className="h-4 w-4" /> {index === 0 ? 'Exit' : 'Back'}
+        <div className="mt-12 flex flex-col gap-3">
+          <Button onClick={handleNext} size="lg" className="w-full text-lg shadow-sm">
+            {step < steps.length - 1 ? 'Continue' : 'Complete'}
           </Button>
-          <Button onClick={next} className="flex-1 gap-2">
-            {isLast ? (<><Check className="h-4 w-4" /> Complete</>) : (<>Next <ArrowRight className="h-4 w-4" /></>)}
+          <Button variant="ghost" onClick={() => navigate('/app')} className="w-full text-muted-foreground">
+            End early
           </Button>
         </div>
+
       </div>
     </AppShell>
   );
