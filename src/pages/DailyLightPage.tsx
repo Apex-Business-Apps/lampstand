@@ -61,7 +61,7 @@ export default function DailyLightPage() {
       <div className="px-5 pt-8 pb-6 space-y-6">
         <div className="text-center space-y-3">
           <AgentPresence size="md" className="mx-auto" />
-          <h1 className="text-2xl font-serif font-semibold">Daily Light</h1>
+          <h1 className="text-2xl font-serif font-semibold">Begin here.</h1>
           <p className="text-sm text-muted-foreground">
             {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
           </p>
@@ -81,7 +81,7 @@ export default function DailyLightPage() {
           <div className="animate-slide-up space-y-4">
             <ReflectionBlock
               label="Going Deeper"
-              content={`Take a moment with this passage. Read it again slowly. What word or phrase stands out to you? Don't analyze it - just let it sit. Sometimes scripture speaks most clearly when we stop trying to figure it out and simply listen.\n\nConsider: What is this passage inviting you toward today? Not what you should do - but what you're being drawn to.`}
+              content={`Read the passage again slowly. What catches your attention? Don't analyze it, just let it sit.\n\nWhat is this passage inviting you toward today?`}
               variant="reflection"
             />
           </div>

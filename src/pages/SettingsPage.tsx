@@ -168,6 +168,16 @@ export default function SettingsPage() {
               {profile.kidsMode ? 'Enabled' : 'Disabled'}
             </button>
           </Field>
+          <Field label="Gentle Mode (Hide streaks & pressure)">
+            <button
+              onClick={() => update({ hideStreakVisuals: !profile.hideStreakVisuals })}
+              className={`px-3 py-1.5 rounded-lg text-sm border transition-colors ${
+                profile.hideStreakVisuals ? 'border-primary bg-accent/60' : 'border-border text-muted-foreground'
+              }`}
+            >
+              {profile.hideStreakVisuals ? 'Enabled' : 'Disabled'}
+            </button>
+          </Field>
         </Section>
 
         <Section title="Notifications">

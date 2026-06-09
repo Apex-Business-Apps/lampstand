@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
 
 interface BurningBushCanvasProps {
   intensity: number; // 0-1 audio amplitude
@@ -21,11 +21,21 @@ export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanv
   const particlesRef = useRef<Particle[]>([]);
   const animFrameRef = useRef<number>(0);
   const intensityRef = useRef(intensity);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   // Keep intensity ref in sync without re-running animation loop
   useEffect(() => {
     intensityRef.current = intensity;
   }, [intensity]);
+
+  // Check reduced motion preference
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mediaQuery.matches);
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
   const createParticle = useCallback((w: number, h: number, amp: number): Particle => {
     const centerX = w / 2;
@@ -54,6 +64,7 @@ export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanv
     const resize = () => {
       canvas.width = canvas.clientWidth * window.devicePixelRatio;
       canvas.height = canvas.clientHeight * window.devicePixelRatio;
+      ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform matrix to prevent scale stacking
       ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
     };
     resize();
@@ -71,18 +82,11 @@ export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanv
       ctx.fillStyle = 'rgba(26, 22, 16, 0.15)';
       ctx.fillRect(0, 0, w, h);
 
-      // Spawn particles — more when speaking
-      const spawnCount = Math.floor(2 + amp * 12);
-      for (let i = 0; i < spawnCount; i++) {
-        if (particles.length < 400) {
-          particles.push(createParticle(w, h, amp));
-        }
-      }
-
-      // Draw glow base
       const centerX = w / 2;
       const baseY = h * 0.72;
-      const glowRadius = 80 + amp * 120;
+
+      // Draw glow base
+      const glowRadius = reducedMotion ? 80 + amp * 40 : 80 + amp * 120;
       const glowGrad = ctx.createRadialGradient(centerX, baseY - 60, 10, centerX, baseY - 60, glowRadius);
       glowGrad.addColorStop(0, `hsla(36, 90%, 65%, ${0.3 + amp * 0.4})`);
       glowGrad.addColorStop(0.4, `hsla(25, 80%, 50%, ${0.15 + amp * 0.2})`);
@@ -91,39 +95,8 @@ export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanv
       ctx.fillStyle = glowGrad;
       ctx.fillRect(0, 0, w, h);
 
-      // Update & draw particles
-      ctx.globalCompositeOperation = 'lighter';
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.life++;
-        p.x += p.vx + Math.sin(p.life * 0.1) * (0.5 + amp);
-        p.y += p.vy;
-        p.vy *= 0.98;
-        p.size *= 0.985;
-
-        const progress = p.life / p.maxLife;
-        const alpha = progress < 0.1 ? progress * 10 : Math.max(0, 1 - progress);
-
-        if (p.life >= p.maxLife || p.size < 0.5) {
-          particles.splice(i, 1);
-          continue;
-        }
-
-        // Core bright particle
-        const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
-        const lightness = 60 + (1 - progress) * 30;
-        grad.addColorStop(0, `hsla(${p.hue + (1 - progress) * 15}, 95%, ${lightness}%, ${alpha * 0.9})`);
-        grad.addColorStop(0.5, `hsla(${p.hue}, 80%, ${lightness - 15}%, ${alpha * 0.5})`);
-        grad.addColorStop(1, 'transparent');
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-      }
-
       // Inner flame core — bright white-gold center
-      const coreSize = 15 + amp * 25;
+      const coreSize = reducedMotion ? 15 + amp * 10 : 15 + amp * 25;
       const coreGrad = ctx.createRadialGradient(centerX, baseY - 30, 0, centerX, baseY - 30, coreSize);
       coreGrad.addColorStop(0, `hsla(45, 100%, 95%, ${0.6 + amp * 0.4})`);
       coreGrad.addColorStop(0.3, `hsla(40, 90%, 70%, ${0.3 + amp * 0.3})`);
@@ -133,16 +106,59 @@ export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanv
       ctx.arc(centerX, baseY - 30, coreSize, 0, Math.PI * 2);
       ctx.fill();
 
-      // Ember sparks on high intensity
-      if (amp > 0.4) {
-        for (let i = 0; i < Math.floor(amp * 5); i++) {
-          const sx = centerX + (Math.random() - 0.5) * 60;
-          const sy = baseY - 50 - Math.random() * 100 * amp;
-          const ss = 1 + Math.random() * 2;
-          ctx.fillStyle = `hsla(42, 100%, 80%, ${0.4 + Math.random() * 0.4})`;
+      // Only draw particles and embers if not reduced motion
+      if (!reducedMotion) {
+        // Spawn particles — more when speaking, fewer on small screens
+        const particleCap = w < 500 ? 150 : 400; // Performance scaling
+        const spawnCount = Math.floor(2 + amp * 12);
+        for (let i = 0; i < spawnCount; i++) {
+          if (particles.length < particleCap) {
+            particles.push(createParticle(w, h, amp));
+          }
+        }
+
+        // Update & draw particles
+        ctx.globalCompositeOperation = 'lighter';
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life++;
+          p.x += p.vx + Math.sin(p.life * 0.1) * (0.5 + amp);
+          p.y += p.vy;
+          p.vy *= 0.98;
+          p.size *= 0.985;
+
+          const progress = p.life / p.maxLife;
+          const alpha = progress < 0.1 ? progress * 10 : Math.max(0, 1 - progress);
+
+          if (p.life >= p.maxLife || p.size < 0.5) {
+            particles.splice(i, 1);
+            continue;
+          }
+
+          // Core bright particle
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+          const lightness = 60 + (1 - progress) * 30;
+          grad.addColorStop(0, `hsla(${p.hue + (1 - progress) * 15}, 95%, ${lightness}%, ${alpha * 0.9})`);
+          grad.addColorStop(0.5, `hsla(${p.hue}, 80%, ${lightness - 15}%, ${alpha * 0.5})`);
+          grad.addColorStop(1, 'transparent');
+
           ctx.beginPath();
-          ctx.arc(sx, sy, ss, 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
           ctx.fill();
+        }
+
+        // Ember sparks on high intensity
+        if (amp > 0.4) {
+          for (let i = 0; i < Math.floor(amp * 5); i++) {
+            const sx = centerX + (Math.random() - 0.5) * 60;
+            const sy = baseY - 50 - Math.random() * 100 * amp;
+            const ss = 1 + Math.random() * 2;
+            ctx.fillStyle = `hsla(42, 100%, 80%, ${0.4 + Math.random() * 0.4})`;
+            ctx.beginPath();
+            ctx.arc(sx, sy, ss, 0, Math.PI * 2);
+            ctx.fill();
+          }
         }
       }
 
@@ -155,7 +171,7 @@ export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanv
       cancelAnimationFrame(animFrameRef.current);
       window.removeEventListener('resize', resize);
     };
-  }, [createParticle]);
+  }, [createParticle, reducedMotion]);
 
   return (
     <canvas

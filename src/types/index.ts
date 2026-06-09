@@ -17,6 +17,7 @@ export interface UserProfile {
   voiceGender: VoiceGender;
   notificationsEnabled: boolean;
   notificationTime: string; // HH:mm
+  hideStreakVisuals: boolean;
   onboardingComplete: boolean;
   createdAt: string;
 }
