@@ -36,3 +36,8 @@ dist-ssr
 .env.local
 .env.production
 .env.production.local
+
+# Testing and Artifacts
+artifacts/
+test-results/
+playwright-report/

@@ -31,6 +31,7 @@ export default function Onboarding() {
       voiceGender,
       notificationsEnabled: false,
       notificationTime: '07:00',
+      hideStreakVisuals: false,
       onboardingComplete: true,
       createdAt: new Date().toISOString(),
     };

@@ -112,8 +112,8 @@ export default function HomePage() {
                 {lectioDone
                   ? 'The word is with you today.'
                   : isMorning
-                    ? 'A 4-movement contemplative reading of today\u2019s passage.'
-                    : 'Read, reflect, pray, rest — guided in four movements.'}
+                    ? 'A guided practice for today\u2019s passage.'
+                    : 'Read, reflect, pray, rest. A guided practice.'}
               </p>
             </div>
           </div>
@@ -142,8 +142,8 @@ export default function HomePage() {
                 {examenDone
                   ? 'Rest in the quiet you made tonight.'
                   : isEvening
-                    ? 'A 5-minute Ignatian evening reflection.'
-                    : 'A guided 5-step evening prayer, ready when you are.'}
+                    ? 'A quiet evening reflection.'
+                    : 'A guided evening prayer, ready when you are.'}
               </p>
             </div>
           </div>
