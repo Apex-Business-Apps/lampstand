@@ -4,8 +4,10 @@ import {
   completeExamen,
   hasCompletedTodayExamen,
   todayExamenSessionId,
+  type ExamenResponses,
 } from '@/lib/examen/examenFlow';
 import { getJournalEntries } from '@/lib/storage';
+import type { ToneStyle } from '@/types';
 
 describe('Daily Examen', () => {
   beforeEach(() => {
@@ -49,5 +51,22 @@ describe('Daily Examen', () => {
       completeExamen({ presence: '', gratitude: '', review: '', sorrow: '', resolve: '' }, 'gentle'),
     ).not.toThrow();
     expect(hasCompletedTodayExamen()).toBe(true);
+  });
+
+  it('page-level integration: completeExamen writes the session entry that hasCompletedTodayExamen detects', () => {
+    const tone: ToneStyle = 'gentle';
+    const responses: ExamenResponses = {
+      presence: 'still morning',
+      gratitude: 'a kind word',
+      review: 'busy but present',
+      sorrow: 'snapped at someone',
+      resolve: 'gentler tomorrow',
+    };
+    expect(hasCompletedTodayExamen()).toBe(false);
+    completeExamen(responses, tone);
+    expect(hasCompletedTodayExamen()).toBe(true);
+    const entry = getJournalEntries().find((e) => e.mood === 'examen');
+    expect(entry).toBeDefined();
+    expect(entry!.content).toContain('Daily Examen');
   });
 });
