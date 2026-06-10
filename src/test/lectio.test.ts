@@ -4,9 +4,10 @@ import {
   completeLectio,
   hasCompletedTodayLectio,
   todayLectioSessionId,
+  type LectioResponses,
 } from '@/lib/lectio/lectioFlow';
 import { getJournalEntries } from '@/lib/storage';
-import type { ScripturePassage } from '@/types';
+import type { ScripturePassage, ToneStyle } from '@/types';
 
 const PASSAGE: ScripturePassage = {
   id: 'jn-14-1',
@@ -60,5 +61,22 @@ describe('Lectio Divina', () => {
       completeLectio({ lectio: '', meditatio: '', oratio: '', contemplatio: '' }, PASSAGE, 'gentle'),
     ).not.toThrow();
     expect(hasCompletedTodayLectio()).toBe(true);
+  });
+
+  it('page-level integration: completeLectio writes entry that hasCompletedTodayLectio detects and includes relatedPassage', () => {
+    const tone: ToneStyle = 'balanced';
+    const responses: LectioResponses = {
+      lectio: 'Let not your hearts be troubled',
+      meditatio: 'I feel the invitation to trust',
+      oratio: 'Lord, steady me today',
+      contemplatio: 'A deep quiet',
+    };
+    expect(hasCompletedTodayLectio()).toBe(false);
+    completeLectio(responses, PASSAGE, tone);
+    expect(hasCompletedTodayLectio()).toBe(true);
+    const entry = getJournalEntries().find((e) => e.mood === 'lectio');
+    expect(entry).toBeDefined();
+    expect(entry!.relatedPassage?.reference).toBe(PASSAGE.reference);
+    expect(entry!.content).toContain('Lectio Divina');
   });
 });
