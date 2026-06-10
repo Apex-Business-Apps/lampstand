@@ -10,9 +10,9 @@ const SECURITY_HEADERS: Record<string, string> = {
   "Content-Security-Policy": [
     "default-src 'self'",
     "script-src 'self'",
-    "style-src 'self' 'unsafe-inline'",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https://storage.googleapis.com",
-    "font-src 'self'",
+    "font-src 'self' https://fonts.gstatic.com",
     "connect-src 'self' https://*.supabase.co https://api.groq.com",
     "media-src 'self' blob:",
     "frame-ancestors 'none'",
@@ -64,7 +64,10 @@ export default {
       return withSecurityHeaders(assetResponse);
     }
 
-    const fallback = new Request(new URL('/index.html', request.url), request);
+    // Fetch '/' rather than '/index.html': the assets layer 307-redirects
+    // explicit index.html paths to '/', which would strip the SPA route
+    // from the browser URL on deep links and hard refreshes.
+    const fallback = new Request(new URL('/', request.url), request);
     return withSecurityHeaders(await env.ASSETS.fetch(fallback));
   },
 };
