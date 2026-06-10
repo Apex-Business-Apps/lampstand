@@ -12,7 +12,7 @@ export interface SpeechToTextProvider {
 }
 
 class BrowserSpeechToTextProvider implements SpeechToTextProvider {
-  private recognition: any = null;
+  private recognition: SpeechRecognition | null = null;
   private isActive = false;
 
   constructor() {
@@ -48,7 +48,7 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
         }
       }, 15000);
 
-      this.recognition.onresult = (event: any) => {
+      this.recognition.onresult = (event: SpeechRecognitionEvent) => {
         clearTimeout(timeout);
         if (!settled) {
           settled = true;
@@ -56,7 +56,7 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
           resolve(event.results?.[0]?.[0]?.transcript || '');
         }
       };
-      this.recognition.onerror = (event: any) => {
+      this.recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
         clearTimeout(timeout);
         const msg = event.error === 'not-allowed'
           ? 'Microphone access denied. Please enable it in your browser settings.'
@@ -84,10 +84,11 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
         if (this.isActive) this.recognition.stop();
         this.isActive = true;
         this.recognition.start();
-      } catch (e: any) {
+      } catch (e: unknown) {
         clearTimeout(timeout);
         this.isActive = false;
-        reject(new Error(e?.message || 'Failed to start speech recognition'));
+        const message = e instanceof Error ? e.message : String(e);
+        reject(new Error(message || 'Failed to start speech recognition'));
       }
     });
   }
