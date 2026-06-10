@@ -37,14 +37,19 @@ Defaults are privacy-first. Raw audio is not stored by default. Transcripts are 
 
 ## Environment Variables
 
-### Frontend
+### Frontend (build-time, bundled into client JS)
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
-- `VITE_GROQ_API_KEY` (optional)
 
-### Optional/Infrastructure
-- `CLOUDFLARE_ACCOUNT_ID` (CI deploy convenience)
+### CI / Infrastructure
+- `CLOUDFLARE_ACCOUNT_ID` (CI deploy)
 - `CLOUDFLARE_API_TOKEN` (CI deploy)
+
+### Supabase Edge Function Secrets (set in Dashboard > Edge Functions > Secrets)
+- `GROQ_API_KEY` — used by `groq-guidance` edge function
+- `ELEVENLABS_API_KEY` — used by `elevenlabs-tts` edge function
+
+> **Do not** prefix server-side secrets with `VITE_`. Those are bundled into client JS and are public.
 
 
 ## Where to Place Variables (Cloudflare)
