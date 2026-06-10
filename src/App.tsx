@@ -113,8 +113,6 @@ const App = () => (
               <Route path="/legal/company" element={<CompanyPage />} />
               <Route path="/circles" element={<PrayerCirclesPage />} />
               <Route path="/circles/:id" element={<PrayerCircleDetailPage />} />
-              <Route path="/lectio" element={<LectioPage />} />
-              <Route path="/examen" element={<ExamenPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
