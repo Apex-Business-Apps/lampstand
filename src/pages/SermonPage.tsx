@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { getSecureRandomInt } from '@/lib/utils';
 import type { Sermon } from '@/types';
 import { RefreshCw } from 'lucide-react';
+import { recordSignal } from '@/lib/resonance/ResonanceEngine';
 
 export default function SermonPage() {
   const [sermon, setSermon] = useState<Sermon>(SEED_SERMONS[0]);
@@ -24,6 +25,9 @@ export default function SermonPage() {
       const ai = getAIAdapter();
       const newSermon = await ai.generateSermon(randomPassage, profile?.toneStyle || 'balanced');
       setSermon(newSermon);
+      try {
+        recordSignal({ signal: 'reflected', passage: newSermon.passage });
+      } catch { /* best-effort */ }
     } finally {
       setLoading(false);
     }
