@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export class VoiceManager {
   private synth = window.speechSynthesis;
-  private recognition: any = null;
+  private recognition: SpeechRecognition | null = null;
   private isListening = false;
 
   constructor() {
@@ -29,13 +29,13 @@ export class VoiceManager {
       return;
     }
 
-    this.recognition.onresult = (event: any) => {
+    this.recognition.onresult = (event: SpeechRecognitionEvent) => {
       const text = event.results[0][0].transcript;
       onResult(text);
       this.isListening = false;
     };
 
-    this.recognition.onerror = (event: any) => {
+    this.recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       onError(event.error);
       this.isListening = false;
     };
@@ -43,7 +43,7 @@ export class VoiceManager {
     try {
       this.recognition.start();
       this.isListening = true;
-    } catch (e: any) {
+    } catch (e: unknown) {
       if (e instanceof Error) { onError(e.message); } else { onError(String(e)); }
     }
   }
