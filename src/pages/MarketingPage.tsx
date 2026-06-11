@@ -4,9 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { BrandWordmark } from "@/components/brand/BrandWordmark";
 import { LampFlame } from "@/components/brand/LampFlame";
-import { LampStandAsset } from "@/components/brand/LampStandAsset";
+import { LampScene3D } from "@/components/brand/LampScene3D";
+import { CrossSilhouette } from "@/components/brand/CrossSilhouette";
 import { ScriptureVeil } from "@/components/brand/ScriptureVeil";
 import { Reveal } from "@/components/brand/Reveal";
+import { getProfile } from "@/lib/storage";
 import {
   OilLampIcon,
   DoveIcon,
@@ -81,6 +83,8 @@ const stats = [
 
 export default function MarketingPage() {
   const navigate = useNavigate();
+  // Returning souls get a doorway home, not another pitch
+  const isReturning = useMemo(() => Boolean(getProfile()?.onboardingComplete), []);
 
   // Stable random ember placement for the hero
   const embers = useMemo(
@@ -124,10 +128,15 @@ export default function MarketingPage() {
       </header>
 
       {/* ===== Split hero — the pointer is your lamp ===== */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden bg-[hsl(26_36%_5.5%)]">
         {/* the Word, hidden in the dark until light passes over it */}
         <ScriptureVeil />
 
+        {/* a quiet cross at the center of everything */}
+        <CrossSilhouette className="absolute left-1/2 top-1/2 h-[26rem] -translate-x-1/2 -translate-y-[54%] opacity-90 max-lg:hidden" />
+
+        {/* vignette so the page falls away into the dark */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_40%,transparent_55%,hsl(26_36%_4%/0.75)_100%)]" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[30rem] bg-[radial-gradient(ellipse_55%_60%_at_62%_100%,hsl(var(--warm-glow)/0.14),transparent_70%)]" />
         {embers.map((e, i) => (
           <span
@@ -166,9 +175,9 @@ export default function MarketingPage() {
               <Button
                 size="lg"
                 className="h-14 bg-gradient-to-b from-[hsl(42_85%_58%)] to-[hsl(30_80%_46%)] px-8 text-base font-semibold text-[hsl(26_40%_10%)] shadow-[0_14px_44px_-10px_hsl(var(--warm-glow)/0.8)] transition-all hover:-translate-y-0.5 hover:brightness-110"
-                onClick={() => navigate("/entry?entry=onboarding&source=web")}
+                onClick={() => navigate(isReturning ? "/app" : "/entry?entry=onboarding&source=web")}
               >
-                Light your lamp
+                {isReturning ? "Return to your lamp" : "Light your lamp"}
                 <ArrowRight className="h-5 w-5" />
               </Button>
               <Button
@@ -194,10 +203,10 @@ export default function MarketingPage() {
             </p>
           </div>
 
-          {/* Right — the lamp on its stand */}
+          {/* Right — a lamp from His own days, still burning */}
           <div className="relative flex flex-col items-center justify-center pt-4 lg:pt-0">
-            <LampStandAsset className="animate-fade-in" />
-            <p className="mt-12 max-w-xs text-center font-display text-base italic leading-relaxed text-muted-foreground/90">
+            <LampScene3D className="w-full max-w-md animate-fade-in" />
+            <p className="mt-10 max-w-xs text-center font-display text-base italic leading-relaxed text-muted-foreground/90">
               “Neither do men light a candle and put it under a bushel, but on a candlestick.”
               <span className="mt-1 block text-xs not-italic tracking-[0.18em] text-muted-foreground/70" style={{ fontFamily: "var(--font-ui)" }}>
                 MATTHEW 5:15

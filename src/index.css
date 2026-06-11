@@ -240,6 +240,44 @@
     box-shadow: 0 0 18px hsl(var(--warm-glow) / 0.5);
   }
 
+  /* 3D lamp stage — perspective, layered idle motion, pointer parallax */
+  .lamp-scene {
+    position: relative;
+    perspective: 1100px;
+  }
+  .lamp-scene__pivot {
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .lamp-scene__sway {
+    transform-style: preserve-3d;
+    animation: lampSway3d 13s ease-in-out infinite;
+  }
+  .lamp-scene__float {
+    animation: lampFloat 9s ease-in-out infinite;
+  }
+  .lamp-scene__halo {
+    position: absolute;
+    inset: -18%;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at 58% 42%,
+      hsl(var(--warm-glow) / 0.32) 0%,
+      hsl(var(--sacred-gold) / 0.12) 45%,
+      transparent 70%
+    );
+    filter: blur(30px);
+    animation: haloPulse 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lamp-scene__sway,
+    .lamp-scene__float,
+    .lamp-scene__halo {
+      animation: none;
+    }
+  }
+
   /* Scripture veil — the pointer is a lamp; its light reveals the Word
      written across the dark. Position driven by --veil-x/--veil-y (px). */
   .scripture-veil {
@@ -253,46 +291,67 @@
   .scripture-veil__page {
     position: absolute;
     inset: 0;
-    padding: 4.5rem 3rem;
+    padding: 4.5rem 3.5rem;
     column-width: 17rem;
-    column-gap: 3rem;
+    column-gap: 3.25rem;
     column-fill: auto;
+    column-rule: 1px solid hsl(42 40% 50% / 0.13);
     font-family: var(--font-body);
-    color: hsl(42 55% 68% / 0.95);
+    color: hsl(38 26% 54% / 0.85);
     text-align: justify;
-    opacity: 0.45;
-    transition: opacity 0.8s ease;
+    hyphens: auto;
+    opacity: 0.32;
+    transition: opacity 0.9s ease;
     -webkit-mask-image: radial-gradient(
-      circle 250px at var(--veil-x) var(--veil-y),
-      rgb(0 0 0 / 0.95) 0%,
-      rgb(0 0 0 / 0.32) 48%,
+      circle 240px at var(--veil-x) var(--veil-y),
+      rgb(0 0 0 / 0.8) 0%,
+      rgb(0 0 0 / 0.26) 48%,
       transparent 74%
     );
     mask-image: radial-gradient(
-      circle 250px at var(--veil-x) var(--veil-y),
-      rgb(0 0 0 / 0.95) 0%,
-      rgb(0 0 0 / 0.32) 48%,
+      circle 240px at var(--veil-x) var(--veil-y),
+      rgb(0 0 0 / 0.8) 0%,
+      rgb(0 0 0 / 0.26) 48%,
       transparent 74%
     );
   }
   .scripture-veil.veil-active .scripture-veil__page {
-    opacity: 0.88;
+    opacity: 0.68;
   }
-  .scripture-veil__verse {
-    break-inside: avoid;
-    margin-bottom: 1.7rem;
-    font-size: 0.95rem;
-    line-height: 1.65;
-  }
-  .scripture-veil__ref {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-family: var(--font-ui);
-    font-size: 0.62rem;
+  /* Bible-page typography */
+  .scripture-veil__book {
+    margin: 0 0 0.9rem;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.3em;
+    text-align: center;
     text-transform: uppercase;
-    color: hsl(var(--sacred-gold) / 0.9);
+    color: hsl(42 45% 58% / 0.75);
+    break-after: avoid;
+  }
+  .scripture-veil__passage {
+    margin-bottom: 2rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+  .scripture-veil__chapter {
+    float: left;
+    margin: 0.18rem 0.5rem 0 0;
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 600;
+    line-height: 0.85;
+    color: hsl(42 50% 58% / 0.8);
+  }
+  .scripture-veil__vn {
+    margin: 0 0.18rem 0 0.3rem;
+    font-family: var(--font-ui);
+    font-size: 0.56em;
+    font-weight: 600;
+    vertical-align: super;
+    letter-spacing: 0.02em;
+    color: hsl(42 55% 60% / 0.7);
   }
   .scripture-veil__glow {
     position: absolute;
@@ -399,6 +458,15 @@
 @keyframes flameSway {
   0%, 100% { transform: rotate(-0.8deg); }
   50% { transform: rotate(0.9deg); }
+}
+/* Offset prime-ish periods so the lamp's drift never visibly repeats */
+@keyframes lampFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes lampSway3d {
+  0%, 100% { transform: rotateY(-7deg) rotateX(2.5deg); }
+  50% { transform: rotateY(7deg) rotateX(-1.5deg); }
 }
 @keyframes emberRise {
   0% { opacity: 0; transform: translateY(0) translateX(0) scale(0.7); }
