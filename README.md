@@ -39,7 +39,7 @@ Defaults are privacy-first. Raw audio is not stored by default. Transcripts are 
 
 ### Frontend (build-time — baked into the JS bundle, safe to expose)
 - `VITE_SUPABASE_URL` — Supabase project URL, e.g. `https://jfqivpqedhmgyqwqpwim.supabase.co`
-- `VITE_SUPABASE_PUBLISHABLE_KEY` — Supabase `anon` public key
+- `VITE_SUPABASE_PUBLISHABLE_KEY` — the **publishable key** (`sb_publishable_*` format) from Supabase Dashboard → API Keys → **"Publishable and secret API keys"** tab. **Do not use the legacy anon JWT** from the "Legacy anon, service_role API keys" tab — that is a separate, older credential and Supabase itself recommends against it for new setups.
 
 ### Server-side secrets (Supabase Dashboard → Project Settings → Edge Functions → Secrets)
 - `GROQ_API_KEY` — AI guidance provider; **never put this in a `VITE_` variable or commit it**
