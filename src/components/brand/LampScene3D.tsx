@@ -82,9 +82,9 @@ export function LampScene3D({ className }: LampScene3DProps) {
         <div className="lamp-scene__sway">
           <div className="lamp-scene__float">
             <div className="relative mx-auto w-72 sm:w-[22rem]">
-              {/* flame anchored at the wick hole (~80% x, 53% y of the lamp) */}
+              {/* flame rising from the charred wick at the left nozzle */}
               <LampFlame
-                className="absolute bottom-[44%] left-[80.5%] z-10 h-32 w-32 -translate-x-1/2 sm:h-36 sm:w-36"
+                className="absolute bottom-[46%] left-[20%] z-10 h-32 w-32 -translate-x-1/2 sm:h-36 sm:w-36"
                 withBase={false}
               />
               <HerodianLamp />

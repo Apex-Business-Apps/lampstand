@@ -261,7 +261,7 @@
     inset: -18%;
     border-radius: 9999px;
     background: radial-gradient(
-      circle at 58% 42%,
+      circle at 36% 42%,
       hsl(var(--warm-glow) / 0.32) 0%,
       hsl(var(--sacred-gold) / 0.12) 45%,
       transparent 70%
