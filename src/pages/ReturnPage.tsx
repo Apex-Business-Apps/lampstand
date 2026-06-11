@@ -48,7 +48,7 @@ export default function ReturnPage() {
         <ScriptureCard passage={daily.passage} />
         <ReflectionBlock label="Short Reflection" content={`In ${time}, stay with one clear need: ${need}. Read slowly. Keep one phrase with you through the day.`} variant="reflection" />
         <ReflectionBlock label="Prayer" content="Lord, meet me where I am. Rekindle what has grown quiet, and guide my next step in peace. Amen." variant="prayer" />
-        <ReflectionBlock label="One next step" content="Open LampStand again tonight for a one-minute check-in." variant="reflection" />
+        <ReflectionBlock label="One next step" content="Open The Lamp Stand again tonight for a one-minute check-in." variant="reflection" />
         <Button onClick={handleRekindle} className="w-full">Rekindle today</Button>
       </div>
     </AppShell>

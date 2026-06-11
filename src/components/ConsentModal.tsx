@@ -34,9 +34,9 @@ export const ConsentModal = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle className="font-serif text-2xl">Welcome to LampStand</DialogTitle>
+          <DialogTitle className="font-serif text-2xl">Welcome to The Lamp Stand</DialogTitle>
           <DialogDescription className="font-sans text-base mt-2">
-            Before we begin, we want to be transparent about how LampStand works and ask for your permission regarding your data.
+            Before we begin, we want to be transparent about how The Lamp Stand works and ask for your permission regarding your data.
           </DialogDescription>
         </DialogHeader>
 
@@ -52,7 +52,7 @@ export const ConsentModal = () => {
                 Local Storage & Adaptive Memory
               </label>
               <p className="text-sm text-muted-foreground">
-                Allow LampStand to store your journal entries and conversation history locally on this device. You can clear this data at any time in Settings.
+                Allow The Lamp Stand to store your journal entries and conversation history locally on this device. You can clear this data at any time in Settings.
               </p>
             </div>
           </div>
@@ -68,13 +68,13 @@ export const ConsentModal = () => {
                 Voice Input (Microphone)
               </label>
               <p className="text-sm text-muted-foreground">
-                Allow LampStand to access your microphone for voice interaction. Audio is transcribed locally via your browser and raw audio is never stored or transmitted.
+                Allow The Lamp Stand to access your microphone for voice interaction. Audio is transcribed locally via your browser and raw audio is never stored or transmitted.
               </p>
             </div>
           </div>
 
           <div className="text-xs text-muted-foreground bg-secondary/50 p-3 rounded border">
-            By continuing, you agree to our <a href="/legal/terms" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Terms of Service</a> and acknowledge our <a href="/legal/privacy" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Privacy Policy</a>. Lampstand is an AI companion and does not replace professional counseling or medical advice.
+            By continuing, you agree to our <a href="/legal/terms" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Terms of Service</a> and acknowledge our <a href="/legal/privacy" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Privacy Policy</a>. The Lamp Stand is an AI companion and does not replace professional counseling or medical advice.
           </div>
         </div>
 

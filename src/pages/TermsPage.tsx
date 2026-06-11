@@ -5,16 +5,16 @@ export default function TermsPage() {
     <LegalLayout title="Community Terms">
       <p className="text-sm text-muted-foreground">Last updated: May 2026</p>
 
-      <h2 className="text-lg font-semibold mt-6 mb-2">What LampStand is</h2>
+      <h2 className="text-lg font-semibold mt-6 mb-2">What The Lamp Stand is</h2>
       <p>
-        LampStand is a community spiritual companion — a free, ad-free space for daily reflection,
+        The Lamp Stand is a community spiritual companion — a free, ad-free space for daily reflection,
         scripture engagement, and pastoral guidance. It is a labour of love, not a commercial product.
         There are no subscriptions, no upsells, and no dark patterns.
       </p>
 
-      <h2 className="text-lg font-semibold mt-6 mb-2">What LampStand is not</h2>
+      <h2 className="text-lg font-semibold mt-6 mb-2">What The Lamp Stand is not</h2>
       <p>
-        LampStand's AI responses, reflections, and guidance are <strong>not</strong> a substitute for:
+        The Lamp Stand’s AI responses, reflections, and guidance are <strong>not</strong> a substitute for:
       </p>
       <ul className="list-disc pl-6 space-y-1 mt-2">
         <li>Professional pastoral counselling or spiritual direction</li>
@@ -27,7 +27,7 @@ export default function TermsPage() {
       </p>
 
       <h2 className="text-lg font-semibold mt-6 mb-2">Respectful use</h2>
-      <p>By using LampStand you agree to:</p>
+      <p>By using The Lamp Stand you agree to:</p>
       <ul className="list-disc pl-6 space-y-1 mt-2">
         <li>Use the app in good faith and for personal spiritual purposes</li>
         <li>Not attempt to extract, scrape, or automate requests to our API</li>
@@ -45,7 +45,7 @@ export default function TermsPage() {
 
       <h2 className="text-lg font-semibold mt-6 mb-2">Availability</h2>
       <p>
-        LampStand is provided as-is by a small community team. We aim for reliability but cannot
+        The Lamp Stand is provided as-is by a small community team. We aim for reliability but cannot
         guarantee uninterrupted service. Core features work offline and local data is always
         accessible even when servers are unavailable.
       </p>

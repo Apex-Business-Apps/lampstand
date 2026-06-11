@@ -51,7 +51,7 @@ export function AgentPresence({ mode = 'idle', className = '', size = 'md', inte
       {/* Flame image — NO mix-blend-screen so it's visible on light backgrounds */}
       <img
         src={presenceImg}
-        alt="LampStand Presence"
+        alt="The Lamp Stand Presence"
         className={cn(
           'relative z-10 w-full h-full object-contain transition-all duration-500',
           mode === 'muted' || mode === 'disabled' ? 'opacity-40' : 'opacity-100',

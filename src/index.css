@@ -4,46 +4,55 @@
 
 @layer base {
   :root {
-    --background: 40 33% 96%;
-    --foreground: 25 20% 18%;
+    /* "Sanctuary night" — the lamp's light against the dark, app-wide */
+    --background: 26 30% 8%;
+    --foreground: 40 36% 92%;
 
-    --card: 40 30% 98%;
-    --card-foreground: 25 20% 18%;
+    --card: 27 26% 12%;
+    --card-foreground: 40 36% 92%;
 
-    --popover: 40 30% 98%;
-    --popover-foreground: 25 20% 18%;
+    --popover: 27 26% 12%;
+    --popover-foreground: 40 36% 92%;
 
-    --primary: 36 70% 50%;
-    --primary-foreground: 40 33% 98%;
+    --primary: 38 80% 56%;
+    --primary-foreground: 26 40% 10%;
 
-    --secondary: 40 20% 92%;
-    --secondary-foreground: 25 20% 25%;
+    --secondary: 28 20% 17%;
+    --secondary-foreground: 40 30% 88%;
 
-    --muted: 40 15% 93%;
-    --muted-foreground: 25 10% 50%;
+    --muted: 28 18% 16%;
+    --muted-foreground: 38 22% 70%;
 
-    --accent: 36 50% 88%;
-    --accent-foreground: 25 20% 18%;
+    --accent: 34 32% 20%;
+    --accent-foreground: 42 50% 88%;
 
-    --destructive: 0 60% 50%;
+    --destructive: 0 62% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 36 20% 88%;
-    --input: 36 20% 88%;
-    --ring: 36 70% 50%;
+    --border: 32 22% 22%;
+    --input: 32 22% 22%;
+    --ring: 38 80% 56%;
 
     --radius: 0.75rem;
 
-    --warm-glow: 36 80% 60%;
-    --warm-glow-soft: 36 60% 85%;
-    --sacred-gold: 42 75% 55%;
-    --sacred-gold-soft: 42 50% 90%;
-    --sage: 140 15% 55%;
-    --sage-soft: 140 15% 92%;
-    --cream: 40 33% 96%;
-    --ivory: 40 30% 98%;
-    --ember: 20 70% 45%;
-    --ember-soft: 20 40% 90%;
+    --warm-glow: 36 85% 60%;
+    --warm-glow-soft: 34 45% 17%;
+    --sacred-gold: 42 78% 58%;
+    --sacred-gold-soft: 40 40% 18%;
+    --sage: 140 18% 60%;
+    --sage-soft: 140 12% 15%;
+    --cream: 28 22% 10%;
+    --ivory: 27 26% 13%;
+    --ember: 24 82% 58%;
+    --ember-soft: 22 40% 16%;
+
+    /* "Sanctuary night" palette — dark surfaces for the landing experience */
+    --night: 26 32% 7%;
+    --night-soft: 26 26% 11%;
+    --night-card: 27 24% 13%;
+    --night-border: 32 24% 22%;
+    --night-foreground: 40 38% 93%;
+    --night-muted: 35 16% 66%;
 
     --kids-primary: 200 70% 55%;
     --kids-primary-foreground: 0 0% 100%;
@@ -51,19 +60,20 @@
     --kids-accent: 340 60% 65%;
     --kids-accent-soft: 340 40% 92%;
 
-    --sidebar-background: 40 25% 95%;
-    --sidebar-foreground: 25 20% 25%;
-    --sidebar-primary: 36 70% 50%;
-    --sidebar-primary-foreground: 40 33% 98%;
-    --sidebar-accent: 40 20% 90%;
-    --sidebar-accent-foreground: 25 20% 18%;
-    --sidebar-border: 36 20% 88%;
-    --sidebar-ring: 36 70% 50%;
+    --sidebar-background: 26 28% 7%;
+    --sidebar-foreground: 40 30% 88%;
+    --sidebar-primary: 38 80% 56%;
+    --sidebar-primary-foreground: 26 40% 10%;
+    --sidebar-accent: 28 18% 14%;
+    --sidebar-accent-foreground: 40 36% 92%;
+    --sidebar-border: 32 22% 22%;
+    --sidebar-ring: 38 80% 56%;
 
     --font-display: "Cormorant Garamond", "Times New Roman", serif;
     --font-body: "EB Garamond", Georgia, serif;
     --font-ui: Inter, ui-sans-serif, system-ui, sans-serif;
     --font-sans: var(--font-ui);
+    --font-serif: var(--font-display);
   }
 
   .dark {
@@ -141,6 +151,205 @@
   .kids-mode .glow-card {
     background: linear-gradient(135deg, hsl(var(--kids-background)), hsl(var(--kids-accent-soft)));
   }
+
+  /* ===== The Lamp Stand brand layer ===== */
+
+  /* Gold gradient headline text with a slow shimmer pass */
+  .text-gold-shimmer {
+    background: linear-gradient(
+      110deg,
+      hsl(var(--ember)) 0%,
+      hsl(var(--sacred-gold)) 32%,
+      hsl(46 95% 74%) 50%,
+      hsl(var(--sacred-gold)) 68%,
+      hsl(var(--ember)) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmerPan 7s linear infinite;
+  }
+
+  /* Living CSS flame: three teardrop layers over a pulsing halo.
+     The teardrop is a square with one sharp corner, rotated to point up. */
+  .lamp-flame {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .lamp-flame__halo {
+    position: absolute;
+    inset: -28%;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle,
+      hsl(var(--warm-glow) / 0.55) 0%,
+      hsl(var(--sacred-gold) / 0.22) 45%,
+      transparent 70%
+    );
+    filter: blur(26px);
+    animation: haloPulse 4.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .lamp-flame__layer {
+    position: absolute;
+    bottom: 6%;
+    left: 50%;
+    margin-left: calc(var(--flame-size) / -2);
+    width: var(--flame-size);
+    height: var(--flame-size);
+    border-radius: 0 50% 50% 50%;
+    transform-origin: 50% 80%;
+    transform: rotate(45deg);
+  }
+  .lamp-flame__layers {
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 92%;
+    animation: flameSway 7.5s ease-in-out infinite;
+  }
+  .lamp-flame__outer {
+    --flame-size: 62%;
+    background: linear-gradient(135deg, hsl(20 85% 48%), hsl(36 90% 55%));
+    box-shadow: 0 0 30px hsl(var(--warm-glow) / 0.55);
+    animation: flameFlicker 4.4s ease-in-out infinite;
+  }
+  .lamp-flame__mid {
+    --flame-size: 42%;
+    bottom: 9%;
+    background: linear-gradient(135deg, hsl(33 95% 58%), hsl(44 95% 64%));
+    animation: flameFlicker 3.3s ease-in-out infinite reverse;
+  }
+  .lamp-flame__core {
+    --flame-size: 24%;
+    bottom: 12%;
+    background: linear-gradient(135deg, hsl(48 100% 78%), hsl(52 100% 90%));
+    animation: flameFlicker 2.5s ease-in-out infinite;
+  }
+  .lamp-flame__base {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 34%;
+    height: 5%;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, hsl(var(--sacred-gold) / 0.9), hsl(var(--ember) / 0.7));
+    box-shadow: 0 0 18px hsl(var(--warm-glow) / 0.5);
+  }
+
+  /* Scripture veil — the pointer is a lamp; its light reveals the Word
+     written across the dark. Position driven by --veil-x/--veil-y (px). */
+  .scripture-veil {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    --veil-x: 50%;
+    --veil-y: 45%;
+  }
+  .scripture-veil__page {
+    position: absolute;
+    inset: 0;
+    padding: 4.5rem 3rem;
+    column-width: 17rem;
+    column-gap: 3rem;
+    column-fill: auto;
+    font-family: var(--font-body);
+    color: hsl(42 55% 68% / 0.95);
+    text-align: justify;
+    opacity: 0.45;
+    transition: opacity 0.8s ease;
+    -webkit-mask-image: radial-gradient(
+      circle 250px at var(--veil-x) var(--veil-y),
+      rgb(0 0 0 / 0.95) 0%,
+      rgb(0 0 0 / 0.32) 48%,
+      transparent 74%
+    );
+    mask-image: radial-gradient(
+      circle 250px at var(--veil-x) var(--veil-y),
+      rgb(0 0 0 / 0.95) 0%,
+      rgb(0 0 0 / 0.32) 48%,
+      transparent 74%
+    );
+  }
+  .scripture-veil.veil-active .scripture-veil__page {
+    opacity: 0.88;
+  }
+  .scripture-veil__verse {
+    break-inside: avoid;
+    margin-bottom: 1.7rem;
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+  .scripture-veil__ref {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-family: var(--font-ui);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: hsl(var(--sacred-gold) / 0.9);
+  }
+  .scripture-veil__glow {
+    position: absolute;
+    left: var(--veil-x);
+    top: var(--veil-y);
+    width: 30rem;
+    height: 30rem;
+    margin: -15rem 0 0 -15rem;
+    border-radius: 9999px;
+    background: radial-gradient(circle, hsl(36 85% 60% / 0.12) 0%, hsl(36 85% 60% / 0.045) 45%, transparent 70%);
+    opacity: 0.6;
+    transition: opacity 0.8s ease;
+  }
+  .scripture-veil.veil-active .scripture-veil__glow {
+    opacity: 1;
+  }
+
+  /* Drifting ember mote, used sparingly on dark sections */
+  .ember-mote {
+    position: absolute;
+    bottom: 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 9999px;
+    background: hsl(var(--sacred-gold));
+    opacity: 0;
+    animation: emberRise 7s ease-in infinite;
+    pointer-events: none;
+  }
+
+  /* Scroll-reveal primitive (toggled by useReveal) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .text-gold-shimmer,
+    .lamp-flame__halo,
+    .lamp-flame__layer,
+    .ember-mote {
+      animation: none;
+    }
+    .ember-mote {
+      display: none;
+    }
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 }
 
 @layer utilities {
@@ -172,6 +381,30 @@
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmerPan {
+  to { background-position: 200% center; }
+}
+@keyframes haloPulse {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+/* A calm, steady burn — gentle breath, not a flicker */
+@keyframes flameFlicker {
+  0%, 100% { transform: rotate(45deg) scale(1, 1); }
+  25% { transform: rotate(44.4deg) scale(0.985, 1.02); }
+  50% { transform: rotate(45.7deg) scale(1.015, 0.985); }
+  75% { transform: rotate(44.7deg) scale(0.99, 1.012); }
+}
+@keyframes flameSway {
+  0%, 100% { transform: rotate(-0.8deg); }
+  50% { transform: rotate(0.9deg); }
+}
+@keyframes emberRise {
+  0% { opacity: 0; transform: translateY(0) translateX(0) scale(0.7); }
+  12% { opacity: 0.85; }
+  60% { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(-46vh) translateX(2.5rem) scale(0.25); }
 }
 
 /* Safe area insets for mobile notch/home-bar */

@@ -71,7 +71,7 @@ export default function AuthPage() {
         <AgentPresence size="md" className="mx-auto" />
 
         <div className="space-y-2">
-          <h1 className="text-3xl font-serif font-semibold">LampStand</h1>
+          <h1 className="text-3xl font-serif font-semibold">The Lamp Stand</h1>
           <p className="text-muted-foreground text-sm">
             {mode === 'magic-link'
               ? 'We\'ll email you a one-time sign-in link.'
@@ -158,7 +158,7 @@ export default function AuthPage() {
         )}
 
         <div className="pt-4 text-xs text-muted-foreground space-y-2">
-          <p>LampStand is local-first. You do not need to sign in to use it.</p>
+          <p>The Lamp Stand is local-first. You do not need to sign in to use it.</p>
           <button onClick={() => navigate('/?entry=onboarding&source=web')} className="text-primary hover:underline">
             Continue as Guest
           </button>
