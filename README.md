@@ -37,13 +37,19 @@ Defaults are privacy-first. Raw audio is not stored by default. Transcripts are 
 
 ## Environment Variables
 
-### Frontend (build-time, bundled into client JS)
+### Frontend (build-time — baked into the JS bundle, safe to expose)
+- `VITE_SUPABASE_URL` — Supabase project URL, e.g. `https://jfqivpqedhmgyqwqpwim.supabase.co`
+- `VITE_SUPABASE_PUBLISHABLE_KEY` — Supabase `anon` public key
+
+### Server-side secrets (Supabase Dashboard → Project Settings → Edge Functions → Secrets)
+- `GROQ_API_KEY` — AI guidance provider; **never put this in a `VITE_` variable or commit it**
+- `ELEVENLABS_API_KEY` — TTS provider key; same rule applies
+
+### CI/CD (GitHub repository secrets)
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
-
-### CI / Infrastructure
-- `CLOUDFLARE_ACCOUNT_ID` (CI deploy)
-- `CLOUDFLARE_API_TOKEN` (CI deploy)
 
 ### Supabase Edge Function Secrets (set in Dashboard > Edge Functions > Secrets)
 - `GROQ_API_KEY` — used by `groq-guidance` edge function
@@ -76,16 +82,20 @@ npm run build
 
 ## Cloudflare Deployment (exact steps)
 
+**Local / staging** (uses `wrangler.json` — no custom domain routes):
 ```bash
 npm ci
 npm run build
 npx wrangler deploy --config wrangler.json
 ```
 
-CI-safe one-liner:
-
+**Production CI** (uses `wrangler.production.json` — includes `thelampstand.icu` route bindings):
 ```bash
-npm run deploy:ci
+# The `Deploy Worker Production` GitHub Actions workflow runs this automatically on push to main.
+# To trigger manually from local:
+npm ci
+npm run build
+npx wrangler deploy --config wrangler.production.json
 ```
 
 ## Legal and Compliance Surfaces

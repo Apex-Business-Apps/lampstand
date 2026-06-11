@@ -6,9 +6,9 @@
 - `src/lib/agent/RetrievalOrchestrator.ts`: Low risk, increases bounded retrieval from 1 to 3 and handles empty input. Roll back by restoring topK 1 behavior.
 - `src/lib/adapters.ts`: Medium risk, no-match retrieval no longer returns random fallback passage. Roll back by restoring random fallback branch.
 - `src/lib/storage.ts`: Medium risk, changes local idempotency and list caps. Roll back by reverting this file. Local data remains JSON-compatible.
-- `src/workers/static-spa.ts`: Low risk, additive `/health` route. Roll back by removing `jsonHealthResponse` and the `/health` branch.
+- `src/workers/static-spa.ts`: Medium risk. Changes include the additive `/health` route, corrected CSP `font-src`/`style-src` allowlist for Google Fonts, and SPA deep-link fallback returning `200 OK` instead of `404`. Roll back by reverting this file; this will re-break font loading and deep links.
 - `src/pages/TermsPage.tsx`, `src/pages/CompanyPage.tsx`, `src/pages/AcceptableUsePage.tsx`, `src/pages/PrivacyPolicyPage.tsx`: Low risk, removes deferred legal placeholder language from rendered pages. Roll back by reverting these text changes.
-- `src/test/ai-grounding.test.ts`, `src/test/storage-idempotency.test.ts`, `src/test/worker-health.test.ts`, `src/test/retrieval-orchestrator.test.ts`: Low risk, test-only. Roll back with source changes.
+- `src/test/ai-grounding.test.ts`, `src/test/storage-idempotency.test.ts`, `src/test/worker-health.test.ts`, `src/test/retrieval-orchestrator.test.ts`, `src/test/static-spa-fallback.test.ts`: Low risk, test-only. Roll back with source changes.
 - `docs/apex/*.md`: Low risk, documentation-only. Roll back by deleting or reverting docs.
 
 ## Rollback Command
@@ -24,4 +24,6 @@
 1. `npm run typecheck`
 2. `npm test`
 3. `npm run build`
-4. Open `/app`, `/daily`, `/saved`, `/journal`, and `/health` if the health route is retained.
+4. Open `/app`, `/daily`, `/saved`, `/journal`, and `/health`.
+5. Navigate directly to a deep link (e.g., `https://thelampstand.icu/journal`) in a fresh tab to confirm the SPA fallback returns a 200 and the client router renders correctly.
+6. Verify Google Fonts (Inter) load without CSP console errors.
