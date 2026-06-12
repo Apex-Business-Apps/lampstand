@@ -13,7 +13,7 @@ import type { VoiceGender } from '@/lib/voice';
 type ViewMode = 'fullscreen' | 'mini-collapsed' | 'mini-expanded';
 
 const HIDDEN_PATHS = [
-  '/onboarding', '/auth', '/reset-password', '/legal', '/legal/privacy', '/legal/terms',
+  '/welcome', '/lite', '/onboarding', '/auth', '/reset-password', '/legal', '/legal/privacy', '/legal/terms',
   '/legal/acceptable-use', '/legal/disclaimer', '/legal/company',
 ];
 
@@ -86,9 +86,11 @@ export function FloatingAgent() {
       <button
         onClick={() => setViewMode('mini-expanded')}
         className={cn(
-          'fixed bottom-20 right-4 z-[60] rounded-full shadow-lg',
-          'bg-card/95 backdrop-blur-md border border-border',
-          'p-1.5 transition-all duration-300 hover:scale-105',
+          'fixed bottom-20 right-4 z-[60] rounded-full',
+          'bg-gradient-to-br from-card to-[hsl(var(--sacred-gold-soft))] backdrop-blur-md',
+          'border border-[hsl(var(--sacred-gold)/0.45)]',
+          'shadow-[0_10px_34px_-8px_hsl(var(--warm-glow)/0.65)]',
+          'p-1.5 transition-all duration-300 hover:scale-105 hover:shadow-[0_12px_40px_-8px_hsl(var(--warm-glow)/0.85)]',
           'active:scale-95'
         )}
         title="Open companion"

@@ -59,7 +59,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
         <header className="shrink-0 border-b border-[#92400e]/25 bg-[#1a1610]/65 px-3 sm:px-4 pb-2 pt-3 sm:pb-3 sm:pt-4 backdrop-blur-sm safe-top">
           <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <span className="text-[10px] sm:text-xs font-serif uppercase tracking-[0.25em] text-[#fbbf24]">LampStand</span>
+              <span className="text-[10px] sm:text-xs font-serif uppercase tracking-[0.25em] text-[#fbbf24]">The Lamp Stand</span>
               <span className="rounded-full border border-[#92400e]/40 bg-[#92400e]/20 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[10px] font-medium uppercase tracking-[0.16em] text-[#fde68a]">
                 {agent.agentMode}
               </span>

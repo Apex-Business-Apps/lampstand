@@ -106,7 +106,7 @@ export default function ResetPasswordPage() {
           <h1 className="text-3xl font-serif font-semibold">Reset password</h1>
           <p className="text-muted-foreground text-sm">
             {showUpdateForm
-              ? 'Choose a new password for your LampStand account.'
+              ? 'Choose a new password for your Lamp Stand account.'
               : 'Enter your email and we will send you a secure password reset link.'}
           </p>
         </div>

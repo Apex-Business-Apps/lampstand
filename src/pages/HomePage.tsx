@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { Sun, BookOpen, MessageCircle, PlayCircle, Baby, Flame, Moon, BookOpenCheck } from 'lucide-react';
+import { Baby, Flame, ArrowRight, ChevronRight } from 'lucide-react';
+import { OilLampIcon, DoveIcon, ScrollIcon, OpenBookIcon, CandleMoonIcon, DoorLightIcon } from '@/components/brand/SacredIcons';
 import { hasCompletedTodayExamen } from '@/lib/examen/examenFlow';
 import { hasCompletedTodayLectio } from '@/lib/lectio/lectioFlow';
 import { Button } from '@/components/ui/button';
@@ -49,105 +50,103 @@ export default function HomePage() {
 
   return (
     <AppShell kidsMode={profile.kidsMode}>
-      <div className={`px-5 pt-8 pb-6 space-y-6 ${presence.state === 'ember' ? 'opacity-95' : ''}`}>
+      <div className={`px-5 pt-8 pb-6 space-y-7 ${presence.state === 'ember' ? 'opacity-95' : ''}`}>
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-start justify-between animate-fade-in">
           <div>
-            <p className="text-sm text-muted-foreground">{greeting}</p>
-            <h1 className="text-2xl font-serif font-semibold text-foreground">LampStand</h1>
+            <p className="text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-ui)' }}>{greeting}</p>
+            <h1 className="mt-0.5 font-display text-[1.75rem] font-semibold leading-none tracking-tight text-foreground">
+              The <span className="text-gold-shimmer">Lamp</span> Stand
+            </h1>
           </div>
           {knowledge.streak > 0 && (
-            <div className="flex items-center gap-1.5 bg-accent/60 px-3 py-1.5 rounded-full">
-              <Flame className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-foreground">{knowledge.streak}</span>
+            <div
+              className="flex items-center gap-1.5 rounded-full border border-[hsl(var(--sacred-gold)/0.35)] bg-gradient-to-b from-[hsl(var(--sacred-gold-soft))] to-[hsl(var(--warm-glow-soft))] px-3 py-1.5 shadow-[0_2px_12px_-4px_hsl(var(--warm-glow)/0.5)]"
+              title={`${knowledge.streak}-day flame`}
+            >
+              <Flame className="h-4 w-4 text-[hsl(var(--ember))]" />
+              <span className="text-sm font-semibold text-[hsl(var(--ember))]" style={{ fontFamily: 'var(--font-ui)' }}>{knowledge.streak}</span>
             </div>
           )}
         </div>
 
         {/* Daily Light Hero */}
-        <button onClick={() => navigate('/daily')} className="w-full text-left">
-          <div className={`glow-card rounded-2xl p-6 space-y-4 animate-slide-up ${presence.state === 'radiance' || presence.state === 'sacred-heart' ? 'shadow-[0_0_45px_rgba(250,180,80,0.35)]' : ''}`}>
-            <div className="flex items-center gap-3">
-              <AgentPresence size="sm"  />
+        <button onClick={() => navigate('/daily')} className="group w-full text-left" aria-label="Read Today's Light">
+          <div
+            className={`relative overflow-hidden rounded-3xl border border-[hsl(var(--sacred-gold)/0.35)] bg-gradient-to-br from-[hsl(var(--ivory))] via-[hsl(var(--sacred-gold-soft))] to-[hsl(var(--warm-glow-soft))] p-6 space-y-4 shadow-[0_18px_50px_-22px_hsl(var(--warm-glow)/0.55)] transition-all duration-300 animate-slide-up group-hover:-translate-y-0.5 group-hover:shadow-[0_24px_60px_-22px_hsl(var(--warm-glow)/0.7)] ${
+              presence.state === 'radiance' || presence.state === 'sacred-heart' ? 'shadow-[0_0_45px_rgba(250,180,80,0.35)]' : ''
+            }`}
+          >
+            <div className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-[hsl(var(--warm-glow)/0.25)] blur-2xl animate-glow-pulse" />
+            <div className="relative flex items-center gap-3">
+              <AgentPresence size="sm" />
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-primary">Today's Light</p>
-                <p className="text-sm text-muted-foreground">{today.theme}</p>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[hsl(var(--ember))]" style={{ fontFamily: 'var(--font-ui)' }}>Today's Light</p>
+                <p className="text-sm capitalize text-muted-foreground">{today.theme}</p>
               </div>
             </div>
-            <p className="scripture-text text-base line-clamp-3">{today.passage.text}</p>
-            <p className="text-xs text-muted-foreground">- {today.passage.reference}</p>
+            <p className="scripture-text relative line-clamp-3 text-lg leading-relaxed">{today.passage.text}</p>
+            <div className="relative flex items-center justify-between">
+              <p className="text-sm font-semibold text-[hsl(var(--ember))]" style={{ fontFamily: 'var(--font-ui)' }}>{today.passage.reference}</p>
+              <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary opacity-80 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" style={{ fontFamily: 'var(--font-ui)' }}>
+                Read &amp; reflect <ArrowRight className="h-3.5 w-3.5" />
+              </span>
+            </div>
           </div>
         </button>
 
         {/* Primary Actions */}
         <div className="grid grid-cols-2 gap-3">
-          <ActionCard icon={Sun} label="Read Today's Light" onClick={() => navigate('/daily')} />
-          <ActionCard icon={PlayCircle} label="Sermon Mode" onClick={() => navigate('/sermon')} />
-          <ActionCard icon={MessageCircle} label="Ask for Guidance" onClick={() => navigate('/guidance')} />
-          <ActionCard icon={BookOpen} label="Continue Reading" onClick={() => navigate('/saved')} />
+          <ActionCard icon={OilLampIcon} label="Today's Light" hint="Read & reflect" onClick={() => navigate('/daily')} />
+          <ActionCard icon={ScrollIcon} label="Sermon Mode" hint="Listen & learn" onClick={() => navigate('/sermon')} />
+          <ActionCard icon={DoveIcon} label="Guidance" hint="Ask anything" onClick={() => navigate('/guidance')} />
+          <ActionCard icon={OpenBookIcon} label="Continue Reading" hint="Saved passages" onClick={() => navigate('/saved')} />
         </div>
 
-        <Button variant="outline" className="w-full" onClick={() => navigate('/return')}>The Return</Button>
+        {/* Daily practices */}
+        <div className="space-y-3">
+          <h2 className="px-1 font-display text-lg font-semibold text-foreground">Daily practices</h2>
 
-        <button
-          onClick={() => navigate('/lectio')}
-          className={`w-full text-left rounded-2xl p-5 border transition-all ${
-            lectioDone
-              ? 'bg-card border-border opacity-80'
-              : isMorning
-                ? 'border-primary/50 bg-gradient-to-br from-accent/40 to-card shadow-[0_0_24px_rgba(250,180,80,0.15)]'
-                : 'bg-card border-border hover:border-primary/40'
-          }`}
-          aria-label="Begin Lectio Divina on today's passage"
-        >
-          <div className="flex items-center gap-3">
-            <div className="rounded-full bg-accent/50 p-2.5">
-              <BookOpenCheck className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-foreground">
-                {lectioDone ? 'Today\u2019s Lectio \u2014 Complete' : 'Lectio Divina'}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {lectioDone
-                  ? 'The word is with you today.'
-                  : isMorning
-                    ? 'A guided practice for today\u2019s passage.'
-                    : 'Read, reflect, pray, rest. A guided practice.'}
-              </p>
-            </div>
-          </div>
-        </button>
+          <PracticeRow
+            icon={LectioIcon}
+            done={lectioDone}
+            highlight={isMorning && !lectioDone}
+            title={lectioDone ? 'Today’s Lectio — Complete' : 'Lectio Divina'}
+            subtitle={
+              lectioDone
+                ? 'The word is with you today.'
+                : isMorning
+                  ? 'A guided practice for today’s passage.'
+                  : 'Read, reflect, pray, rest. A guided practice.'
+            }
+            ariaLabel="Begin Lectio Divina on today's passage"
+            onClick={() => navigate('/lectio')}
+          />
 
-        <button
-          onClick={() => navigate('/examen')}
-          className={`w-full text-left rounded-2xl p-5 border transition-all ${
-            examenDone
-              ? 'bg-card border-border opacity-80'
-              : isEvening
-                ? 'border-primary/50 bg-gradient-to-br from-accent/40 to-card shadow-[0_0_24px_rgba(250,180,80,0.15)]'
-                : 'bg-card border-border hover:border-primary/40'
-          }`}
-          aria-label="Open the Daily Examen"
-        >
-          <div className="flex items-center gap-3">
-            <div className="rounded-full bg-accent/50 p-2.5">
-              <Moon className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-foreground">
-                {examenDone ? 'Today\u2019s Examen — Complete' : 'The Daily Examen'}
-              </p>
-              <p className="text-xs text-muted-foreground">
-                {examenDone
-                  ? 'Rest in the quiet you made tonight.'
-                  : isEvening
-                    ? 'A quiet evening reflection.'
-                    : 'A guided evening prayer, ready when you are.'}
-              </p>
-            </div>
-          </div>
-        </button>
+          <PracticeRow
+            icon={CandleMoonIcon}
+            done={examenDone}
+            highlight={isEvening && !examenDone}
+            title={examenDone ? 'Today’s Examen — Complete' : 'The Daily Examen'}
+            subtitle={
+              examenDone
+                ? 'Rest in the quiet you made tonight.'
+                : isEvening
+                  ? 'A quiet evening reflection.'
+                  : 'A guided evening prayer, ready when you are.'
+            }
+            ariaLabel="Open the Daily Examen"
+            onClick={() => navigate('/examen')}
+          />
+
+          <PracticeRow
+            icon={DoorLightIcon}
+            title="The Return"
+            subtitle="Been away? A graceful path back — no guilt."
+            ariaLabel="Open The Return"
+            onClick={() => navigate('/return')}
+          />
+        </div>
 
         {profile.kidsMode && (
           <Button variant="outline" className="w-full gap-2 border-2" onClick={() => navigate('/kids')}>
@@ -158,15 +157,17 @@ export default function HomePage() {
         {/* Saved Preview */}
         {saved.length > 0 && (
           <div>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-serif font-semibold">Saved Passages</h2>
-              <button onClick={() => navigate('/saved')} className="text-xs text-primary font-medium">View all</button>
+            <div className="flex items-center justify-between mb-3 px-1">
+              <h2 className="font-display text-lg font-semibold text-foreground">Saved Passages</h2>
+              <button onClick={() => navigate('/saved')} className="inline-flex items-center gap-0.5 text-xs font-semibold text-primary hover:text-[hsl(var(--ember))]" style={{ fontFamily: 'var(--font-ui)' }}>
+                View all <ChevronRight className="h-3.5 w-3.5" />
+              </button>
             </div>
             <div className="space-y-2">
               {saved.slice(0, 2).map(s => (
-                <div key={s.id} className="bg-card rounded-lg p-4 border border-border">
-                  <p className="text-sm font-medium text-foreground">{s.passage.reference}</p>
-                  <p className="text-xs text-muted-foreground line-clamp-1 mt-1">{s.passage.text}</p>
+                <div key={s.id} className="rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/40">
+                  <p className="text-sm font-semibold text-foreground" style={{ fontFamily: 'var(--font-ui)' }}>{s.passage.reference}</p>
+                  <p className="text-sm text-muted-foreground line-clamp-1 mt-1">{s.passage.text}</p>
                 </div>
               ))}
             </div>
@@ -177,14 +178,69 @@ export default function HomePage() {
   );
 }
 
-function ActionCard({ icon: Icon, label, onClick }: { icon: React.ElementType; label: string; onClick: () => void }) {
+/** Lectio's open Bible with light descending on the Word. */
+const LectioIcon = ({ className }: { className?: string }) => <OpenBookIcon rays className={className} />;
+
+function ActionCard({ icon: Icon, label, hint, onClick }: { icon: React.ElementType; label: string; hint: string; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="flex flex-col items-center gap-2 bg-card rounded-xl p-4 border border-border hover:border-primary/40 transition-all text-center"
+      className="group flex flex-col items-start gap-3 rounded-2xl border border-border bg-card p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-[hsl(var(--sacred-gold)/0.5)] hover:shadow-[0_12px_32px_-14px_hsl(var(--warm-glow)/0.5)]"
     >
-      <Icon className="h-6 w-6 text-primary" />
-      <span className="text-sm font-medium text-foreground">{label}</span>
+      <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.04] ring-1 ring-[hsl(var(--sacred-gold)/0.3)] transition-transform duration-200 group-hover:scale-110">
+        <Icon className="h-8 w-8" />
+      </span>
+      <span>
+        <span className="block text-sm font-semibold text-foreground" style={{ fontFamily: 'var(--font-ui)' }}>{label}</span>
+        <span className="mt-0.5 block text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-ui)' }}>{hint}</span>
+      </span>
+    </button>
+  );
+}
+
+function PracticeRow({
+  icon: Icon,
+  title,
+  subtitle,
+  ariaLabel,
+  onClick,
+  done = false,
+  highlight = false,
+}: {
+  icon: React.ElementType;
+  title: string;
+  subtitle: string;
+  ariaLabel: string;
+  onClick: () => void;
+  done?: boolean;
+  highlight?: boolean;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={ariaLabel}
+      className={`w-full rounded-2xl border p-4 text-left transition-all duration-200 ${
+        done
+          ? 'border-border bg-card opacity-75'
+          : highlight
+            ? 'border-[hsl(var(--sacred-gold)/0.5)] bg-gradient-to-br from-[hsl(var(--sacred-gold-soft))] to-[hsl(var(--ivory))] shadow-[0_10px_32px_-14px_hsl(var(--warm-glow)/0.55)]'
+            : 'border-border bg-card hover:-translate-y-0.5 hover:border-[hsl(var(--sacred-gold)/0.45)] hover:shadow-[0_10px_28px_-14px_hsl(var(--warm-glow)/0.4)]'
+      }`}
+    >
+      <div className="flex items-center gap-3.5">
+        <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/[0.04] ${
+          highlight
+            ? 'ring-2 ring-[hsl(var(--sacred-gold)/0.55)] shadow-[0_4px_18px_-4px_hsl(var(--warm-glow)/0.7)]'
+            : 'ring-1 ring-[hsl(var(--sacred-gold)/0.3)]'
+        }`}>
+          <Icon className="h-8 w-8" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-[15px] font-semibold text-foreground" style={{ fontFamily: 'var(--font-ui)' }}>{title}</span>
+          <span className="mt-0.5 block text-xs text-muted-foreground" style={{ fontFamily: 'var(--font-ui)' }}>{subtitle}</span>
+        </span>
+        <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground/60" />
+      </div>
     </button>
   );
 }

@@ -4,46 +4,55 @@
 
 @layer base {
   :root {
-    --background: 40 33% 96%;
-    --foreground: 25 20% 18%;
+    /* "Sanctuary night" — near-black warm dark, the lamp's light against it */
+    --background: 24 32% 4%;
+    --foreground: 40 36% 92%;
 
-    --card: 40 30% 98%;
-    --card-foreground: 25 20% 18%;
+    --card: 26 26% 8%;
+    --card-foreground: 40 36% 92%;
 
-    --popover: 40 30% 98%;
-    --popover-foreground: 25 20% 18%;
+    --popover: 26 26% 8%;
+    --popover-foreground: 40 36% 92%;
 
-    --primary: 36 70% 50%;
-    --primary-foreground: 40 33% 98%;
+    --primary: 38 80% 56%;
+    --primary-foreground: 26 40% 10%;
 
-    --secondary: 40 20% 92%;
-    --secondary-foreground: 25 20% 25%;
+    --secondary: 27 20% 12%;
+    --secondary-foreground: 40 30% 88%;
 
-    --muted: 40 15% 93%;
-    --muted-foreground: 25 10% 50%;
+    --muted: 27 18% 11%;
+    --muted-foreground: 38 22% 68%;
 
-    --accent: 36 50% 88%;
-    --accent-foreground: 25 20% 18%;
+    --accent: 33 30% 15%;
+    --accent-foreground: 42 50% 88%;
 
-    --destructive: 0 60% 50%;
+    --destructive: 0 62% 48%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 36 20% 88%;
-    --input: 36 20% 88%;
-    --ring: 36 70% 50%;
+    --border: 31 22% 16%;
+    --input: 31 22% 16%;
+    --ring: 38 80% 56%;
 
     --radius: 0.75rem;
 
-    --warm-glow: 36 80% 60%;
-    --warm-glow-soft: 36 60% 85%;
-    --sacred-gold: 42 75% 55%;
-    --sacred-gold-soft: 42 50% 90%;
-    --sage: 140 15% 55%;
-    --sage-soft: 140 15% 92%;
-    --cream: 40 33% 96%;
-    --ivory: 40 30% 98%;
-    --ember: 20 70% 45%;
-    --ember-soft: 20 40% 90%;
+    --warm-glow: 36 85% 60%;
+    --warm-glow-soft: 34 45% 13%;
+    --sacred-gold: 42 78% 58%;
+    --sacred-gold-soft: 40 40% 13%;
+    --sage: 140 18% 60%;
+    --sage-soft: 140 12% 11%;
+    --cream: 26 26% 6%;
+    --ivory: 26 24% 9%;
+    --ember: 24 82% 58%;
+    --ember-soft: 22 40% 12%;
+
+    /* "Sanctuary night" palette — dark surfaces for the landing experience */
+    --night: 26 32% 7%;
+    --night-soft: 26 26% 11%;
+    --night-card: 27 24% 13%;
+    --night-border: 32 24% 22%;
+    --night-foreground: 40 38% 93%;
+    --night-muted: 35 16% 66%;
 
     --kids-primary: 200 70% 55%;
     --kids-primary-foreground: 0 0% 100%;
@@ -51,19 +60,20 @@
     --kids-accent: 340 60% 65%;
     --kids-accent-soft: 340 40% 92%;
 
-    --sidebar-background: 40 25% 95%;
-    --sidebar-foreground: 25 20% 25%;
-    --sidebar-primary: 36 70% 50%;
-    --sidebar-primary-foreground: 40 33% 98%;
-    --sidebar-accent: 40 20% 90%;
-    --sidebar-accent-foreground: 25 20% 18%;
-    --sidebar-border: 36 20% 88%;
-    --sidebar-ring: 36 70% 50%;
+    --sidebar-background: 24 30% 3%;
+    --sidebar-foreground: 40 30% 88%;
+    --sidebar-primary: 38 80% 56%;
+    --sidebar-primary-foreground: 26 40% 10%;
+    --sidebar-accent: 28 18% 14%;
+    --sidebar-accent-foreground: 40 36% 92%;
+    --sidebar-border: 32 22% 22%;
+    --sidebar-ring: 38 80% 56%;
 
     --font-display: "Cormorant Garamond", "Times New Roman", serif;
     --font-body: "EB Garamond", Georgia, serif;
     --font-ui: Inter, ui-sans-serif, system-ui, sans-serif;
     --font-sans: var(--font-ui);
+    --font-serif: var(--font-display);
   }
 
   .dark {
@@ -141,6 +151,162 @@
   .kids-mode .glow-card {
     background: linear-gradient(135deg, hsl(var(--kids-background)), hsl(var(--kids-accent-soft)));
   }
+
+  /* ===== The Lamp Stand brand layer ===== */
+
+  /* Gold gradient headline text with a slow shimmer pass */
+  .text-gold-shimmer {
+    background: linear-gradient(
+      110deg,
+      hsl(var(--ember)) 0%,
+      hsl(var(--sacred-gold)) 32%,
+      hsl(46 95% 74%) 50%,
+      hsl(var(--sacred-gold)) 68%,
+      hsl(var(--ember)) 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmerPan 7s linear infinite;
+  }
+
+  /* Scripture veil — the pointer is a lamp; its light reveals the Word
+     written across the dark. Position driven by --veil-x/--veil-y (px). */
+  .scripture-veil {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    --veil-x: 50%;
+    --veil-y: 45%;
+  }
+  /* The lit layer holds everything hidden under the dark veil — the Bible
+     page and the cross alike. The mask is the lamp's pool of light gliding
+     over it; idle, it is all but swallowed by the dark. */
+  .scripture-veil__lit {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    transition: opacity 1.1s ease;
+    -webkit-mask-image: radial-gradient(
+      circle 300px at var(--veil-x) var(--veil-y),
+      rgb(0 0 0 / 0.85) 0%,
+      rgb(0 0 0 / 0.3) 46%,
+      transparent 72%
+    );
+    mask-image: radial-gradient(
+      circle 300px at var(--veil-x) var(--veil-y),
+      rgb(0 0 0 / 0.85) 0%,
+      rgb(0 0 0 / 0.3) 46%,
+      transparent 72%
+    );
+  }
+  .scripture-veil.veil-active .scripture-veil__lit {
+    opacity: 0.85;
+  }
+  .scripture-veil__page {
+    position: absolute;
+    inset: 0;
+    padding: 4.5rem 3.5rem;
+    column-width: 17rem;
+    column-gap: 3.25rem;
+    column-fill: auto;
+    column-rule: 1px solid hsl(42 40% 50% / 0.13);
+    font-family: var(--font-body);
+    color: hsl(38 26% 54% / 0.85);
+    text-align: justify;
+    hyphens: auto;
+  }
+  /* Bible-page typography */
+  .scripture-veil__book {
+    margin: 0 0 0.9rem;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-align: center;
+    text-transform: uppercase;
+    color: hsl(42 45% 58% / 0.75);
+    break-after: avoid;
+  }
+  .scripture-veil__passage {
+    margin-bottom: 2rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+  .scripture-veil__chapter {
+    float: left;
+    margin: 0.18rem 0.5rem 0 0;
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 600;
+    line-height: 0.85;
+    color: hsl(42 50% 58% / 0.8);
+  }
+  .scripture-veil__vn {
+    margin: 0 0.18rem 0 0.3rem;
+    font-family: var(--font-ui);
+    font-size: 0.56em;
+    font-weight: 600;
+    vertical-align: super;
+    letter-spacing: 0.02em;
+    color: hsl(42 55% 60% / 0.7);
+  }
+  .scripture-veil__glow {
+    position: absolute;
+    left: var(--veil-x);
+    top: var(--veil-y);
+    width: 30rem;
+    height: 30rem;
+    margin: -15rem 0 0 -15rem;
+    border-radius: 9999px;
+    background: radial-gradient(circle, hsl(36 85% 60% / 0.12) 0%, hsl(36 85% 60% / 0.045) 45%, transparent 70%);
+    opacity: 0.6;
+    transition: opacity 0.8s ease;
+  }
+  .scripture-veil.veil-active .scripture-veil__glow {
+    opacity: 1;
+  }
+
+  /* Drifting ember mote, used sparingly on dark sections */
+  .ember-mote {
+    position: absolute;
+    bottom: 0;
+    width: 4px;
+    height: 4px;
+    border-radius: 9999px;
+    background: hsl(var(--sacred-gold));
+    opacity: 0;
+    animation: emberRise 7s ease-in infinite;
+    pointer-events: none;
+  }
+
+  /* Scroll-reveal primitive (toggled by useReveal) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(26px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .text-gold-shimmer,
+    .ember-mote {
+      animation: none;
+    }
+    .ember-mote {
+      display: none;
+    }
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
 }
 
 @layer utilities {
@@ -172,6 +338,19 @@
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmerPan {
+  to { background-position: 200% center; }
+}
+@keyframes haloPulse {
+  0%, 100% { opacity: 0.65; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+@keyframes emberRise {
+  0% { opacity: 0; transform: translateY(0) translateX(0) scale(0.7); }
+  12% { opacity: 0.85; }
+  60% { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(-46vh) translateX(2.5rem) scale(0.25); }
 }
 
 /* Safe area insets for mobile notch/home-bar */

@@ -242,7 +242,7 @@ export default function SettingsPage() {
           {showPrivacy && (
             <div className="bg-secondary/50 rounded-lg p-4 space-y-2 animate-fade-in">
               <p className="text-xs text-muted-foreground">
-                <strong>LampStand</strong> stores all your preferences, saved passages, journal entries, and learning data locally on your device. Nothing is shared, uploaded, or used to train any model by default.
+                <strong>The Lamp Stand</strong> stores all your preferences, saved passages, journal entries, and learning data locally on your device. Nothing is shared, uploaded, or used to train any model by default.
               </p>
               <p className="text-xs text-muted-foreground">Your adaptive knowledge (streak: {knowledge.streak}, interactions: {knowledge.interactionCount}) helps personalize your experience and never leaves your device.</p>
               <div className="pt-2">

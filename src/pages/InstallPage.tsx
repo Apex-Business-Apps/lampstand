@@ -30,16 +30,16 @@ export default function InstallPage() {
       <div className="px-5 pt-8 pb-12 space-y-6 max-w-xl mx-auto">
         <div className="text-center space-y-2">
           <Smartphone className="h-10 w-10 text-primary mx-auto" />
-          <h1 className="text-2xl font-serif font-semibold">Install LampStand</h1>
+          <h1 className="text-2xl font-serif font-semibold">Install The Lamp Stand</h1>
           <p className="text-sm text-muted-foreground">
-            Add LampStand to your home screen so daily reminders, voice, and offline saves work like a native app.
+            Add The Lamp Stand to your home screen so daily reminders, voice, and offline saves work like a native app.
           </p>
         </div>
 
         {installed ? (
           <div className="rounded-xl border border-primary/40 bg-accent/40 p-5 text-center space-y-3">
             <CheckCircle2 className="h-8 w-8 text-primary mx-auto" />
-            <p className="font-medium">LampStand is installed.</p>
+            <p className="font-medium">The Lamp Stand is installed.</p>
             <p className="text-xs text-muted-foreground">
               You're running as a home-screen app. Daily Light reminders will fire at your chosen time.
             </p>
@@ -96,7 +96,7 @@ function IosSafariSteps() {
           Scroll down and tap <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-muted"><Plus className="h-3.5 w-3.5" /> Add to Home Screen</span>.
         </Step>
         <Step n={3}>Tap <strong>Add</strong> in the top-right.</Step>
-        <Step n={4}>Open LampStand from your home screen and enable reminders in Settings.</Step>
+        <Step n={4}>Open The Lamp Stand from your home screen and enable reminders in Settings.</Step>
       </ol>
     </div>
   );
@@ -126,7 +126,7 @@ function AndroidSteps() {
         <Step n={1}>Tap the <strong>⋮</strong> menu in the top-right of Chrome.</Step>
         <Step n={2}>Tap <strong>Add to Home screen</strong> (or <strong>Install app</strong>).</Step>
         <Step n={3}>Confirm with <strong>Install</strong>.</Step>
-        <Step n={4}>Open LampStand from your home screen and enable reminders in Settings.</Step>
+        <Step n={4}>Open The Lamp Stand from your home screen and enable reminders in Settings.</Step>
       </ol>
     </div>
   );
@@ -139,7 +139,7 @@ function DesktopSteps() {
       <ol className="space-y-3">
         <Step n={1}>Look for the install icon in the address bar (a small monitor with a down arrow).</Step>
         <Step n={2}>Click it and choose <strong>Install</strong>.</Step>
-        <Step n={3}>LampStand opens in its own window with reminders enabled.</Step>
+        <Step n={3}>The Lamp Stand opens in its own window with reminders enabled.</Step>
       </ol>
     </div>
   );

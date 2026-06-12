@@ -7,13 +7,13 @@ export default function PrivacyPolicyPage() {
 
       <h2 className="text-lg font-semibold mt-6 mb-2">Who we are</h2>
       <p>
-        LampStand is a community spiritual companion app operated by APEX Business Systems LTD.
+        The Lamp Stand is a community spiritual companion app operated by APEX Business Systems LTD.
         We are not a commercial product. There are no ads, no paywalls, and no data sold to third parties.
       </p>
 
       <h2 className="text-lg font-semibold mt-6 mb-2">What we store and where</h2>
       <p>
-        LampStand is <strong>local-first by design</strong>. The following data lives only on your device
+        The Lamp Stand is <strong>local-first by design</strong>. The following data lives only on your device
         by default:
       </p>
       <ul className="list-disc pl-6 space-y-1 mt-2">
@@ -67,7 +67,7 @@ export default function PrivacyPolicyPage() {
 
       <h2 className="text-lg font-semibold mt-6 mb-2">Cookies and local storage</h2>
       <p>
-        LampStand does not use third-party cookies or tracking pixels. We use browser localStorage
+        The Lamp Stand does not use third-party cookies or tracking pixels. We use browser localStorage
         to store your settings and local data as described above. No advertising or analytics cookies
         are set.
       </p>
@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
 
       <h2 className="text-lg font-semibold mt-6 mb-2">Children</h2>
       <p>
-        LampStand is intended for users aged 13 and over. Kids Mode simplifies the interface for
+        The Lamp Stand is intended for users aged 13 and over. Kids Mode simplifies the interface for
         younger users but does not change data handling. We do not knowingly collect data from
         children under 13.
       </p>

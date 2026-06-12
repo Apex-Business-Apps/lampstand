@@ -1,7 +1,7 @@
-import { Home, Sun, BookOpen, MessageCircle, User } from 'lucide-react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { AuthStatus } from './AuthStatus';
+import { ChapelMini, LampMini, DoveMini, BookMini, SoulMini } from '@/components/brand/SacredIcons';
 
 interface AppShellProps {
   children: ReactNode;
@@ -9,11 +9,11 @@ interface AppShellProps {
 }
 
 const navItems = [
-  { path: '/app', icon: Home, label: 'Home' },
-  { path: '/daily', icon: Sun, label: 'Daily Light' },
-  { path: '/guidance', icon: MessageCircle, label: 'Guidance' },
-  { path: '/saved', icon: BookOpen, label: 'Saved' },
-  { path: '/settings', icon: User, label: 'Settings' },
+  { path: '/app', icon: ChapelMini, label: 'Home' },
+  { path: '/daily', icon: LampMini, label: 'Daily Light' },
+  { path: '/guidance', icon: DoveMini, label: 'Guidance' },
+  { path: '/saved', icon: BookMini, label: 'Saved' },
+  { path: '/settings', icon: SoulMini, label: 'Settings' },
 ];
 
 export function AppShell({ children, kidsMode }: AppShellProps) {
@@ -36,20 +36,23 @@ export function AppShell({ children, kidsMode }: AppShellProps) {
           <Link to="/legal/disclaimer" className="hover:text-foreground">AI Disclaimer</Link>
         </div>
       </footer>
-      <nav className="fixed bottom-0 inset-x-0 bg-card/95 backdrop-blur-md border-t border-border z-50">
-        <div className="max-w-lg mx-auto flex justify-around py-2">
+      <nav className="fixed bottom-0 inset-x-0 z-50 border-t border-[hsl(var(--sacred-gold)/0.25)] bg-card/95 backdrop-blur-md shadow-[0_-10px_36px_-18px_hsl(var(--warm-glow)/0.45)] safe-bottom">
+        <div className="max-w-lg mx-auto flex justify-around px-2 py-2">
           {navItems.map(item => {
             const active = location.pathname === item.path;
             return (
               <button
                 key={item.path}
                 onClick={() => navigate(item.path)}
-                className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors ${
-                  active ? 'text-primary' : 'text-muted-foreground hover:text-foreground'
+                aria-current={active ? 'page' : undefined}
+                className={`flex flex-col items-center gap-0.5 px-3.5 py-1.5 rounded-xl transition-all duration-200 ${
+                  active
+                    ? 'bg-gradient-to-b from-[hsl(var(--sacred-gold-soft))] to-[hsl(var(--warm-glow-soft))] text-[hsl(var(--ember))] shadow-[0_2px_10px_-4px_hsl(var(--warm-glow)/0.5)]'
+                    : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground'
                 }`}
               >
-                <item.icon className={`h-5 w-5 ${active ? 'stroke-[2.5]' : ''}`} />
-                <span className="text-[10px] font-medium">{item.label}</span>
+                <item.icon className={`h-5 w-5 transition-transform duration-200 ${active ? 'scale-110' : ''}`} />
+                <span className={`text-[10px] ${active ? 'font-bold' : 'font-medium'}`} style={{ fontFamily: 'var(--font-ui)' }}>{item.label}</span>
               </button>
             );
           })}

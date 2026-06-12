@@ -32,7 +32,7 @@ export default function DailyLightPage() {
   async function handleShare() {
     const shareText = `${today.passage.reference}\n\n${today.passage.text}\n\nReflection: ${today.reflection}`;
     if (navigator.share) {
-      await navigator.share({ title: 'LampStand Daily Light', text: shareText });
+      await navigator.share({ title: 'The Lamp Stand Daily Light', text: shareText });
     } else {
       await navigator.clipboard.writeText(shareText);
     }
