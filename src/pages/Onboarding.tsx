@@ -60,7 +60,7 @@ export default function Onboarding() {
       <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12">
         <div className="w-full max-w-sm text-center space-y-6 animate-fade-in">
           <AgentPresence size="lg" className="mx-auto" />
-          <h1 className="text-3xl font-serif font-semibold text-foreground">LampStand</h1>
+          <h1 className="text-3xl font-serif font-semibold text-foreground">The Lamp Stand</h1>
           <p className="text-muted-foreground leading-relaxed">
             A gentle companion for your journey through scripture. No pressure, no judgment — just light for the path ahead.
           </p>

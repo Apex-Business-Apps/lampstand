@@ -29,7 +29,7 @@ export default function LiteLandingPage() {
         <header className="mb-8 flex items-center justify-between">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Lite Experience</p>
-            <h1 className="text-3xl font-semibold sm:text-4xl">LampStand</h1>
+            <h1 className="text-3xl font-semibold sm:text-4xl">The Lamp Stand</h1>
           </div>
           <Button variant="outline" onClick={() => navigate("/welcome")}>Back</Button>
         </header>

@@ -1,183 +1,287 @@
-import { ArrowRight, Flame, HeartHandshake, PlayCircle, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ArrowRight, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/Reveal";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 
-const highlights = [
-  {
-    icon: Sun,
-    title: "Daily Light",
-    description: "A fresh scripture passage and a short, grounded reflection — ready every morning in under three minutes.",
-  },
-  {
-    icon: HeartHandshake,
-    title: "Pastoral Guidance",
-    description: "Ask anything — doubt, grief, decisions, joy. Get scripture-first answers in a warm, non-judgmental voice.",
-  },
-  {
-    icon: PlayCircle,
-    title: "Sermon Mode",
-    description: "Turn any passage into a structured, spoken teaching for study groups, devotionals, or the drive to work.",
-  },
-];
+import iconExamen from "@/assets/icon_examen.png";
+import iconPastoral from "@/assets/icon_pastoral.png";
+import iconLectio from "@/assets/icon_lectio.png";
+import heroBg from "@/assets/hero_bg.png";
+import { SacredFlame } from "@/components/ui/SacredFlame";
 
-const journey = [
-  {
-    step: "01",
-    title: "Choose your tone",
-    description: "Set your spiritual voice once, then LampStand keeps every reflection consistent with it.",
-  },
-  {
-    step: "02",
-    title: "Receive focused guidance",
-    description: "Ask one question, get scripture-first insight, prayer, and a practical next action.",
-  },
-  {
-    step: "03",
-    title: "Build momentum",
-    description: "Save passages, keep a journal, and carry one clear thought through your day.",
-  },
-];
+// Dense, realistic Bible text generator
+const BIBLE_CHAPTER = `
+1 In the beginning was the Word, and the Word was with God, and the Word was God. 2 He was in the beginning with God. 3 All things were made through him, and without him was not any thing made that was made. 4 In him was life, and the life was the light of men. 5 The light shines in the darkness, and the darkness has not overcome it. 6 There was a man sent from God, whose name was John. 7 He came as a witness, to bear witness about the light, that all might believe through him. 8 He was not the light, but came to bear witness about the light. 9 The true light, which gives light to everyone, was coming into the world. 10 He was in the world, and the world was made through him, yet the world did not know him. 11 He came to his own, and his own people did not receive him. 12 But to all who did receive him, who believed in his name, he gave the right to become children of God, 13 who were born, not of blood nor of the will of the flesh nor of the will of man, but of God. 14 And the Word became flesh and dwelt among us, and we have seen his glory, glory as of the only Son from the Father, full of grace and truth. 15 (John bore witness about him, and cried out, “This was he of whom I said, ‘He who comes after me ranks before me, because he was before me.’”) 16 For from his fullness we have all received, grace upon grace. 17 For the law was given through Moses; grace and truth came through Jesus Christ. 18 No one has ever seen God; the only God, who is at the Father’s side, he has made him known.
+`;
 
-const stats = [
-  { label: "Time to first insight", value: "< 3 min" },
-  { label: "Core paths", value: "Daily · Guidance · Sermon" },
-  { label: "Default posture", value: "Privacy-first" },
-];
+const formatBibleText = (text: string) => {
+  return text.split(/(?=\d+\s)/).map((verse, i) => {
+    const match = verse.match(/^(\d+)\s(.*)/);
+    if (match) {
+      return (
+        <span key={i} className="mb-2 block">
+          <sup className="text-[10px] font-bold mr-1 opacity-70">{match[1]}</sup>
+          {match[2]}
+        </span>
+      );
+    }
+    return <span key={i}>{verse}</span>;
+  });
+};
+
+function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.5, delay, ease: [0.16, 1, 0.3, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function DustMotes() {
+  const [motes] = useState(() => Array.from({ length: 40 }).map(() => ({
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 3 + 1,
+    duration: Math.random() * 20 + 10,
+    delay: Math.random() * -20,
+  })));
+
+  return (
+    <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden mix-blend-screen opacity-50">
+      {motes.map((mote, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full bg-[#ffddaa] blur-[1px]"
+          style={{
+            width: mote.size,
+            height: mote.size,
+            left: `${mote.x}%`,
+            top: `${mote.y}%`,
+          }}
+          animate={{
+            y: ["0%", "-100%"],
+            x: ["0%", `${Math.random() * 20 - 10}%`],
+            opacity: [0, 0.8, 0],
+          }}
+          transition={{
+            duration: mote.duration,
+            delay: mote.delay,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export default function MarketingPage() {
   const navigate = useNavigate();
 
+  const [flicker, setFlicker] = useState(0);
+  useEffect(() => {
+    let animationFrameId: number;
+    let lastTime = Date.now();
+    
+    const animateFlicker = () => {
+      const now = Date.now();
+      if (now - lastTime > 80) {
+        setFlicker(Math.random() * 30 - 15);
+        lastTime = now;
+      }
+      animationFrameId = requestAnimationFrame(animateFlicker);
+    };
+    
+    animateFlicker();
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
+
+  // Anchored, Volumetric Architectural Diffusion (2700K-3000K thermal profile)
+  // Emanating permanently from the Lamp Stand at 50% 45%
+  const maskImage = useMotionTemplate`
+    radial-gradient(${800 + flicker * 2}px ${600 + flicker}px at 50% 45%, black 0%, rgba(0,0,0,0.85) 30%, rgba(0,0,0,0.4) 65%, transparent 100%)
+  `;
+
   return (
-    <div
-      className="min-h-screen text-foreground"
-      style={{
-        background:
-          "radial-gradient(circle at 10% 10%, hsl(var(--warm-glow-soft)) 0%, transparent 40%), radial-gradient(circle at 90% 0%, hsl(var(--sage-soft)) 0%, transparent 38%), linear-gradient(180deg, hsl(var(--ivory)) 0%, hsl(var(--cream)) 100%)",
-      }}
-    >
-      <div className="mx-auto max-w-6xl px-6 py-8 sm:px-10 lg:px-16">
-        <header className="mb-10 flex items-center justify-between sm:mb-14">
-          <div className="flex items-center gap-3">
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(var(--sacred-gold))] to-[hsl(var(--ember))] shadow-[0_0_24px_hsl(var(--warm-glow)/0.45)]">
-              <Flame className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <span className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">LampStand</span>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="ghost" className="hidden sm:inline-flex" onClick={() => navigate("/lite?source=web")}>Preview</Button>
-            <Button onClick={() => navigate("/entry?entry=onboarding&source=web")}>
-              Begin
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </header>
-
-        <section className="relative overflow-hidden rounded-[2rem] border border-border/70 bg-gradient-to-br from-card/90 via-card/70 to-accent/40 p-8 shadow-[0_30px_120px_-40px_hsl(var(--warm-glow)/0.55)] sm:p-14 lg:p-20">
-          <div className="pointer-events-none absolute -right-24 -top-24 h-[28rem] w-[28rem] rounded-full bg-[hsl(var(--warm-glow)/0.28)] blur-3xl animate-glow-pulse" />
-          <div className="pointer-events-none absolute -bottom-32 -left-16 h-[26rem] w-[26rem] rounded-full bg-[hsl(var(--sacred-gold)/0.22)] blur-3xl" />
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[hsl(var(--sacred-gold)/0.5)] to-transparent" />
-
-          <div className="relative space-y-10 animate-fade-in">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[hsl(var(--sacred-gold)/0.35)] bg-background/60 px-4 py-1.5 backdrop-blur">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[hsl(var(--sacred-gold))] opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[hsl(var(--sacred-gold))]" />
-              </span>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-foreground/80">
-                A Catholic-friendly scripture companion · Free forever
-              </p>
-            </div>
-
-            <h2 className="font-display max-w-5xl text-5xl font-semibold leading-[1.02] tracking-tight text-foreground sm:text-7xl lg:text-[5.5rem]">
-              Scripture, prayer, and pastoral guidance — <span className="bg-gradient-to-br from-[hsl(var(--ember))] via-[hsl(var(--sacred-gold))] to-[hsl(var(--warm-glow))] bg-clip-text text-transparent italic">that meet you where you are.</span>
-            </h2>
-
-            <p className="max-w-3xl font-body text-xl leading-relaxed text-foreground/75 sm:text-2xl">
-              LampStand is a quiet, intelligent companion for daily scripture, Lectio Divina, the Ignatian Examen, and warm pastoral conversation. No guilt. No noise. Just the word, and a steady voice beside you.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <Button size="lg" className="h-14 px-8 text-base font-semibold shadow-[0_12px_40px_-12px_hsl(var(--warm-glow)/0.7)]" onClick={() => navigate("/entry?entry=onboarding&source=web")}>
-                Light your lamp
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-              <Button size="lg" variant="outline" className="h-14 px-7 text-base" onClick={() => navigate("/lite?source=web")}>
-                Try without signing up
-              </Button>
-            </div>
-
-            <div className="grid gap-3 pt-6 sm:grid-cols-3">
-              {stats.map((item) => (
-                <div key={item.label} className="rounded-2xl border border-border/60 bg-background/70 px-5 py-4 backdrop-blur">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">{item.label}</p>
-                  <p className="mt-1.5 font-display text-xl font-semibold text-foreground">{item.value}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-20 grid gap-5 md:grid-cols-3">
-          {highlights.map((item, index) => (
-            <article
-              key={item.title}
-              className="group rounded-2xl border border-border/70 bg-card/80 p-7 backdrop-blur transition-all hover:-translate-y-1 hover:border-[hsl(var(--sacred-gold)/0.5)] hover:shadow-[0_20px_60px_-24px_hsl(var(--warm-glow)/0.4)] animate-slide-up"
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[hsl(var(--sacred-gold-soft))] to-[hsl(var(--warm-glow-soft))] text-primary transition-transform group-hover:scale-110">
-                <item.icon className="h-6 w-6" />
-              </div>
-              <h3 className="font-display text-2xl font-semibold tracking-tight">{item.title}</h3>
-              <p className="mt-3 text-base leading-relaxed text-muted-foreground">{item.description}</p>
-            </article>
-          ))}
-        </section>
-
-        <section className="mt-20 rounded-3xl border border-border/70 bg-card/75 p-8 sm:p-12">
-          <div className="mb-10 flex items-center gap-3">
-            <Flame className="h-6 w-6 text-primary" />
-            <h3 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">How LampStand creates momentum</h3>
-          </div>
-          <div className="grid gap-4 md:grid-cols-3">
-            {journey.map((item) => (
-              <div key={item.step} className="rounded-2xl border border-border bg-background/70 p-6">
-                <p className="text-xs font-semibold tracking-[0.22em] text-primary">STEP {item.step}</p>
-                <h4 className="mt-3 font-display text-2xl font-semibold tracking-tight">{item.title}</h4>
-                <p className="mt-3 text-base leading-relaxed text-muted-foreground">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mt-20 mb-6 overflow-hidden rounded-3xl border border-[hsl(var(--sacred-gold)/0.3)] bg-gradient-to-br from-card via-accent/30 to-[hsl(var(--warm-glow-soft))] p-8 sm:p-12">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-primary">Begin tonight</p>
-              <h3 className="mt-3 font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">Your lamp is ready. Step into the light.</h3>
-              <p className="mt-4 text-lg text-muted-foreground">
-                One minute of setup. A lifetime companion in the word. Free, forever — a labor of love.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Button size="lg" className="h-13 px-7 text-base font-semibold" onClick={() => navigate("/entry?entry=onboarding&source=web")}>Begin onboarding</Button>
-              <Button size="lg" variant="outline" className="h-13 px-6 text-base" onClick={() => navigate("/app")}>I&rsquo;m already here</Button>
-            </div>
-          </div>
-        </section>
-
-        <footer className="pb-8 text-center text-xs text-muted-foreground">
-          <div className="flex items-center justify-center gap-3">
-            <Link to="/legal/privacy" className="hover:text-foreground">Privacy</Link>
-            <span>·</span>
-            <Link to="/legal/terms" className="hover:text-foreground">Terms</Link>
-            <span>·</span>
-            <Link to="/legal/disclaimer" className="hover:text-foreground">AI Disclaimer</Link>
-          </div>
-          <p className="mt-2 text-[11px] uppercase tracking-[0.12em] text-muted-foreground/90">
-            APEX Business Systems Ltd. · Edmonton, AB Canada
-          </p>
-        </footer>
+    <div className="min-h-screen bg-black text-foreground font-sans overflow-x-hidden relative selection:bg-primary/30">
+      
+      <div className="fixed inset-0 z-0 overflow-hidden">
+        <img src={heroBg} alt="Sanctuary" className="w-full h-full object-cover opacity-30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/70 to-black" />
       </div>
+
+      {/* 2. Interactive Scripture Layer (Permanently illuminated by the Lamp Stand) */}
+      <motion.div 
+        className="pointer-events-none fixed inset-0 z-10 overflow-hidden bg-[#b89668] shadow-[inset_0_0_150px_rgba(30,15,0,0.9)]"
+        style={{ WebkitMaskImage: maskImage, maskImage }}
+      >
+        <DustMotes />
+        
+        {/* Subtle Paper Texture Overlay */}
+        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/aged-paper.png')]" />
+        
+        {/* Warm Lantern Light Overlay inside the mask */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,180,80,0.2)_0%,rgba(50,20,0,0.6)_100%)] mix-blend-overlay" />
+        
+        <div className="absolute inset-0 p-12 md:p-16 text-[#1c1208] font-serif text-[12.5px] leading-[1.35] text-justify columns-2 gap-10 max-h-screen overflow-hidden opacity-90">
+          {Array(20).fill(BIBLE_CHAPTER).map((chapter, i) => (
+            <div key={i} className="mb-2 break-inside-avoid">
+              {i === 0 && (
+                <div className="text-center mb-4 border-b border-[#1c1208]/20 pb-2">
+                  <h2 className="text-lg font-bold font-serif uppercase tracking-widest">The Gospel According to John</h2>
+                  <p className="text-[10px] italic mt-1">Chapter 1</p>
+                </div>
+              )}
+              <div className="indent-6">
+                {formatBibleText(chapter)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* 3. The Animated Sacred Flame (Positioned precisely over the physical lamp wick in the background) */}
+      <div className="fixed top-[45%] left-1/2 -translate-x-1/2 w-64 h-64 z-20 pointer-events-none opacity-100 flex items-center justify-center">
+        <SacredFlame />
+      </div>
+
+      {/* 4. Cinematic Ambient Ember Glow */}
+      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center overflow-hidden mix-blend-screen">
+        {/* Core Warmth */}
+        <div className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(255,140,40,0.1)_0%,rgba(200,50,20,0.02)_50%,transparent_70%)] rounded-full blur-[50px] animate-pulse" style={{ animationDuration: '5s' }} />
+      </div>
+
+      {/* NAV */}
+      <nav className="relative z-50 flex items-center justify-between px-6 py-6 max-w-7xl mx-auto mix-blend-lighten">
+        <div className="flex items-center gap-3">
+          {/* Removed the generic 'L' logo per user feedback */}
+          <span className="font-serif text-2xl font-medium tracking-widest text-white drop-shadow-md uppercase">The Lamp Stand</span>
+        </div>
+        <div className="flex items-center gap-6">
+          <Link to="/app" className="text-sm font-medium text-muted-foreground hover:text-white transition-colors">
+            Sign In
+          </Link>
+          <Button onClick={() => navigate('/app')} className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-5 shadow-[0_0_20px_rgba(250,180,80,0.4)] transition-all font-serif italic text-lg tracking-wide">
+            Enter the Light <ArrowRight className="ml-3 w-4 h-4 not-italic" />
+          </Button>
+        </div>
+      </nav>
+
+      {/* HERO SECTION */}
+      <section className="relative z-10 min-h-[90svh] flex flex-col justify-center px-6 sm:px-10 lg:px-16 mx-auto max-w-7xl">
+        <div className="max-w-5xl mt-[-10vh]">
+          <Reveal delay={0.1}>
+            <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-primary/20 bg-black/60 backdrop-blur-md mb-10 shadow-xl">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_10px_rgba(250,180,80,0.8)]" />
+              <span className="text-xs font-semibold tracking-widest uppercase text-primary/90">A Spiritual Companion</span>
+            </div>
+          </Reveal>
+
+          {/* Cinematic Typography */}
+          <h1 className="text-6xl sm:text-7xl lg:text-[7.5rem] leading-[1.0] font-serif text-foreground tracking-tight mb-8">
+            <Reveal delay={0.3}><span className="block drop-shadow-2xl text-white">Come, and I will</span></Reveal>
+            <Reveal delay={0.6}><span className="block drop-shadow-2xl text-white/90">walk with you</span></Reveal>
+            <Reveal delay={0.9}>
+              <span className="block italic text-primary font-light" style={{ textShadow: "0 0 50px rgba(250, 180, 80, 0.5), 0 0 100px rgba(250, 180, 80, 0.3)" }}>
+                through the dark.
+              </span>
+            </Reveal>
+          </h1>
+
+          <Reveal delay={1.2}>
+            <p className="text-lg md:text-2xl text-white/70 max-w-2xl leading-relaxed font-serif italic mb-12 border-l-2 border-primary/50 pl-6 drop-shadow-xl backdrop-blur-[2px]">
+              The Lamp Stand is a quiet, intelligent sanctuary. Experience daily scripture, Lectio Divina, and deeply pastoral conversation. No noise. Just the word, and a steady voice beside you.
+            </p>
+          </Reveal>
+
+          <Reveal delay={1.4}>
+            <div className="flex flex-col sm:flex-row gap-5">
+              <Button size="lg" className="rounded-full h-16 px-10 text-xl font-serif italic bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_40px_rgba(250,180,80,0.6)] transition-all" onClick={() => navigate('/app')}>
+                Begin Your Journey
+              </Button>
+              <Button size="lg" variant="outline" className="rounded-full h-16 px-10 text-xl font-serif italic border-white/20 bg-black/60 backdrop-blur-xl hover:border-primary/50 hover:bg-white/10 transition-all text-white">
+                <PlayCircle className="mr-3 w-5 h-5 text-primary not-italic" /> Hear the Voice
+              </Button>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* FEATURE GRID */}
+      <section className="relative z-10 py-32 px-6 sm:px-10 lg:px-16 mx-auto max-w-7xl">
+        <Reveal>
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-serif mb-4 text-white drop-shadow-lg">Designed for peace.</h2>
+            <p className="text-white/50 text-base md:text-lg font-serif italic max-w-xl mx-auto">A sanctuary built entirely to keep the noise of the world out, and the light of the Word in.</p>
+          </div>
+        </Reveal>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {/* Card 1 */}
+          <div className="col-span-1">
+            <Reveal delay={0.1}>
+              <div className="glow-card h-full rounded-2xl p-8 flex flex-col items-start group relative border border-white/10 bg-black/80 backdrop-blur-xl shadow-lg hover:border-primary/30 transition-all duration-500">
+                <div className="w-14 h-14 rounded-full overflow-hidden border border-primary/20 mb-6 shadow-[0_0_15px_rgba(250,180,80,0.1)] group-hover:shadow-[0_0_20px_rgba(250,180,80,0.3)] transition-all">
+                  <img src={iconExamen} alt="Examen Icon" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <h3 className="text-xl font-serif mb-3 text-white tracking-wide">Daily Light & Examen</h3>
+                <p className="text-white/60 text-sm leading-relaxed font-serif italic">
+                  Begin the morning with curated scripture and close the night with the Daily Examen. A rhythmic cycle of spiritual rest.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Card 2 */}
+          <div className="col-span-1">
+            <Reveal delay={0.3}>
+              <div className="glow-card h-full rounded-2xl p-8 flex flex-col items-start group relative border border-white/10 bg-black/80 backdrop-blur-xl shadow-lg hover:border-primary/30 transition-all duration-500">
+                <div className="w-14 h-14 rounded-full overflow-hidden border border-primary/20 mb-6 shadow-[0_0_15px_rgba(250,180,80,0.1)] group-hover:shadow-[0_0_20px_rgba(250,180,80,0.3)] transition-all">
+                  <img src={iconPastoral} alt="Pastoral Icon" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <h3 className="text-xl font-serif mb-3 text-white tracking-wide">Pastoral Guidance</h3>
+                <p className="text-white/60 text-sm leading-relaxed font-serif italic">
+                  Speak to a deeply trained, compassionate AI that understands context, scripture, and emotional weight.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Card 3 */}
+          <div className="col-span-1">
+            <Reveal delay={0.5}>
+               <div className="glow-card h-full rounded-2xl p-8 flex flex-col items-start group relative border border-white/10 bg-black/80 backdrop-blur-xl shadow-lg hover:border-primary/30 transition-all duration-500">
+                <div className="w-14 h-14 rounded-full overflow-hidden border border-primary/20 mb-6 shadow-[0_0_15px_rgba(250,180,80,0.1)] group-hover:shadow-[0_0_20px_rgba(250,180,80,0.3)] transition-all">
+                  <img src={iconLectio} alt="Lectio Icon" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                </div>
+                <h3 className="text-xl font-serif mb-3 text-white tracking-wide">Lectio Divina</h3>
+                <p className="text-white/60 text-sm leading-relaxed font-serif italic">
+                  Engage in the ancient practice of divine reading. Read, meditate, pray, and contemplate the Word in a beautifully guided experience.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="relative z-10 border-t border-white/5 mt-20 bg-black/90 backdrop-blur-2xl">
+        <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row items-center justify-between">
+          <div className="flex items-center gap-3 mb-4 md:mb-0">
+            <span className="font-serif font-medium text-xl text-white uppercase tracking-widest">The Lamp Stand</span>
+          </div>
+          <p className="text-sm text-white/50 text-center font-serif italic">
+            &copy; {new Date().getFullYear()} APEX Sovereign Design. A sanctuary for the soul.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

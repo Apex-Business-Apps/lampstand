@@ -4,96 +4,75 @@
 
 @layer base {
   :root {
-    --background: 40 33% 96%;
-    --foreground: 25 20% 18%;
-
-    --card: 40 30% 98%;
-    --card-foreground: 25 20% 18%;
-
-    --popover: 40 30% 98%;
-    --popover-foreground: 25 20% 18%;
-
-    --primary: 36 70% 50%;
-    --primary-foreground: 40 33% 98%;
-
-    --secondary: 40 20% 92%;
-    --secondary-foreground: 25 20% 25%;
-
-    --muted: 40 15% 93%;
-    --muted-foreground: 25 10% 50%;
-
-    --accent: 36 50% 88%;
-    --accent-foreground: 25 20% 18%;
-
-    --destructive: 0 60% 50%;
+    /* APEX Sovereign Web Design - Dark Cinematic System */
+    
+    /* Pure dark canvas background */
+    --background: 264 0% 8%; /* oklch(0.12 0.01 264) equivalent roughly in HSL to keep compatibility with tailwind hsl setup */
+    --foreground: 40 20% 90%;
+    
+    /* Slightly elevated cards with blur */
+    --card: 264 0% 12%; 
+    --card-foreground: 40 20% 90%;
+    
+    --popover: 264 0% 10%;
+    --popover-foreground: 40 20% 90%;
+    
+    /* Brand Accent: Sacred Gold */
+    --primary: 36 70% 55%;
+    --primary-foreground: 25 15% 10%;
+    
+    --secondary: 264 0% 15%;
+    --secondary-foreground: 40 20% 85%;
+    
+    --muted: 264 0% 15%;
+    --muted-foreground: 40 10% 60%;
+    
+    --accent: 36 30% 22%;
+    --accent-foreground: 40 20% 90%;
+    
+    --destructive: 0 60% 40%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 36 20% 88%;
-    --input: 36 20% 88%;
-    --ring: 36 70% 50%;
-
-    --radius: 0.75rem;
-
+    
+    /* Borders are extremely subtle */
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 36 70% 55%;
+    
+    --radius: 1rem;
+    
+    /* Glows and Auras */
     --warm-glow: 36 80% 60%;
-    --warm-glow-soft: 36 60% 85%;
+    --warm-glow-soft: 36 60% 25%;
     --sacred-gold: 42 75% 55%;
-    --sacred-gold-soft: 42 50% 90%;
+    --sacred-gold-soft: 42 50% 20%;
     --sage: 140 15% 55%;
-    --sage-soft: 140 15% 92%;
-    --cream: 40 33% 96%;
-    --ivory: 40 30% 98%;
+    --sage-soft: 140 15% 22%;
+    --cream: 40 33% 90%;
+    --ivory: 40 30% 95%;
     --ember: 20 70% 45%;
-    --ember-soft: 20 40% 90%;
-
+    --ember-soft: 20 40% 20%;
+    
     --kids-primary: 200 70% 55%;
     --kids-primary-foreground: 0 0% 100%;
-    --kids-background: 200 50% 97%;
+    --kids-background: 200 50% 15%;
     --kids-accent: 340 60% 65%;
-    --kids-accent-soft: 340 40% 92%;
-
-    --sidebar-background: 40 25% 95%;
-    --sidebar-foreground: 25 20% 25%;
-    --sidebar-primary: 36 70% 50%;
-    --sidebar-primary-foreground: 40 33% 98%;
-    --sidebar-accent: 40 20% 90%;
-    --sidebar-accent-foreground: 25 20% 18%;
-    --sidebar-border: 36 20% 88%;
-    --sidebar-ring: 36 70% 50%;
-
+    --kids-accent-soft: 340 40% 22%;
+    
+    --sidebar-background: 264 0% 6%;
+    --sidebar-foreground: 40 20% 85%;
+    --sidebar-primary: 36 70% 55%;
+    --sidebar-primary-foreground: 25 15% 10%;
+    --sidebar-accent: 264 0% 12%;
+    --sidebar-accent-foreground: 40 20% 90%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 36 70% 55%;
+    
+    /* High-contrast typography */
     --font-display: "Cormorant Garamond", "Times New Roman", serif;
     --font-body: "EB Garamond", Georgia, serif;
     --font-ui: Inter, ui-sans-serif, system-ui, sans-serif;
     --font-sans: var(--font-ui);
-  }
-
-  .dark {
-    --background: 25 15% 10%;
-    --foreground: 40 20% 90%;
-    --card: 25 15% 13%;
-    --card-foreground: 40 20% 90%;
-    --popover: 25 15% 13%;
-    --popover-foreground: 40 20% 90%;
-    --primary: 36 70% 55%;
-    --primary-foreground: 25 15% 10%;
-    --secondary: 25 10% 18%;
-    --secondary-foreground: 40 20% 85%;
-    --muted: 25 10% 18%;
-    --muted-foreground: 40 10% 55%;
-    --accent: 36 30% 22%;
-    --accent-foreground: 40 20% 90%;
-    --destructive: 0 60% 40%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 25 10% 20%;
-    --input: 25 10% 20%;
-    --ring: 36 70% 55%;
-    --sidebar-background: 25 15% 8%;
-    --sidebar-foreground: 40 20% 85%;
-    --sidebar-primary: 36 70% 55%;
-    --sidebar-primary-foreground: 25 15% 10%;
-    --sidebar-accent: 25 10% 15%;
-    --sidebar-accent-foreground: 40 20% 90%;
-    --sidebar-border: 25 10% 20%;
-    --sidebar-ring: 36 70% 55%;
+    --font-serif: var(--font-display);
   }
 }
 
@@ -102,11 +81,13 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground selection:bg-primary/30;
     font-family: var(--font-body);
+    font-weight: 300; /* Lighter body text for elegance */
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    font-weight: 500; /* Slightly bolder display for contrast */
   }
 }
 
@@ -126,12 +107,21 @@
     @apply text-base leading-relaxed italic;
     color: hsl(var(--foreground) / 0.8);
   }
+  
+  /* Sovereign Cinematic Cards */
   .glow-card {
-    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--warm-glow-soft)));
-    box-shadow: 0 4px 24px -4px hsl(var(--warm-glow) / 0.15);
+    background: linear-gradient(135deg, hsl(var(--card)/0.8), hsl(var(--warm-glow-soft)/0.2));
+    backdrop-filter: blur(16px);
+    border: 1px solid hsl(var(--border)/0.5);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); /* APEX ease-out-expo */
   }
+  .glow-card:hover {
+    border-color: hsl(var(--sacred-gold)/0.3);
+    box-shadow: 0 0 40px -10px hsl(var(--sacred-gold)/0.15);
+  }
+  
   .glow-orb {
-    background: radial-gradient(circle, hsl(var(--warm-glow) / 0.6), hsl(var(--sacred-gold) / 0.2), transparent);
+    background: radial-gradient(circle, hsl(var(--warm-glow) / 0.4), hsl(var(--sacred-gold) / 0.1), transparent);
     filter: blur(40px);
     will-change: transform;
     transform: translateZ(0);
@@ -154,24 +144,24 @@
     }
   }
   .animate-fade-in {
-    animation: fadeIn 0.5s ease-out;
+    animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .animate-slide-up {
-    animation: slideUp 0.5s ease-out;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
 @keyframes glowPulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.02); }
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; filter: blur(4px); }
+  to { opacity: 1; filter: blur(0); }
 }
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(24px); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 /* Safe area insets for mobile notch/home-bar */
