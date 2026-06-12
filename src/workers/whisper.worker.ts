@@ -1,4 +1,4 @@
-import { pipeline, env } from '@xenova/transformers';
+import { pipeline, env } from '@huggingface/transformers';
 
 // Optional: Configure wasm to not look for local files if using CDN, but locally it's handled by Vite usually.
 // env.allowLocalModels = false;
