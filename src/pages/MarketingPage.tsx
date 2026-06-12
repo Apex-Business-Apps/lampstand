@@ -65,11 +65,16 @@ export default function MarketingPage() {
         
         {/* Left Pane - UI & Copy */}
         <div className="relative z-10 flex w-full flex-col justify-center px-8 py-12 lg:w-1/2 lg:px-20 xl:px-24">
-          <header className="absolute left-8 top-8 flex items-center gap-3 lg:left-20 lg:top-12">
-            <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--primary))] shadow-[0_0_24px_hsl(var(--primary)/0.45)]">
-              <Flame className="h-5 w-5 text-primary-foreground" />
+          <header className="absolute left-8 right-8 top-8 flex items-center justify-between lg:left-20 lg:right-12 lg:top-12">
+            <div className="flex items-center gap-3">
+              <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--primary))] shadow-[0_0_24px_hsl(var(--primary)/0.45)]">
+                <Flame className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <span className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">LampStand</span>
             </div>
-            <span className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">LampStand</span>
+            <Button variant="ghost" onClick={() => navigate("/auth")} className="font-semibold text-foreground/80 hover:text-foreground">
+              Log In
+            </Button>
           </header>
 
           <div className="mt-20 lg:mt-0 animate-fade-in space-y-10">
