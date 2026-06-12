@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 @layer base {
-  :root, .dark {
+  :root,
+  .dark {
     --background: 0 0% 4%; /* Obsidian */
     --foreground: 40 20% 90%; /* Light ivory text */
 
@@ -75,7 +76,12 @@
     @apply bg-background text-foreground;
     font-family: var(--font-body);
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
   }
 }
@@ -97,11 +103,20 @@
     color: hsl(var(--foreground) / 0.8);
   }
   .glow-card {
-    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--warm-glow-soft)));
+    background: linear-gradient(
+      135deg,
+      hsl(var(--card)),
+      hsl(var(--warm-glow-soft))
+    );
     box-shadow: 0 4px 24px -4px hsl(var(--warm-glow) / 0.15);
   }
   .glow-orb {
-    background: radial-gradient(circle, hsl(var(--warm-glow) / 0.6), hsl(var(--sacred-gold) / 0.2), transparent);
+    background: radial-gradient(
+      circle,
+      hsl(var(--warm-glow) / 0.6),
+      hsl(var(--sacred-gold) / 0.2),
+      transparent
+    );
     filter: blur(40px);
     will-change: transform;
     transform: translateZ(0);
@@ -109,7 +124,11 @@
     pointer-events: none;
   }
   .kids-mode .glow-card {
-    background: linear-gradient(135deg, hsl(var(--kids-background)), hsl(var(--kids-accent-soft)));
+    background: linear-gradient(
+      135deg,
+      hsl(var(--kids-background)),
+      hsl(var(--kids-accent-soft))
+    );
   }
 }
 
@@ -132,21 +151,42 @@
 }
 
 @keyframes glowPulse {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.05); }
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
 }
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Safe area insets for mobile notch/home-bar */
-.safe-top { padding-top: env(safe-area-inset-top, 0px); }
-.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
 
 /* Performance: skip off-screen rendering for long-page sections */
 @layer utilities {
@@ -154,4 +194,24 @@
     content-visibility: auto;
     contain-intrinsic-size: 0 400px;
   }
+}
+
+@keyframes flame-flicker {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  25%,
+  75% {
+    transform: scale(0.98);
+    opacity: 0.85;
+  }
+}
+.animate-flame-flicker {
+  animation: flame-flicker 4s ease-in-out infinite;
 }

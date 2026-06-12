@@ -5,7 +5,9 @@ import { getProfile } from "@/lib/storage";
 
 function isStandaloneDisplayMode() {
   const mediaMatch = window.matchMedia("(display-mode: standalone)").matches;
-  const iosStandalone = (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
+  const iosStandalone =
+    (window.navigator as Navigator & { standalone?: boolean }).standalone ===
+    true;
   return mediaMatch || iosStandalone;
 }
 
@@ -19,7 +21,9 @@ export default function EntryPage() {
 
     const profile = getProfile();
     if (user) {
-      navigate(profile?.onboardingComplete ? "/app" : "/onboarding", { replace: true });
+      navigate(profile?.onboardingComplete ? "/app" : "/onboarding", {
+        replace: true,
+      });
       return;
     }
 
@@ -32,7 +36,11 @@ export default function EntryPage() {
     const entry = params.get("entry")?.toLowerCase();
     const source = params.get("source")?.toLowerCase();
 
-    const forceOnboarding = entry === "onboarding" || source === "ios" || source === "android" || source === "native";
+    const forceOnboarding =
+      entry === "onboarding" ||
+      source === "ios" ||
+      source === "android" ||
+      source === "native";
     const forceLite = entry === "lite";
 
     if (forceOnboarding) {
@@ -47,17 +55,17 @@ export default function EntryPage() {
 
     // ========================================================================
     // CRITICAL ROUTING RULE (DO NOT DRIFT):
-    // 1. If a user opens the installed PWA App (standalone display), they MUST 
-    //    go straight into the Login Page (/auth) if unauthenticated.
-    // 2. If a user types the URL in a browser (standard display), they MUST land 
-    //    on the Marketing Page (/welcome) before they can login.
+    // 1. If a user opens the installed PWA App (standalone display), they MUST
+    //    go straight into the core App UI.
+    // 2. If a user types the URL in a browser (standard display), they MUST land
+    //    on the Marketing Page (/) before they can login.
     // ========================================================================
     if (isStandaloneDisplayMode()) {
-      navigate("/auth", { replace: true });
+      navigate("/app", { replace: true });
       return;
     }
 
-    navigate("/welcome", { replace: true });
+    navigate("/", { replace: true });
   }, [loading, location.search, navigate, user]);
 
   return (
