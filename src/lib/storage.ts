@@ -26,7 +26,14 @@ const KEYS = {
   syncState: 'lampstand_sync_state',
   presenceScore: 'lampstand_presence_score',
   voiceHistory: 'lampstand_voice_history',
+  practicePrefs: 'lampstand_practice_preferences',
 } as const;
+
+export interface PracticePreferences {
+  practiceLength: 'short' | 'full';
+  textSize: 'compact' | 'standard' | 'large';
+  hideStreak: boolean;
+}
 
 function get<T>(key: string, fallback: T): T {
   try {

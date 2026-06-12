@@ -64,9 +64,9 @@ const MarketingPage: React.FC = () => {
         />
       </div>
 
-      {/* ===== LAYER 3: Obsidian mask — wiped away by the cursor glow ===== */}
+      {/* ===== LAYER 3: Obsidian mask — fixed full-viewport wipe ===== */}
       <div
-        className="absolute inset-0 z-[30] pointer-events-none"
+        className="fixed inset-0 z-[30] pointer-events-none"
         style={{
           background:
             'radial-gradient(circle at 30% 20%, #0b0a0c 0%, #050505 55%, #020203 100%)',
@@ -81,7 +81,7 @@ const MarketingPage: React.FC = () => {
 
       {/* ===== LAYER 4: Amber candle illumination following pointer ===== */}
       <div
-        className="absolute inset-0 z-[35] pointer-events-none mix-blend-screen"
+        className="fixed inset-0 z-[35] pointer-events-none mix-blend-screen"
         style={{
           background:
             'radial-gradient(220px 180px at calc(var(--x,50%) - 10px) calc(var(--y,50%) + 18px), rgba(249,115,22,0.55), rgba(234,88,12,0.25) 45%, transparent 78%),' +
@@ -154,9 +154,9 @@ const MarketingPage: React.FC = () => {
               className="absolute inset-0 w-full h-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.7)]"
             />
 
-            {/* Animated teardrop flame at the wick */}
+            {/* Animated teardrop flame overlay at the wick */}
             <div
-              className="absolute top-[34.5%] left-[72%] w-4 h-9 origin-bottom pointer-events-none animate-realistic-fire"
+              className="absolute top-[28%] left-[62%] w-5 h-12 origin-bottom pointer-events-none animate-realistic-fire"
               style={{
                 borderRadius: '50% 50% 20% 20% / 80% 80% 30% 30%',
                 background:

@@ -15,7 +15,7 @@ function cosineSim(a: number[], b: number[]): number {
 class EmbeddingWorkerClient {
   private worker: Worker | null = null;
   private reqId = 0;
-  private pending = new Map<number, { resolve: (val?: number[] | void) => void; reject: (err: Error) => void }>();
+  private pending = new Map<number, { resolve: (val?: unknown) => void; reject: (err: Error) => void }>();
 
   init() {
     if (this.worker) return;
@@ -35,7 +35,7 @@ class EmbeddingWorkerClient {
     if (!this.worker) this.init();
     return new Promise((resolve, reject) => {
       const id = ++this.reqId;
-      this.pending.set(id, { resolve, reject });
+      this.pending.set(id, { resolve: resolve as (val?: unknown) => void, reject });
       this.worker!.postMessage({ id, type: 'GET_EMBEDDING', payload: text });
     });
   }
@@ -44,7 +44,7 @@ class EmbeddingWorkerClient {
     if (!this.worker) this.init();
     return new Promise((resolve, reject) => {
       const id = ++this.reqId;
-      this.pending.set(id, { resolve, reject });
+      this.pending.set(id, { resolve: resolve as (val?: unknown) => void, reject });
       this.worker!.postMessage({ id, type: 'INIT' });
     });
   }
