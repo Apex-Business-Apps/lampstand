@@ -18,16 +18,6 @@ export default function EntryPage() {
     if (loading) return;
 
     const profile = getProfile();
-    if (user) {
-      navigate(profile?.onboardingComplete ? "/app" : "/onboarding", { replace: true });
-      return;
-    }
-
-    if (profile?.onboardingComplete) {
-      navigate("/app", { replace: true });
-      return;
-    }
-
     const params = new URLSearchParams(location.search);
     const entry = params.get("entry")?.toLowerCase();
     const source = params.get("source")?.toLowerCase();
@@ -35,7 +25,33 @@ export default function EntryPage() {
     const forceOnboarding = entry === "onboarding" || source === "ios" || source === "android" || source === "native";
     const forceLite = entry === "lite";
 
+    // ========================================================================
+    // CRITICAL ROUTING RULE (DO NOT DRIFT):
+    // 1. If a user opens the installed PWA App (standalone display), they MUST 
+    //    go straight into the Login Page (/auth) if unauthenticated, or /app if authenticated.
+    // ========================================================================
+    if (isStandaloneDisplayMode()) {
+      if (user || profile?.onboardingComplete) {
+        navigate("/app", { replace: true });
+      } else {
+        navigate("/auth", { replace: true });
+      }
+      return;
+    }
+
+    // ========================================================================
+    // 2. We are in a standard browser. 
+    // If they clicked "Walk into the Light" from the marketing page, let them in.
+    // ========================================================================
     if (forceOnboarding) {
+      if (user) {
+        navigate(profile?.onboardingComplete ? "/app" : "/onboarding", { replace: true });
+        return;
+      }
+      if (profile?.onboardingComplete) {
+        navigate("/app", { replace: true });
+        return;
+      }
       navigate("/onboarding", { replace: true });
       return;
     }
@@ -46,17 +62,9 @@ export default function EntryPage() {
     }
 
     // ========================================================================
-    // CRITICAL ROUTING RULE (DO NOT DRIFT):
-    // 1. If a user opens the installed PWA App (standalone display), they MUST 
-    //    go straight into the Login Page (/auth) if unauthenticated.
-    // 2. If a user types the URL in a browser (standard display), they MUST land 
-    //    on the Marketing Page (/welcome) before they can login.
+    // 3. Default for browser root ('/') is ALWAYS the marketing page, 
+    //    even if they have a local profile. They must see the landing page first.
     // ========================================================================
-    if (isStandaloneDisplayMode()) {
-      navigate("/auth", { replace: true });
-      return;
-    }
-
     navigate("/welcome", { replace: true });
   }, [loading, location.search, navigate, user]);
 
