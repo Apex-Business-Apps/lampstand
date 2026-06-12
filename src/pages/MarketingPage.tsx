@@ -46,140 +46,146 @@ export default function MarketingPage() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   
-  const springX = useSpring(mouseX, { stiffness: 150, damping: 25 });
-  const springY = useSpring(mouseY, { stiffness: 150, damping: 25 });
+  const springX = useSpring(mouseX, { stiffness: 100, damping: 30 });
+  const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    const rect = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - rect.left);
-    mouseY.set(e.clientY - rect.top);
+    mouseX.set(e.clientX);
+    mouseY.set(e.clientY);
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30">
-      
+    <div 
+      className="min-h-screen bg-[#0A0A0A] text-foreground selection:bg-primary/30"
+      onMouseMove={handleMouseMove}
+    >
       {/* 
-        SPLIT HERO SECTION 
+        LAYER 0: Ambient Darkness 
       */}
-      <section className="relative flex min-h-screen flex-col lg:flex-row">
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-[url('/images/regular_bible_texture.png')] bg-cover bg-center opacity-5 mix-blend-overlay" />
+      </div>
+
+      {/* 
+        LAYER 1: The Light Wipe (Follows cursor, spans entire screen)
+      */}
+      <motion.div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          WebkitMaskImage: useMotionTemplate`radial-gradient(ellipse 1000px 700px at ${springX}px ${springY}px, black 15%, transparent 70%)`,
+          maskImage: useMotionTemplate`radial-gradient(ellipse 1000px 700px at ${springX}px ${springY}px, black 15%, transparent 70%)`,
+        }}
+      >
+        <div className="absolute inset-0 bg-[url('/images/regular_bible_texture.png')] bg-cover bg-center opacity-30 mix-blend-screen" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#D97736]/20 to-transparent mix-blend-overlay" />
+      </motion.div>
+
+      {/* 
+        LAYER 2: 3D Elements (Anchored right)
+      */}
+      <div className="fixed right-0 top-0 bottom-0 hidden lg:flex w-[55vw] pointer-events-none flex-col items-center justify-center z-10">
+        {/* Massive Ancient Cross Silhouette - inverted to be a faint light projection */}
+        <img 
+          src="/images/cross_silhouette_1781232694424.png" 
+          alt="Ancient Cross" 
+          className="absolute top-[5%] w-[800px] h-auto opacity-[0.03] mix-blend-screen drop-shadow-2xl invert"
+        />
         
-        {/* Left Pane - UI & Copy */}
-        <div className="relative z-10 flex w-full flex-col justify-center px-8 py-12 lg:w-1/2 lg:px-20 xl:px-24">
-          <header className="absolute left-8 right-8 top-8 flex items-center justify-between lg:left-20 lg:right-12 lg:top-12">
-            <div className="flex items-center gap-3">
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--primary))] shadow-[0_0_24px_hsl(var(--primary)/0.45)]">
-                <Flame className="h-5 w-5 text-primary-foreground" />
-              </div>
-              <span className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">LampStand</span>
-            </div>
-            <Button variant="ghost" onClick={() => navigate("/auth")} className="font-semibold text-foreground/80 hover:text-foreground">
-              Log In
-            </Button>
-          </header>
-
-          <div className="mt-20 lg:mt-0 animate-fade-in space-y-10">
-            <div className="inline-flex items-center gap-2 rounded-full border border-[hsl(var(--primary)/0.35)] bg-background/60 px-4 py-1.5 backdrop-blur">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[hsl(var(--primary))] opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-[hsl(var(--primary))]" />
-              </span>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-foreground/80">
-                A Catholic-friendly scripture companion
-              </p>
-            </div>
-
-            <h1 className="font-display max-w-2xl text-5xl font-semibold leading-[1.02] tracking-tight text-foreground sm:text-7xl">
-              Walk into the <span className="bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--secondary))] bg-clip-text text-transparent italic">Light.</span>
-            </h1>
-
-            <p className="max-w-xl font-body text-xl leading-relaxed text-foreground/75 sm:text-2xl">
-              LampStand is a quiet, intelligent companion for daily scripture and warm pastoral conversation. No noise. Just the word, and a steady voice beside you.
-            </p>
-
-            <div className="flex flex-wrap items-center gap-4">
-              <Button size="lg" className="h-14 px-8 text-base font-semibold shadow-[0_12px_40px_-12px_hsl(var(--primary)/0.7)]" onClick={() => navigate("/entry?entry=onboarding&source=web")}>
-                Light your lamp
-                <ArrowRight className="h-5 w-5 ml-2" />
-              </Button>
-              <Button size="lg" variant="outline" className="h-14 px-7 text-base border-[hsl(var(--primary)/0.5)] hover:bg-[hsl(var(--primary)/0.1)]" onClick={() => navigate("/lite?source=web")}>
-                Try without signing up
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Right Pane - The Interactive 3D Canvas */}
-        <div 
-          className="relative hidden w-full overflow-hidden bg-[#0A0A0A] lg:flex lg:w-1/2"
-          onMouseMove={handleMouseMove}
-        >
-          {/* Base ambient layer: Bible text barely visible in the absolute dark */}
-          <div 
-            className="absolute inset-0 bg-[url('/images/bible_page_texture_1781232668928.png')] bg-cover bg-center opacity-10 mix-blend-overlay"
-          />
-
-          {/* Spotlight Reveal Layer */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none z-10"
+        {/* Prominent Lampstand */}
+        <div className="absolute bottom-16 flex flex-col items-center translate-x-12">
+          {/* We use contrast-125 to crush any near-blacks in the image to pure black, 
+              and remove drop-shadow to preserve mix-blend-screen stacking context */}
+          <img 
+            src="/images/lampstand_30ad_1781232660605.png" 
+            alt="30AD Lampstand" 
+            className="w-96 h-auto mix-blend-screen contrast-125 brightness-110"
             style={{
-              WebkitMaskImage: useMotionTemplate`radial-gradient(180px circle at ${springX}px ${springY}px, black 0%, transparent 100%)`,
-              maskImage: useMotionTemplate`radial-gradient(180px circle at ${springX}px ${springY}px, black 0%, transparent 100%)`,
+              WebkitMaskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 60%, transparent 100%)',
+              maskImage: 'radial-gradient(ellipse 70% 70% at 50% 50%, black 60%, transparent 100%)',
             }}
-          >
-            <div className="absolute inset-0 bg-[url('/images/bible_page_texture_1781232668928.png')] bg-cover bg-center opacity-60 mix-blend-screen" />
-            <div className="absolute inset-0 bg-gradient-to-br from-[#D97736]/30 to-transparent mix-blend-overlay" />
-          </motion.div>
+          />
+          
+          {/* Complex Dynamic Flame */}
+          <div className="absolute top-[16%] left-1/2 -translate-x-1/2 -translate-y-1/2">
+            {/* Outer Aura (Huge ambient glow) */}
+            <motion.div 
+              className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D97736] blur-[60px]"
+              animate={{ opacity: [0.15, 0.3, 0.2, 0.35, 0.15], scale: [1, 1.15, 0.95, 1.1, 1] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Secondary Aura */}
+            <motion.div 
+              className="absolute left-1/2 top-1/2 h-32 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D97736] blur-[24px]"
+              animate={{ opacity: [0.5, 0.8, 0.6, 0.9, 0.5], scale: [1, 1.25, 0.9, 1.15, 1] }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Middle Flame */}
+            <motion.div 
+              className="absolute left-1/2 top-1/2 h-14 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F2A649] blur-[8px]"
+              animate={{ opacity: [0.7, 1, 0.8, 1, 0.7], scale: [1, 1.1, 0.95, 1.05, 1], y: [0, -4, 2, 0] }}
+              transition={{ duration: 0.25, repeat: Infinity, ease: "linear" }}
+            />
+            {/* Inner Core */}
+            <motion.div 
+              className="absolute left-1/2 top-1/2 h-8 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white blur-[2px]"
+              animate={{ scale: [1, 1.05, 0.95, 1], y: [0, -2, 1, 0] }}
+              transition={{ duration: 0.12, repeat: Infinity, ease: "linear" }}
+            />
+          </div>
+        </div>
+      </div>
 
-          {/* Central 3D Elements */}
-          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center z-20">
-            {/* Cross Silhouette */}
-            <div className="relative flex flex-col items-center">
-              <img 
-                src="/images/cross_silhouette_1781232694424.png" 
-                alt="Ancient Cross" 
-                className="w-72 h-auto opacity-90 drop-shadow-2xl mix-blend-multiply"
-                style={{ filter: "brightness(0.2) contrast(1.5)" }}
-              />
-              
-              {/* Lampstand Base */}
-              <div className="absolute -bottom-16">
-                <img 
-                  src="/images/lampstand_30ad_1781232660605.png" 
-                  alt="30AD Lampstand" 
-                  className="w-48 h-auto drop-shadow-2xl"
-                />
-                {/* The Flame (Holy Spirit) */}
-                <motion.div 
-                  className="absolute left-1/2 top-[20%] h-8 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#F2A649] blur-[6px]"
-                  animate={{
-                    scale: [1, 1.15, 0.95, 1.1, 1],
-                    opacity: [0.8, 1, 0.7, 0.9, 0.8],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
-                <motion.div 
-                  className="absolute left-1/2 top-[20%] h-4 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#ffffff] blur-[2px]"
-                  animate={{
-                    scale: [1, 1.2, 0.9, 1.1, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
+      {/* 
+        LAYER 3: Interactive UI content 
+      */}
+      <div className="relative z-20">
+        <section className="relative flex min-h-screen flex-col lg:flex-row">
+          
+          {/* Left Pane - Copy */}
+          <div className="relative flex w-full flex-col justify-center px-8 py-12 lg:w-[55%] lg:px-20 xl:px-24">
+            <header className="absolute left-8 right-8 top-8 flex items-center justify-between lg:left-20 lg:right-12 lg:top-12">
+              <div className="flex items-center gap-3">
+                <div className="relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[hsl(var(--secondary))] to-[hsl(var(--primary))] shadow-[0_0_24px_hsl(var(--primary)/0.45)]">
+                  <Flame className="h-5 w-5 text-primary-foreground" />
+                </div>
+                <span className="font-display text-2xl font-semibold tracking-tight sm:text-3xl drop-shadow-md">LampStand</span>
+              </div>
+              <Button variant="ghost" onClick={() => navigate("/auth")} className="font-semibold text-foreground/80 hover:text-foreground">
+                Log In
+              </Button>
+            </header>
+
+            <div className="mt-24 lg:mt-0 animate-fade-in space-y-10">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[hsl(var(--primary)/0.35)] bg-[#0A0A0A]/60 px-4 py-1.5 backdrop-blur">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[hsl(var(--primary))] opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[hsl(var(--primary))]" />
+                </span>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-foreground/90">
+                  A Catholic-friendly scripture companion
+                </p>
+              </div>
+
+              <h1 className="font-display max-w-2xl text-5xl font-semibold leading-[1.02] tracking-tight text-foreground sm:text-7xl drop-shadow-lg">
+                Walk into the <span className="bg-gradient-to-br from-[#F2A649] to-[#D97736] bg-clip-text text-transparent italic">Light.</span>
+              </h1>
+
+              <p className="max-w-xl font-body text-xl leading-relaxed text-foreground/80 sm:text-2xl drop-shadow-md">
+                LampStand is a quiet, intelligent companion for daily scripture and warm pastoral conversation. No noise. Just the word, and a steady voice beside you.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-4 pt-4">
+                <Button size="lg" className="h-14 px-8 text-base font-semibold shadow-[0_12px_40px_-12px_hsl(var(--primary)/0.7)]" onClick={() => navigate("/entry?entry=onboarding&source=web")}>
+                  Light your lamp
+                  <ArrowRight className="h-5 w-5 ml-2" />
+                </Button>
+                <Button size="lg" variant="outline" className="h-14 px-7 text-base border-[hsl(var(--primary)/0.5)] bg-black/40 hover:bg-[hsl(var(--primary)/0.15)] backdrop-blur" onClick={() => navigate("/lite?source=web")}>
+                  Try without signing up
+                </Button>
               </div>
             </div>
           </div>
-          
-          {/* Edge Vignette */}
-          <div className="pointer-events-none absolute inset-0 shadow-[inset_0_0_150px_100px_#0A0A0A] z-30" />
-        </div>
-      </section>
+        </section>
 
       {/* Feature Highlights */}
       <section className="mx-auto max-w-6xl px-6 py-24 sm:px-10 lg:px-16 relative z-20 bg-background">
@@ -228,6 +234,7 @@ export default function MarketingPage() {
           </p>
         </footer>
       </section>
+      </div>
     </div>
   );
 }
