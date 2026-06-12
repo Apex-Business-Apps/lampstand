@@ -79,30 +79,66 @@ const MarketingPage: React.FC = () => {
       {/* =========================================
       RIGHT HEMISPHERE: ILLUMINATION PHYSICS
       ========================================= */}
-      <div className="relative w-full h-full isolate overflow-hidden bg-[#050505]">
+      <div className="relative w-full md:w-1/2 min-h-[50vh] md:min-h-screen isolate overflow-hidden bg-[#050505]">
         {/* LAYER 20: SCRIPTURE MASK SIBLING */}
-        <div ref={maskRef} className="absolute inset-0 w-full h-full z-[20] pointer-events-none mix-blend-screen" style={{ WebkitMaskImage: 'radial-gradient(150px 110px at calc(var(--x, 50%) - 10px) calc(var(--y, 50%) + 10px), black 30%, transparent 80%), radial-gradient(110px 150px at calc(var(--x, 50%) + 20px) calc(var(--y, 50%) - 15px), black 30%, transparent 80%)', maskImage: 'radial-gradient(150px 110px at calc(var(--x, 50%) - 10px) calc(var(--y, 50%) + 10px), black 30%, transparent 80%), radial-gradient(110px 150px at calc(var(--x, 50%) + 20px) calc(var(--y, 50%) - 15px), black 30%, transparent 80%)', WebkitMaskComposite: 'source-over', maskComposite: 'add', transition: 'none' }}>
+        <div 
+          ref={maskRef} 
+          className="absolute inset-0 w-full h-full z-[20] pointer-events-none mix-blend-screen" 
+          style={{ 
+            WebkitMaskImage: 'radial-gradient(150px 110px at calc(var(--x, 50%) - 10px) calc(var(--y, 50%) + 10px), black 30%, transparent 80%), radial-gradient(110px 150px at calc(var(--x, 50%) + 20px) calc(var(--y, 50%) - 15px), black 30%, transparent 80%)',
+            maskImage: 'radial-gradient(150px 110px at calc(var(--x, 50%) - 10px) calc(var(--y, 50%) + 10px), black 30%, transparent 80%), radial-gradient(110px 150px at calc(var(--x, 50%) + 20px) calc(var(--y, 50%) - 15px), black 30%, transparent 80%)',
+            WebkitMaskComposite: 'source-over', 
+            maskComposite: 'add', 
+            transition: 'none' 
+          } as React.CSSProperties}
+        >
           {/* Amber Fire Tint Overlays */}
           <div className="absolute inset-0 bg-[#f97316]/30 mix-blend-color-burn pointer-events-none"></div>
           <div className="absolute inset-0 bg-[#ea580c]/25 mix-blend-overlay pointer-events-none"></div>
-          <img src="/regular_bible_texture.png" alt="Scripture Background" className="absolute inset-0 w-full h-full object-cover opacity-100" style={{ transform: 'none !important', perspective: 'none !important', borderRadius: '0 !important', filter: 'none !important' }} />
+
+          <img 
+            src="/images/bible_texture.png" 
+            alt="Scripture Background" 
+            className="absolute inset-0 w-full h-full object-cover opacity-100" 
+            style={{ transform: 'none', borderRadius: '0', filter: 'none' }} 
+          />
         </div>
 
-        {/* LAYER 30: CENTERPIECE CROSS (RESTORED) */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-48 z-[30] opacity-100 pointer-events-none flex flex-col items-center justify-center mix-blend-multiply">
-          <div className="absolute w-8 h-48 bg-[#050505]"></div>
-          <div className="absolute w-32 h-8 bg-[#050505] top-12"></div>
+        {/* LAYER 30: CENTERPIECE CROSS */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-[60%] z-[30] pointer-events-none mix-blend-multiply">
+          <img
+            src="/images/cross_silhouette.png"
+            alt=""
+            className="w-full h-full object-contain brightness-0"
+            aria-hidden="true"
+          />
         </div>
 
         {/* LAYER 50: LAMPSTAND & FLAME SIBLING */}
         <div className="absolute inset-0 z-[50] flex items-center justify-center pointer-events-none">
           <div className="relative w-full max-w-[800px] aspect-square pointer-events-auto">
-            {/* Lampstand Base - Black background blocked via mix-blend-screen */}
-            <img src="/images/lampstand.png" alt="Lamp Stand" className="absolute inset-0 w-full h-full object-contain z-[50] mix-blend-screen" style={{ clipPath: 'polygon(0 0, 81% 0, 81% 100%, 0 100%)' }} />
+
+            <img 
+              src="/images/lampstand.png" 
+              alt="Lamp Stand" 
+              className="absolute inset-0 w-full h-full object-contain z-[50] mix-blend-screen"
+              style={{ clipPath: 'polygon(0 0, 81% 0, 81% 100%, 0 100%)' }} 
+            />
+
             {/* CSS Teardrop Flame */}
-            <div className="absolute top-[34.5%] left-[72%] w-4 h-9 z-[60] origin-bottom pointer-events-none animate-realistic-fire" style={{ borderRadius: '50% 50% 20% 20% / 80% 80% 30% 30%', background: 'radial-gradient(circle at 50% 100%, rgba(255,255,255,1) 0%, rgba(255,255,0,1) 15%, rgba(249,115,22,1) 40%, rgba(234,88,12,0.8) 70%, rgba(10,10,10,0) 100%)', mixBlendMode: 'screen', boxShadow: '0 -2px 10px 1px rgba(249,115,22,0.7), 0 -5px 15px 2px rgba(234,88,12,0.5)', filter: 'blur(1px)' }}>
+            <div 
+              className="absolute top-[34.5%] left-[72%] w-4 h-9 z-[60] origin-bottom pointer-events-none animate-realistic-fire" 
+              style={{ 
+                borderRadius: '50% 50% 20% 20% / 80% 80% 30% 30%', 
+                background: 'radial-gradient(circle at 50% 100%, rgba(255,255,255,1) 0%, rgba(255,255,0,1) 15%, rgba(249,115,22,1) 40%, rgba(234,88,12,0.8) 70%, rgba(10,10,10,0) 100%)', 
+                mixBlendMode: 'screen', 
+                boxShadow: '0 -2px 10px 1px rgba(249,115,22,0.7), 0 -5px 15px 2px rgba(234,88,12,0.5)', 
+                filter: 'blur(1px)' 
+              } as React.CSSProperties}
+            >
               <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-4 bg-blue-500 rounded-full blur-[2px] opacity-60"></div>
             </div>
+
           </div>
         </div>
       </div>
