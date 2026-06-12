@@ -2,6 +2,7 @@
 
 import { audioAnalyzer } from '@/lib/audioAnalyzer';
 import { getConsentState, getVoicePreferences, pushVoiceTranscript } from '@/lib/storage';
+import { kokoroAdapter } from '@/lib/voice/tts/KokoroTTSAdapter';
 
 export type VoiceGender = 'male' | 'female';
 
@@ -145,6 +146,10 @@ export class TextToSpeechAdapter {
   private lastText = '';
   public onStateChange?: (state: 'idle' | 'speaking' | 'loading') => void;
 
+  preload(): void {
+    kokoroAdapter.preload();
+  }
+
   async speak(text: string, voice: VoiceGender = 'male', onEnd?: () => void) {
     this.stop();
     this.lastText = text;
@@ -157,7 +162,17 @@ export class TextToSpeechAdapter {
       return;
     }
 
-    // 1) Cloud TTS path
+    // 0) Kokoro client-side TTS (on-device, zero latency after first model load)
+    if (kokoroAdapter.isReady()) {
+      try {
+        await kokoroAdapter.speak(text, voice, voicePref.speed, onEnd, this.onStateChange);
+        return;
+      } catch {
+        // Fall through to cloud TTS
+      }
+    }
+
+    // 1) Cloud TTS path (Groq Orpheus → Workers AI Aura-1 provider chain)
     try {
       if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
         this.onStateChange?.('loading');
@@ -230,6 +245,7 @@ export class TextToSpeechAdapter {
   }
 
   stop() {
+    kokoroAdapter.stop();
     try { this.abortController?.abort(); } catch { /* noop */ }
     this.abortController = null;
     if (this.audio) {
