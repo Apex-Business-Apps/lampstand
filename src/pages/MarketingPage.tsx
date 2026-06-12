@@ -106,9 +106,13 @@ const MarketingPage: React.FC = () => {
         </div>
 
         {/* LAYER 30: CENTERPIECE CROSS */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-48 z-[30] opacity-100 pointer-events-none flex flex-col items-center justify-center mix-blend-multiply">
-          <div className="absolute w-8 h-48 bg-[#050505]"></div>
-          <div className="absolute w-32 h-8 bg-[#050505] top-12"></div>
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] h-[60%] z-[30] pointer-events-none mix-blend-multiply">
+          <img
+            src="/images/cross_silhouette.png"
+            alt=""
+            className="w-full h-full object-contain brightness-0"
+            aria-hidden="true"
+          />
         </div>
 
         {/* LAYER 50: LAMPSTAND & FLAME SIBLING */}
