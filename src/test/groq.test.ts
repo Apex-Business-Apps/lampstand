@@ -17,16 +17,13 @@ describe('GroqAIAdapter', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
   });
 
   it('generateReflection uses fallback when fetch fails', async () => {
     const adapter = new GroqAIAdapter();
 
-    // Force the `ask` method to throw an error (simulating network failure or missing API key)
-    // We cast to unknown then object to avoid @typescript-eslint/no-explicit-any error
-    // since ask is a private method
-    vi.spyOn(adapter as unknown as { ask: () => Promise<string> }, 'ask')
-      .mockRejectedValue(new Error('Network error'));
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
 
     // Mock console.warn to verify it was called and keep test output clean
     const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -44,8 +41,7 @@ describe('GroqAIAdapter', () => {
 
   it('generateSermon uses fallback when fetch fails', async () => {
     const adapter = new GroqAIAdapter();
-    vi.spyOn(adapter as unknown as { ask: () => Promise<string> }, 'ask')
-      .mockRejectedValue(new Error('Network error'));
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
 
     const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
@@ -59,8 +55,7 @@ describe('GroqAIAdapter', () => {
 
   it('generateGuidance uses fallback when fetch fails', async () => {
     const adapter = new GroqAIAdapter();
-    vi.spyOn(adapter as unknown as { ask: () => Promise<string> }, 'ask')
-      .mockRejectedValue(new Error('Network error'));
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
 
     const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
