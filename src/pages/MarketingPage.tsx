@@ -1,14 +1,26 @@
 import { useMemo } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion, useReducedMotion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { BrandWordmark } from "@/components/brand/BrandWordmark";
-import { LampFlame } from "@/components/brand/LampFlame";
-import { LampScene3D } from "@/components/brand/LampScene3D";
+import { LampGL } from "@/components/brand/LampGL";
+import { RealFlame } from "@/components/brand/RealFlame";
 import { CrossSilhouette } from "@/components/brand/CrossSilhouette";
 import { ScriptureVeil } from "@/components/brand/ScriptureVeil";
-import { Reveal } from "@/components/brand/Reveal";
+import { Reveal, settle } from "@/components/brand/Reveal";
 import { getProfile } from "@/lib/storage";
+
+/* Entrance choreography — each hero element rises and settles in turn,
+   like lights coming up one candle at a time. */
+const heroStagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.15 } },
+};
+const rise = {
+  hidden: { opacity: 0, y: 26 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.95, ease: settle } },
+};
 import {
   OilLampIcon,
   DoveIcon,
@@ -83,6 +95,7 @@ const stats = [
 
 export default function MarketingPage() {
   const navigate = useNavigate();
+  const reduced = useReducedMotion();
   // Returning souls get a doorway home, not another pitch
   const isReturning = useMemo(() => Boolean(getProfile()?.onboardingComplete), []);
 
@@ -128,16 +141,17 @@ export default function MarketingPage() {
       </header>
 
       {/* ===== Split hero — the pointer is your lamp ===== */}
-      <section className="relative overflow-hidden bg-[hsl(26_36%_5.5%)]">
-        {/* the Word, hidden in the dark until light passes over it */}
-        <ScriptureVeil />
-
-        {/* a quiet cross at the center of everything */}
-        <CrossSilhouette className="absolute left-1/2 top-1/2 h-[26rem] -translate-x-1/2 -translate-y-[54%] opacity-90 max-lg:hidden" />
+      <section className="relative overflow-hidden bg-[hsl(24_34%_3.5%)]">
+        {/* the Word and the cross, hidden under the dark veil until light passes over them */}
+        <ScriptureVeil
+          cross={
+            <CrossSilhouette className="absolute left-1/2 top-1/2 h-[26rem] -translate-x-1/2 -translate-y-[54%] max-lg:hidden" />
+          }
+        />
 
         {/* vignette so the page falls away into the dark */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_40%,transparent_55%,hsl(26_36%_4%/0.75)_100%)]" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[30rem] bg-[radial-gradient(ellipse_55%_60%_at_62%_100%,hsl(var(--warm-glow)/0.14),transparent_70%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_80%_at_50%_40%,transparent_55%,hsl(24_34%_2.5%/0.8)_100%)]" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[30rem] bg-[radial-gradient(ellipse_55%_60%_at_62%_100%,hsl(var(--warm-glow)/0.1),transparent_70%)]" />
         {embers.map((e, i) => (
           <span
             key={i}
@@ -147,9 +161,14 @@ export default function MarketingPage() {
         ))}
 
         <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pb-24 pt-14 sm:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-8 lg:pt-20">
-          {/* Left — the invitation */}
-          <div className="relative text-center lg:text-left">
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-[hsl(var(--sacred-gold)/0.35)] bg-white/[0.04] px-4 py-1.5 backdrop-blur">
+          {/* Left — the invitation, candle-lit one element at a time */}
+          <motion.div
+            className="relative text-center lg:text-left"
+            variants={heroStagger}
+            initial={reduced ? false : "hidden"}
+            animate="show"
+          >
+            <motion.div variants={rise} className="inline-flex items-center gap-2.5 rounded-full border border-[hsl(var(--sacred-gold)/0.35)] bg-white/[0.04] px-4 py-1.5 backdrop-blur">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[hsl(var(--sacred-gold))] opacity-60" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-[hsl(var(--sacred-gold))]" />
@@ -157,21 +176,21 @@ export default function MarketingPage() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground" style={{ fontFamily: "var(--font-ui)" }}>
                 A Catholic-friendly scripture companion · Free forever
               </p>
-            </div>
+            </motion.div>
 
-            <h1 className="mt-8 font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
+            <motion.h1 variants={rise} className="mt-8 font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
               Come — I will walk with you
               <br />
               <em className="text-gold-shimmer not-italic">through the dark.</em>
-            </h1>
+            </motion.h1>
 
-            <p className="mx-auto mt-7 max-w-xl font-body text-xl leading-relaxed text-muted-foreground lg:mx-0">
+            <motion.p variants={rise} className="mx-auto mt-7 max-w-xl font-body text-xl leading-relaxed text-muted-foreground lg:mx-0">
               The Lamp Stand is a quiet, intelligent companion for daily scripture, Lectio Divina,
               the Ignatian Examen, and warm pastoral conversation. No guilt. No noise. Just the Word —
               and a steady flame beside you.
-            </p>
+            </motion.p>
 
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+            <motion.div variants={rise} className="mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
               <Button
                 size="lg"
                 className="h-14 bg-gradient-to-b from-[hsl(42_85%_58%)] to-[hsl(30_80%_46%)] px-8 text-base font-semibold text-[hsl(26_40%_10%)] shadow-[0_14px_44px_-10px_hsl(var(--warm-glow)/0.8)] transition-all hover:-translate-y-0.5 hover:brightness-110"
@@ -188,30 +207,42 @@ export default function MarketingPage() {
               >
                 Try it without signing up
               </Button>
-            </div>
+            </motion.div>
 
-            <p className="mt-10 font-display text-lg italic leading-relaxed text-[hsl(var(--sacred-gold)/0.85)]">
+            <motion.p variants={rise} className="mt-10 font-display text-lg italic leading-relaxed text-[hsl(var(--sacred-gold)/0.85)]">
               “Your word is a lamp to my feet, and a light to my path.”
               <span className="mt-1.5 block text-sm not-italic tracking-[0.18em] text-muted-foreground" style={{ fontFamily: "var(--font-ui)" }}>
                 PSALM 119:105
               </span>
-            </p>
+            </motion.p>
 
-            <p className="mt-8 hidden items-center justify-center gap-2 text-xs text-muted-foreground/80 lg:flex lg:justify-start" style={{ fontFamily: "var(--font-ui)" }}>
+            <motion.p variants={rise} className="mt-8 hidden items-center justify-center gap-2 text-xs text-muted-foreground/80 lg:flex lg:justify-start" style={{ fontFamily: "var(--font-ui)" }}>
               <span className="inline-block h-1.5 w-1.5 animate-glow-pulse rounded-full bg-[hsl(var(--sacred-gold))]" />
               Move your light across the page — the Word is already written in the dark.
-            </p>
-          </div>
+            </motion.p>
+          </motion.div>
 
           {/* Right — a lamp from His own days, still burning */}
           <div className="relative flex flex-col items-center justify-center pt-4 lg:pt-0">
-            <LampScene3D className="w-full max-w-md animate-fade-in" />
-            <p className="mt-10 max-w-xs text-center font-display text-base italic leading-relaxed text-muted-foreground/90">
+            <motion.div
+              className="w-full max-w-xl"
+              initial={reduced ? false : { opacity: 0, scale: 0.965 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.4, delay: 0.35, ease: settle }}
+            >
+              <LampGL className="h-[22rem] w-full sm:h-[26rem]" />
+            </motion.div>
+            <motion.p
+              initial={reduced ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.2, delay: 0.9, ease: settle }}
+              className="mt-10 max-w-xs text-center font-display text-base italic leading-relaxed text-muted-foreground/90"
+            >
               “Neither do men light a candle and put it under a bushel, but on a candlestick.”
               <span className="mt-1 block text-xs not-italic tracking-[0.18em] text-muted-foreground/70" style={{ fontFamily: "var(--font-ui)" }}>
                 MATTHEW 5:15
               </span>
-            </p>
+            </motion.p>
           </div>
         </div>
 
@@ -292,7 +323,7 @@ export default function MarketingPage() {
       <section id="how" className="relative border-t border-border/50 py-24">
         <div className="mx-auto max-w-6xl px-6 sm:px-10">
           <Reveal className="mb-12 flex items-center gap-4">
-            <LampFlame className="h-14 w-14" withBase={false} />
+            <RealFlame className="h-16 w-12" />
             <h2 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
               How The Lamp Stand creates momentum
             </h2>
@@ -335,7 +366,7 @@ export default function MarketingPage() {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[26rem] bg-[radial-gradient(ellipse_60%_70%_at_50%_100%,hsl(var(--warm-glow)/0.16),transparent_70%)]" />
         <div className="relative mx-auto max-w-3xl px-6 text-center">
           <Reveal>
-            <LampFlame className="mx-auto mb-8 h-24 w-24" />
+            <RealFlame className="mx-auto mb-6 h-28 w-20" />
             <h2 className="font-display text-5xl font-semibold leading-tight tracking-tight sm:text-6xl">
               Your lamp is ready.
               <br />

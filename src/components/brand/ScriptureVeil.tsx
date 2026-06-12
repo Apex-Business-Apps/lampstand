@@ -76,33 +76,65 @@ const PASSAGES: Array<{
 
 interface ScriptureVeilProps {
   className?: string;
+  /** Render the rim-lit cross under the veil at the given position. */
+  cross?: React.ReactNode;
 }
 
+const GLIDE = 0.085; // lerp factor — the light drifts like a carried lantern
+
 /**
- * A page of scripture hidden in the dark, set in real Bible format. The
- * pointer becomes the lamp: a soft radial mask follows it, letting the
- * verses surface — washed out, half-remembered, waiting.
+ * A page of scripture hidden behind the dark veil, set in real Bible
+ * format — with the cross sleeping beneath it too. The pointer becomes
+ * the lamp: a soft radial mask glides after it (eased, never snapping),
+ * wiping the darkness aside to reveal what was always written there.
  * Listeners attach to the parent section; the veil itself ignores events.
  */
-export function ScriptureVeil({ className }: ScriptureVeilProps) {
+export function ScriptureVeil({ className, cross }: ScriptureVeilProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const surface = el.parentElement ?? el;
+
+    let targetX = 0;
+    let targetY = 0;
+    let curX = 0;
+    let curY = 0;
+    let started = false;
     let raf = 0;
+    let settled = true;
+
+    const tick = () => {
+      curX += (targetX - curX) * GLIDE;
+      curY += (targetY - curY) * GLIDE;
+      el.style.setProperty('--veil-x', `${curX.toFixed(1)}px`);
+      el.style.setProperty('--veil-y', `${curY.toFixed(1)}px`);
+      if (Math.abs(targetX - curX) + Math.abs(targetY - curY) > 0.4) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        settled = true;
+      }
+    };
+    const wake = () => {
+      if (settled) {
+        settled = false;
+        raf = requestAnimationFrame(tick);
+      }
+    };
 
     const onMove = (e: PointerEvent) => {
       const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        el.style.setProperty('--veil-x', `${x}px`);
-        el.style.setProperty('--veil-y', `${y}px`);
-        el.classList.add('veil-active');
-      });
+      targetX = e.clientX - rect.left;
+      targetY = e.clientY - rect.top;
+      if (!started) {
+        // first touch of light: begin from where the pointer entered
+        started = true;
+        curX = targetX;
+        curY = targetY;
+      }
+      el.classList.add('veil-active');
+      wake();
     };
     const onLeave = () => el.classList.remove('veil-active');
 
@@ -117,24 +149,28 @@ export function ScriptureVeil({ className }: ScriptureVeilProps) {
 
   return (
     <div ref={ref} className={cn('scripture-veil', className)} aria-hidden="true">
-      <div className="scripture-veil__page">
-        {/* tiled so the lamp finds the Word wherever it wanders */}
-        {Array.from({ length: 2 }, (_, pass) =>
-          PASSAGES.map((p) => (
-            <section key={`${pass}-${p.book}-${p.chapter}`} className="scripture-veil__passage">
-              <h3 className="scripture-veil__book">{p.book}</h3>
-              <p>
-                <span className="scripture-veil__chapter">{p.chapter}</span>
-                {p.verses.map((v) => (
-                  <span key={v.n}>
-                    <sup className="scripture-veil__vn">{v.n}</sup>
-                    {v.t}{' '}
-                  </span>
-                ))}
-              </p>
-            </section>
-          )),
-        )}
+      {/* everything in here sleeps under the dark veil until light passes */}
+      <div className="scripture-veil__lit">
+        <div className="scripture-veil__page">
+          {/* tiled so the lamp finds the Word wherever it wanders */}
+          {Array.from({ length: 2 }, (_, pass) =>
+            PASSAGES.map((p) => (
+              <section key={`${pass}-${p.book}-${p.chapter}`} className="scripture-veil__passage">
+                <h3 className="scripture-veil__book">{p.book}</h3>
+                <p>
+                  <span className="scripture-veil__chapter">{p.chapter}</span>
+                  {p.verses.map((v) => (
+                    <span key={v.n}>
+                      <sup className="scripture-veil__vn">{v.n}</sup>
+                      {v.t}{' '}
+                    </span>
+                  ))}
+                </p>
+              </section>
+            )),
+          )}
+        </div>
+        {cross}
       </div>
       <div className="scripture-veil__glow" />
     </div>
