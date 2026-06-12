@@ -154,9 +154,9 @@ const MarketingPage: React.FC = () => {
               className="absolute inset-0 w-full h-full object-contain drop-shadow-[0_30px_60px_rgba(0,0,0,0.7)]"
             />
 
-            {/* Animated teardrop flame at the wick */}
+            {/* Animated teardrop flame overlay at the wick */}
             <div
-              className="absolute top-[34.5%] left-[72%] w-4 h-9 origin-bottom pointer-events-none animate-realistic-fire"
+              className="absolute top-[28%] left-[62%] w-5 h-12 origin-bottom pointer-events-none animate-realistic-fire"
               style={{
                 borderRadius: '50% 50% 20% 20% / 80% 80% 30% 30%',
                 background:
