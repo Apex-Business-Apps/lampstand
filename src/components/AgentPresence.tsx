@@ -48,7 +48,7 @@ export function AgentPresence({ mode = 'idle', className = '', size = 'md', inte
         )}
         style={speakingStyle}
       />
-      {/* Flame image — NO mix-blend-screen so it's visible on light backgrounds */}
+      {/* Flame image - NO mix-blend-screen so it's visible on light backgrounds */}
       <img
         src={presenceImg}
         alt="LampStand Presence"

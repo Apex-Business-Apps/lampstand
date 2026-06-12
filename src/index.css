@@ -3,97 +3,67 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 40 33% 96%;
-    --foreground: 25 20% 18%;
+  :root, .dark {
+    --background: 0 0% 4%; /* Obsidian */
+    --foreground: 40 20% 90%; /* Light ivory text */
 
-    --card: 40 30% 98%;
-    --card-foreground: 25 20% 18%;
+    --card: 0 0% 6%;
+    --card-foreground: 40 20% 90%;
 
-    --popover: 40 30% 98%;
-    --popover-foreground: 25 20% 18%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 40 20% 90%;
 
-    --primary: 36 70% 50%;
-    --primary-foreground: 40 33% 98%;
+    --primary: 24 67% 53%; /* Amber #D97736 */
+    --primary-foreground: 0 0% 4%;
 
-    --secondary: 40 20% 92%;
-    --secondary-foreground: 25 20% 25%;
+    --secondary: 33 87% 62%; /* Gold #F2A649 */
+    --secondary-foreground: 0 0% 4%;
 
-    --muted: 40 15% 93%;
-    --muted-foreground: 25 10% 50%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 40 10% 60%;
 
-    --accent: 36 50% 88%;
-    --accent-foreground: 25 20% 18%;
+    --accent: 24 40% 20%;
+    --accent-foreground: 40 20% 90%;
 
-    --destructive: 0 60% 50%;
+    --destructive: 0 60% 40%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 36 20% 88%;
-    --input: 36 20% 88%;
-    --ring: 36 70% 50%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 24 67% 53%;
 
     --radius: 0.75rem;
 
-    --warm-glow: 36 80% 60%;
-    --warm-glow-soft: 36 60% 85%;
-    --sacred-gold: 42 75% 55%;
-    --sacred-gold-soft: 42 50% 90%;
+    --warm-glow: 24 67% 53%;
+    --warm-glow-soft: 24 40% 20%;
+    --sacred-gold: 33 87% 62%;
+    --sacred-gold-soft: 33 50% 30%;
     --sage: 140 15% 55%;
-    --sage-soft: 140 15% 92%;
-    --cream: 40 33% 96%;
-    --ivory: 40 30% 98%;
-    --ember: 20 70% 45%;
-    --ember-soft: 20 40% 90%;
+    --sage-soft: 140 15% 20%;
+    --cream: 40 33% 90%;
+    --ivory: 40 30% 95%;
+    --ember: 24 67% 53%;
+    --ember-soft: 24 40% 20%;
 
     --kids-primary: 200 70% 55%;
     --kids-primary-foreground: 0 0% 100%;
-    --kids-background: 200 50% 97%;
+    --kids-background: 0 0% 8%;
     --kids-accent: 340 60% 65%;
-    --kids-accent-soft: 340 40% 92%;
+    --kids-accent-soft: 340 40% 20%;
 
-    --sidebar-background: 40 25% 95%;
-    --sidebar-foreground: 25 20% 25%;
-    --sidebar-primary: 36 70% 50%;
-    --sidebar-primary-foreground: 40 33% 98%;
-    --sidebar-accent: 40 20% 90%;
-    --sidebar-accent-foreground: 25 20% 18%;
-    --sidebar-border: 36 20% 88%;
-    --sidebar-ring: 36 70% 50%;
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 40 20% 90%;
+    --sidebar-primary: 24 67% 53%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 24 40% 20%;
+    --sidebar-accent-foreground: 40 20% 90%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 24 67% 53%;
 
     --font-display: "Cormorant Garamond", "Times New Roman", serif;
     --font-body: "EB Garamond", Georgia, serif;
-    --font-ui: Inter, ui-sans-serif, system-ui, sans-serif;
-    --font-sans: var(--font-ui);
-  }
-
-  .dark {
-    --background: 25 15% 10%;
-    --foreground: 40 20% 90%;
-    --card: 25 15% 13%;
-    --card-foreground: 40 20% 90%;
-    --popover: 25 15% 13%;
-    --popover-foreground: 40 20% 90%;
-    --primary: 36 70% 55%;
-    --primary-foreground: 25 15% 10%;
-    --secondary: 25 10% 18%;
-    --secondary-foreground: 40 20% 85%;
-    --muted: 25 10% 18%;
-    --muted-foreground: 40 10% 55%;
-    --accent: 36 30% 22%;
-    --accent-foreground: 40 20% 90%;
-    --destructive: 0 60% 40%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 25 10% 20%;
-    --input: 25 10% 20%;
-    --ring: 36 70% 55%;
-    --sidebar-background: 25 15% 8%;
-    --sidebar-foreground: 40 20% 85%;
-    --sidebar-primary: 36 70% 55%;
-    --sidebar-primary-foreground: 25 15% 10%;
-    --sidebar-accent: 25 10% 15%;
-    --sidebar-accent-foreground: 40 20% 90%;
-    --sidebar-border: 25 10% 20%;
-    --sidebar-ring: 36 70% 55%;
+    --font-ui: "EB Garamond", Georgia, serif;
+    --font-sans: var(--font-body);
   }
 }
 

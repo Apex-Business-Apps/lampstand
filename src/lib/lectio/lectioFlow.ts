@@ -1,5 +1,5 @@
 /**
- * Lectio Divina — the Church-attested 4-movement contemplative reading
+ * Lectio Divina - the Church-attested 4-movement contemplative reading
  * of scripture (Lectio · Meditatio · Oratio · Contemplatio).
  *
  * The daytime contemplative counterpart to our evening Examen.
@@ -31,20 +31,20 @@ const PROMPTS: Record<ToneStyle, Record<LectioStepId, Omit<LectioStep, 'id' | 's
   gentle: {
     lectio: { title: 'Read', prompt: 'Read the passage slowly, twice. Which word or phrase quietly catches your attention?', placeholder: 'A word, a phrase…', theme: 'listening' },
     meditatio: { title: 'Reflect', prompt: 'Sit with that word. What might God be inviting you to notice today?', placeholder: 'Let it unfold…', theme: 'discernment' },
-    oratio: { title: 'Respond', prompt: 'Speak back to God in your own words — gratitude, longing, or a simple question.', placeholder: 'A short prayer…', theme: 'returning' },
+    oratio: { title: 'Respond', prompt: 'Speak back to God in your own words - gratitude, longing, or a simple question.', placeholder: 'A short prayer…', theme: 'returning' },
     contemplatio: { title: 'Rest', prompt: 'Set the words aside. Rest a moment in God\u2019s presence. Note what remains.', placeholder: 'A feeling, a stillness…', theme: 'stillness' },
   },
   balanced: {
     lectio: { title: 'Read', prompt: 'Read the passage attentively, then again. What word, phrase, or image rises to meet you?', placeholder: 'Name what stood out…', theme: 'listening' },
-    meditatio: { title: 'Meditate', prompt: 'Ponder it. Where does it touch your life right now — memory, hope, or question?', placeholder: 'A connection, a question…', theme: 'discernment' },
-    oratio: { title: 'Pray', prompt: 'Respond to God honestly — praise, petition, lament, or thanks.', placeholder: 'Speak from the heart…', theme: 'returning' },
+    meditatio: { title: 'Meditate', prompt: 'Ponder it. Where does it touch your life right now - memory, hope, or question?', placeholder: 'A connection, a question…', theme: 'discernment' },
+    oratio: { title: 'Pray', prompt: 'Respond to God honestly - praise, petition, lament, or thanks.', placeholder: 'Speak from the heart…', theme: 'returning' },
     contemplatio: { title: 'Contemplate', prompt: 'Release words. Abide briefly in stillness. What grace do you carry forward?', placeholder: 'A gift, a quiet…', theme: 'stillness' },
   },
   traditional: {
-    lectio: { title: 'Lectio — Read', prompt: 'Read the sacred text reverently. Which verse does the Holy Spirit illumine for you?', placeholder: 'The verse the Lord highlights…', theme: 'listening' },
-    meditatio: { title: 'Meditatio — Meditate', prompt: 'Ruminate upon it. How does this Word address your soul, your state, your circumstance?', placeholder: 'The Word applied to your soul…', theme: 'discernment' },
-    oratio: { title: 'Oratio — Pray', prompt: 'Address God in response — adoration, contrition, thanksgiving, or supplication.', placeholder: 'A prayer of the heart…', theme: 'returning' },
-    contemplatio: { title: 'Contemplatio — Contemplate', prompt: 'Cease from words. Rest silently in the loving presence of God. Receive what He gives.', placeholder: 'A grace received in silence…', theme: 'stillness' },
+    lectio: { title: 'Lectio - Read', prompt: 'Read the sacred text reverently. Which verse does the Holy Spirit illumine for you?', placeholder: 'The verse the Lord highlights…', theme: 'listening' },
+    meditatio: { title: 'Meditatio - Meditate', prompt: 'Ruminate upon it. How does this Word address your soul, your state, your circumstance?', placeholder: 'The Word applied to your soul…', theme: 'discernment' },
+    oratio: { title: 'Oratio - Pray', prompt: 'Address God in response - adoration, contrition, thanksgiving, or supplication.', placeholder: 'A prayer of the heart…', theme: 'returning' },
+    contemplatio: { title: 'Contemplatio - Contemplate', prompt: 'Cease from words. Rest silently in the loving presence of God. Receive what He gives.', placeholder: 'A grace received in silence…', theme: 'stillness' },
   },
 };
 
@@ -73,7 +73,7 @@ export function getLectioSteps(tone: ToneStyle = 'balanced'): LectioStep[] {
   }));
 }
 
-/** Stable id for today's session — guarantees one-per-day idempotency. */
+/** Stable id for today's session - guarantees one-per-day idempotency. */
 export function todayLectioSessionId(): string {
   return `lectio-${todayKey()}`;
 }
@@ -103,7 +103,7 @@ export function completeLectio(
   const sections = steps
     .map((s) => `## ${s.title}\n${(responses[s.id] || '').trim()}`)
     .join('\n\n');
-  const content = `# Lectio Divina — ${todayKey()}\n\n*${passage.reference}*\n\n> ${passage.text}\n\n${sections}`.trim();
+  const content = `# Lectio Divina - ${todayKey()}\n\n*${passage.reference}*\n\n> ${passage.text}\n\n${sections}`.trim();
 
   const entry: JournalEntry = {
     id: todayLectioSessionId(),

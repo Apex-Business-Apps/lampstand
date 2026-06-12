@@ -28,7 +28,7 @@ describe('Daily Examen', () => {
     }
   });
 
-  it('completes idempotently — re-completing same day does not duplicate', () => {
+  it('completes idempotently - re-completing same day does not duplicate', () => {
     const responses = {
       presence: 'still',
       gratitude: 'a good meal',

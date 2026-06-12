@@ -44,12 +44,12 @@ export default function PrivacyPolicyPage() {
       </p>
       <ul className="list-disc pl-6 space-y-1 mt-2">
         <li>
-          <strong>Groq (Llama 3 model)</strong> — for pastoral AI responses. Your request text is
+          <strong>Groq (Llama 3 model)</strong> - for pastoral AI responses. Your request text is
           processed by Groq's API and subject to their privacy policy. Groq does not train on API
           request data by default.
         </li>
         <li>
-          <strong>ElevenLabs</strong> — for text-to-speech audio. Response text is sent to ElevenLabs
+          <strong>ElevenLabs</strong> - for text-to-speech audio. Response text is sent to ElevenLabs
           for voice synthesis. ElevenLabs does not retain audio for training by default.
         </li>
       </ul>
@@ -62,7 +62,7 @@ export default function PrivacyPolicyPage() {
       <p>
         Account authentication is handled by Supabase Auth. If you sign in with a social provider
         (e.g. Google), that provider shares your email address with us. We use it only to identify
-        your account — it is never used for marketing.
+        your account - it is never used for marketing.
       </p>
 
       <h2 className="text-lg font-semibold mt-6 mb-2">Cookies and local storage</h2>

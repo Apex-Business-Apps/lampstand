@@ -1,9 +1,9 @@
 /**
- * Resonance Engine — TheLampStand proprietary personalization layer.
+ * Resonance Engine - TheLampStand proprietary personalization layer.
  *
  * A zero-cost, zero-dependency, on-device adaptive ranker that learns each user's
- * unique "spiritual fingerprint" — the themes, tones, postures, and emotional
- * registers that resonate most for them in their current life-season — and
+ * unique "spiritual fingerprint" - the themes, tones, postures, and emotional
+ * registers that resonate most for them in their current life-season - and
  * re-ranks any candidate content (daily-light passages, guidance retrievals,
  * reflections) so the surfaced result feels *personally addressed* rather than
  * generically rotated.
@@ -70,7 +70,7 @@ export interface ResonanceFingerprint {
   recentThemes: string[];
   /** running sentiment score in [-1, +1]; negative = struggling */
   sentiment: number;
-  /** total signals captured — drives confidence */
+  /** total signals captured - drives confidence */
   signalCount: number;
   /** last decay timestamp for time-based weight aging */
   lastDecayAt: string;
@@ -108,7 +108,7 @@ export function saveFingerprint(fp: ResonanceFingerprint) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(fp));
   } catch {
-    /* quota / private mode — silent */
+    /* quota / private mode - silent */
   }
 }
 
@@ -117,7 +117,7 @@ export function resetFingerprint() {
 }
 
 /* ─────────────────────────────────────────────────────────────────
- *  Decay — keeps the fingerprint current to the user's life-season
+ *  Decay - keeps the fingerprint current to the user's life-season
  * ───────────────────────────────────────────────────────────────── */
 
 function decay(fp: ResonanceFingerprint): ResonanceFingerprint {
@@ -184,7 +184,7 @@ const RETURNING_THEMES = new Set([
 
 /**
  * Capture a single user interaction and update the fingerprint in place.
- * Safe to call frequently — bounded memory, no I/O beyond localStorage.
+ * Safe to call frequently - bounded memory, no I/O beyond localStorage.
  */
 export function recordSignal(opts: {
   signal: ResonanceSignal;
@@ -260,7 +260,7 @@ function inferSeason(fp: ResonanceFingerprint): SpiritualSeason {
 
 /**
  * Build an initial fingerprint from anything the user has already done.
- * Idempotent — call on app boot; cheap if fingerprint already populated.
+ * Idempotent - call on app boot; cheap if fingerprint already populated.
  */
 export function hydrateFingerprintFromLocal(opts: {
   saved: SavedPassage[];
@@ -320,7 +320,7 @@ function scoreContentKeyword(s: string): number {
 }
 
 /* ─────────────────────────────────────────────────────────────────
- *  Ranking — the ordering function used by Daily Light & Guidance
+ *  Ranking - the ordering function used by Daily Light & Guidance
  * ───────────────────────────────────────────────────────────────── */
 
 export interface RankableCandidate {
@@ -344,7 +344,7 @@ export interface RankedCandidate<T extends RankableCandidate> {
 
 /**
  * Score & sort candidates against the current fingerprint.
- * Pure function over the loaded fingerprint snapshot — does not mutate.
+ * Pure function over the loaded fingerprint snapshot - does not mutate.
  */
 export function rankCandidates<T extends RankableCandidate>(
   candidates: T[],
@@ -362,25 +362,25 @@ function scoreCandidate<T extends RankableCandidate>(
 ): RankedCandidate<T> {
   const theme = c.theme ?? '';
 
-  // Axis 1 — direct theme affinity (normalized 0..1)
+  // Axis 1 - direct theme affinity (normalized 0..1)
   const rawAffinity = fp.themeAffinity[theme] ?? 0;
   const affinity = rawAffinity / MAX_THEME_WEIGHT;
 
-  // Axis 2 — season fit. Match content to where the user actually is.
+  // Axis 2 - season fit. Match content to where the user actually is.
   const season = seasonFit(theme, fp.season);
 
-  // Axis 3 — novelty bonus: avoid recently-shown refs/themes.
+  // Axis 3 - novelty bonus: avoid recently-shown refs/themes.
   const refIdx = fp.recentRefs.indexOf(c.passage.reference);
   const themeIdx = fp.recentThemes.indexOf(theme);
   const refPenalty = refIdx === -1 ? 0 : 1 - refIdx / Math.max(1, MAX_RECENT_REFS);
   const themePenalty = themeIdx === -1 ? 0 : 1 - themeIdx / Math.max(1, MAX_RECENT_THEMES);
   const novelty = 1 - 0.7 * refPenalty - 0.3 * themePenalty;
 
-  // Axis 4 — pastoral care: when sentiment is negative, lean *toward*
+  // Axis 4 - pastoral care: when sentiment is negative, lean *toward*
   // consolation/mercy and *away* from challenge/correction themes.
   const care = pastoralCare(theme, fp.sentiment);
 
-  // Axis 5 — caller-supplied prior (e.g. retrieval confidence)
+  // Axis 5 - caller-supplied prior (e.g. retrieval confidence)
   const prior = c.prior ?? 0.5;
 
   // Confidence blending: when we don't have much signal yet, weight novelty
@@ -425,14 +425,14 @@ function seasonFit(theme: string, season: SpiritualSeason): number {
 
 function pastoralCare(theme: string, sentiment: number): number {
   if (!theme) return 0.5;
-  // Strongly struggling — lift consoling themes, dampen anything sharp.
+  // Strongly struggling - lift consoling themes, dampen anything sharp.
   if (sentiment <= -0.3) {
     if (theme === 'consolation' || theme === 'nearness' || theme === 'mercy' ||
         theme === 'healing' || theme === 'rest' || theme === 'love') return 1;
     if (theme === 'judgment' || theme === 'correction' || theme === 'discipline') return 0.2;
     return 0.6;
   }
-  // Flourishing — lift gratitude/service/mission.
+  // Flourishing - lift gratitude/service/mission.
   if (sentiment >= 0.4) {
     if (theme === 'gratitude' || theme === 'praise' || theme === 'service') return 1;
     return 0.7;

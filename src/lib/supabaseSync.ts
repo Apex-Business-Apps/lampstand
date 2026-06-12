@@ -1,5 +1,5 @@
 /**
- * Supabase cloud sync — bidirectional persistence for authenticated users.
+ * Supabase cloud sync - bidirectional persistence for authenticated users.
  * Local-first: writes always go to localStorage immediately,
  * then sync to Supabase in the background when authenticated.
  *
@@ -163,7 +163,7 @@ export async function pullJournalFromCloud(userId: string): Promise<void> {
   }
 }
 
-/** Full bidirectional sync — call after login or on app init when authenticated */
+/** Full bidirectional sync - call after login or on app init when authenticated */
 export async function runFullSync(userId: string): Promise<void> {
   await Promise.all([
     pullProfileFromCloud(userId),

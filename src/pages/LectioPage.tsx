@@ -42,7 +42,7 @@ export default function LectioPage() {
       <div className="px-5 pt-12 pb-6 max-w-lg mx-auto min-h-[80vh] flex flex-col justify-center animate-fade-in">
         <div className="flex-1 flex flex-col justify-center space-y-6">
           <p className="text-xs uppercase tracking-[0.2em] text-primary font-semibold text-center">
-            {current.latin} — {step + 1} of {steps.length}
+            {current.latin} - {step + 1} of {steps.length}
           </p>
           <h2 className="text-3xl font-serif text-foreground text-center">
             {current.title}
@@ -53,7 +53,7 @@ export default function LectioPage() {
             <p className="scripture-text text-base text-center border-l-2 border-primary/40 pl-4 py-2">
               {today.passage.text}
               <span className="block text-xs text-muted-foreground mt-1 not-italic">
-                — {today.passage.reference}
+                - {today.passage.reference}
               </span>
             </p>
           )}

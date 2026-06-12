@@ -1,5 +1,5 @@
 /**
- * Prayer Circles — collaborative invite-only prayer spaces.
+ * Prayer Circles - collaborative invite-only prayer spaces.
  *
  * Auth users: data persisted to Supabase (cross-device, sharable).
  * Guest users: localStorage fallback (device-local, still functional).

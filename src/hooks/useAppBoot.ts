@@ -16,7 +16,7 @@ export function useAppBoot() {
           journal: getJournalEntries(),
         });
       } catch {
-        /* private mode / quota — ignore */
+        /* private mode / quota - ignore */
       }
 
       if (isNotificationsSupported()) {

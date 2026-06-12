@@ -38,7 +38,7 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
       if (!this.recognition) return reject(new Error('Speech recognition not supported'));
       let settled = false;
 
-      // Timeout safety net — if no result after 15s, reject gracefully
+      // Timeout safety net - if no result after 15s, reject gracefully
       const timeout = setTimeout(() => {
         try { this.recognition.abort(); } catch { /* noop */ }
         if (!settled) {

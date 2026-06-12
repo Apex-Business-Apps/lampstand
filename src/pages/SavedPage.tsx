@@ -21,13 +21,13 @@ export default function SavedPage() {
 
   function handleReopen(s: SavedPassage) {
     // Record a 'returned' signal the first time the user re-opens a saved
-    // passage in this session — feeds the Resonance fingerprint so it learns
+    // passage in this session - feeds the Resonance fingerprint so it learns
     // which passages keep drawing them back.
     if (openedRefs.has(s.passage.reference)) return;
     setOpenedRefs(prev => new Set(prev).add(s.passage.reference));
     try {
       recordSignal({ signal: 'returned', passage: s.passage });
-    } catch { /* private mode — ignore */ }
+    } catch { /* private mode - ignore */ }
   }
 
   return (
