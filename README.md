@@ -37,19 +37,13 @@ Defaults are privacy-first. Raw audio is not stored by default. Transcripts are 
 
 ## Environment Variables
 
-### Frontend (build-time — baked into the JS bundle, safe to expose)
-- `VITE_SUPABASE_URL` — Supabase project URL, e.g. `https://jfqivpqedhmgyqwqpwim.supabase.co`
-- `VITE_SUPABASE_PUBLISHABLE_KEY` — Supabase `anon` public key
-
-### Server-side secrets (Supabase Dashboard → Project Settings → Edge Functions → Secrets)
-- `GROQ_API_KEY` — AI guidance provider; **never put this in a `VITE_` variable or commit it**
-- `ELEVENLABS_API_KEY` — TTS provider key; same rule applies
-
-### CI/CD (GitHub repository secrets)
-- `CLOUDFLARE_API_TOKEN`
-- `CLOUDFLARE_ACCOUNT_ID`
+### Frontend (build-time, bundled into client JS)
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_PUBLISHABLE_KEY`
+
+### CI / Infrastructure
+- `CLOUDFLARE_ACCOUNT_ID` (CI deploy)
+- `CLOUDFLARE_API_TOKEN` (CI deploy)
 
 ### Supabase Edge Function Secrets (set in Dashboard > Edge Functions > Secrets)
 - `GROQ_API_KEY` — used by `groq-guidance` edge function
