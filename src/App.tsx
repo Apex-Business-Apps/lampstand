@@ -13,7 +13,6 @@ import { ConsentModal } from "@/components/ConsentModal";
 import { useAppBoot } from "@/hooks/useAppBoot";
 
 // Lazy-load all pages for optimal code splitting
-const EntryPage = lazy(() => import("./pages/EntryPage"));
 const MarketingPage = lazy(() => import("./pages/MarketingPage"));
 const LiteLandingPage = lazy(() => import("./pages/LiteLandingPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
