@@ -81,7 +81,7 @@ export default function MarketingPage() {
         <div className="absolute inset-0 bg-[#ea580c]/20 mix-blend-overlay pointer-events-none"></div>
 
         <img
-          src="/regular_bible_texture.png"
+          src="/images/bible_page_texture_1781232668928.png"
           alt="Scripture Background"
           className="absolute inset-0 w-full h-full object-cover opacity-100"
           style={{ transform: 'none !important' as React.CSSProperties['transform'] }}
@@ -98,7 +98,7 @@ export default function MarketingPage() {
       <div className="absolute inset-0 z-[50] flex items-center justify-center pointer-events-none">
         <div className="relative w-full max-w-[800px] aspect-square pointer-events-auto">
           <img
-            src="/lampstand_transparent.png"
+            src="/images/lampstand_transparent.png"
             alt="Lamp Stand"
             className="absolute inset-0 w-full h-full object-contain z-[50]"
           />
