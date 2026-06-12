@@ -27,6 +27,19 @@ Token resources must include the zone for:
 
 > **Note:** if the Supabase project `jfqivpqedhmgyqwqpwim` is paused, restore it in the Supabase dashboard before running the deploy workflow. The build will embed the URL at compile time; a paused project will cause auth and sync to fail at runtime even if the build succeeds.
 
+## Required Supabase Edge Function secrets
+
+Set these in Supabase Dashboard → Edge Functions → Manage secrets. `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are injected automatically and do not need to be set manually.
+
+| Secret | Purpose |
+|---|---|
+| `GROQ_API_KEY` | Groq Orpheus TTS — primary voice provider (free tier, existing key) |
+| `ELEVENLABS_API_KEY` | **No longer used** — ElevenLabs replaced by Groq Orpheus + Cloudflare Workers AI. Leave unset or remove. |
+| `CLOUDFLARE_ACCOUNT_ID` | Workers AI Aura-1 fallback TTS provider |
+| `CLOUDFLARE_API_TOKEN` | Workers AI Aura-1 fallback TTS provider (needs "Workers AI — Edit" permission) |
+
+TTS provider chain: Groq Orpheus → Cloudflare Workers AI Aura-1 → browser `speechSynthesis`. All zero-cost on free tiers.
+
 ## Deploy path
 
 1. Verify there are no conflicting A/AAAA/CNAME records for `thelampstand.icu` and `www`.

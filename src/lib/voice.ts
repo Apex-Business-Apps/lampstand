@@ -157,7 +157,7 @@ export class TextToSpeechAdapter {
       return;
     }
 
-    // 1) Cloud TTS path
+    // 1) Cloud TTS path (Groq Orpheus → Workers AI Aura-1 provider chain)
     try {
       if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
         this.onStateChange?.('loading');
@@ -172,6 +172,12 @@ export class TextToSpeechAdapter {
           body: JSON.stringify({ text, voice }),
           signal: this.abortController.signal,
         });
+
+        // 503 with fallback:browser means all server providers exhausted — skip to browser TTS
+        if (response.status === 503) {
+          const body = await response.json().catch(() => ({}));
+          if (body?.fallback === 'browser') throw new Error('TTS providers exhausted');
+        }
 
         if (!response.ok) throw new Error(`TTS ${response.status}`);
         const audioBlob = await response.blob();
