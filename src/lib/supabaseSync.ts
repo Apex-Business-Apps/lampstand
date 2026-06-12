@@ -59,6 +59,7 @@ export async function pullProfileFromCloud(userId: string): Promise<void> {
     voiceGender: (data.voice_gender as UserProfile['voiceGender']) || local?.voiceGender || 'male',
     notificationsEnabled: local?.notificationsEnabled ?? false,
     notificationTime: local?.notificationTime || '07:00',
+    hideStreakVisuals: local?.hideStreakVisuals ?? false,
     onboardingComplete: data.onboarding_complete ?? local?.onboardingComplete ?? false,
     createdAt: local?.createdAt || data.created_at,
   };

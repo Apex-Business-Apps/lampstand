@@ -64,9 +64,9 @@ const MarketingPage: React.FC = () => {
         />
       </div>
 
-      {/* ===== LAYER 3: Obsidian mask — wiped away by the cursor glow ===== */}
+      {/* ===== LAYER 3: Obsidian mask — fixed full-viewport wipe ===== */}
       <div
-        className="absolute inset-0 z-[30] pointer-events-none"
+        className="fixed inset-0 z-[30] pointer-events-none"
         style={{
           background:
             'radial-gradient(circle at 30% 20%, #0b0a0c 0%, #050505 55%, #020203 100%)',
@@ -81,7 +81,7 @@ const MarketingPage: React.FC = () => {
 
       {/* ===== LAYER 4: Amber candle illumination following pointer ===== */}
       <div
-        className="absolute inset-0 z-[35] pointer-events-none mix-blend-screen"
+        className="fixed inset-0 z-[35] pointer-events-none mix-blend-screen"
         style={{
           background:
             'radial-gradient(220px 180px at calc(var(--x,50%) - 10px) calc(var(--y,50%) + 18px), rgba(249,115,22,0.55), rgba(234,88,12,0.25) 45%, transparent 78%),' +

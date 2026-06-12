@@ -29,7 +29,7 @@ export default function LectioPage() {
       setStep((s) => s + 1);
     } else {
       // Persist responses, set relatedPassage, fire resonance signals.
-      completeLectio(responses as LectioResponses, today.passage, tone);
+      completeLectio(responses as unknown as LectioResponses, today.passage, tone);
       updateStreak();
       navigate('/app');
     }
