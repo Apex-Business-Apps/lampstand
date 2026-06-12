@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { Sun, BookOpen, MessageCircle, PlayCircle, Baby, Flame, Moon, BookOpenCheck } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { hasCompletedTodayExamen } from '@/lib/examen/examenFlow';
 import { hasCompletedTodayLectio } from '@/lib/lectio/lectioFlow';
 import { Button } from '@/components/ui/button';
@@ -16,13 +14,6 @@ import type { UserProfile } from '@/types';
 export default function HomePage() {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
-
-  const handleNavigate = async (path: string) => {
-    try {
-      await Haptics.impact({ style: ImpactStyle.Light });
-    } catch (e) { /* ignore */ }
-    navigate(path);
-  };
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const knowledge = getKnowledge();
   const saved = getSavedPassages();
@@ -58,17 +49,12 @@ export default function HomePage() {
 
   return (
     <AppShell kidsMode={profile.kidsMode}>
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 260, damping: 20 }}
-        className={`px-5 pt-8 pb-6 space-y-6 ${presence.state === 'ember' ? 'opacity-95' : ''}`}
-      >
+      <div className={`px-5 pt-8 pb-6 space-y-6 ${presence.state === 'ember' ? 'opacity-95' : ''}`}>
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-muted-foreground">{greeting}</p>
-            <h1 className="text-2xl font-serif font-semibold text-foreground">LampStand</h1>
+            <h1 className="text-2xl font-serif font-semibold text-foreground">The Lamp Stand</h1>
           </div>
           {knowledge.streak > 0 && (
             <div className="flex items-center gap-1.5 bg-accent/60 px-3 py-1.5 rounded-full">
@@ -79,13 +65,8 @@ export default function HomePage() {
         </div>
 
         {/* Daily Light Hero */}
-        <button onClick={() => handleNavigate('/daily')} className="w-full text-left">
-          <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25, delay: 0.1 }}
-            className={`glow-card rounded-2xl p-6 space-y-4 ${presence.state === 'radiance' || presence.state === 'sacred-heart' ? 'shadow-[0_0_45px_rgba(250,180,80,0.35)]' : ''}`}
-          >
+        <button onClick={() => navigate('/daily')} className="w-full text-left">
+          <div className={`glow-card rounded-2xl p-6 space-y-4 animate-slide-up ${presence.state === 'radiance' || presence.state === 'sacred-heart' ? 'shadow-[0_0_45px_rgba(250,180,80,0.35)]' : ''}`}>
             <div className="flex items-center gap-3">
               <AgentPresence size="sm"  />
               <div>
@@ -95,21 +76,21 @@ export default function HomePage() {
             </div>
             <p className="scripture-text text-base line-clamp-3">{today.passage.text}</p>
             <p className="text-xs text-muted-foreground">- {today.passage.reference}</p>
-          </motion.div>
+          </div>
         </button>
 
         {/* Primary Actions */}
         <div className="grid grid-cols-2 gap-3">
-          <ActionCard icon={Sun} label="Read Today's Light" onClick={() => handleNavigate('/daily')} />
-          <ActionCard icon={PlayCircle} label="Sermon Mode" onClick={() => handleNavigate('/sermon')} />
-          <ActionCard icon={MessageCircle} label="Ask for Guidance" onClick={() => handleNavigate('/guidance')} />
-          <ActionCard icon={BookOpen} label="Continue Reading" onClick={() => handleNavigate('/saved')} />
+          <ActionCard icon={Sun} label="Read Today's Light" onClick={() => navigate('/daily')} />
+          <ActionCard icon={PlayCircle} label="Sermon Mode" onClick={() => navigate('/sermon')} />
+          <ActionCard icon={MessageCircle} label="Ask for Guidance" onClick={() => navigate('/guidance')} />
+          <ActionCard icon={BookOpen} label="Continue Reading" onClick={() => navigate('/saved')} />
         </div>
 
-        <Button variant="outline" className="w-full" onClick={() => handleNavigate('/return')}>The Return</Button>
+        <Button variant="outline" className="w-full" onClick={() => navigate('/return')}>The Return</Button>
 
         <button
-          onClick={() => handleNavigate('/lectio')}
+          onClick={() => navigate('/lectio')}
           className={`w-full text-left rounded-2xl p-5 border transition-all ${
             lectioDone
               ? 'bg-card border-border opacity-80'
@@ -139,7 +120,7 @@ export default function HomePage() {
         </button>
 
         <button
-          onClick={() => handleNavigate('/examen')}
+          onClick={() => navigate('/examen')}
           className={`w-full text-left rounded-2xl p-5 border transition-all ${
             examenDone
               ? 'bg-card border-border opacity-80'
@@ -155,7 +136,7 @@ export default function HomePage() {
             </div>
             <div className="flex-1">
               <p className="text-sm font-semibold text-foreground">
-                {examenDone ? 'Today\u2019s Examen - Complete' : 'The Daily Examen'}
+                {examenDone ? 'Today\u2019s Examen — Complete' : 'The Daily Examen'}
               </p>
               <p className="text-xs text-muted-foreground">
                 {examenDone
@@ -169,7 +150,7 @@ export default function HomePage() {
         </button>
 
         {profile.kidsMode && (
-          <Button variant="outline" className="w-full gap-2 border-2" onClick={() => handleNavigate('/kids')}>
+          <Button variant="outline" className="w-full gap-2 border-2" onClick={() => navigate('/kids')}>
             <Baby className="h-4 w-4" /> Kids Mode
           </Button>
         )}
@@ -179,7 +160,7 @@ export default function HomePage() {
           <div>
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-serif font-semibold">Saved Passages</h2>
-              <button onClick={() => handleNavigate('/saved')} className="text-xs text-primary font-medium">View all</button>
+              <button onClick={() => navigate('/saved')} className="text-xs text-primary font-medium">View all</button>
             </div>
             <div className="space-y-2">
               {saved.slice(0, 2).map(s => (
@@ -191,7 +172,7 @@ export default function HomePage() {
             </div>
           </div>
         )}
-      </motion.div>
+      </div>
     </AppShell>
   );
 }
