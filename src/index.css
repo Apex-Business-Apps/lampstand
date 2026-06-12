@@ -148,6 +148,9 @@
   .animate-slide-up {
     animation: slideUp 0.5s ease-out;
   }
+  .animate-realistic-fire {
+    animation: realistic-fire 4s ease-in-out infinite;
+  }
 }
 
 @keyframes glowPulse {
@@ -178,6 +181,16 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Multi-stage turbulent fire physics */
+@keyframes realistic-fire {
+  0%, 100% { transform: scaleY(1) scaleX(1) skewX(0deg) translateY(0px); opacity: 0.95; }
+  10% { transform: scaleY(1.1) scaleX(0.95) skewX(-1deg) translateY(-1px); opacity: 1; }
+  25% { transform: scaleY(0.95) scaleX(1.05) skewX(1deg) translateY(0px); opacity: 0.90; }
+  50% { transform: scaleY(1.15) scaleX(0.90) skewX(-1.5deg) translateY(-2px); opacity: 0.98; }
+  75% { transform: scaleY(0.98) scaleX(1.02) skewX(1.5deg) translateY(0px); opacity: 0.88; }
+  90% { transform: scaleY(1.05) scaleX(0.98) skewX(-0.5deg) translateY(-1px); opacity: 0.96; }
 }
 
 /* Safe area insets for mobile notch/home-bar */
