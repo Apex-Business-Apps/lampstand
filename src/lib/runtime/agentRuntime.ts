@@ -100,7 +100,7 @@ export class TurnPipeline {
         bestPassage = ranked[0]?.candidate.passage ?? null;
       }
     } catch {
-      // Retrieval failure is non-fatal — the AI adapter has its own fallback passage selection.
+      // Retrieval failure is non-fatal - the AI adapter has its own fallback passage selection.
     }
 
     // Assemble personal context from localStorage (respects consent flag internally).

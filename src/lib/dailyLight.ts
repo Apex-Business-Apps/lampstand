@@ -19,12 +19,12 @@ export function getDailyLight(date = new Date()): DailyLight {
   let template: typeof DAILY_LIGHT_LIBRARY[number];
 
   if (fp.signalCount > 0) {
-    // Personalized path — let Resonance order candidates and pick the top-ranked
+    // Personalized path - let Resonance order candidates and pick the top-ranked
     // one that is not the cached/last-shown reference (novelty already part of score).
     const ranked = rankCandidates(DAILY_LIGHT_LIBRARY, fp);
     template = ranked[0]?.candidate ?? DAILY_LIGHT_LIBRARY[hashString(localDate) % DAILY_LIGHT_LIBRARY.length];
   } else {
-    // Cold-start path — deterministic by date for guests.
+    // Cold-start path - deterministic by date for guests.
     const seed = hashString(localDate);
     template = DAILY_LIGHT_LIBRARY[seed % DAILY_LIGHT_LIBRARY.length];
     if (cached && DAILY_LIGHT_LIBRARY.length > 1 && template.passage.reference === cached.passage.reference) {

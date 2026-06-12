@@ -40,8 +40,20 @@ export default function EntryPage() {
       return;
     }
 
-    if (forceLite || isStandaloneDisplayMode()) {
+    if (forceLite) {
       navigate("/lite", { replace: true });
+      return;
+    }
+
+    // ========================================================================
+    // CRITICAL ROUTING RULE (DO NOT DRIFT):
+    // 1. If a user opens the installed PWA App (standalone display), they MUST 
+    //    go straight into the Login Page (/auth) if unauthenticated.
+    // 2. If a user types the URL in a browser (standard display), they MUST land 
+    //    on the Marketing Page (/welcome) before they can login.
+    // ========================================================================
+    if (isStandaloneDisplayMode()) {
+      navigate("/auth", { replace: true });
       return;
     }
 

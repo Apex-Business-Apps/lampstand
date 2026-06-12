@@ -24,7 +24,7 @@ describe('SafetyGate', () => {
 
   it('should clean em dashes from output', () => {
     const gate = new SafetyGate();
-    const cleaned = gate.cleanOutput("Peace — it is a gift.");
+    const cleaned = gate.cleanOutput("Peace - it is a gift.");
     expect(cleaned).toBe("Peace , it is a gift.");
   });
 });

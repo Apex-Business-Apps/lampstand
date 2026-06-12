@@ -1,5 +1,5 @@
 /**
- * Daily Light Reminder — zero-cost, browser-native push reminders.
+ * Daily Light Reminder - zero-cost, browser-native push reminders.
  *
  * Strategy: we use the browser's Notifications API + a service worker so the
  * reminder fires even when the tab is in the background, *without* requiring
@@ -37,7 +37,7 @@ export function getPermission(): NotificationPermission | 'unsupported' {
   return Notification.permission;
 }
 
-/** Standalone (PWA) detection — required for iOS push. */
+/** Standalone (PWA) detection - required for iOS push. */
 export function isStandalone(): boolean {
   if (typeof window === 'undefined') return false;
   return window.matchMedia?.('(display-mode: standalone)').matches
@@ -88,7 +88,7 @@ let activeTimer: ReturnType<typeof setTimeout> | null = null;
 
 /**
  * Arm (or re-arm) the in-page timer that fires a notification at the next
- * occurrence of `config.time`. Safe to call repeatedly — clears prior timer.
+ * occurrence of `config.time`. Safe to call repeatedly - clears prior timer.
  */
 export async function armDailyReminder(config: ReminderConfig, opts?: { title?: string; body?: string }) {
   if (activeTimer) {

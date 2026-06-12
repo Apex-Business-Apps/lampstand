@@ -62,7 +62,7 @@ export default function Onboarding() {
           <AgentPresence size="lg" className="mx-auto" />
           <h1 className="text-3xl font-serif font-semibold text-foreground">LampStand</h1>
           <p className="text-muted-foreground leading-relaxed">
-            A gentle companion for your journey through scripture. No pressure, no judgment — just light for the path ahead.
+            A gentle companion for your journey through scripture. No pressure, no judgment - just light for the path ahead.
           </p>
           <Button onClick={() => setStep('setup')} className="w-full mt-4 gap-2">
             Get Started <ArrowRight className="h-4 w-4" />

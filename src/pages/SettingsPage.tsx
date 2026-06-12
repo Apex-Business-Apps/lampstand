@@ -201,7 +201,7 @@ export default function SettingsPage() {
               </p>
             )}
             <p className="text-xs text-muted-foreground mt-2">
-              A gentle nudge at your chosen time. Delivered locally — no third-party push service.
+              A gentle nudge at your chosen time. Delivered locally - no third-party push service.
             </p>
           </Field>
         </Section>
@@ -305,11 +305,11 @@ function ConsentToggle({ label, value, onChange }: { label: string; value: boole
 function ResonanceCard() {
   const fp = describeFingerprint();
   const seasonLabel: Record<string, string> = {
-    wilderness: 'Wilderness — God meeting you in hard places',
-    waiting: 'Waiting — held in the in-between',
-    steady: 'Steady — ordinary fidelity',
-    flourishing: 'Flourishing — joy and gratitude rising',
-    returning: 'Returning — finding the way back',
+    wilderness: 'Wilderness - God meeting you in hard places',
+    waiting: 'Waiting - held in the in-between',
+    steady: 'Steady - ordinary fidelity',
+    flourishing: 'Flourishing - joy and gratitude rising',
+    returning: 'Returning - finding the way back',
   };
   return (
     <div className="rounded-xl border border-border bg-secondary/30 p-4 space-y-3">

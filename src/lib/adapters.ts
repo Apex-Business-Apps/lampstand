@@ -5,6 +5,7 @@ import type {
 import { SEED_PASSAGES, SEED_SERMONS, SEED_GUIDANCE_MAP } from '@/data/seed';
 import { getKnowledge, updateKnowledge } from './storage';
 import { checkInputSafety } from './safety';
+import { GraphRAGAdapter } from './retrieval/graphRAGAdapter';
 
 // ─── Utility: cosine similarity via TF-IDF term overlap ───────────────────────
 function tokenize(text: string): Record<string, number> {
@@ -68,7 +69,7 @@ const THEME_SYNONYMS: Record<string, string[]> = {
                   'give up', 'hopeless', 'not worth it', "can't go on", 'harm myself'],
 };
 
-// Negation window check — "not afraid" should not match 'fear'
+// Negation window check - "not afraid" should not match 'fear'
 const NEGATION_RE = /\b(not|never|no longer|didn't|don't|won't|wasn't|isn't|aren't)\b.{0,20}$/i;
 
 function classifyConcernV2(input: string): string[] {
@@ -102,7 +103,7 @@ const INTENSITY_AMPLIFIERS = [
 
 function scoreConcernIntensity(input: string): number {
   if (!input) return 0;
-  let score = 0.3; // baseline — any concern deserves attention
+  let score = 0.3; // baseline - any concern deserves attention
   const wordCount = input.trim().split(/\s+/).length;
   // Longer disclosures indicate more willingness to share (moderate boost)
   if (wordCount > 20) score += 0.1;
@@ -120,25 +121,25 @@ function scoreConcernIntensity(input: string): number {
 // Expanded from 3→5 variants per tone = 15 total (up from 9).
 const REFLECTION_BANK: Record<ToneStyle, string[]> = {
   gentle: [
-    `Take a slow breath and let these words settle over you — there's no rush here. This passage isn't asking you to perform or produce. It's simply offering you something: a quiet reminder that you're held.\n\nWhat would it feel like today, even for one moment, to trust that? Not to figure it all out — just to rest in it.`,
-    `Sometimes scripture meets us before we're ready for it. And that's exactly the point. These words aren't waiting for you to have your life together before they apply.\n\nWhatever you're carrying today — let this passage be a small lamp, not a floodlight. One gentle step of light is enough.`,
+    `Take a slow breath and let these words settle over you - there's no rush here. This passage isn't asking you to perform or produce. It's simply offering you something: a quiet reminder that you're held.\n\nWhat would it feel like today, even for one moment, to trust that? Not to figure it all out - just to rest in it.`,
+    `Sometimes scripture meets us before we're ready for it. And that's exactly the point. These words aren't waiting for you to have your life together before they apply.\n\nWhatever you're carrying today - let this passage be a small lamp, not a floodlight. One gentle step of light is enough.`,
     `There's a tenderness in this passage that deserves your full attention, even just for a moment. It doesn't demand. It doesn't scold. It simply invites.\n\nYou don't have to respond perfectly to an invitation. You just have to show up.`,
-    `Some days the most faithful thing we can do is simply to receive. Not to strive, not to understand fully, not to fix anything — just to open our hands and let this word land where it will.\n\nYou are not required to be okay. You are only invited to be here.`,
-    `This passage has been a companion to people in moments exactly like yours — uncertain, heavy, searching. It has not grown thin with time. Let it be with you now, not as theology to master, but as a hand extended toward you.`,
+    `Some days the most faithful thing we can do is simply to receive. Not to strive, not to understand fully, not to fix anything - just to open our hands and let this word land where it will.\n\nYou are not required to be okay. You are only invited to be here.`,
+    `This passage has been a companion to people in moments exactly like yours - uncertain, heavy, searching. It has not grown thin with time. Let it be with you now, not as theology to master, but as a hand extended toward you.`,
   ],
   balanced: [
-    `This passage opens something worth sitting with — not as theology to master, but as a living word for today. Scripture has a way of speaking directly to what we didn't even know we were carrying.\n\nWhat resonates? And what does it gently challenge in you? Both are worth noticing.`,
-    `There's a tension in this kind of passage — between what we know intellectually and what we feel in the lived moment. That tension isn't a failure of faith; it's often where the deepest formation happens.\n\nLet it do its work. You don't have to resolve it today.`,
-    `The invitation here is both simple and demanding: to pay attention. To let a word, a phrase, a promise land somewhere real in your life right now.\n\nWhat would it look like to actually receive this — not just read it?`,
+    `This passage opens something worth sitting with - not as theology to master, but as a living word for today. Scripture has a way of speaking directly to what we didn't even know we were carrying.\n\nWhat resonates? And what does it gently challenge in you? Both are worth noticing.`,
+    `There's a tension in this kind of passage - between what we know intellectually and what we feel in the lived moment. That tension isn't a failure of faith; it's often where the deepest formation happens.\n\nLet it do its work. You don't have to resolve it today.`,
+    `The invitation here is both simple and demanding: to pay attention. To let a word, a phrase, a promise land somewhere real in your life right now.\n\nWhat would it look like to actually receive this - not just read it?`,
     `Faith rarely feels like certainty. More often, it looks like choosing to act on what we believe is true even when we can't fully feel it. This passage speaks to that gap between knowing and feeling.\n\nWhere is that gap in your life right now?`,
-    `Scripture doesn't require that we agree with it before it can work in us. Sometimes we bring our questions, our doubts, even our resistance — and find that the word is larger than all of them.\n\nBring whatever you're carrying to this text. Let it be the container for your honesty.`,
+    `Scripture doesn't require that we agree with it before it can work in us. Sometimes we bring our questions, our doubts, even our resistance - and find that the word is larger than all of them.\n\nBring whatever you're carrying to this text. Let it be the container for your honesty.`,
   ],
   traditional: [
-    `The Church has meditated on these words across centuries, and they have not grown thin. Each generation finds in them a freshness — because they speak to what is most permanent in the human condition.\n\nBring your whole self to this text: your questions, your struggles, your longing. That is what lectio divina has always invited.`,
-    `In the tradition of the saints, scripture was never merely read — it was prayed. We enter these words not to extract information, but to be encountered by the Living God who speaks through them.\n\nLet the passage turn you, as a page is turned. Let it reveal something.`,
-    `Holy Scripture carries the weight of God's fidelity across time. When we read it faithfully, we are joining a great cloud of witnesses who have found these same words to be a lamp and a light.\n\nReceive this passage with the reverence it deserves — and the expectancy that it has something particular for you today.`,
-    `The Fathers of the Church understood that sacred reading is a form of prayer. We do not master the text; the text, under the action of the Spirit, begins to master us — shaping our desires, correcting our vision, enlarging our hope.\n\nSit with these words. Let them do their slow work.`,
-    `Every word of scripture was written within a community of faith, and it is best received within one. Even in your private reading, you are not alone — the whole communion of saints has prayed these words before you.\n\nYou are held by more than you know.`,
+    `The Church has meditated on these words across centuries, and they have not grown thin. Each generation finds in them a freshness - because they speak to what is most permanent in the human condition.\n\nBring your whole self to this text: your questions, your struggles, your longing. That is what lectio divina has always invited.`,
+    `In the tradition of the saints, scripture was never merely read - it was prayed. We enter these words not to extract information, but to be encountered by the Living God who speaks through them.\n\nLet the passage turn you, as a page is turned. Let it reveal something.`,
+    `Holy Scripture carries the weight of God's fidelity across time. When we read it faithfully, we are joining a great cloud of witnesses who have found these same words to be a lamp and a light.\n\nReceive this passage with the reverence it deserves - and the expectancy that it has something particular for you today.`,
+    `The Fathers of the Church understood that sacred reading is a form of prayer. We do not master the text; the text, under the action of the Spirit, begins to master us - shaping our desires, correcting our vision, enlarging our hope.\n\nSit with these words. Let them do their slow work.`,
+    `Every word of scripture was written within a community of faith, and it is best received within one. Even in your private reading, you are not alone - the whole communion of saints has prayed these words before you.\n\nYou are held by more than you know.`,
   ],
 };
 
@@ -152,20 +153,20 @@ function buildConcernAnchor(concern: string, themes: string[], passage: Scriptur
     : concern;
 
   const themeAnchors: Partial<Record<string, string>> = {
-    fear:        `What you're describing — "${concernSnippet}" — is exactly the kind of weight this passage was written to meet.`,
-    grief:       `In the midst of what you're carrying — "${concernSnippet}" — this passage stands close, not with answers, but with presence.`,
-    loneliness:  `"${concernSnippet}" — these words are heard. This passage says you are accompanied, even when it doesn't feel that way.`,
-    forgiveness: `The struggle you've named — "${concernSnippet}" — is one scripture speaks to honestly and without condemnation.`,
-    purpose:     `The searching you're doing — "${concernSnippet}" — is not wasted. This passage holds a promise about the path ahead.`,
-    peace:       `"${concernSnippet}" — this passage offers a stillness that doesn't require circumstances to change first.`,
-    temptation:  `The struggle you're facing — "${concernSnippet}" — is one this passage speaks to with compassion, not judgment.`,
-    conflict:    `What you're navigating — "${concernSnippet}" — is genuinely hard. This passage offers a foundation to stand on.`,
-    uncertainty: `"${concernSnippet}" — uncertainty is not the absence of faith. This passage holds space for exactly where you are.`,
-    gratitude:   `Even amid complexity, "${concernSnippet}" — this passage invites a perspective that holds both the hard and the good.`,
+    fear:        `What you're describing - "${concernSnippet}" - is exactly the kind of weight this passage was written to meet.`,
+    grief:       `In the midst of what you're carrying - "${concernSnippet}" - this passage stands close, not with answers, but with presence.`,
+    loneliness:  `"${concernSnippet}" - these words are heard. This passage says you are accompanied, even when it doesn't feel that way.`,
+    forgiveness: `The struggle you've named - "${concernSnippet}" - is one scripture speaks to honestly and without condemnation.`,
+    purpose:     `The searching you're doing - "${concernSnippet}" - is not wasted. This passage holds a promise about the path ahead.`,
+    peace:       `"${concernSnippet}" - this passage offers a stillness that doesn't require circumstances to change first.`,
+    temptation:  `The struggle you're facing - "${concernSnippet}" - is one this passage speaks to with compassion, not judgment.`,
+    conflict:    `What you're navigating - "${concernSnippet}" - is genuinely hard. This passage offers a foundation to stand on.`,
+    uncertainty: `"${concernSnippet}" - uncertainty is not the absence of faith. This passage holds space for exactly where you are.`,
+    gratitude:   `Even amid complexity, "${concernSnippet}" - this passage invites a perspective that holds both the hard and the good.`,
   };
 
   const anchor = themeAnchors[primaryTheme]
-    ?? `*${passage.reference}* — this passage has been a companion to countless people across centuries. Let it be one for you today.`;
+    ?? `*${passage.reference}* - this passage has been a companion to countless people across centuries. Let it be one for you today.`;
 
   return `\n\n${anchor}`;
 }
@@ -175,13 +176,13 @@ function buildSermonBody(passage: ScripturePassage, tone: ToneStyle): { reflecti
   const toneMap = {
     gentle: {
       opening: 'Hold these words lightly, like something precious you don\'t want to crush by gripping too hard.',
-      connector: 'In the ordinary moments — the commute, the quiet evening, the moment of doubt — this passage shows up.',
+      connector: 'In the ordinary moments - the commute, the quiet evening, the moment of doubt - this passage shows up.',
       closing: 'So today, carry it with you. Not as a burden, but as a companion.',
     },
     balanced: {
       opening: 'This passage speaks on multiple levels: to the immediate situation, and to the deeper pattern beneath it.',
       connector: 'In our world of noise and acceleration, this word cuts through with unusual clarity.',
-      closing: 'Let it reorient you — not toward a feeling, but toward a Person.',
+      closing: 'Let it reorient you - not toward a feeling, but toward a Person.',
     },
     traditional: {
       opening: 'The Fathers of the Church understood this passage as a window into the very nature of God\'s relationship with his people.',
@@ -192,8 +193,8 @@ function buildSermonBody(passage: ScripturePassage, tone: ToneStyle): { reflecti
 
   const parts = toneMap[tone];
   return {
-    reflection: `${parts.opening}\n\n${passage.reference} does not speak from a distance. It enters our actual situation — the worry, the hope, the grief, the waiting — and offers something that the world cannot manufacture: a word from beyond circumstances, pointing to what is unshakeable.\n\nThis is not optimism. It is not advice. It is revelation.`,
-    relevance: `${parts.connector}\n\nWhen we feel the ground shifting — in relationships, in health, in meaning — this passage functions as an anchor. Not by explaining our situation, but by locating us within a larger story: one where we are not forgotten, not abandoned, and not the final word on our own lives.\n\n${parts.closing}`,
+    reflection: `${parts.opening}\n\n${passage.reference} does not speak from a distance. It enters our actual situation - the worry, the hope, the grief, the waiting - and offers something that the world cannot manufacture: a word from beyond circumstances, pointing to what is unshakeable.\n\nThis is not optimism. It is not advice. It is revelation.`,
+    relevance: `${parts.connector}\n\nWhen we feel the ground shifting - in relationships, in health, in meaning - this passage functions as an anchor. Not by explaining our situation, but by locating us within a larger story: one where we are not forgotten, not abandoned, and not the final word on our own lives.\n\n${parts.closing}`,
     prayer: `Lord, as we receive this word, let it do in us what we cannot do for ourselves. Where we are fearful, let it bring courage. Where we are numb, let it bring feeling. Where we are lost, let it bring orientation.\n\nNot our will, but yours. Amen.`,
   };
 }
@@ -211,11 +212,11 @@ function buildCompositeGuidance(
   const primary = themes[0];
   const secondary = themes[1];
 
-  // Crisis pathway — always fires for crisis theme. Never bypassed.
+  // Crisis pathway - always fires for crisis theme. Never bypassed.
   if (themes.includes('crisis')) {
     return {
-      passage: SEED_PASSAGES[8], // Psalm 34:18 — "The LORD is close to the brokenhearted"
-      pastoralFraming: `What you're carrying right now sounds incredibly heavy. I want you to know: you don't have to carry it alone, and you don't have to carry it right now.\n\nThere are people trained to walk through this with you — please reach out to a crisis line (988 in the US/Canada) or someone you trust.\n\nI'm here for scripture and reflection, but your safety matters more than anything else. Here is a passage that has brought comfort to many in the darkest moments:`,
+      passage: SEED_PASSAGES[8], // Psalm 34:18 - "The LORD is close to the brokenhearted"
+      pastoralFraming: `What you're carrying right now sounds incredibly heavy. I want you to know: you don't have to carry it alone, and you don't have to carry it right now.\n\nThere are people trained to walk through this with you - please reach out to a crisis line (988 in the US/Canada) or someone you trust.\n\nI'm here for scripture and reflection, but your safety matters more than anything else. Here is a passage that has brought comfort to many in the darkest moments:`,
       reflectionQuestions: [
         'Is there one person you can reach out to right now?',
         'What would it mean to let someone carry this with you?',
@@ -237,7 +238,7 @@ function buildCompositeGuidance(
 
   return {
     ...base,
-    pastoralFraming: `${base.pastoralFraming}\n\nI notice something else in what you've shared — there may be a thread of **${secondary}** here too. These two experiences often travel together. Both deserve attention, and neither cancels the other out.`,
+    pastoralFraming: `${base.pastoralFraming}\n\nI notice something else in what you've shared - there may be a thread of **${secondary}** here too. These two experiences often travel together. Both deserve attention, and neither cancels the other out.`,
     reflectionQuestions: [
       ...base.reflectionQuestions,
       ...(extraQuestion ? [extraQuestion] : []),
@@ -245,7 +246,7 @@ function buildCompositeGuidance(
   };
 }
 
-// ─── Local Retrieval Adapter — TF-IDF + semantic theme boosting ───────────────
+// ─── Local Retrieval Adapter - TF-IDF + semantic theme boosting ───────────────
 export class LocalRetrievalAdapter implements IRetrievalAdapter {
   async search(req: RetrievalRequest): Promise<RetrievalResult> {
     const knowledge = getKnowledge();
@@ -328,7 +329,7 @@ export class LocalAIAdapter implements IAIAdapter {
       anchor = buildConcernAnchor(concern, themes, passage);
     } else {
       // Generic anchor for non-guided contexts
-      anchor = `\n\n*${passage.reference}* — ${
+      anchor = `\n\n*${passage.reference}* - ${
         knowledge.preferredReflectionLength === 'short'
           ? 'Let these words land where they will.'
           : 'This passage has been a companion to countless people across centuries. Let it be one for you today.'
@@ -369,7 +370,7 @@ export class LocalAIAdapter implements IAIAdapter {
     const updated = [...new Set([...knowledge.frequentTopics, ...themes])].slice(-10);
     updateKnowledge({ frequentTopics: updated });
 
-    // Score intensity — available for future adaptive depth logic
+    // Score intensity - available for future adaptive depth logic
     const _intensity = scoreConcernIntensity(concern);
 
     // Build composite guidance with concern context
@@ -398,7 +399,7 @@ export class LocalAIAdapter implements IAIAdapter {
 
   // FIX: validateSafety was previously dead code (always returned { safe: true }).
   // ROOT CAUSE: The method was never wired to the actual checkInputSafety implementation.
-  // CHANGE: Delegates to checkInputSafety from safety.ts — the single source of truth
+  // CHANGE: Delegates to checkInputSafety from safety.ts - the single source of truth
   //         for all input safety decisions. The IAIAdapter contract is now honored.
   // REGRESSION TEST: validateSafety must return safe=false for injection patterns.
   async validateSafety(input: string): Promise<{ safe: boolean; reason?: string }> {
@@ -411,7 +412,7 @@ export class LocalAIAdapter implements IAIAdapter {
 }
 
 // ─── Singleton instances ───────────────────────────────────────────────────────
-let retrievalAdapter: IRetrievalAdapter = new LocalRetrievalAdapter();
+let retrievalAdapter: IRetrievalAdapter = new GraphRAGAdapter();
 let aiAdapter: IAIAdapter = new LocalAIAdapter();
 
 export function getRetrievalAdapter(): IRetrievalAdapter { return retrievalAdapter; }

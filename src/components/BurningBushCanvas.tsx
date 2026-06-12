@@ -77,7 +77,7 @@ export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanv
       const h = canvas.clientHeight;
       const amp = intensityRef.current;
 
-      // Clear with fade trail — brighter base (#1a1610)
+      // Clear with fade trail - brighter base (#1a1610)
       ctx.globalCompositeOperation = 'source-over';
       ctx.fillStyle = 'rgba(26, 22, 16, 0.15)';
       ctx.fillRect(0, 0, w, h);
@@ -95,7 +95,7 @@ export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanv
       ctx.fillStyle = glowGrad;
       ctx.fillRect(0, 0, w, h);
 
-      // Inner flame core — bright white-gold center
+      // Inner flame core - bright white-gold center
       const coreSize = reducedMotion ? 15 + amp * 10 : 15 + amp * 25;
       const coreGrad = ctx.createRadialGradient(centerX, baseY - 30, 0, centerX, baseY - 30, coreSize);
       coreGrad.addColorStop(0, `hsla(45, 100%, 95%, ${0.6 + amp * 0.4})`);
@@ -108,7 +108,7 @@ export function BurningBushCanvas({ intensity, className = '' }: BurningBushCanv
 
       // Only draw particles and embers if not reduced motion
       if (!reducedMotion) {
-        // Spawn particles — more when speaking, fewer on small screens
+        // Spawn particles - more when speaking, fewer on small screens
         const particleCap = w < 500 ? 150 : 400; // Performance scaling
         const spawnCount = Math.floor(2 + amp * 12);
         for (let i = 0; i < spawnCount; i++) {

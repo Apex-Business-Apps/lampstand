@@ -61,7 +61,7 @@ export default function InstallPage() {
             <p className="text-sm font-medium">Why install?</p>
           </div>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            On iPhone, daily-light push reminders are only delivered to apps installed on the home screen — this is an Apple limitation, not ours. On Android & desktop, install gives you a faster launch and an icon you can find at a glance.
+            On iPhone, daily-light push reminders are only delivered to apps installed on the home screen - this is an Apple limitation, not ours. On Android & desktop, install gives you a faster launch and an icon you can find at a glance.
           </p>
         </div>
 

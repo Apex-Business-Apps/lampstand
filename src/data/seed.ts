@@ -38,7 +38,7 @@ export const SEED_PASSAGES: ScripturePassage[] = [
   },
   {
     id: 'jer-29-11', book: 'Jeremiah', chapter: 29, verseStart: 11, verseEnd: 11,
-    text: '"For I know well the plans I have in mind for you—oracle of the LORD—plans for your welfare and not for woe, so as to give you a future of hope."',
+    text: '"For I know well the plans I have in mind for you-oracle of the LORD-plans for your welfare and not for woe, so as to give you a future of hope."',
     translation: 'NABRE', reference: 'Jeremiah 29:11',
   },
   {
@@ -68,9 +68,9 @@ export const SEED_SERMONS: Sermon[] = [
     id: 'sermon-john-14-27',
     title: 'The Peace That Stays',
     passage: SEED_PASSAGES[0],
-    reflection: "There's a particular kind of peace that the world offers — it's conditional, fleeting, tied to circumstances. Jesus speaks of something altogether different here. A peace that doesn't depend on things going well. A peace that remains even when the ground shifts beneath us.\n\nThis isn't a command to stop feeling troubled. It's an invitation to remember that peace is already present, already given, already yours. You don't have to earn it or achieve it. You simply receive it.",
-    relevance: "In a world that moves relentlessly fast, where our attention is pulled in every direction, these words are an anchor. When anxiety rises, when the news overwhelms, when the future feels uncertain — this peace is still offered. Not as an escape from difficulty, but as a steady presence within it.",
-    prayer: "Lord, help me receive the peace you offer — not the world's version, but yours. When my heart is troubled, remind me that your peace does not depend on my circumstances. Let me rest in it today. Amen.",
+    reflection: "There's a particular kind of peace that the world offers - it's conditional, fleeting, tied to circumstances. Jesus speaks of something altogether different here. A peace that doesn't depend on things going well. A peace that remains even when the ground shifts beneath us.\n\nThis isn't a command to stop feeling troubled. It's an invitation to remember that peace is already present, already given, already yours. You don't have to earn it or achieve it. You simply receive it.",
+    relevance: "In a world that moves relentlessly fast, where our attention is pulled in every direction, these words are an anchor. When anxiety rises, when the news overwhelms, when the future feels uncertain - this peace is still offered. Not as an escape from difficulty, but as a steady presence within it.",
+    prayer: "Lord, help me receive the peace you offer - not the world's version, but yours. When my heart is troubled, remind me that your peace does not depend on my circumstances. Let me rest in it today. Amen.",
     createdAt: new Date().toISOString(),
   },
 ];
@@ -78,25 +78,25 @@ export const SEED_SERMONS: Sermon[] = [
 export const SEED_GUIDANCE_MAP: Record<string, Omit<GuidanceResult, 'id' | 'concern' | 'themes' | 'createdAt'>> = {
   fear: {
     passage: SEED_PASSAGES[4], // Isaiah 41:10
-    pastoralFraming: "Fear is one of the most human experiences there is. It doesn't mean you lack faith — it means you're paying attention. A passage to sit with right now is one where God speaks directly to that feeling, not with disappointment, but with reassurance.",
+    pastoralFraming: "Fear is one of the most human experiences there is. It doesn't mean you lack faith - it means you're paying attention. A passage to sit with right now is one where God speaks directly to that feeling, not with disappointment, but with reassurance.",
     reflectionQuestions: [
       "What specifically feels uncertain or threatening right now?",
       "Can you recall a time when you felt afraid and found your way through? What carried you?"
     ],
-    prayer: "God of comfort, I bring my fear to you — not because I should be ashamed of it, but because I trust you can hold it. Help me find steady ground today. Amen.",
+    prayer: "God of comfort, I bring my fear to you - not because I should be ashamed of it, but because I trust you can hold it. Help me find steady ground today. Amen.",
   },
   grief: {
     passage: SEED_PASSAGES[8], // Psalm 34:18
-    pastoralFraming: "Grief is not something to rush through or fix. It is the natural response of a heart that loved deeply. You may find light in knowing that scripture speaks of God being especially close in moments like this — not distant, not disappointed, but near.",
+    pastoralFraming: "Grief is not something to rush through or fix. It is the natural response of a heart that loved deeply. You may find light in knowing that scripture speaks of God being especially close in moments like this - not distant, not disappointed, but near.",
     reflectionQuestions: [
       "What do you most need to express or release right now?",
       "Is there a memory you'd like to hold gently today?"
     ],
-    prayer: "Lord, you are close to the brokenhearted. Be close to me now. I don't need answers — I need your presence. Amen.",
+    prayer: "Lord, you are close to the brokenhearted. Be close to me now. I don't need answers - I need your presence. Amen.",
   },
   loneliness: {
     passage: SEED_PASSAGES[1], // Psalm 23
-    pastoralFraming: "Loneliness can feel like a vast, empty space. But here is a scripture many people turn to in moments like this — a psalm that speaks of being led, restored, and accompanied, even in the darkest valley. You are not walking alone, even when it feels that way.",
+    pastoralFraming: "Loneliness can feel like a vast, empty space. But here is a scripture many people turn to in moments like this - a psalm that speaks of being led, restored, and accompanied, even in the darkest valley. You are not walking alone, even when it feels that way.",
     reflectionQuestions: [
       "When have you felt most connected to something greater than yourself?",
       "What is one small way you could reach out or open up today?"
@@ -105,7 +105,7 @@ export const SEED_GUIDANCE_MAP: Record<string, Omit<GuidanceResult, 'id' | 'conc
   },
   forgiveness: {
     passage: SEED_PASSAGES[9], // 1 Cor 13:4-7
-    pastoralFraming: "Forgiveness is rarely simple and never instant. Whether you're seeking to forgive someone else or yourself, it's a process that unfolds over time. Scripture doesn't demand that you feel forgiveness immediately — it invites you toward it, at your own pace.",
+    pastoralFraming: "Forgiveness is rarely simple and never instant. Whether you're seeking to forgive someone else or yourself, it's a process that unfolds over time. Scripture doesn't demand that you feel forgiveness immediately - it invites you toward it, at your own pace.",
     reflectionQuestions: [
       "Is there something you need to forgive in yourself, or in someone else?",
       "What would it feel like to release even a small part of this weight?"
@@ -114,16 +114,16 @@ export const SEED_GUIDANCE_MAP: Record<string, Omit<GuidanceResult, 'id' | 'conc
   },
   purpose: {
     passage: SEED_PASSAGES[7], // Jeremiah 29:11
-    pastoralFraming: "Feeling uncertain about your direction is more common than you might think. It doesn't mean you've failed or lost your way — sometimes it means you're standing at a threshold. Here is a passage that speaks to God's intentions, even when the path isn't clear yet.",
+    pastoralFraming: "Feeling uncertain about your direction is more common than you might think. It doesn't mean you've failed or lost your way - sometimes it means you're standing at a threshold. Here is a passage that speaks to God's intentions, even when the path isn't clear yet.",
     reflectionQuestions: [
       "What brings you a sense of meaning, even in small moments?",
       "If you could trust that things are unfolding as they should, how would that change today?"
     ],
-    prayer: "Lord, I don't need the whole map — just enough light for the next step. Help me trust your plan, even when I can't see it. Amen.",
+    prayer: "Lord, I don't need the whole map - just enough light for the next step. Help me trust your plan, even when I can't see it. Amen.",
   },
   peace: {
     passage: SEED_PASSAGES[6], // Psalm 46:10
-    pastoralFraming: "Sometimes the most powerful thing we can do is simply stop. Not to give up, but to let go of the need to control everything. This passage invites you into stillness — not emptiness, but a fullness of presence.",
+    pastoralFraming: "Sometimes the most powerful thing we can do is simply stop. Not to give up, but to let go of the need to control everything. This passage invites you into stillness - not emptiness, but a fullness of presence.",
     reflectionQuestions: [
       "What would it mean for you to 'be still' right now?",
       "What are you holding onto that you might gently set down?"
@@ -132,7 +132,7 @@ export const SEED_GUIDANCE_MAP: Record<string, Omit<GuidanceResult, 'id' | 'conc
   },
   gratitude: {
     passage: SEED_PASSAGES[3], // Phil 4:6-7
-    pastoralFraming: "Gratitude has a way of shifting our perspective, not by denying what's hard, but by widening our view to include what's also good. This passage weaves thanksgiving right into the act of prayer — they go hand in hand.",
+    pastoralFraming: "Gratitude has a way of shifting our perspective, not by denying what's hard, but by widening our view to include what's also good. This passage weaves thanksgiving right into the act of prayer - they go hand in hand.",
     reflectionQuestions: [
       "What is one thing today, however small, that you can be thankful for?",
       "How might gratitude change the way you approach a current challenge?"
@@ -141,7 +141,7 @@ export const SEED_GUIDANCE_MAP: Record<string, Omit<GuidanceResult, 'id' | 'conc
   },
   temptation: {
     passage: SEED_PASSAGES[2], // Matt 11:28-30
-    pastoralFraming: "Struggling with temptation doesn't make you a failure — it makes you human. Jesus doesn't stand apart from our struggle; he invites us to bring our burdens, including the ones we're ashamed of, to him. There is no judgment here, only an offer of rest.",
+    pastoralFraming: "Struggling with temptation doesn't make you a failure - it makes you human. Jesus doesn't stand apart from our struggle; he invites us to bring our burdens, including the ones we're ashamed of, to him. There is no judgment here, only an offer of rest.",
     reflectionQuestions: [
       "What is the deeper need that this temptation is trying to meet?",
       "Who in your life could you trust with this struggle?"
@@ -150,7 +150,7 @@ export const SEED_GUIDANCE_MAP: Record<string, Omit<GuidanceResult, 'id' | 'conc
   },
   conflict: {
     passage: SEED_PASSAGES[0], // John 14:27
-    pastoralFraming: "Conflict stirs up powerful emotions — anger, hurt, the desire to be right. Before acting, you might find it helpful to sit with these words about peace. Not peace as the absence of conflict, but peace as a foundation to stand on while navigating it.",
+    pastoralFraming: "Conflict stirs up powerful emotions - anger, hurt, the desire to be right. Before acting, you might find it helpful to sit with these words about peace. Not peace as the absence of conflict, but peace as a foundation to stand on while navigating it.",
     reflectionQuestions: [
       "What outcome would truly bring you peace in this situation?",
       "Can you see the other person's hurt, even if you disagree?"
@@ -159,7 +159,7 @@ export const SEED_GUIDANCE_MAP: Record<string, Omit<GuidanceResult, 'id' | 'conc
   },
   uncertainty: {
     passage: SEED_PASSAGES[10], // Prov 3:5-6
-    pastoralFraming: "Not knowing what comes next can be deeply uncomfortable. But uncertainty isn't the opposite of faith — it may be where faith begins. This passage doesn't promise you'll understand everything; it promises that the path will become clear as you walk it.",
+    pastoralFraming: "Not knowing what comes next can be deeply uncomfortable. But uncertainty isn't the opposite of faith - it may be where faith begins. This passage doesn't promise you'll understand everything; it promises that the path will become clear as you walk it.",
     reflectionQuestions: [
       "What would it look like to trust, even without full clarity?",
       "What is the next small step you can take, even without seeing the whole road?"
@@ -173,15 +173,15 @@ export const SEED_DAILY_LIGHTS: DailyLight[] = [
     id: 'daily-1',
     date: new Date().toISOString().split('T')[0],
     passage: SEED_PASSAGES[11], // Matt 5:14-16
-    reflection: "You are the light of the world. Not because of perfection, but because of presence. Today, this passage invites you to simply show up — as you are, where you are — and let your light be visible. Not for recognition, but as a quiet act of love.",
-    prayer: "Lord, let my life be a gentle light today — not to impress, but to serve. Help me shine where I'm planted. Amen.",
+    reflection: "You are the light of the world. Not because of perfection, but because of presence. Today, this passage invites you to simply show up - as you are, where you are - and let your light be visible. Not for recognition, but as a quiet act of love.",
+    prayer: "Lord, let my life be a gentle light today - not to impress, but to serve. Help me shine where I'm planted. Amen.",
     theme: 'light',
   },
   {
     id: 'daily-2',
     date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
     passage: SEED_PASSAGES[0], // John 14:27
-    reflection: "Peace isn't the absence of noise — it's a presence that holds you in the middle of it. Today, you're invited to receive a peace that doesn't depend on everything being okay. It simply is, and it's offered freely.",
+    reflection: "Peace isn't the absence of noise - it's a presence that holds you in the middle of it. Today, you're invited to receive a peace that doesn't depend on everything being okay. It simply is, and it's offered freely.",
     prayer: "Jesus, let your peace settle over me like morning light. Not because everything is resolved, but because you are here. Amen.",
     theme: 'peace',
   },

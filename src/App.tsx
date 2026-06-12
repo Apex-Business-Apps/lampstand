@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/hooks/useAuth";
 import { AuthGuard } from "@/components/AuthGuard";
+import { ProfileGuard } from "@/components/ProfileGuard";
 import { FloatingAgent } from "@/components/FloatingAgent";
 import { ConsentModal } from "@/components/ConsentModal";
 import { useAppBoot } from "@/hooks/useAppBoot";
@@ -89,19 +90,33 @@ const App = () => (
               <Route path="/entry" element={<EntryPage />} />
               <Route path="/welcome" element={<MarketingPage />} />
               <Route path="/lite" element={<LiteLandingPage />} />
-              <Route path="/app" element={<HomePage />} />
               <Route path="/onboarding" element={<Onboarding />} />
-              <Route path="/daily" element={<DailyLightPage />} />
-              <Route path="/sermon" element={<SermonPage />} />
-              <Route path="/guidance" element={<GuidancePage />} />
-              <Route path="/kids" element={<KidsPage />} />
-              <Route path="/saved" element={<SavedPage />} />
-              <Route path="/journal" element={<JournalPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
+              
+              {/* 
+                ========================================================================
+                CRITICAL ROUTING RULE (DO NOT DRIFT):
+                The ProfileGuard explicitly enforces that browser users go to /welcome 
+                (Marketing) and standalone/PWA users go to /auth (Login) if they are 
+                unauthenticated. Do not expose these app routes without this guard.
+                ========================================================================
+              */}
+              <Route element={<ProfileGuard />}>
+                <Route path="/app" element={<HomePage />} />
+                <Route path="/daily" element={<DailyLightPage />} />
+                <Route path="/sermon" element={<SermonPage />} />
+                <Route path="/guidance" element={<GuidancePage />} />
+                <Route path="/kids" element={<KidsPage />} />
+                <Route path="/saved" element={<SavedPage />} />
+                <Route path="/journal" element={<JournalPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
+                <Route path="/examen" element={<ExamenPage />} />
+                <Route path="/lectio" element={<LectioPage />} />
+                <Route path="/circles" element={<PrayerCirclesPage />} />
+                <Route path="/circles/:id" element={<PrayerCircleDetailPage />} />
+              </Route>
+
               <Route path="/return" element={<ReturnPage />} />
               <Route path="/install" element={<InstallPage />} />
-              <Route path="/examen" element={<ExamenPage />} />
-              <Route path="/lectio" element={<LectioPage />} />
               <Route path="/admin" element={<AuthGuard><AdminPage /></AuthGuard>} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -111,8 +126,6 @@ const App = () => (
               <Route path="/legal/acceptable-use" element={<AcceptableUsePage />} />
               <Route path="/legal/disclaimer" element={<DisclaimerPage />} />
               <Route path="/legal/company" element={<CompanyPage />} />
-              <Route path="/circles" element={<PrayerCirclesPage />} />
-              <Route path="/circles/:id" element={<PrayerCircleDetailPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
