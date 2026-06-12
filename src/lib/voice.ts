@@ -4,8 +4,10 @@ import { audioAnalyzer } from '@/lib/audioAnalyzer';
 import { getConsentState, getVoicePreferences, pushVoiceTranscript } from '@/lib/storage';
 
 // Minimal ambient type so TS accepts the Web Speech API in browsers.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type SpeechRecognition = any;
+type SpeechRecognitionEvent = any;
+type SpeechRecognitionErrorEvent = any;
 
 export type VoiceGender = 'male' | 'female';
 
