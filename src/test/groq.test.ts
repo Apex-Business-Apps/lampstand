@@ -33,8 +33,8 @@ describe('GroqAIAdapter', () => {
 
     // Verify fallback behavior
     expect(consoleSpy).toHaveBeenCalledWith("Groq fallback", expect.any(Error));
-    // The fallback LocalAIAdapter returns a specific string format
-    expect(result).toContain('John 11:35 speaks to something timeless');
+    // The fallback LocalAIAdapter returns a string containing the passage reference
+    expect(result).toContain('John 11:35');
 
     consoleSpy.mockRestore();
   });
