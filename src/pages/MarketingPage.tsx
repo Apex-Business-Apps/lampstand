@@ -39,28 +39,11 @@ const journey = [
   },
 ];
 
-/* ────────────────────────────────────────────────────────────
- * COMPLEX MASK CSS — exactly as specified in directive
- * Two overlapping ellipse/circle radial gradients composited
- * ──────────────────────────────────────────────────────────── */
-const MASK_STYLE: React.CSSProperties = {
-  WebkitMaskImage:
-    'radial-gradient(ellipse 250px 180px at calc(var(--x, 50%) - 20px) calc(var(--y, 50%) + 10px), black 30%, transparent 80%), ' +
-    'radial-gradient(circle 180px at calc(var(--x, 50%) + 40px) calc(var(--y, 50%) - 30px), black 20%, transparent 70%)',
-  maskImage:
-    'radial-gradient(ellipse 250px 180px at calc(var(--x, 50%) - 20px) calc(var(--y, 50%) + 10px), black 30%, transparent 80%), ' +
-    'radial-gradient(circle 180px at calc(var(--x, 50%) + 40px) calc(var(--y, 50%) - 30px), black 20%, transparent 70%)',
-  WebkitMaskComposite: 'source-over' as string,
-  maskComposite: 'add' as string,
-};
 
 export default function MarketingPage() {
   const navigate = useNavigate();
 
-  /* Ref targets ONLY the z-[20] scripture mask layer */
   const maskRef = React.useRef<HTMLDivElement>(null);
-  /* Separate ref for the amber tint overlay (same mask coordinates) */
-  const tintRef = React.useRef<HTMLDivElement>(null);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const x = `${e.clientX}px`;
@@ -68,10 +51,6 @@ export default function MarketingPage() {
     if (maskRef.current) {
       maskRef.current.style.setProperty('--x', x);
       maskRef.current.style.setProperty('--y', y);
-    }
-    if (tintRef.current) {
-      tintRef.current.style.setProperty('--x', x);
-      tintRef.current.style.setProperty('--y', y);
     }
   }
 
@@ -86,74 +65,44 @@ export default function MarketingPage() {
           Applied via className bg-[#090a0f] on root div above.
           ═══════════════════════════════════════════════════════ */}
 
-      {/* ═══════════════════════════════════════════════════════
-          LAYER 20 (z-[20]): Interactive Scripture Mask
-          Phase 1: Z-index stacking
-          Phase 2: Sibling DOM — this is SIBLING 1 of the hero
-          Phase 3: Static 1:1 pointer tracking, NO transitions
-          Phase 4: Asset paths resolved to /images/
-          ═══════════════════════════════════════════════════════ */}
+      {/* LAYER 20: SCRIPTURE MASK SIBLING */}
       <div
         ref={maskRef}
-        className="fixed inset-0 pointer-events-none z-[20]"
-        style={MASK_STYLE}
-      >
-        <img
-          src="/images/regular_bible_texture.png"
-          alt="Scripture Background"
-          className="w-full h-full object-cover opacity-100"
-          style={{ transform: 'none' }}
-        />
-      </div>
-
-      {/* ═══════════════════════════════════════════════════════
-          LAYER 20 (z-[21]): Warm Amber Tint Overlay
-          Phase 3: Natural amber illumination (#F5A623)
-          Same mask coordinates, soft-light blend over scripture
-          ═══════════════════════════════════════════════════════ */}
-      <div
-        ref={tintRef}
-        className="fixed inset-0 pointer-events-none z-[21]"
+        className="absolute inset-0 w-full h-full z-[20] pointer-events-none mix-blend-screen"
         style={{
-          ...MASK_STYLE,
-          background: '#F5A623',
-          mixBlendMode: 'soft-light',
-          opacity: 0.35,
-        } as React.CSSProperties}
-      />
+          WebkitMaskImage: 'radial-gradient(ellipse 140px 90px at calc(var(--x) - 10px) calc(var(--y) + 5px), black 20%, transparent 80%), radial-gradient(ellipse 90px 140px at calc(var(--x) + 15px) calc(var(--y) - 20px), black 10%, transparent 70%)',
+          WebkitMaskComposite: 'source-over',
+          maskComposite: 'add',
+          transition: 'none'
+        }}
+      >
+        {/* Amber Tint */}
+        <div className="absolute inset-0 bg-[#f97316]/25 mix-blend-color-burn pointer-events-none"></div>
+        <div className="absolute inset-0 bg-[#ea580c]/20 mix-blend-overlay pointer-events-none"></div>
 
-      {/* ═══════════════════════════════════════════════════════
-          LAYER 30 (z-[30]): Centerpiece Cross Silhouette
-          Phase 5: Restored, fixed center, BLOCKS illuminated text
-          ═══════════════════════════════════════════════════════ */}
-      <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[30]">
         <img
-          src="/images/cross_silhouette_1781232694424.png"
-          alt="Void Cross"
-          className="w-[700px] h-auto object-contain brightness-0 opacity-[0.25]"
+          src="/regular_bible_texture.png"
+          alt="Scripture Background"
+          className="absolute inset-0 w-full h-full object-cover opacity-100"
+          style={{ transform: 'none !important' as React.CSSProperties['transform'] }}
         />
       </div>
 
-      {/* ═══════════════════════════════════════════════════════
-          LAYER 50 (z-[50]): Lamp Stand & Isolated Flame
-          Phase 2: SIBLING 2 — completely outside mask parent
-          Phase 4: Correct asset path
-          Phase 6: clip-path crops right artifact, realistic flame
-          ═══════════════════════════════════════════════════════ */}
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 hidden lg:flex w-1/2 h-screen items-center justify-center pointer-events-none z-[50]">
-        <div className="relative pointer-events-auto">
-          {/* The Lamp Asset with baked-in artifact CLIPPED OFF */}
-          <img
-            src="/images/lampstand_transparent.png"
-            alt="Lamp Stand"
-            className="relative z-[50] w-[450px] xl:w-[500px] h-auto"
-            style={{ clipPath: 'polygon(0 0, 81% 0, 81% 100%, 0 100%)' }}
-          />
+      {/* LAYER 30: CENTERPIECE CROSS */}
+      <div className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-48 z-[30] opacity-90 pointer-events-none flex flex-col items-center justify-center">
+        <div className="absolute w-8 h-48 bg-[#090a0f]"></div>
+        <div className="absolute w-32 h-8 bg-[#090a0f] top-12"></div>
+      </div>
 
-          {/* ─────────────────────────────────────────────────
-              PHASE 6 STEP C: SINGLE REALISTIC FLAME NODE
-              Anchored origin-bottom, teardrop shape, blue core
-              ───────────────────────────────────────────────── */}
+      {/* LAYER 50: LAMPSTAND & FLAME SIBLING */}
+      <div className="absolute inset-0 z-[50] flex items-center justify-center pointer-events-none">
+        <div className="relative w-full max-w-[800px] aspect-square pointer-events-auto">
+          <img
+            src="/lampstand_transparent.png"
+            alt="Lamp Stand"
+            className="absolute inset-0 w-full h-full object-contain z-[50]"
+          />
+          {/* Single CSS Flame Node - Locked to aspect ratio */}
           <div
             className="absolute top-[34.5%] left-[72%] w-4 h-9 z-[60] origin-bottom pointer-events-none animate-realistic-fire"
             style={{
@@ -164,8 +113,7 @@ export default function MarketingPage() {
               filter: 'blur(1px)',
             }}
           >
-            {/* Blue core overlay for realism */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-4 bg-blue-500 rounded-full blur-[2px] opacity-60" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-4 bg-blue-500 rounded-full blur-[2px] opacity-60"></div>
           </div>
         </div>
       </div>
