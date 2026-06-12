@@ -76,16 +76,20 @@ npm run build
 
 ## Cloudflare Deployment (exact steps)
 
+**Local / staging** (uses `wrangler.json` — no custom domain routes):
 ```bash
 npm ci
 npm run build
 npx wrangler deploy --config wrangler.json
 ```
 
-CI-safe one-liner:
-
+**Production CI** (uses `wrangler.production.json` — includes `thelampstand.icu` route bindings):
 ```bash
-npm run deploy:ci
+# The `Deploy Worker Production` GitHub Actions workflow runs this automatically on push to main.
+# To trigger manually from local:
+npm ci
+npm run build
+npx wrangler deploy --config wrangler.production.json
 ```
 
 ## Legal and Compliance Surfaces

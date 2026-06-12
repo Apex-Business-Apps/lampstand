@@ -1,6 +1,6 @@
 # LampStand Repo Inventory
 
-Verified on 2026-06-09 from `/workspace/lampstand`.
+Verified on 2026-06-11 from `/workspace/lampstand`.
 
 ## Stack
 - Framework: Vite React SPA verified by `vite.config.ts`, `src/main.tsx`, and `src/App.tsx`.
@@ -22,7 +22,7 @@ Verified on 2026-06-09 from `/workspace/lampstand`.
 - Data/persistence modules: `src/lib/storage.ts`, `src/lib/supabaseSync.ts`, `src/integrations/supabase/types.ts`, `supabase/migrations/`.
 - Voice modules: `src/lib/voice.ts`, `src/lib/voice/`, `src/components/VoiceInput.tsx`, `src/lib/audioAnalyzer.ts`.
 - Notifications: `src/lib/notifications/dailyReminder.ts`.
-- Tests: `src/test/` (Vitest), `tests/e2e/` (Playwright), `src/integrations/supabase/client.test.ts`.
+- Tests: `src/test/` (Vitest), `tests/e2e/` (Playwright), `src/integrations/supabase/client.test.ts`. New test files added: `src/test/static-spa-fallback.test.ts` (SPA deep-link and health-endpoint assertions), `src/test/journal-resonance.test.ts` (journal prosody integration), `src/test/examen.test.ts`, `src/test/lectio.test.ts`, `src/test/routes.test.ts`.
 
 ## Verified Capabilities
 - Bible/scripture content: verified in `src/data/contentLibrary.ts`, `src/data/seed.ts`, and `src/lib/adapters.ts` local retrieval.
@@ -31,7 +31,7 @@ Verified on 2026-06-09 from `/workspace/lampstand`.
 - Sermon/content management: verified in `src/pages/SermonPage.tsx`, `src/data/seed.ts`, and `src/lib/adapters.ts`.
 - Calendar/streak/reminder features: verified in `src/lib/storage.ts`, `src/lib/date.ts`, `src/lib/notifications/dailyReminder.ts`, and `src/pages/SettingsPage.tsx` (includes Gentle Mode toggle).
 - Sharing hooks: verified in `src/pages/DailyLightPage.tsx`, `src/components/ScriptureCard.tsx`, and `src/components/FullscreenAgent.tsx`.
-- Offline/PWA/mobile support: verified in `src/pages/InstallPage.tsx`, `public/manifest.json`, `public/sw.js`, and `src/workers/static-spa.ts`.
+- Offline/PWA/mobile support: verified in `src/pages/InstallPage.tsx`, `public/manifest.json`, `public/sw.js`, and `src/workers/static-spa.ts`. SPA deep-link fallback confirmed returning `200 OK` for all non-asset routes so client-side routing works on hard navigation.
 - Logging/monitoring/health checks: logging and safety events verified in `src/lib/storage.ts`, `src/lib/runtime/agentRuntime.ts`, and `src/lib/agent/CircuitBreaker.ts`; health check added in `src/workers/static-spa.ts`.
 - Admin/content roles: verified in `src/pages/AdminPage.tsx`, `src/hooks/useAdminRole.ts`, and `supabase/migrations/20260410034137_bfe8b5aa-a592-48f9-ae7c-20d28f64e6b5.sql`.
 - End-to-End Visual Verification: Playwright configured and visually verified via `tests/e2e/visual.spec.ts` with explicit testing boundaries.

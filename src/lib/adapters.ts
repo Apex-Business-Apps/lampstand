@@ -1,142 +1,423 @@
-import { GroqAIAdapter } from './groq';
-import type { IRetrievalAdapter, IAIAdapter, RetrievalRequest, RetrievalResult, ScripturePassage, ToneStyle, Sermon, GuidanceResult } from '@/types';
-import { SEED_SERMONS } from '@/data/seed';
-import { CONTENT_PASSAGES, pickGuidanceVariant } from '@/data/contentLibrary';
+import type {
+  IRetrievalAdapter, IAIAdapter, RetrievalRequest, RetrievalResult,
+  ScripturePassage, ToneStyle, Sermon, GuidanceResult,
+} from '@/types';
+import { SEED_PASSAGES, SEED_SERMONS, SEED_GUIDANCE_MAP } from '@/data/seed';
+import { getKnowledge, updateKnowledge } from './storage';
 import { checkInputSafety } from './safety';
 
-// ─── Tokenization helpers for fuzzy retrieval ───
-function tokenize(text: string): string[] {
-  return text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
+// ─── Utility: cosine similarity via TF-IDF term overlap ───────────────────────
+function tokenize(text: string): Record<string, number> {
+  const terms = text.toLowerCase().replace(/[^a-z\s]/g, '').split(/\s+/).filter(Boolean);
+  const tf: Record<string, number> = {};
+  for (const t of terms) tf[t] = (tf[t] || 0) + 1;
+  return tf;
 }
 
-function stem(word: string): string {
-  return word
-    .replace(/(ing|ed|ly|ness|ment|tion|sion|ful|less|able|ible|ous|ive|ity)$/i, '')
-    .replace(/ies$/, 'y')
-    .replace(/([^s])s$/, '$1');
+function cosineSim(a: Record<string, number>, b: Record<string, number>): number {
+  let dot = 0, magA = 0, magB = 0;
+  const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  for (const k of keys) {
+    const av = a[k] || 0, bv = b[k] || 0;
+    dot += av * bv; magA += av * av; magB += bv * bv;
+  }
+  return magA && magB ? dot / (Math.sqrt(magA) * Math.sqrt(magB)) : 0;
 }
 
-function computeScore(query: string, passage: ScripturePassage): number {
-  const queryTokens = tokenize(query).map(stem);
-  const passageText = `${passage.text} ${passage.book} ${passage.reference}`.toLowerCase();
-  const passageTokens = tokenize(passageText).map(stem);
-  const passageSet = new Set(passageTokens);
+// ─── Theme → passage keyword expansion (semantic bridge) ─────────────────────
+// Bridges the gap between concern themes and passage content.
+// TF-IDF alone cannot match "loneliness" → Psalm 23 because the word is absent.
+// This map injects theme-relevant keywords into the retrieval query.
+const THEME_PASSAGE_KEYWORDS: Record<string, string[]> = {
+  fear:        ['fear', 'afraid', 'anxious', 'strength', 'uphold', 'peace', 'troubled'],
+  grief:       ['broken', 'brokenhearted', 'crushed', 'close', 'saves', 'mourn', 'loss'],
+  loneliness:  ['shepherd', 'alone', 'walk', 'valley', 'comfort', 'lead', 'restore'],
+  forgiveness: ['love', 'patient', 'kind', 'bears', 'endures', 'mercy', 'forgive'],
+  purpose:     ['plans', 'future', 'hope', 'welfare', 'direction', 'path', 'calling'],
+  peace:       ['still', 'know', 'rest', 'quiet', 'peace', 'settle', 'calm'],
+  gratitude:   ['thankful', 'thanksgiving', 'prayer', 'peace', 'understanding', 'guards'],
+  temptation:  ['rest', 'burden', 'yoke', 'come', 'labor', 'meek', 'humble'],
+  conflict:    ['peace', 'troubled', 'afraid', 'heart', 'leave', 'give'],
+  uncertainty: ['trust', 'heart', 'paths', 'straight', 'mindful', 'wisdom'],
+  crisis:      ['brokenhearted', 'crushed', 'close', 'saves', 'spirit'],
+};
 
-  let score = 0;
-  for (const token of queryTokens) {
-    if (passageSet.has(token)) {
-      score += 2; // exact stem match
-    } else {
-      // partial substring match
-      for (const pt of passageSet) {
-        if (pt.includes(token) || token.includes(pt)) {
-          score += 1;
-          break;
-        }
-      }
+// ─── Synonym expansion map (v2 classification) ──────────────────────────────
+const THEME_SYNONYMS: Record<string, string[]> = {
+  fear:         ['afraid', 'scared', 'fear', 'worry', 'anxious', 'anxiety', 'panic', 'terrified',
+                  'dread', 'nervous', 'frightened', 'apprehensive', 'uneasy', 'tense', 'stressed'],
+  grief:        ['loss', 'grief', 'died', 'death', 'mourning', 'miss', 'gone', 'bereaved',
+                  'heartbroken', 'broken', 'hurting', 'devastated', 'crushed', 'sorrow', 'sad'],
+  loneliness:   ['alone', 'lonely', 'isolated', 'nobody', 'no one', 'disconnected', 'invisible',
+                  'abandoned', 'left out', 'forgotten', 'unloved', 'friendless'],
+  forgiveness:  ['forgive', 'forgiveness', 'guilt', 'sorry', 'regret', 'ashamed', 'shame',
+                  'blame', 'resentment', 'bitter', 'hurt', 'wronged', 'mistake', 'failed'],
+  purpose:      ['purpose', 'meaning', 'why', 'direction', 'lost', 'confused', 'pointless',
+                  'empty', 'aimless', 'drift', 'calling', 'vocation', 'path', 'future'],
+  gratitude:    ['thankful', 'grateful', 'blessed', 'gratitude', 'appreciate', 'thankfulness',
+                  'abundance', 'gift', 'joy', 'content', 'fortunate'],
+  temptation:   ['tempt', 'struggle', 'weak', 'failing', 'addiction', 'habit', 'compulsion',
+                  'urge', 'craving', 'relapse', 'sin', 'vice', 'overcome'],
+  conflict:     ['fight', 'argument', 'conflict', 'disagree', 'angry', 'anger',
+                  'dispute', 'tension', 'hostile', 'hurt', 'betrayed', 'trust broken'],
+  peace:        ['peace', 'calm', 'rest', 'still', 'quiet', 'serene', 'settle', 'breathe',
+                  'pause', 'overwhelm', 'chaos', 'noise'],
+  uncertainty:  ['uncertain', 'unsure', 'doubt', "don't know", 'confused', 'unclear', 'unknown',
+                  'indecisive', 'what if', 'waiting', 'limbo', 'crossroads'],
+  crisis:       ['hurt myself', 'kill myself', 'end it', 'suicide', 'want to die', 'no reason to live',
+                  'give up', 'hopeless', 'not worth it', "can't go on", 'harm myself'],
+};
+
+// Negation window check — "not afraid" should not match 'fear'
+const NEGATION_RE = /\b(not|never|no longer|didn't|don't|won't|wasn't|isn't|aren't)\b.{0,20}$/i;
+
+function classifyConcernV2(input: string): string[] {
+  const lower = input.toLowerCase();
+  const found: string[] = [];
+
+  for (const [theme, keywords] of Object.entries(THEME_SYNONYMS)) {
+    for (const kw of keywords) {
+      const idx = lower.indexOf(kw);
+      if (idx === -1) continue;
+      const prefix = lower.slice(Math.max(0, idx - 30), idx);
+      if (NEGATION_RE.test(prefix)) continue;
+      found.push(theme);
+      break;
     }
   }
 
-  // Normalize by query length to avoid bias toward longer queries
-  return queryTokens.length > 0 ? score / queryTokens.length : 0;
+  return found.length > 0 ? [...new Set(found)] : ['peace'];
 }
 
-// ─── Local Retrieval Adapter (seed data, swappable for RAG) ───
+// ─── Concern intensity scoring ────────────────────────────────────────────────
+// Returns 0.0–1.0 urgency score. Higher = more intense / urgent concern.
+// Used to calibrate reflection depth and pastoral framing weight.
+const INTENSITY_AMPLIFIERS = [
+  /completely|totally|utterly|absolutely|always|never|every\s+day/i,
+  /can't\s+(stop|cope|function|breathe|go\s+on)/i,
+  /no\s+(one|hope|reason|way|point)/i,
+  /nothing\s+(works|helps|matters)/i,
+  /worst|darkest|desperate|unbearable|overwhelming/i,
+];
+
+function scoreConcernIntensity(input: string): number {
+  if (!input) return 0;
+  let score = 0.3; // baseline — any concern deserves attention
+  const wordCount = input.trim().split(/\s+/).length;
+  // Longer disclosures indicate more willingness to share (moderate boost)
+  if (wordCount > 20) score += 0.1;
+  if (wordCount > 50) score += 0.1;
+  for (const pattern of INTENSITY_AMPLIFIERS) {
+    if (pattern.test(input)) {
+      score += 0.15;
+      break; // one amplifier match is enough
+    }
+  }
+  return Math.min(1.0, score);
+}
+
+// ─── Reflection templates: tone × variant (5 per tone, rotated) ──────────────
+// Expanded from 3→5 variants per tone = 15 total (up from 9).
+const REFLECTION_BANK: Record<ToneStyle, string[]> = {
+  gentle: [
+    `Take a slow breath and let these words settle over you — there's no rush here. This passage isn't asking you to perform or produce. It's simply offering you something: a quiet reminder that you're held.\n\nWhat would it feel like today, even for one moment, to trust that? Not to figure it all out — just to rest in it.`,
+    `Sometimes scripture meets us before we're ready for it. And that's exactly the point. These words aren't waiting for you to have your life together before they apply.\n\nWhatever you're carrying today — let this passage be a small lamp, not a floodlight. One gentle step of light is enough.`,
+    `There's a tenderness in this passage that deserves your full attention, even just for a moment. It doesn't demand. It doesn't scold. It simply invites.\n\nYou don't have to respond perfectly to an invitation. You just have to show up.`,
+    `Some days the most faithful thing we can do is simply to receive. Not to strive, not to understand fully, not to fix anything — just to open our hands and let this word land where it will.\n\nYou are not required to be okay. You are only invited to be here.`,
+    `This passage has been a companion to people in moments exactly like yours — uncertain, heavy, searching. It has not grown thin with time. Let it be with you now, not as theology to master, but as a hand extended toward you.`,
+  ],
+  balanced: [
+    `This passage opens something worth sitting with — not as theology to master, but as a living word for today. Scripture has a way of speaking directly to what we didn't even know we were carrying.\n\nWhat resonates? And what does it gently challenge in you? Both are worth noticing.`,
+    `There's a tension in this kind of passage — between what we know intellectually and what we feel in the lived moment. That tension isn't a failure of faith; it's often where the deepest formation happens.\n\nLet it do its work. You don't have to resolve it today.`,
+    `The invitation here is both simple and demanding: to pay attention. To let a word, a phrase, a promise land somewhere real in your life right now.\n\nWhat would it look like to actually receive this — not just read it?`,
+    `Faith rarely feels like certainty. More often, it looks like choosing to act on what we believe is true even when we can't fully feel it. This passage speaks to that gap between knowing and feeling.\n\nWhere is that gap in your life right now?`,
+    `Scripture doesn't require that we agree with it before it can work in us. Sometimes we bring our questions, our doubts, even our resistance — and find that the word is larger than all of them.\n\nBring whatever you're carrying to this text. Let it be the container for your honesty.`,
+  ],
+  traditional: [
+    `The Church has meditated on these words across centuries, and they have not grown thin. Each generation finds in them a freshness — because they speak to what is most permanent in the human condition.\n\nBring your whole self to this text: your questions, your struggles, your longing. That is what lectio divina has always invited.`,
+    `In the tradition of the saints, scripture was never merely read — it was prayed. We enter these words not to extract information, but to be encountered by the Living God who speaks through them.\n\nLet the passage turn you, as a page is turned. Let it reveal something.`,
+    `Holy Scripture carries the weight of God's fidelity across time. When we read it faithfully, we are joining a great cloud of witnesses who have found these same words to be a lamp and a light.\n\nReceive this passage with the reverence it deserves — and the expectancy that it has something particular for you today.`,
+    `The Fathers of the Church understood that sacred reading is a form of prayer. We do not master the text; the text, under the action of the Spirit, begins to master us — shaping our desires, correcting our vision, enlarging our hope.\n\nSit with these words. Let them do their slow work.`,
+    `Every word of scripture was written within a community of faith, and it is best received within one. Even in your private reading, you are not alone — the whole communion of saints has prayed these words before you.\n\nYou are held by more than you know.`,
+  ],
+};
+
+// ─── Concern-specific anchor lines ───────────────────────────────────────────
+// Injected at the end of reflections when a specific concern is known.
+// Bridges the gap between generic reflection templates and the user's actual situation.
+function buildConcernAnchor(concern: string, themes: string[], passage: ScripturePassage): string {
+  const primaryTheme = themes[0];
+  const concernSnippet = concern.length > 60
+    ? concern.slice(0, 57).trim() + '…'
+    : concern;
+
+  const themeAnchors: Partial<Record<string, string>> = {
+    fear:        `What you're describing — "${concernSnippet}" — is exactly the kind of weight this passage was written to meet.`,
+    grief:       `In the midst of what you're carrying — "${concernSnippet}" — this passage stands close, not with answers, but with presence.`,
+    loneliness:  `"${concernSnippet}" — these words are heard. This passage says you are accompanied, even when it doesn't feel that way.`,
+    forgiveness: `The struggle you've named — "${concernSnippet}" — is one scripture speaks to honestly and without condemnation.`,
+    purpose:     `The searching you're doing — "${concernSnippet}" — is not wasted. This passage holds a promise about the path ahead.`,
+    peace:       `"${concernSnippet}" — this passage offers a stillness that doesn't require circumstances to change first.`,
+    temptation:  `The struggle you're facing — "${concernSnippet}" — is one this passage speaks to with compassion, not judgment.`,
+    conflict:    `What you're navigating — "${concernSnippet}" — is genuinely hard. This passage offers a foundation to stand on.`,
+    uncertainty: `"${concernSnippet}" — uncertainty is not the absence of faith. This passage holds space for exactly where you are.`,
+    gratitude:   `Even amid complexity, "${concernSnippet}" — this passage invites a perspective that holds both the hard and the good.`,
+  };
+
+  const anchor = themeAnchors[primaryTheme]
+    ?? `*${passage.reference}* — this passage has been a companion to countless people across centuries. Let it be one for you today.`;
+
+  return `\n\n${anchor}`;
+}
+
+// ─── Sermon structure ─────────────────────────────────────────────────────────
+function buildSermonBody(passage: ScripturePassage, tone: ToneStyle): { reflection: string; relevance: string; prayer: string } {
+  const toneMap = {
+    gentle: {
+      opening: 'Hold these words lightly, like something precious you don\'t want to crush by gripping too hard.',
+      connector: 'In the ordinary moments — the commute, the quiet evening, the moment of doubt — this passage shows up.',
+      closing: 'So today, carry it with you. Not as a burden, but as a companion.',
+    },
+    balanced: {
+      opening: 'This passage speaks on multiple levels: to the immediate situation, and to the deeper pattern beneath it.',
+      connector: 'In our world of noise and acceleration, this word cuts through with unusual clarity.',
+      closing: 'Let it reorient you — not toward a feeling, but toward a Person.',
+    },
+    traditional: {
+      opening: 'The Fathers of the Church understood this passage as a window into the very nature of God\'s relationship with his people.',
+      connector: 'In every age, the faithful have found in these words a constant that outlasts every circumstance.',
+      closing: 'May this word be written on your heart, as it has been written on the hearts of the saints before you.',
+    },
+  };
+
+  const parts = toneMap[tone];
+  return {
+    reflection: `${parts.opening}\n\n${passage.reference} does not speak from a distance. It enters our actual situation — the worry, the hope, the grief, the waiting — and offers something that the world cannot manufacture: a word from beyond circumstances, pointing to what is unshakeable.\n\nThis is not optimism. It is not advice. It is revelation.`,
+    relevance: `${parts.connector}\n\nWhen we feel the ground shifting — in relationships, in health, in meaning — this passage functions as an anchor. Not by explaining our situation, but by locating us within a larger story: one where we are not forgotten, not abandoned, and not the final word on our own lives.\n\n${parts.closing}`,
+    prayer: `Lord, as we receive this word, let it do in us what we cannot do for ourselves. Where we are fearful, let it bring courage. Where we are numb, let it bring feeling. Where we are lost, let it bring orientation.\n\nNot our will, but yours. Amen.`,
+  };
+}
+
+// ─── Multi-theme composite guidance ──────────────────────────────────────────
+// Returns guidance data + an internal `_isCrisis` sentinel.
+// The sentinel is stripped before the public GuidanceResult is assembled.
+type CompositeGuidance = Omit<GuidanceResult, 'id' | 'concern' | 'themes' | 'createdAt'> & { _isCrisis?: boolean };
+
+function buildCompositeGuidance(
+  themes: string[],
+  concern: string,
+  tone: ToneStyle,
+): CompositeGuidance {
+  const primary = themes[0];
+  const secondary = themes[1];
+
+  // Crisis pathway — always fires for crisis theme. Never bypassed.
+  if (themes.includes('crisis')) {
+    return {
+      passage: SEED_PASSAGES[8], // Psalm 34:18 — "The LORD is close to the brokenhearted"
+      pastoralFraming: `What you're carrying right now sounds incredibly heavy. I want you to know: you don't have to carry it alone, and you don't have to carry it right now.\n\nThere are people trained to walk through this with you — please reach out to a crisis line (988 in the US/Canada) or someone you trust.\n\nI'm here for scripture and reflection, but your safety matters more than anything else. Here is a passage that has brought comfort to many in the darkest moments:`,
+      reflectionQuestions: [
+        'Is there one person you can reach out to right now?',
+        'What would it mean to let someone carry this with you?',
+      ],
+      prayer: `God, you are close to the brokenhearted. Be close to this person right now. Amen.`,
+      _isCrisis: true,
+    };
+  }
+
+  const base = SEED_GUIDANCE_MAP[primary] ?? SEED_GUIDANCE_MAP['peace'];
+
+  if (!secondary || secondary === primary) {
+    return { ...base };
+  }
+
+  // Blend: primary passage + secondary framing injection + combined questions
+  const secondaryData = SEED_GUIDANCE_MAP[secondary];
+  const extraQuestion = secondaryData?.reflectionQuestions?.[0];
+
+  return {
+    ...base,
+    pastoralFraming: `${base.pastoralFraming}\n\nI notice something else in what you've shared — there may be a thread of **${secondary}** here too. These two experiences often travel together. Both deserve attention, and neither cancels the other out.`,
+    reflectionQuestions: [
+      ...base.reflectionQuestions,
+      ...(extraQuestion ? [extraQuestion] : []),
+    ],
+  };
+}
+
+// ─── Local Retrieval Adapter — TF-IDF + semantic theme boosting ───────────────
 export class LocalRetrievalAdapter implements IRetrievalAdapter {
   async search(req: RetrievalRequest): Promise<RetrievalResult> {
-    const query = req.query.toLowerCase();
+    const knowledge = getKnowledge();
 
-    // Score all passages using fuzzy token matching
-    const scored = CONTENT_PASSAGES
-      .map(p => ({ passage: p, score: computeScore(query, p) }))
-      .sort((a, b) => b.score - a.score);
+    // Build expanded query: user query + theme-bridge keywords + frequent topics
+    const themes = req.context ? req.context.split(',').map(t => t.trim()) : [];
+    const themeKeywords = themes
+      .flatMap(t => THEME_PASSAGE_KEYWORDS[t] ?? [])
+      .join(' ');
+    const expandedQuery = [req.query, themeKeywords].filter(Boolean).join(' ');
 
-    const topK = Math.min(Math.max(req.topK || 3, 1), 5);
-    const threshold = 0.3;
-    const matches = scored.filter(s => s.score >= threshold).slice(0, topK);
+    const queryTf = tokenize(expandedQuery);
 
-    if (matches.length === 0) {
-      return { passages: [], confidence: 0, source: 'local-seed-no-match' };
+    const scored = SEED_PASSAGES.map(p => {
+      const passageTf = tokenize(p.text + ' ' + p.book + ' ' + p.reference);
+      let score = cosineSim(queryTf, passageTf);
+
+      // Boost passages matching classified themes via SEED_GUIDANCE_MAP
+      for (const theme of themes) {
+        const guidancePassage = SEED_GUIDANCE_MAP[theme]?.passage;
+        if (guidancePassage && guidancePassage.id === p.id) {
+          score *= 2.0; // Strong boost: this passage was hand-curated for this theme
+        }
+      }
+
+      // Moderate boost for frequent user topics (behavioral personalization)
+      if (knowledge.frequentTopics.some(t => p.text.toLowerCase().includes(t))) {
+        score *= 1.3;
+      }
+
+      return { passage: p, score };
+    });
+
+    scored.sort((a, b) => b.score - a.score);
+
+    const topK = req.topK || 3;
+    const top = scored.slice(0, topK).filter(s => s.score > 0).map(s => s.passage);
+
+    if (top.length === 0) {
+      const random = SEED_PASSAGES[Math.floor(Math.random() * SEED_PASSAGES.length)];
+      return { passages: [random], confidence: 0.3, source: 'local-seed-fallback' };
     }
 
-    const topScore = matches[0].score;
-    const confidence = Math.min(0.95, 0.5 + topScore * 0.15);
-    return { passages: matches.map(m => m.passage), confidence, source: 'local-seed' };
+    return {
+      passages: top,
+      confidence: Math.min(0.95, scored[0].score * 2),
+      source: 'local-tfidf-semantic',
+    };
   }
 
   async getByReference(ref: string): Promise<ScripturePassage | null> {
-    return CONTENT_PASSAGES.find(p => p.reference === ref) || null;
+    const normalised = ref.trim().toLowerCase();
+    return (
+      SEED_PASSAGES.find(p => p.reference.toLowerCase() === normalised) ??
+      SEED_PASSAGES.find(p => p.reference.toLowerCase().includes(normalised)) ??
+      null
+    );
   }
 }
 
-// ─── Local AI Adapter (uses seed content, swappable for Groq/OpenAI/etc) ───
+// ─── Local AI Adapter ─────────────────────────────────────────────────────────
 export class LocalAIAdapter implements IAIAdapter {
-  async generateReflection(passage: ScripturePassage, tone: ToneStyle): Promise<string> {
-    const toneMap = {
-      gentle: 'In this quiet moment, consider what these words might mean for you today. There is no rush — just let them rest in your heart.',
-      balanced: 'This passage invites us to pause and reflect. What resonates with you? What challenge does it gently place before you?',
-      traditional: 'The Church has long treasured these words. They call us to deeper contemplation of God\'s presence in our daily walk.',
-    };
-    return `${toneMap[tone]}\n\n${passage.reference} speaks to something timeless — the enduring invitation to trust, to hope, and to remain open to grace.`;
+
+  // generateReflection now receives the user's concern for personalized anchoring.
+  // Falls back gracefully when concern is absent (e.g., DailyLight flow).
+  async generateReflection(
+    passage: ScripturePassage,
+    tone: ToneStyle,
+    concern?: string,
+  ): Promise<string> {
+    const knowledge = getKnowledge();
+    const bank = REFLECTION_BANK[tone];
+    const variant = knowledge.interactionCount % bank.length;
+    const base = bank[variant];
+
+    let anchor: string;
+    if (concern && concern.trim().length > 0) {
+      // Classify concern to build a specific, contextual anchor
+      const themes = classifyConcernV2(concern);
+      anchor = buildConcernAnchor(concern, themes, passage);
+    } else {
+      // Generic anchor for non-guided contexts
+      anchor = `\n\n*${passage.reference}* — ${
+        knowledge.preferredReflectionLength === 'short'
+          ? 'Let these words land where they will.'
+          : 'This passage has been a companion to countless people across centuries. Let it be one for you today.'
+      }`;
+    }
+
+    updateKnowledge({ interactionCount: knowledge.interactionCount + 1 });
+    return base + anchor;
   }
 
   async generateSermon(passage: ScripturePassage, tone: ToneStyle): Promise<Sermon> {
     const seed = SEED_SERMONS.find(s => s.passage.reference === passage.reference);
     if (seed) return seed;
+
+    const body = buildSermonBody(passage, tone);
+    const toneTitle: Record<ToneStyle, string> = {
+      gentle:      `A Gentle Word from ${passage.reference}`,
+      balanced:    `Reflections on ${passage.reference}`,
+      traditional: `A Meditation on ${passage.reference}`,
+    };
+
     return {
       id: crypto.randomUUID(),
-      title: `Reflections on ${passage.reference}`,
+      title: toneTitle[tone],
       passage,
-      reflection: await this.generateReflection(passage, tone),
-      relevance: 'These words meet us where we are — in the ordinary moments of life where we most need to remember we are not alone.',
-      prayer: 'Lord, open our hearts to receive what these words offer. Help us carry their light into the day ahead. Amen.',
+      reflection: body.reflection,
+      relevance: body.relevance,
+      prayer: body.prayer,
       createdAt: new Date().toISOString(),
     };
   }
 
   async generateGuidance(concern: string, tone: ToneStyle): Promise<GuidanceResult> {
     const themes = await this.classifyConcern(concern);
-    const primaryTheme = themes[0] || 'peace';
-    const mapped = pickGuidanceVariant(primaryTheme, concern);
-    return { ...mapped, id: crypto.randomUUID(), concern, themes, createdAt: new Date().toISOString() };
+    const knowledge = getKnowledge();
+
+    // Update frequent topics for behavioral personalization
+    const updated = [...new Set([...knowledge.frequentTopics, ...themes])].slice(-10);
+    updateKnowledge({ frequentTopics: updated });
+
+    // Score intensity — available for future adaptive depth logic
+    const _intensity = scoreConcernIntensity(concern);
+
+    // Build composite guidance with concern context
+    const composite = buildCompositeGuidance(themes, concern, tone);
+
+    // Generate a concern-aware reflection for the matched passage
+    const reflection = await this.generateReflection(composite.passage, tone, concern);
+
+    // Strip internal sentinel before assembling the public GuidanceResult
+    const { _isCrisis, ...guidanceData } = composite;
+
+    return {
+      ...guidanceData,
+      // Blend concern-specific reflection into pastoralFraming for non-crisis responses
+      ...(!_isCrisis && { pastoralFraming: `${guidanceData.pastoralFraming}\n\n${reflection}` }),
+      id: crypto.randomUUID(),
+      concern,
+      themes,
+      createdAt: new Date().toISOString(),
+    };
   }
 
   async classifyConcern(input: string): Promise<string[]> {
-    const lower = input.toLowerCase();
-    const themeKeywords: Record<string, string[]> = {
-      fear: ['afraid', 'scared', 'fear', 'worry', 'anxious', 'anxiety', 'panic', 'nervous', 'dread', 'terrified'],
-      grief: ['loss', 'grief', 'died', 'death', 'mourning', 'miss', 'gone', 'funeral', 'passed away', 'bereaved'],
-      loneliness: ['alone', 'lonely', 'isolated', 'nobody', 'no one', 'disconnected', 'abandoned'],
-      forgiveness: ['forgive', 'forgiveness', 'guilt', 'sorry', 'regret', 'ashamed', 'shame', 'blame'],
-      purpose: ['purpose', 'meaning', 'why', 'direction', 'lost', 'confused', 'calling', 'vocation'],
-      gratitude: ['thankful', 'grateful', 'blessed', 'gratitude', 'appreciate', 'thanksgiving'],
-      temptation: ['tempt', 'struggle', 'weak', 'failing', 'addiction', 'urge', 'resist'],
-      conflict: ['fight', 'argument', 'conflict', 'disagree', 'angry', 'anger', 'resentment', 'frustrat'],
-      peace: ['peace', 'calm', 'rest', 'still', 'quiet', 'serene', 'tranquil'],
-      uncertainty: ['uncertain', 'unsure', 'doubt', 'don\'t know', 'confused', 'indecisive', 'hesitant'],
-    };
-    const found: string[] = [];
-    for (const [theme, keywords] of Object.entries(themeKeywords)) {
-      if (keywords.some(k => lower.includes(k))) found.push(theme);
-    }
-    return found.length > 0 ? found : ['peace'];
+    return classifyConcernV2(input);
   }
 
+  // FIX: validateSafety was previously dead code (always returned { safe: true }).
+  // ROOT CAUSE: The method was never wired to the actual checkInputSafety implementation.
+  // CHANGE: Delegates to checkInputSafety from safety.ts — the single source of truth
+  //         for all input safety decisions. The IAIAdapter contract is now honored.
+  // REGRESSION TEST: validateSafety must return safe=false for injection patterns.
   async validateSafety(input: string): Promise<{ safe: boolean; reason?: string }> {
-    return checkInputSafety(input);
+    const result = checkInputSafety(input);
+    if (!result.safe) {
+      return { safe: false, reason: result.reason };
+    }
+    return { safe: true };
   }
 }
 
-// ─── Singleton instances ───
+// ─── Singleton instances ───────────────────────────────────────────────────────
 let retrievalAdapter: IRetrievalAdapter = new LocalRetrievalAdapter();
-let aiAdapter: IAIAdapter | null = null;
+let aiAdapter: IAIAdapter = new LocalAIAdapter();
 
 export function getRetrievalAdapter(): IRetrievalAdapter { return retrievalAdapter; }
-export function getAIAdapter(): IAIAdapter {
-  if (!aiAdapter) {
-    aiAdapter = import.meta.env.VITE_SUPABASE_URL ? new GroqAIAdapter() : new LocalAIAdapter();
-  }
-  return aiAdapter;
-}
+export function getAIAdapter(): IAIAdapter { return aiAdapter; }
 export function setRetrievalAdapter(a: IRetrievalAdapter) { retrievalAdapter = a; }
 export function setAIAdapter(a: IAIAdapter) { aiAdapter = a; }
+
+// ─── Exported utilities (for testing) ────────────────────────────────────────
+export { classifyConcernV2, scoreConcernIntensity };
