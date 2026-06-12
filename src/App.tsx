@@ -42,6 +42,7 @@ const PrayerCircleDetailPage = lazy(
 );
 const LectioPage = lazy(() => import("./pages/LectioPage"));
 const ExamenPage = lazy(() => import("./pages/ExamenPage"));
+const EntryPage = lazy(() => import("./pages/EntryPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
