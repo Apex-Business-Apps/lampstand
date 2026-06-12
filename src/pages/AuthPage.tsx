@@ -71,7 +71,7 @@ export default function AuthPage() {
         <AgentPresence size="md" className="mx-auto" />
 
         <div className="space-y-2">
-          <h1 className="text-3xl font-serif font-semibold">LampStand</h1>
+          <h1 className="text-3xl font-serif font-semibold">The Lamp Stand</h1>
           <p className="text-muted-foreground text-sm">
             {mode === 'magic-link'
               ? 'We\'ll email you a one-time sign-in link.'
