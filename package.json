@@ -108,5 +108,8 @@
     "vitest-canvas-mock": "^1.1.4",
     "wrangler": "^4.81.0"
   },
-  "packageManager": "npm@10.9.2"
+  "packageManager": "npm@10.9.2",
+  "overrides": {
+    "ws": "^8.18.0"
+  }
 }
