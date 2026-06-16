@@ -1,12 +1,11 @@
 const MEDIA_EXT = /\.(mp4|webm|mov|avi|mkv|ogv|ogg|mp3|wav|flac|m4a)$/i;
 const FILE_EXT  = /\.[a-zA-Z0-9]{1,8}$/;
 
-const PATCHED_ASSETS = new Set([
-  "/assets/index-CnTmNcSt.js",
-  "/assets/AuthPage-v2fix.js",
-  "/assets/EntryPage-v2fix.js",
-  "/assets/LiteLandingPage-D1OLrVLZ.js",
-]);
+// NOTE: Do NOT hardcode Vite chunk hashes here — they change on every build.
+// Stale entries apply no-store to wrong/non-existent assets and skip the
+// real deployed chunks. Asset caching is handled by public/_headers.
+// Only add truly static, manually-deployed paths here (e.g. "/sw.js").
+const PATCHED_ASSETS = new Set<string>();
 
 const CSP = [
   "default-src 'self'",
