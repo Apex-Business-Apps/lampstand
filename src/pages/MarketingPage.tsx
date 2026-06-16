@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import CandleRevealCanvas from "@/components/CandleRevealCanvas";
 import LampstandCanvas from "@/components/LampstandCanvas";
+import { ConsentModal } from "@/components/ConsentModal";
+import { BrandAnthemPlayer } from "@/components/BrandAnthemPlayer";
 
 /* ════════════════════════════════════════════════════════════════════════════
  * MARKETING PAGE — LAYER STACK  (bottom → top)
@@ -19,7 +21,8 @@ import LampstandCanvas from "@/components/LampstandCanvas";
  *  │  z-200  Hero text / CTAs      ABOVE THE VEIL — always visible       │
  *  │  z-200  Header (wordmark)     ABOVE THE VEIL — always visible       │
  *  │  z-200  Below-fold sections   ABOVE THE VEIL — always visible       │
- *  │  z-310  Consent modal         ABOVE EVERYTHING                      │
+ *  │  z-500  ConsentModal           ABOVE EVERYTHING (Dialog Portal→body) │
+ *  │  z-500  BrandAnthemPlayer     TOPMOST — sticky bottom-left player   │
  *  └─────────────────────────────────────────────────────────────────────┘
  *
  *  ⚠️  INVARIANTS — never break these:
@@ -45,6 +48,16 @@ import LampstandCanvas from "@/components/LampstandCanvas";
  *
  *  6. Below-the-fold <section> must stay at z-[200]. Lowering it below
  *     z-100 will hide the cards behind the obsidian mask permanently.
+ *
+ *  7. Header (wordmark + Log In) sits at top-4 / lg:top-6 — anchored near the
+ *     top edge. Do NOT push it lower; do NOT cross the top edge (top < top-4).
+ *     Wordmark height is h-[3.24rem] / sm:h-[3.78rem] (= the h-12/h-14 baseline
+ *     scaled +8%). Keep the +8% ratio if rescaling; do NOT revert to h-12/h-14.
+ *
+ *  8. BrandAnthemPlayer sits at bottom-6 left-6 z-[500] — bottom-left corner,
+ *     topmost layer (same tier as modals). ConsentModal overlay (later in DOM)
+ *     covers it while consent is pending. Do NOT move right (conflicts with FAB).
+ *     Audio stops on unmount; do NOT hoist this component above MarketingPage.
  *
  *  See /docs/LAYER_STACK.md for the authoritative z-index reference and layer invariants.
  * ════════════════════════════════════════════════════════════════════════════ */
@@ -172,11 +185,11 @@ export default function MarketingPage() {
       </div>
 
       {/* ── z-200: Header — ABOVE THE VEIL, always visible ── */}
-      <header className="pointer-events-auto fixed left-8 right-8 top-8 z-[200] flex items-center justify-between lg:left-16 lg:right-16 lg:top-12">
+      <header className="pointer-events-auto fixed left-8 right-8 top-4 z-[200] flex items-center justify-between lg:left-16 lg:right-16 lg:top-6">
         <img
           src="/images/wordmark-logo.png"
           alt="The Lamp Stand"
-          className="h-12 w-auto sm:h-14"
+          className="h-[3.24rem] w-auto sm:h-[3.78rem]"
           draggable={false}
         />
         <Button
@@ -235,10 +248,21 @@ export default function MarketingPage() {
           </div>
 
           <p className="pt-2 text-center text-xs uppercase tracking-[0.18em] text-[#6a6a6a]">
-            Move your cursor — let the lamp light the page
+            Move your cursor let the lamp light the page
           </p>
         </div>
       </div>
+
+      {/* ── z-500: ConsentModal — TOPMOST LAYER (Dialog Portal renders to body)
+          Scoped here so it only fires when the user lands on the hero page.
+          z-[500] is enforced by DialogOverlay + DialogContent in ui/dialog.tsx. */}
+      <ConsentModal />
+
+      {/* ── z-500: BrandAnthemPlayer — TOPMOST, sticky bottom-left.
+          Plays /brand-anthem.mp3 on landing; stops on unmount (page leave).
+          ConsentModal overlay (later in DOM, same z-[500]) covers it while
+          consent is pending — correct, intentional. */}
+      <BrandAnthemPlayer />
 
       {/* ── z-200: Below-the-fold — ABOVE THE VEIL, always visible ──
           ⚠️  MUST stay at z-[200] or higher. Lowering below z-100 hides

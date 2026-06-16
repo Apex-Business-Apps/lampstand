@@ -9,7 +9,6 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { AuthGuard } from "@/components/AuthGuard";
 import { ProfileGuard } from "@/components/ProfileGuard";
 import { FloatingAgent } from "@/components/FloatingAgent";
-import { ConsentModal } from "@/components/ConsentModal";
 import { useAppBoot } from "@/hooks/useAppBoot";
 
 // Lazy-load all pages for optimal code splitting
@@ -160,7 +159,6 @@ const App = () => (
               </Suspense>
             </AppBootGate>
             <FloatingAgent />
-            <ConsentModal />
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
