@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { audioAnalyzer } from '@/lib/audioAnalyzer';
 import { getConsentState, getVoicePreferences, pushVoiceTranscript } from '@/lib/storage';
 

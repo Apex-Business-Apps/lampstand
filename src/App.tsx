@@ -160,4 +160,12 @@ const App = () => (
               </Suspense>
             </AppBootGate>
             <FloatingAgent />
-            <Co
+            <ConsentModal />
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
+);
+
+export default App;

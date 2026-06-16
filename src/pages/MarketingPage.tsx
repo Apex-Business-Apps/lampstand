@@ -292,4 +292,13 @@ export default function MarketingPage() {
             <span>·</span>
             <Link to="/legal/terms" className="hover:text-foreground">Terms</Link>
             <span>·</span>
-            <Link to="/legal/disclaimer" c
+            <Link to="/legal/disclaimer" className="hover:text-foreground">AI Disclaimer</Link>
+          </div>
+          <p className="mt-2 text-[11px] uppercase tracking-[0.12em] text-muted-foreground/90">
+            APEX Business Systems Ltd. · Edmonton, AB Canada
+          </p>
+        </footer>
+      </section>
+    </div>
+  );
+}

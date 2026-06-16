@@ -260,3 +260,9 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
                 <span>{agent.input.length}/500</span>
               </div>
             </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}

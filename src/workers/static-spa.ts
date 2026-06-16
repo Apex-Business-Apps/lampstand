@@ -109,4 +109,14 @@ export default {
     // Treat response as HTML if it's a navigation request or content-type says so
     const isHtml =
       isNavigation ||
-    
+      (resp.headers.get("content-type") ?? "").includes("text/html");
+
+    const headers = new Headers(resp.headers);
+    addSecurityHeaders(headers, isHtml);
+    return new Response(resp.body, {
+      status: resp.status,
+      statusText: resp.statusText,
+      headers,
+    });
+  },
+};
