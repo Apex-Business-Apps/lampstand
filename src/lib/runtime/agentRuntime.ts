@@ -5,6 +5,7 @@ import { logSafetyEvent } from '@/lib/storage';
 import { rankCandidates } from '@/lib/resonance/ResonanceEngine';
 import { assembleGuidanceContext } from '@/lib/guidance/contextAssembler';
 import type { GroqAIAdapter } from '@/lib/groq';
+import { getRequestGuardrail } from '@/lib/agent/Grounding';
 
 export class CircuitBreaker {
   isOpen() {
@@ -73,6 +74,19 @@ export class TurnPipeline {
         passage: SAFE_FALLBACK_RESPONSE.passage,
         pastoralFraming: SAFE_FALLBACK_RESPONSE.message,
         reflectionQuestions: ['What small next step can you take now?'],
+        createdAt: new Date().toISOString(),
+      };
+    }
+
+    const grounding = getRequestGuardrail(input);
+    if (grounding.blocked) {
+      return {
+        id: 'runtime-guardrail',
+        concern: input,
+        themes: ['peace'],
+        passage: SAFE_FALLBACK_RESPONSE.passage,
+        pastoralFraming: grounding.response || SAFE_FALLBACK_RESPONSE.message,
+        reflectionQuestions: [],
         createdAt: new Date().toISOString(),
       };
     }
