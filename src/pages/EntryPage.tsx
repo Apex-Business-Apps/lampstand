@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { getProfile } from "@/lib/storage";
+import { supabase } from "@/integrations/supabase/client";
 
 function isStandaloneDisplayMode() {
   const mediaMatch = window.matchMedia("(display-mode: standalone)").matches;
@@ -65,7 +66,23 @@ export default function EntryPage() {
       return;
     }
 
-    navigate("/", { replace: true });
+    // ========================================================================
+    // RACE CONDITION GUARD:
+    // After signInWithPassword, AuthProvider context may still be stale
+    // (loading=false, user=null) because onAuthStateChange hasn't fired yet.
+    // Before giving up and redirecting to /, do a direct session check.
+    // ========================================================================
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        const freshProfile = getProfile();
+        navigate(
+          freshProfile?.onboardingComplete ? "/app" : "/onboarding",
+          { replace: true }
+        );
+      } else {
+        navigate("/", { replace: true });
+      }
+    });
   }, [loading, location.search, navigate, user]);
 
   return (
