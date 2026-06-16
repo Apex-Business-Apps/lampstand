@@ -1,12 +1,6 @@
 const MEDIA_EXT = /\.(mp4|webm|mov|avi|mkv|ogv|ogg|mp3|wav|flac|m4a)$/i;
 const FILE_EXT  = /\.[a-zA-Z0-9]{1,8}$/;
 
-// NOTE: Do NOT hardcode Vite chunk hashes here — they change on every build.
-// Stale entries apply no-store to wrong/non-existent assets and skip the
-// real deployed chunks. Asset caching is handled by public/_headers.
-// Only add truly static, manually-deployed paths here (e.g. "/sw.js").
-const PATCHED_ASSETS = new Set<string>();
-
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
@@ -43,12 +37,15 @@ interface Env {
   RATE_LIMITER?: RateLimiter;
 }
 
-function addSecurityHeaders(headers: Headers, pathname: string): void {
+// isHtml=true adds no-store so browsers never cache index.html across deploys.
+// Stale index.html causes "Failed to fetch dynamically imported module" when
+// chunk hashes change between builds — this is the permanent fix.
+function addSecurityHeaders(headers: Headers, isHtml: boolean): void {
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("X-Frame-Options", "DENY");
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   headers.set("Content-Security-Policy", CSP);
-  if (PATCHED_ASSETS.has(pathname)) {
+  if (isHtml) {
     headers.set("Cache-Control", "no-store");
   }
 }
@@ -60,11 +57,16 @@ export default {
 
     // Health endpoint — never touches ASSETS
     if (pathname === "/health") {
-      const headers = new Headers({ "Content-Type": "application/json" });
-      addSecurityHeaders(headers, pathname);
       return new Response(
         JSON.stringify({ status: "healthy", service: "lampstand-static-spa" }),
-        { status: 200, headers }
+        {
+          status: 200,
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-store",
+            "X-Content-Type-Options": "nosniff",
+          },
+        }
       );
     }
 
@@ -104,9 +106,13 @@ export default {
       );
     }
 
-    const headers = new Headers(resp.headers);
-    addSecurityHeaders(headers, pathname);
+    // Treat response as HTML if it's a navigation request or content-type says so
+    const isHtml =
+      isNavigation ||
+      (resp.headers.get("content-type") ?? "").includes("text/html");
 
+    const headers = new Headers(resp.headers);
+    addSecurityHeaders(headers, isHtml);
     return new Response(resp.body, {
       status: resp.status,
       statusText: resp.statusText,

@@ -92,6 +92,8 @@ const App = () => (
               <Suspense fallback={<PageFallback />}>
                 <Routes>
                   <Route path="/" element={<MarketingPage />} />
+                  {/* /welcome alias — kept for backward compat with old links/bookmarks */}
+                  <Route path="/welcome" element={<MarketingPage />} />
                   <Route path="/entry" element={<EntryPage />} />
 
                   <Route path="/lite" element={<LiteLandingPage />} />

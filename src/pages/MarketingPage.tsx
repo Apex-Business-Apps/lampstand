@@ -2,6 +2,7 @@ import React from "react";
 import { ArrowRight, Flame, HeartHandshake, PlayCircle, Sun } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 import CandleRevealCanvas from "@/components/CandleRevealCanvas";
 import LampstandCanvas from "@/components/LampstandCanvas";
 
@@ -89,6 +90,14 @@ const journey = [
 
 export default function MarketingPage() {
   const navigate = useNavigate();
+
+  // Authenticated users bypass the marketing page and go straight to the app
+  const { user, loading } = useAuth();
+  React.useEffect(() => {
+    if (!loading && user) {
+      navigate("/app", { replace: true });
+    }
+  }, [user, loading, navigate]);
 
   const [heroVisible, setHeroVisible] = React.useState(true);
   React.useEffect(() => {
@@ -285,7 +294,7 @@ export default function MarketingPage() {
             <span>·</span>
             <Link to="/legal/disclaimer" className="hover:text-foreground">AI Disclaimer</Link>
           </div>
-          <p className="mt-4 text-[11px] uppercase tracking-[0.12em] text-muted-foreground/70">
+          <p className="mt-2 text-[11px] uppercase tracking-[0.12em] text-muted-foreground/90">
             APEX Business Systems Ltd. · Edmonton, AB Canada
           </p>
         </footer>
