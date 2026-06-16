@@ -3,6 +3,7 @@ import { AppShell } from '@/components/AppShell';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData, getConsentState, saveConsentState, getVoicePreferences, saveVoicePreferences, clearVoiceHistory, saveSyncState } from '@/lib/storage';
+import { runFullSync } from '@/lib/supabaseSync';
 import type { UserProfile, ToneStyle, ReadingPreference } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { Shield, Trash2, RotateCcw, Sparkles } from 'lucide-react';
@@ -104,6 +105,21 @@ export default function SettingsPage() {
     resetFingerprint();
     cancelReminder();
     navigate('/onboarding');
+  }
+
+  async function handleCloudSyncToggle(v: boolean) {
+    const next = { ...consent, optionalCloudSync: v, accountLinkedPersistence: v };
+    setConsent(next);
+    saveConsentState({ optionalCloudSync: v, accountLinkedPersistence: v });
+    saveSyncState({ enabled: v, provider: v ? 'supabase' : 'none' });
+    if (v && user) {
+      try {
+        await runFullSync(user.id);
+        toast({ title: 'Sync complete', description: 'Your local data has been synced to the cloud.' });
+      } catch {
+        toast({ title: 'Sync error', description: 'Could not sync to cloud. Your local data is safe.', variant: 'destructive' });
+      }
+    }
   }
 
   const knowledge = getKnowledge();
@@ -215,7 +231,7 @@ export default function SettingsPage() {
         <Section title="Consent & Permissions">
           <ConsentToggle label="Local adaptive memory" value={consent.localAdaptiveMemory} onChange={(v) => { const next = { ...consent, localAdaptiveMemory: v }; setConsent(next); saveConsentState({ localAdaptiveMemory: v }); }} />
           <ConsentToggle label="Local journal storage" value={consent.localJournalStorage} onChange={(v) => { const next = { ...consent, localJournalStorage: v }; setConsent(next); saveConsentState({ localJournalStorage: v }); }} />
-          <ConsentToggle label="Optional cloud sync" value={consent.optionalCloudSync} onChange={(v) => { const next = { ...consent, optionalCloudSync: v, accountLinkedPersistence: v }; setConsent(next); saveConsentState({ optionalCloudSync: v, accountLinkedPersistence: v }); saveSyncState({ enabled: v, provider: v ? 'supabase' : 'none' }); }} />
+          <ConsentToggle label="Optional cloud sync" value={consent.optionalCloudSync} onChange={handleCloudSyncToggle} />
           <ConsentToggle label="Notifications" value={consent.notifications} onChange={(v) => { const next = { ...consent, notifications: v }; setConsent(next); saveConsentState({ notifications: v }); }} />
           <ConsentToggle label="Microphone" value={consent.microphone} onChange={(v) => { const next = { ...consent, microphone: v }; setConsent(next); saveConsentState({ microphone: v }); }} />
           <ConsentToggle label="Voice output" value={consent.voiceOutput} onChange={(v) => { const next = { ...consent, voiceOutput: v }; setConsent(next); saveConsentState({ voiceOutput: v }); const voice = { ...voicePrefs, enabled: v ? true : false, muted: v ? voicePrefs.muted : true }; setVoicePrefs(voice); saveVoicePreferences(voice); }} />
