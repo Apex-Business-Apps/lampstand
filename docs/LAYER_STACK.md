@@ -83,7 +83,7 @@ z-index  │  Component(s)                    │  Description
 |------|------------|-------|
 | `src/components/CandleRevealCanvas.tsx` | z-[100] | THE VEIL — do not touch |
 | `src/components/LampstandCanvas.tsx` | z-[150] | Lamp hero video wrapper |
-| `src/pages/MarketingPage.tsx` | z-[200] | Header, hero, below-fold |
+| `src/pages/MarketingPage.tsx` | z-[200], z-[500] | Header, hero, below-fold; hosts ConsentModal (Portal→body) |
 | `src/components/FloatingAgent.tsx` | z-[300] | Mini FAB + widget |
 | `src/components/ui/dialog.tsx` | z-[500] | Overlay + content |
 | `src/components/ui/alert-dialog.tsx` | z-[500] | Overlay + content |
@@ -111,5 +111,6 @@ When running `shadcn add` or manually upgrading any UI primitive:
 
 | Version | Date | Change |
 |---------|------|--------|
+| 2.1.1 | 2026-06-16 | Scope ConsentModal to MarketingPage only (moved from App.tsx global to MarketingPage.tsx). Fixes modal firing on non-hero routes (/auth, /app, etc.). Fixed layer comment in MarketingPage.tsx: z-310 → z-500. |
 | 2.1.0 | 2026-06-16 | Bump all modal primitives from z-50 → z-[500]. Root cause: ConsentModal rendered behind CandleRevealCanvas (z-[100]). Added LAYER-GUARD comments and this document. |
 | 2.0.0 | 2026-06-10 | Initial layer stack documentation. CandleRevealCanvas introduced at z-[100]. |

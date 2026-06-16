@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import CandleRevealCanvas from "@/components/CandleRevealCanvas";
 import LampstandCanvas from "@/components/LampstandCanvas";
+import { ConsentModal } from "@/components/ConsentModal";
 
 /* ════════════════════════════════════════════════════════════════════════════
  * MARKETING PAGE — LAYER STACK  (bottom → top)
@@ -19,7 +20,7 @@ import LampstandCanvas from "@/components/LampstandCanvas";
  *  │  z-200  Hero text / CTAs      ABOVE THE VEIL — always visible       │
  *  │  z-200  Header (wordmark)     ABOVE THE VEIL — always visible       │
  *  │  z-200  Below-fold sections   ABOVE THE VEIL — always visible       │
- *  │  z-310  Consent modal         ABOVE EVERYTHING                      │
+ *  │  z-500  ConsentModal           ABOVE EVERYTHING (Dialog Portal→body) │
  *  └─────────────────────────────────────────────────────────────────────┘
  *
  *  ⚠️  INVARIANTS — never break these:
@@ -239,6 +240,11 @@ export default function MarketingPage() {
           </p>
         </div>
       </div>
+
+      {/* ── z-500: ConsentModal — TOPMOST LAYER (Dialog Portal renders to body)
+          Scoped here so it only fires when the user lands on the hero page.
+          z-[500] is enforced by DialogOverlay + DialogContent in ui/dialog.tsx. */}
+      <ConsentModal />
 
       {/* ── z-200: Below-the-fold — ABOVE THE VEIL, always visible ──
           ⚠️  MUST stay at z-[200] or higher. Lowering below z-100 hides
