@@ -139,7 +139,3 @@ export function FloatingAgent() {
 
       <p className="text-[10px] text-center text-muted-foreground mt-2 capitalize">
         {agentMode === 'idle' ? 'Ready' : agentMode}
-      </p>
-    </div>
-  );
-}
