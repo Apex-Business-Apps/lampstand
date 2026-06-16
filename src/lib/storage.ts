@@ -109,6 +109,7 @@ export function removePassage(id: string) {
 
 export function getJournalEntries(): JournalEntry[] { return get(KEYS.journal, []); }
 export function saveJournalEntry(e: JournalEntry) {
+  if (!getConsentState().localJournalStorage) return;
   const { meta } = writeListAtomically<JournalEntry, { added: boolean }>(KEYS.journal, (all) => {
     const idx = all.findIndex((j) => j.id === e.id);
     if (idx >= 0) {
@@ -121,6 +122,7 @@ export function saveJournalEntry(e: JournalEntry) {
   if (meta?.added) incrementPresenceScore(4);
 }
 export function saveJournalEntries(entries: JournalEntry[]) {
+  if (!getConsentState().localJournalStorage) return;
   if (entries.length === 0) return;
   const all = getJournalEntries();
   let changed = false;
@@ -171,6 +173,7 @@ const defaultKnowledge: LocalKnowledge = {
 };
 export function getKnowledge(): LocalKnowledge { return get(KEYS.knowledge, defaultKnowledge); }
 export function updateKnowledge(partial: Partial<LocalKnowledge>) {
+  if (!getConsentState().localAdaptiveMemory) return;
   set(KEYS.knowledge, { ...getKnowledge(), ...partial });
 }
 export function updateStreak() {
@@ -267,6 +270,7 @@ function derivePresenceState(score: number): PresenceScore['state'] {
 }
 
 export function pushVoiceTranscript(transcript: string) {
+  if (!getConsentState().voiceOutput) return;
   const history = get<string[]>(KEYS.voiceHistory, []);
   history.unshift(transcript.slice(0, 1000));
   set(KEYS.voiceHistory, history.slice(0, 50));
