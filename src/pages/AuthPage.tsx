@@ -26,7 +26,7 @@ export default function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: `${window.location.origin}/?source=auth` },
+          options: { emailRedirectTo: `${window.location.origin}/entry` },
         });
         if (error) throw error;
         toast.success('Account created! Check your email to confirm.');
@@ -34,7 +34,7 @@ export default function AuthPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success('Signed in successfully.');
-        navigate('/?source=auth', { replace: true });
+        navigate('/entry', { replace: true });
       }
     } catch (error: unknown) {
       toast.error((error as Error).message || 'Authentication failed');
@@ -50,7 +50,7 @@ export default function AuthPage() {
     try {
       const { error } = await supabase.auth.signInWithOtp({
         email,
-        options: { emailRedirectTo: `${window.location.origin}/?source=auth` },
+        options: { emailRedirectTo: `${window.location.origin}/entry` },
       });
       if (error) throw error;
       toast.success('Magic link sent! Check your email.');
@@ -74,7 +74,7 @@ export default function AuthPage() {
           <h1 className="text-3xl font-serif font-semibold">The Lamp Stand</h1>
           <p className="text-muted-foreground text-sm">
             {mode === 'magic-link'
-              ? 'We\'ll email you a one-time sign-in link.'
+              ? "We'll email you a one-time sign-in link."
               : mode === 'signup'
                 ? 'Create an account to sync across devices.'
                 : 'Sign in to sync your saved passages and journey.'}
@@ -157,11 +157,20 @@ export default function AuthPage() {
           </form>
         )}
 
-        <div className="pt-4 text-xs text-muted-foreground space-y-2">
-          <p>LampStand is local-first. You do not need to sign in to use it.</p>
-          <button onClick={() => navigate('/?entry=onboarding&source=web')} className="text-primary hover:underline">
-            Continue as Guest
-          </button>
+        {/* Try without signing up — always visible, prominent */}
+        <div className="pt-2 space-y-3">
+          <div className="relative flex items-center gap-3">
+            <div className="flex-1 border-t border-border/50" />
+            <span className="text-xs text-muted-foreground">or</span>
+            <div className="flex-1 border-t border-border/50" />
+          </div>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => navigate('/lite?source=web')}
+          >
+            Try without signing up
+          </Button>
         </div>
       </div>
     </div>
