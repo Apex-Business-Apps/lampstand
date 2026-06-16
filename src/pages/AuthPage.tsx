@@ -120,9 +120,6 @@ export default function AuthPage() {
                 minLength={6}
                 className="bg-card pr-10"
                 autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
-                data-1p-ignore="true"
-                data-lpignore="true"
-                data-bwignore="true"
               />
               <button
                 type="button"
