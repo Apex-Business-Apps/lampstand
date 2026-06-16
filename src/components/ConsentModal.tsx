@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -6,17 +7,27 @@ import { saveConsentState } from "@/lib/storage";
 
 const CONSENT_KEY = "lampstand_consent_given";
 
+// Routes where the consent modal must never appear — pre-auth and legal surfaces.
+const SUPPRESSED_ROUTES = ['/auth', '/reset-password', '/legal', '/return', '/install', '/lite'];
+
 export const ConsentModal = () => {
   const [open, setOpen] = useState(false);
   const [consentStorage, setConsentStorage] = useState(true);
   const [consentVoice, setConsentVoice] = useState(false);
+  const { pathname } = useLocation();
+
+  const isSuppressed = SUPPRESSED_ROUTES.some((r) => pathname === r || pathname.startsWith(r + '/'));
 
   useEffect(() => {
+    if (isSuppressed) {
+      setOpen(false);
+      return;
+    }
     const hasConsented = localStorage.getItem(CONSENT_KEY);
     if (!hasConsented) {
       setOpen(true);
     }
-  }, []);
+  }, [isSuppressed]);
 
   const handleAccept = () => {
     localStorage.setItem(CONSENT_KEY, "true");
