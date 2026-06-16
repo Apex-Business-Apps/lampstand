@@ -1,119 +1,137 @@
 # LampStand
 
-*Version 2.0.0 — Updated: June 2026*
+*Version 2.1.0 — Updated: 2026-06-16*
 
-LampStand is a local-first scripture companion built with React, TypeScript, and Vite.
+LampStand is a local-first, privacy-first scripture companion built with React,
+TypeScript, and Vite. It is a non-profit community gift — never commercial, never
+paywalled, never ad-supported.
+
+---
 
 ## Architecture Overview
 
-- **UI**: React 18 + Tailwind + shadcn/ui
-- **Routing**: react-router
-- **Auth**: Supabase magic-link with guest mode preserved by default
-- **Persistence**: localStorage-first typed modules in `src/lib/storage.ts`
-- **AI Provider Adapter**: `src/lib/adapters.ts` with Groq primary (`GroqAIAdapter`) and local fallback
-- **Agent Orchestration**: `src/hooks/useAgentController.ts` (headless UI-agnostic runtime state management)
-- **Agent Runtime**: `src/lib/runtime/agentRuntime.ts` (safety gate, turn pipeline, retrieval, circuit breaker)
-- **Voice**: `src/lib/voice.ts` (STT browser/null fallback, TTS cloud/browser/silent fallback)
-- **Deploy**: Cloudflare Workers static assets via explicit `wrangler.json`
+| Layer | Technology |
+|-------|-----------|
+| UI | React 18 + Tailwind CSS + shadcn/ui |
+| Routing | react-router v6 |
+| Auth | Supabase magic-link (guest mode preserved by default) |
+| Persistence | localStorage-first typed modules in `src/lib/storage.ts` |
+| AI Provider | `src/lib/adapters.ts` — Groq primary (`GroqAIAdapter`) + local fallback |
+| Agent Orchestration | `src/hooks/useAgentController.ts` — headless UI-agnostic runtime state |
+| Agent Runtime | `src/lib/runtime/agentRuntime.ts` — safety gate, turn pipeline, retrieval, circuit breaker |
+| Voice | `src/lib/voice.ts` — STT browser/null fallback, TTS cloud/browser/silent fallback |
+| Deploy | Cloudflare Workers static assets via `wrangler.json` / `wrangler.production.json` |
+
+---
+
+## Visual Layer Stack
+
+The marketing page uses a custom canvas-based reveal system. Modal overlays are at
+**z-[500]** to guarantee they clear all canvas layers. See the full specification in
+[`docs/LAYER_STACK.md`](docs/LAYER_STACK.md).
+
+---
 
 ## Modes
 
-- **Guest mode**: full local usage, no login required
-- **Signed-in mode**: optional sync/account-linked persistence
+- **Guest mode** — full local usage, no login required
+- **Signed-in mode** — optional sync / account-linked persistence
+
+---
 
 ## Consent and Data Handling
 
-Settings now include explicit opt-in toggles for:
-- local adaptive memory
-- local journal storage
-- optional cloud sync
-- notifications
-- microphone
-- voice output
-- account-linked persistence
-- **Gentle Mode** (hides streak visuals and gamification pressure for neurodivergent alignment)
+All consent is explicit opt-in. Settings expose toggles for:
 
-Defaults are privacy-first. Raw audio is not stored by default. Transcripts are local-first and can be deleted.
+- Local adaptive memory & journal storage
+- Optional cloud sync
+- Microphone access
+- Voice output (TTS)
+- Notifications
+- Gentle Mode (hides streak/gamification visuals — neurodivergent aligned)
+
+Defaults are privacy-first. Raw audio is not stored. Transcripts are local-first and
+deletable. See [`MISSION.md`](MISSION.md) for the non-monetization commitment.
+
+---
 
 ## Environment Variables
 
 ### Frontend (build-time, bundled into client JS)
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_PUBLISHABLE_KEY`
+```
+VITE_SUPABASE_URL
+VITE_SUPABASE_PUBLISHABLE_KEY
+```
 
 ### CI / Infrastructure
-- `CLOUDFLARE_ACCOUNT_ID` (CI deploy)
-- `CLOUDFLARE_API_TOKEN` (CI deploy)
+```
+CLOUDFLARE_ACCOUNT_ID
+CLOUDFLARE_API_TOKEN
+```
 
 ### Supabase Edge Function Secrets (set in Dashboard > Edge Functions > Secrets)
-- `GROQ_API_KEY` — used by `groq-guidance` edge function
-- `ELEVENLABS_API_KEY` — used by `elevenlabs-tts` edge function
+```
+GROQ_API_KEY         # groq-guidance edge function
+ELEVENLABS_API_KEY   # elevenlabs-tts edge function
+```
 
-> **Do not** prefix server-side secrets with `VITE_`. Those are bundled into client JS and are public.
+> ⚠️ **Never** prefix server-side secrets with `VITE_`. Those values are bundled
+> into client JS and are publicly visible.
 
+---
 
-## Where to Place Variables (Cloudflare)
+## Cloudflare Deployment
 
-LampStand now deploys with `wrangler deploy` as a **Worker with static assets**, not Cloudflare Pages framework auto-detect.
+**Local / staging** (uses `wrangler.json`):
+```bash
+npm ci && npm run build
+npx wrangler deploy --config wrangler.json
+```
 
-1. **Client variables (`VITE_*`)** are build-time values. They must exist **before `npm run build`**.
-   - Local: put them in `.env.local`.
-   - CI: store as CI secrets and export them before build.
-   - If you still use Pages builds, set them under **Pages Project -> Settings -> Environment variables**.
-2. **Worker runtime secrets** (non-`VITE_*`) go to Worker settings or Wrangler secrets:
-   - `npx wrangler secret put SECRET_NAME`
-   - Dashboard: **Workers & Pages -> your Worker -> Settings -> Variables and Secrets**.
-3. Do not put sensitive secrets in `VITE_*`. Those are bundled into client JS and are public by design.
+**Production CI** (uses `wrangler.production.json` — includes `thelampstand.icu` routes):
+```bash
+# Runs automatically via GitHub Actions on push to main.
+# To trigger manually:
+npm ci && npm run build
+npx wrangler deploy --config wrangler.production.json
+```
+
+---
 
 ## Install / Build / Test
 
 ```bash
 npm ci
 npm run lint
+npm run typecheck
 npm run test
 npm run build
 ```
 
-## Cloudflare Deployment (exact steps)
+---
 
-**Local / staging** (uses `wrangler.json` — no custom domain routes):
-```bash
-npm ci
-npm run build
-npx wrangler deploy --config wrangler.json
+## Key Docs
+
+| Document | Purpose |
+|----------|---------|
+| [`docs/LAYER_STACK.md`](docs/LAYER_STACK.md) | Authoritative z-index stack — read before touching any fixed/overlay element |
+| [`docs/ROUTING_RULES.md`](docs/ROUTING_RULES.md) | Browser vs PWA routing bifurcation — do not modify without founder sign-off |
+| [`MISSION.md`](MISSION.md) | Non-monetization commitment and contribution guidelines |
+| [`docs/ios-release-checklist.md`](docs/ios-release-checklist.md) | iOS App Store release process |
+| [`docs/android-release-checklist.md`](docs/android-release-checklist.md) | Google Play release process |
+
+---
+
+## Legal and Compliance Routes
+
+```
+/legal
+/legal/privacy
+/legal/terms
+/legal/acceptable-use
+/legal/disclaimer
+/legal/company
 ```
 
-**Production CI** (uses `wrangler.production.json` — includes `thelampstand.icu` route bindings):
-```bash
-# The `Deploy Worker Production` GitHub Actions workflow runs this automatically on push to main.
-# To trigger manually from local:
-npm ci
-npm run build
-npx wrangler deploy --config wrangler.production.json
-```
-
-## Legal and Compliance Surfaces
-
-Routes:
-- `/legal`
-- `/legal/privacy`
-- `/legal/terms`
-- `/legal/acceptable-use`
-- `/legal/disclaimer`
-- `/legal/company`
-
-Ownership language references APEX Business Systems LTD with explicit counsel-review TODO markers where legal finalization is required.
-
-## Testing Commands
-
-```bash
-npm run test           # Vitest unit & integration tests
-npm run test:e2e       # Playwright visual snapshots
-npm run lint           # ESLint
-npm run typecheck      # TypeScript validation
-```
-
-- privacy jurisdiction-specific language
-- arbitration/limitation clauses
-- minors policy wording
-- official company legal contact metadata
+Ownership language references APEX Business Systems LTD with explicit
+counsel-review markers where legal finalization is required.

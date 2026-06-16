@@ -46,7 +46,7 @@ import LampstandCanvas from "@/components/LampstandCanvas";
  *  6. Below-the-fold <section> must stay at z-[200]. Lowering it below
  *     z-100 will hide the cards behind the obsidian mask permanently.
  *
- *  See /MARKETING_SITE_ARCHITECTURE.md for full context and rationale.
+ *  See /docs/LAYER_STACK.md for the authoritative z-index reference and layer invariants.
  * ════════════════════════════════════════════════════════════════════════════ */
 
 const highlights = [
