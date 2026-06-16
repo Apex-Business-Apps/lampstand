@@ -2,6 +2,13 @@ import type { IRetrievalAdapter, RetrievalRequest, RetrievalResult, ScripturePas
 import { SEED_PASSAGES } from '@/data/seed';
 import { openEmbeddingsDB, getAllNodes, putNode } from '../storage/embeddingsDB';
 
+// ─── CSP/Worker fallback registry ────────────────────────────────────────────
+// Set from adapters.ts after instances are created to avoid circular imports.
+let _localFallback: IRetrievalAdapter | null = null;
+export function setGraphRAGFallback(adapter: IRetrievalAdapter) {
+  _localFallback = adapter;
+}
+
 function cosineSim(a: number[], b: number[]): number {
   let dot = 0, normA = 0, normB = 0;
   for (let i = 0; i < a.length; i++) {
@@ -127,8 +134,11 @@ export class GraphRAGAdapter implements IRetrievalAdapter {
         source: 'local-graph-rag'
       };
     } catch (err) {
-      console.error('GraphRAG retrieval failed, falling back', err);
-      return { passages: [], confidence: 0, source: 'fallback' };
+      console.error('GraphRAG retrieval failed (CSP or worker error), falling back', err);
+      // CSP or worker failure — fall back to deterministic local retrieval
+      if (_localFallback) return _localFallback.search(req);
+      // Ultimate fallback: return a seed passage
+      return { passages: [SEED_PASSAGES[0]], confidence: 0.1, source: 'emergency-fallback' };
     }
   }
   

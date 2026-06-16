@@ -5,7 +5,7 @@ import type {
 import { SEED_PASSAGES, SEED_SERMONS, SEED_GUIDANCE_MAP } from '@/data/seed';
 import { getKnowledge, updateKnowledge } from './storage';
 import { checkInputSafety } from './safety';
-import { GraphRAGAdapter } from './retrieval/graphRAGAdapter';
+import { GraphRAGAdapter, setGraphRAGFallback } from './retrieval/graphRAGAdapter';
 
 // ─── Utility: cosine similarity via TF-IDF term overlap ───────────────────────
 function tokenize(text: string): Record<string, number> {
@@ -412,8 +412,17 @@ export class LocalAIAdapter implements IAIAdapter {
 }
 
 // ─── Singleton instances ───────────────────────────────────────────────────────
-let retrievalAdapter: IRetrievalAdapter = new GraphRAGAdapter();
+// VITE_ENABLE_GRAPH_RAG=true opts in to GraphRAG (Hugging Face CDN + Worker).
+// Default is LocalRetrievalAdapter (TF-IDF, works under any CSP).
+const _localRetrievalInstance = new LocalRetrievalAdapter();
+let retrievalAdapter: IRetrievalAdapter =
+  import.meta.env.VITE_ENABLE_GRAPH_RAG === 'true'
+    ? new GraphRAGAdapter()
+    : _localRetrievalInstance;
 let aiAdapter: IAIAdapter = new LocalAIAdapter();
+
+// Wire up CSP fallback so GraphRAGAdapter can fall back without circular import.
+setGraphRAGFallback(_localRetrievalInstance);
 
 export function getRetrievalAdapter(): IRetrievalAdapter { return retrievalAdapter; }
 export function getAIAdapter(): IAIAdapter { return aiAdapter; }
