@@ -8,12 +8,12 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'list',
   webServer: {
-    command: 'npm run preview',
-    url: 'http://localhost:4173',
+    command: 'vite preview --host 127.0.0.1',
+    url: 'http://127.0.0.1:4173',
     reuseExistingServer: !process.env.CI,
   },
   use: {
-    baseURL: 'http://localhost:4173',
+    baseURL: 'http://127.0.0.1:4173',
     trace: 'on-first-retry',
   },
   projects: [
