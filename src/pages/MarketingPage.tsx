@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import CandleRevealCanvas from "@/components/CandleRevealCanvas";
 import LampstandCanvas from "@/components/LampstandCanvas";
 import { ConsentModal } from "@/components/ConsentModal";
+import { BrandAnthemPlayer } from "@/components/BrandAnthemPlayer";
 
 /* ════════════════════════════════════════════════════════════════════════════
  * MARKETING PAGE — LAYER STACK  (bottom → top)
@@ -21,6 +22,7 @@ import { ConsentModal } from "@/components/ConsentModal";
  *  │  z-200  Header (wordmark)     ABOVE THE VEIL — always visible       │
  *  │  z-200  Below-fold sections   ABOVE THE VEIL — always visible       │
  *  │  z-500  ConsentModal           ABOVE EVERYTHING (Dialog Portal→body) │
+ *  │  z-500  BrandAnthemPlayer     TOPMOST — sticky bottom-left player   │
  *  └─────────────────────────────────────────────────────────────────────┘
  *
  *  ⚠️  INVARIANTS — never break these:
@@ -51,6 +53,11 @@ import { ConsentModal } from "@/components/ConsentModal";
  *     top edge. Do NOT push it lower; do NOT cross the top edge (top < top-4).
  *     Wordmark height is h-[3.24rem] / sm:h-[3.78rem] (= the h-12/h-14 baseline
  *     scaled +8%). Keep the +8% ratio if rescaling; do NOT revert to h-12/h-14.
+ *
+ *  8. BrandAnthemPlayer sits at bottom-6 left-6 z-[500] — bottom-left corner,
+ *     topmost layer (same tier as modals). ConsentModal overlay (later in DOM)
+ *     covers it while consent is pending. Do NOT move right (conflicts with FAB).
+ *     Audio stops on unmount; do NOT hoist this component above MarketingPage.
  *
  *  See /docs/LAYER_STACK.md for the authoritative z-index reference and layer invariants.
  * ════════════════════════════════════════════════════════════════════════════ */
@@ -250,6 +257,12 @@ export default function MarketingPage() {
           Scoped here so it only fires when the user lands on the hero page.
           z-[500] is enforced by DialogOverlay + DialogContent in ui/dialog.tsx. */}
       <ConsentModal />
+
+      {/* ── z-500: BrandAnthemPlayer — TOPMOST, sticky bottom-left.
+          Plays /brand-anthem.mp3 on landing; stops on unmount (page leave).
+          ConsentModal overlay (later in DOM, same z-[500]) covers it while
+          consent is pending — correct, intentional. */}
+      <BrandAnthemPlayer />
 
       {/* ── z-200: Below-the-fold — ABOVE THE VEIL, always visible ──
           ⚠️  MUST stay at z-[200] or higher. Lowering below z-100 hides
