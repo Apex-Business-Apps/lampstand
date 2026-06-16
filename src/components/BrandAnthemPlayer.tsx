@@ -54,9 +54,14 @@ export function BrandAnthemPlayer() {
           <Play className="h-3.5 w-3.5 fill-current" />
         )}
       </button>
-      <span className="select-none text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8a8a8a]">
-        {playing ? "Playing" : "Anthem"}
-      </span>
+      <div className="flex flex-col leading-tight">
+        <span className="select-none text-[11px] font-semibold text-[#d0d0d0]">
+          The Lamp's Light
+        </span>
+        <span className="select-none text-[9px] font-medium uppercase tracking-[0.14em] text-[#6a6a6a]">
+          by JR
+        </span>
+      </div>
     </div>
   );
 }
