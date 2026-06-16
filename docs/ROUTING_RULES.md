@@ -1,27 +1,81 @@
-# LampStand Critical Routing Architecture
+# LampStand — Critical Routing Architecture
 
-**WARNING: DO NOT DRIFT OR MODIFY THIS BEHAVIOR UNLESS EXPLICITLY AUTHORIZED BY THE FOUNDER.**
+**Version:** 2.0.1  
+**Last updated:** 2026-06-16  
+**Status:** Locked — DO NOT modify without explicit founder authorization.
+
+---
 
 ## The Core Rule
-The entry routing is strictly bifurcated based on the user's platform context (Browser vs. PWA).
 
-1. **Browser Users (Standard Web Visit)**
-   - **Rule:** When a user types the URL (`thelampstand.icu`) in a browser or attempts to directly access `/app` without being logged in, they **MUST** land on the Marketing Page (`/welcome`).
-   - **Why:** To properly introduce the product, convert traffic, and outline the value proposition before presenting login/signup forms.
+Routing is strictly bifurcated based on the user's platform context (Browser vs. PWA).
 
-2. **App Users (Installed PWA / Standalone Visit)**
-   - **Rule:** When a user opens the installed app (standalone display mode) and they are not logged in, they **MUST** bypass the Marketing Page entirely and go straight into the Login Page (`/auth`).
-   - **Why:** People opening the installed app have already been converted. They do not need to be marketed to; they just need to log back in.
+### 1. Browser Users (Standard Web Visit)
+
+**Rule:** When a user visits `thelampstand.icu` in a browser, or attempts to
+directly access `/app` without being logged in, they **MUST** land on the
+Marketing Page (`/` or `/welcome`).
+
+**Why:** To introduce the product, convert traffic, and present the value
+proposition before login/signup.
+
+### 2. PWA / Installed App Users
+
+**Rule:** When a user opens the installed PWA (standalone display mode) while
+not logged in, they **MUST** bypass the Marketing Page and go directly to
+`/auth`.
+
+**Why:** Installed-app users are already converted. Marketing is unnecessary —
+they just need to log back in.
+
+---
+
+## Route Aliases
+
+| Path | Target | Notes |
+|------|--------|-------|
+| `/` | `MarketingPage` | Primary marketing entry |
+| `/welcome` | `MarketingPage` | Legacy alias — preserved for old links/bookmarks |
+| `/lite` | `LiteLandingPage` | Unauthenticated burning-bush preview (no FloatingAgent) |
+| `/entry` | `EntryPage` | PWA entry point — evaluates standalone mode |
+| `/auth` | Auth flow | Login / magic-link |
+| `/app` | Main app (guarded) | Requires auth — redirects via `ProfileGuard` |
+
+---
 
 ## Implementation Details
 
-### 1. `EntryPage.tsx`
-Handles the root route `/`. It evaluates the `isStandaloneDisplayMode()` helper. If true, it explicitly navigates unauthenticated users to `/auth`. If false, it navigates them to `/welcome`.
+### `EntryPage.tsx`
 
-### 2. `ProfileGuard.tsx`
-Wraps all internal app routes (`/app`, `/daily`, etc.) in `App.tsx`. If an unauthenticated user attempts to hit these routes directly:
-- It checks `isStandaloneDisplayMode()`.
-- If standalone/PWA, it intercepts and redirects to `/auth`.
-- If standard browser, it intercepts and redirects to `/welcome`.
+Handles the `/entry` route. Evaluates `isStandaloneDisplayMode()`.
+- If `true` → redirect unauthenticated users to `/auth`
+- If `false` → redirect to `/` (MarketingPage)
 
-**Future Agents and Developers:** Do not remove the `ProfileGuard` from core app routes, and do not remove the standalone checks in these components.
+### `ProfileGuard.tsx`
+
+Wraps all internal app routes (`/app`, `/daily`, etc.) in `App.tsx`.
+If an unauthenticated user hits a guarded route directly:
+- Standalone/PWA → redirect to `/auth`
+- Standard browser → redirect to `/`
+
+### `FloatingAgent.tsx` — HIDDEN_PATHS
+
+The FloatingAgent is hidden on the following paths to prevent UI overlap:
+
+```typescript
+const HIDDEN_PATHS = [
+  '/', '/welcome', '/lite',
+  '/onboarding', '/auth', '/reset-password',
+  '/legal', '/legal/privacy', '/legal/terms',
+  '/legal/acceptable-use', '/legal/disclaimer', '/legal/company',
+];
+```
+
+---
+
+## Changelog
+
+| Version | Date | Change |
+|---------|------|--------|
+| 2.0.1 | 2026-06-16 | Added `/welcome` alias, `/lite` burning-bush preview route, HIDDEN_PATHS table, and versioning header. |
+| 2.0.0 | 2026-06-10 | Initial routing rules document. |
