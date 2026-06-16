@@ -4,8 +4,8 @@
   "description": "Daily reflections, pastoral guidance, and a gentle AI companion for your scripture journey.",
   "start_url": "/app",
   "display": "standalone",
-  "background_color": "#1a1410",
-  "theme_color": "#b45309",
+  "background_color": "#0a0a0a",
+  "theme_color": "#D97736",
   "orientation": "portrait-primary",
   "categories": ["lifestyle", "education"],
   "icons": [
