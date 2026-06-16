@@ -1,7 +1,6 @@
 const MEDIA_EXT = /\.(mp4|webm|mov|avi|mkv|ogv|ogg|mp3|wav|flac|m4a)$/i;
+const FILE_EXT  = /\.[a-zA-Z0-9]{1,8}$/;
 
-// JS assets that were manually patched (filename hash no longer matches content).
-// Force no-store so browsers never serve stale patched bundles.
 const PATCHED_ASSETS = new Set([
   "/assets/index-CnTmNcSt.js",
   "/assets/AuthPage-v2fix.js",
@@ -9,11 +8,21 @@ const PATCHED_ASSETS = new Set([
   "/assets/LiteLandingPage-D1OLrVLZ.js",
 ]);
 
-// Rate Limiting: applies to ALL users (authenticated and unauthenticated).
-// Key = JWT sub (user ID) when a Bearer token is present, else CF-Connecting-IP.
+const CSP = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: blob: https:",
+  "media-src 'self' blob:",
+  "connect-src 'self' https://*.supabase.co https://api.groq.com wss://*.supabase.co",
+  "worker-src 'self' blob:",
+  "frame-ancestors 'none'",
+].join("; ");
+
+// Rate Limiting: 60 nav requests / 60s per key.
+// Key = JWT sub for authenticated users, CF-Connecting-IP for guests.
 // Gracefully skipped when RATE_LIMITER binding is not configured.
-// To activate: add ratelimit binding in wrangler.production.toml (TOML format),
-// or configure via Cloudflare dashboard (Workers -> Rate Limiting).
 function extractRateLimitKey(request: Request): string {
   const ip = request.headers.get("CF-Connecting-IP") ?? "unknown";
   const auth = request.headers.get("Authorization") ?? "";
@@ -21,7 +30,7 @@ function extractRateLimitKey(request: Request): string {
     try {
       const payload = JSON.parse(atob(auth.slice(7).split(".")[1]));
       if (payload.sub) return "user:" + payload.sub;
-    } catch (_) { /* fall through to IP */ }
+    } catch (_) { /* fall through */ }
   }
   return "ip:" + ip;
 }
@@ -35,11 +44,33 @@ interface Env {
   RATE_LIMITER?: RateLimiter;
 }
 
+function addSecurityHeaders(headers: Headers, pathname: string): void {
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("X-Frame-Options", "DENY");
+  headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set("Content-Security-Policy", CSP);
+  if (PATCHED_ASSETS.has(pathname)) {
+    headers.set("Cache-Control", "no-store");
+  }
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    const { pathname } = url;
 
-    if (MEDIA_EXT.test(url.pathname)) {
+    // Health endpoint — never touches ASSETS
+    if (pathname === "/health") {
+      const headers = new Headers({ "Content-Type": "application/json" });
+      addSecurityHeaders(headers, pathname);
+      return new Response(
+        JSON.stringify({ status: "healthy", service: "lampstand-static-spa" }),
+        { status: 200, headers }
+      );
+    }
+
+    // Stream media directly without SPA logic
+    if (MEDIA_EXT.test(pathname)) {
       return env.ASSETS.fetch(request);
     }
 
@@ -47,7 +78,7 @@ export default {
       request.method === "GET" &&
       (request.headers.get("accept") ?? "").includes("text/html");
 
-    // Rate limit navigation requests only -- static assets are edge-cached anyway.
+    // Rate limit navigation requests only
     if (isNavigation && env.RATE_LIMITER) {
       const key = extractRateLimitKey(request);
       const { success } = await env.RATE_LIMITER.limit({ key });
@@ -66,22 +97,16 @@ export default {
       }
     }
 
-    const target = isNavigation
-      ? new Request(new URL("/", request.url).toString(), request)
-      : request;
-
-    const resp = await env.ASSETS.fetch(target);
+    // SPA fallback: try the real path first; if 404 and no file extension, serve /
+    let resp = await env.ASSETS.fetch(request);
+    if (isNavigation && resp.status === 404 && !FILE_EXT.test(pathname)) {
+      resp = await env.ASSETS.fetch(
+        new Request(new URL("/", request.url).toString(), request)
+      );
+    }
 
     const headers = new Headers(resp.headers);
-    headers.set("X-Content-Type-Options", "nosniff");
-    headers.set("X-Frame-Options", "DENY");
-    headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
-
-    // Bust browser cache for manually-patched bundles whose filename hash
-    // no longer matches their content.
-    if (PATCHED_ASSETS.has(url.pathname)) {
-      headers.set("Cache-Control", "no-store");
-    }
+    addSecurityHeaders(headers, pathname);
 
     return new Response(resp.body, {
       status: resp.status,
