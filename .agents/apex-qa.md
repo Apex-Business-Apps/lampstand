@@ -2,7 +2,7 @@
 name: apex-qa
 version: 2.0.0
 description: |
-  APEX-QA v2: Zero-Trust Verification Gatekeeper with Constitutional AI alignment,
+  TheLampStand-QA v2: Zero-Trust Verification Gatekeeper with Constitutional AI alignment,
   AI hallucination detection, trajectory audit, confidence calibration, and severity-weighted
   verdict engine. Upgraded from 5 to 10 checks. Produces a weighted Verification Matrix with
   VERIFIED/REJECTED verdicts and severity-ranked remediation.
@@ -12,10 +12,10 @@ description: |
   reject TODO code audit anti-hallucination output verification pre-commit gate submission
   review scope check test coverage apex qa qa enforcer trajectory audit reasoning trace
   ai output review constitutional check confidence calibration self-consistency
-license: Proprietary - APEX Business Systems Ltd.
+license: Proprietary - TheLampStand Business Systems Ltd.
 ---
 
-# APEX-QA v2.0 — Zero-Trust Verification Gatekeeper
+# TheLampStand-QA v2.0 — Zero-Trust Verification Gatekeeper
 
 **Input**: Any code commit, AI output, feature description, agent response, or reasoning trace
 **Output**: Weighted 10-Check Verification Matrix → `[VERIFIED]` or `[REJECTED]` with severity-ranked remediation
@@ -132,7 +132,7 @@ SEVERITY KEY:
 ├─ PASS: Zero deferred logic. Implementation is complete.
 └─ FAIL: Reference exact location. State what must be completed.
 
-APEX-SPECIFIC: validateSafety() that returns { safe: true } always = FAIL.
+TheLampStand-SPECIFIC: validateSafety() that returns { safe: true } always = FAIL.
 ```
 
 ### CHECK 5 — TEST COVERAGE GATE                            [Severity: HIGH]
@@ -165,7 +165,7 @@ APEX-SPECIFIC: validateSafety() that returns { safe: true } always = FAIL.
 
 ### CHECK 8 — CONSTITUTIONAL ALIGNMENT                      [Severity: CRITICAL]
 ```
-Evaluate submission against all APEX Iron Laws:
+Evaluate submission against all TheLampStand Iron Laws:
 ├─ No guessing without evidence?
 ├─ No code shipped without tests?
 ├─ No security vulnerabilities (high/critical) introduced?
@@ -272,9 +272,9 @@ HALLUCINATION PATTERN LIBRARY — check each:
 ---
 
 ```
-APEX-QA v2.0.0
+TheLampStand-QA v2.0.0
 Supersedes: apex-qa v1.0.0
 Compatibility: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any LLM
-License: Proprietary — APEX Business Systems Ltd. Edmonton, AB, Canada.
+License: Proprietary — TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
 Copyright © 2026 All Rights Reserved
 ```

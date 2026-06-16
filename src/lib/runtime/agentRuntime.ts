@@ -7,6 +7,24 @@ import { assembleGuidanceContext } from '@/lib/guidance/contextAssembler';
 import type { GroqAIAdapter } from '@/lib/groq';
 import { getRequestGuardrail } from '@/lib/agent/Grounding';
 
+function ensureRuntimeGrounding(result: GuidanceResult, passage: ScripturePassage | null): GuidanceResult {
+  if (!passage?.reference) {
+    const prefix = 'LampStand cannot verify this from available source passages.';
+    return {
+      ...result,
+      pastoralFraming: result.pastoralFraming.trim().startsWith(prefix)
+        ? result.pastoralFraming
+        : `${prefix} ${result.pastoralFraming}`,
+    };
+  }
+
+  const hasCitation = new RegExp(passage.reference.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')
+    .test(result.pastoralFraming);
+  return hasCitation
+    ? result
+    : { ...result, pastoralFraming: `${result.pastoralFraming}\n\nSources: ${passage.reference}.` };
+}
+
 export class CircuitBreaker {
   isOpen() {
     return shouldCircuitBreak();
@@ -120,7 +138,10 @@ export class TurnPipeline {
     // Assemble personal context from localStorage (respects consent flag internally).
     const context = assembleGuidanceContext();
 
-    const result = await this.conversation.synthesizeGuidance(input, tone, { context, bestPassage });
+    const result = ensureRuntimeGrounding(
+      await this.conversation.synthesizeGuidance(input, tone, { context, bestPassage }),
+      bestPassage,
+    );
 
     // Second-pass safeguard: detect AI filler that slipped through despite prompt rules.
     const bannedPattern =

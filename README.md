@@ -20,7 +20,7 @@ paywalled, never ad-supported.
 | Agent Orchestration | `src/hooks/useAgentController.ts` — headless UI-agnostic runtime state |
 | Agent Runtime | `src/lib/runtime/agentRuntime.ts` — safety gate, turn pipeline, retrieval, circuit breaker |
 | Voice | `src/lib/voice.ts` — STT browser/null fallback, TTS cloud/browser/silent fallback |
-| Deploy | Cloudflare Workers static assets via `wrangler.json` / `wrangler.production.json` |
+| Deploy | Cloudflare Workers static assets via `wrangler.json` / `wrangler.production.toml` |
 
 ---
 
@@ -88,12 +88,12 @@ npm ci && npm run build
 npx wrangler deploy --config wrangler.json
 ```
 
-**Production CI** (uses `wrangler.production.json` — includes `thelampstand.icu` routes):
+**Production CI** (uses `wrangler.production.toml` — the authoritative production config used by GitHub Actions and dry-run validation):
 ```bash
 # Runs automatically via GitHub Actions on push to main.
 # To trigger manually:
 npm ci && npm run build
-npx wrangler deploy --config wrangler.production.json
+npx wrangler deploy --config wrangler.production.toml
 ```
 
 ---
@@ -133,5 +133,5 @@ npm run build
 /legal/company
 ```
 
-Ownership language references APEX Business Systems LTD with explicit
+Ownership language references TheLampStand Business Systems LTD with explicit
 counsel-review markers where legal finalization is required.

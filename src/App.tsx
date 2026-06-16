@@ -101,9 +101,10 @@ const App = () => (
                   {/*
                 ========================================================================
                 CRITICAL ROUTING RULE (DO NOT DRIFT):
-                The ProfileGuard explicitly enforces that browser users go to /welcome 
-                (Marketing) and standalone/PWA users go to /auth (Login) if they are 
-                unauthenticated. Do not expose these app routes without this guard.
+                The ProfileGuard explicitly enforces that browser users go to /
+                (Marketing) and standalone/PWA users may enter /app as local
+                guests if unauthenticated. Do not expose these app routes
+                without this guard.
                 ========================================================================
               */}
                   <Route element={<ProfileGuard />}>
