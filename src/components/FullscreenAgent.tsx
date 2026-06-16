@@ -73,7 +73,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
               onClick={onMinimize}
               className="rounded-full border border-[#92400e]/35 bg-[#1a1610]/70 p-1.5 sm:p-2 text-[#fde68a] transition-colors hover:bg-[#1a1610] hover:text-[#fef3c7]"
               title="Switch to mini mode"
-              aria-label="Minimize fullscreen agent"
+              aria-label="Minimize"
             >
               <Minimize2 className="h-4 w-4" />
             </button>
