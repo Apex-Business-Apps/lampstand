@@ -13,6 +13,7 @@ import type { VoiceGender } from '@/lib/voice';
 type ViewMode = 'fullscreen' | 'mini-collapsed' | 'mini-expanded';
 
 const HIDDEN_PATHS = [
+  '/', '/welcome', '/lite',
   '/onboarding', '/auth', '/reset-password', '/legal', '/legal/privacy', '/legal/terms',
   '/legal/acceptable-use', '/legal/disclaimer', '/legal/company',
 ];
@@ -86,7 +87,7 @@ export function FloatingAgent() {
       <button
         onClick={() => setViewMode('mini-expanded')}
         className={cn(
-          'fixed bottom-20 right-4 z-[60] rounded-full shadow-lg',
+          'fixed bottom-20 right-4 z-[300] rounded-full shadow-lg',
           'bg-card/95 backdrop-blur-md border border-border',
           'p-1.5 transition-all duration-300 hover:scale-105',
           'active:scale-95'
@@ -101,7 +102,7 @@ export function FloatingAgent() {
   // Mini expanded - widget with controls
   return (
     <div className={cn(
-      'fixed bottom-20 right-4 z-[60]',
+      'fixed bottom-20 right-4 z-[300]',
       'bg-card/95 backdrop-blur-md border border-border',
       'rounded-2xl shadow-xl p-4 w-56',
       'animate-fade-in'
@@ -138,7 +139,4 @@ export function FloatingAgent() {
 
       <p className="text-[10px] text-center text-muted-foreground mt-2 capitalize">
         {agentMode === 'idle' ? 'Ready' : agentMode}
-      </p>
-    </div>
-  );
-}
+  
