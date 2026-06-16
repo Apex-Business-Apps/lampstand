@@ -1,5 +1,6 @@
 import { audioAnalyzer } from '@/lib/audioAnalyzer';
 import { getConsentState, getVoicePreferences, pushVoiceTranscript } from '@/lib/storage';
+import { getEdgeFunctionHeaders } from '@/lib/supabaseAuthHeaders';
 
 // Minimal ambient type so TS accepts the Web Speech API in browsers.
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -168,11 +169,7 @@ export class TextToSpeechAdapter {
         this.abortController = new AbortController();
         const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-          },
+          headers: await getEdgeFunctionHeaders(),
           body: JSON.stringify({ text, voice }),
           signal: this.abortController.signal,
         });

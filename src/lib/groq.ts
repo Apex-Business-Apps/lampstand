@@ -2,6 +2,7 @@ import type { IAIAdapter, ScripturePassage, ToneStyle, Sermon, GuidanceResult } 
 import { LocalAIAdapter } from './adapters';
 import type { GuidanceContext } from './guidance/contextAssembler';
 import { formatContextForPrompt } from './guidance/contextAssembler';
+import { getEdgeFunctionHeaders } from '@/lib/supabaseAuthHeaders';
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -50,11 +51,7 @@ export class GroqAIAdapter implements IAIAdapter {
 
     const res = await fetch(`${SUPABASE_URL}/functions/v1/groq-guidance`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        apikey: SUPABASE_KEY,
-        Authorization: `Bearer ${SUPABASE_KEY}`,
-      },
+      headers: await getEdgeFunctionHeaders(),
       body: JSON.stringify({ messages, json, maxTokens }),
     });
 
