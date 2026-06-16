@@ -1,7 +1,7 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { cleanup, render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { FloatingAgent } from '@/components/FloatingAgent';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { afterEach, describe, it, expect, vi } from 'vitest';
 
 // Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -19,6 +19,10 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 describe('FloatingAgent', () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it('starts in mini-collapsed mode by default', () => {
     render(
       <MemoryRouter initialEntries={['/app']}>

@@ -44,6 +44,8 @@ function addSecurityHeaders(headers: Headers, isHtml: boolean): void {
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("X-Frame-Options", "DENY");
   headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+  headers.set("Permissions-Policy", "camera=(), microphone=(self), geolocation=()");
   headers.set("Content-Security-Policy", CSP);
   if (isHtml) {
     headers.set("Cache-Control", "no-store");
@@ -65,6 +67,11 @@ export default {
             "Content-Type": "application/json",
             "Cache-Control": "no-store",
             "X-Content-Type-Options": "nosniff",
+            "X-Frame-Options": "DENY",
+            "Referrer-Policy": "strict-origin-when-cross-origin",
+            "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+            "Permissions-Policy": "camera=(), microphone=(self), geolocation=()",
+            "Content-Security-Policy": CSP,
           },
         }
       );
