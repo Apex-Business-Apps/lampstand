@@ -1,15 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { FullscreenAgent } from "@/components/FullscreenAgent";
 
-/**
- * LiteLandingPage — the "burning bush" unauthenticated preview experience.
- *
- * Renders the FullscreenAgent (BurningBushCanvas + conversation interface)
- * as the full page. The FloatingAgent is hidden on /lite (see FloatingAgent
- * HIDDEN_PATHS) so there is no UI overlap.
- *
- * Minimise → navigates back to the marketing page (/).
- */
+// /lite: unauthenticated burning-bush preview.
+// FloatingAgent is hidden on /lite (HIDDEN_PATHS) - no UI overlap.
+// Minimize returns to the marketing page (/).
 export default function LiteLandingPage() {
   const navigate = useNavigate();
   return <FullscreenAgent onMinimize={() => navigate("/")} />;
