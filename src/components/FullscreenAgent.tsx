@@ -8,6 +8,23 @@ import { cn } from '@/lib/utils';
 import { audioAnalyzer } from '@/lib/audioAnalyzer';
 import { MESSAGE_PATTERNS } from '@/lib/content/messagePatterns';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// DESIGN TOKENS — kept in sync with MarketingPage / index.css brand palette
+//
+//   Background : #0a0a0a  (obsidian — matches MarketingPage root bg)
+//   Primary    : #D97736  (amber — hsl(var(--primary)))
+//   Gold       : #F2A649  (hsl(var(--secondary)))
+//   Text warm  : #fef3c7  (warm ivory — foreground)
+//   Text gold  : #F2A649  (gold — accent labels)
+//   Border     : border-[#D97736]/<opacity>
+//
+// Font stack (matches tailwind.config.ts + index.css variables):
+//   font-display → Cormorant Garamond (scripture, headings, status)
+//   font-body    → EB Garamond        (body, pastoral, questions)
+//
+// Font sizes: all base values scaled ×1.05 from the previous build.
+// ─────────────────────────────────────────────────────────────────────────────
+
 interface FullscreenAgentProps {
   onMinimize: () => void;
 }
@@ -17,7 +34,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
   const rafRef = useRef<number>(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
-  const intensityRef = useRef(0.15); // Storing locally to push to canvas
+  const intensityRef = useRef(0.15);
 
   useEffect(() => {
     const poll = () => {
@@ -53,72 +70,86 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
     : 'Share one clear thought and receive scripture-first guidance';
 
   return (
-    <div className="fixed inset-0 z-[100] bg-[#1a1610] text-[#fef3c7] flex flex-col">
+    // Root: obsidian background matching MarketingPage
+    <div className="fixed inset-0 z-[100] bg-[#0a0a0a] text-[#fef3c7] flex flex-col">
       <div className="relative z-10 flex flex-col h-full min-h-0">
-        {/* Header */}
-        <header className="shrink-0 border-b border-[#92400e]/25 bg-[#1a1610]/65 px-3 sm:px-4 pb-2 pt-3 sm:pb-3 sm:pt-4 backdrop-blur-sm safe-top">
+
+        {/* ── Header ── */}
+        <header className="shrink-0 border-b border-[#D97736]/20 bg-[#0a0a0a]/80 px-3 sm:px-4 pb-2 pt-3 sm:pb-3 sm:pt-4 backdrop-blur-sm safe-top">
           <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <img
                 src="/images/wordmark-logo.png"
                 alt="LampStand"
-                className="h-6 sm:h-7 w-auto object-contain"
+                className="h-7 sm:h-9 w-auto object-contain"
                 draggable={false}
               />
-              <span className="rounded-full border border-[#92400e]/40 bg-[#92400e]/20 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-[#fde68a]">
+              {/* Mode badge — matches MarketingPage pill style */}
+              <span className="rounded-full border border-[#D97736]/40 bg-[#D97736]/15 px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10.5px] sm:text-[11.5px] font-medium uppercase tracking-[0.16em] text-[#F2A649]">
                 {agent.agentMode}
               </span>
             </div>
             <button
               onClick={onMinimize}
-              className="rounded-full border border-[#92400e]/35 bg-[#1a1610]/70 p-1.5 sm:p-2 text-[#fde68a] transition-colors hover:bg-[#1a1610] hover:text-[#fef3c7]"
-              title="Switch to mini mode"
-              aria-label="Minimize fullscreen agent"
+              className="rounded-full border border-[#D97736]/35 bg-[#0a0a0a]/70 p-1.5 sm:p-2 text-[#F2A649] transition-colors hover:bg-[#111111] hover:text-[#fef3c7]"
+              title="Minimise"
+              aria-label="Minimise fullscreen agent"
             >
               <Minimize2 className="h-4 w-4" />
             </button>
           </div>
         </header>
 
-        {/* Agent status + quick prompts */}
+        {/* ── Agent status + quick prompts ── */}
         <section className="shrink-0 px-3 sm:px-4 pt-3 sm:pt-4">
-          <div className="mx-auto w-full max-w-3xl rounded-2xl border border-[#92400e]/30 bg-[#1a1610]/65 p-3 sm:p-4 backdrop-blur-sm">
+          <div className="mx-auto w-full max-w-3xl rounded-2xl border border-[#D97736]/25 bg-[#0a0a0a]/65 p-3 sm:p-4 backdrop-blur-sm">
             <div className="flex items-center justify-between gap-3 sm:gap-4">
               <div className="flex items-center gap-3 sm:gap-4 flex-1">
+                {/* Flame avatar */}
                 <button
                   onClick={handleFlameTap}
-                  className="shrink-0 rounded-full overflow-hidden border border-[#92400e]/35 w-16 h-16 transition-colors hover:border-[#b45309]/65 relative"
+                  className="shrink-0 rounded-full overflow-hidden border border-[#D97736]/30 w-16 h-16 transition-colors hover:border-[#D97736]/65 relative"
                   title={agent.agentMode === 'speaking' ? 'Tap to stop voice' : 'Tap to replay reflection or focus input'}
                   aria-label="Agent presence"
                 >
                   <BurningBushCanvas intensity={intensityRef.current} className="w-full h-full" />
                 </button>
+
                 <div className="min-w-0">
-                  <p className="text-[15px] font-serif italic text-[#fef3c7]">{statusLabel}</p>
-                  <p className="mt-0.5 text-[12px] sm:text-[13px] text-[#fde68a]/70 line-clamp-2">{statusHelp}</p>
+                  {/* Status label — Cormorant Garamond, matches display headings */}
+                  <p className="text-[15.75px] font-display italic text-[#fef3c7]">
+                    {statusLabel}
+                  </p>
+                  <p className="mt-0.5 text-[12.5px] sm:text-[13.5px] font-body text-[#F2A649]/70 line-clamp-2">
+                    {statusHelp}
+                  </p>
                   {agent.activeContext && (
-                    <p className="mt-1 text-[11px] text-[#fbbf24]/70">{agent.activeContext}</p>
+                    <p className="mt-1 text-[11.5px] font-body text-[#F2A649]/70">
+                      {agent.activeContext}
+                    </p>
                   )}
                 </div>
               </div>
+
               {agent.agentMode === 'speaking' && (
                 <Button
                   onClick={agent.stopSpeaking}
                   size="icon"
-                  className="shrink-0 rounded-full h-10 w-10 border border-[#92400e]/40 bg-[#1a1610]/60 text-[#fde68a] hover:bg-[#92400e]/30 hover:text-[#fef3c7]"
+                  className="shrink-0 rounded-full h-10 w-10 border border-[#D97736]/40 bg-[#0a0a0a]/60 text-[#F2A649] hover:bg-[#D97736]/20 hover:text-[#fef3c7]"
                   title="Stop generating"
                 >
                   <Square className="h-4 w-4 fill-current" />
                 </Button>
               )}
             </div>
-            
+
+            {/* Quick action chips */}
             <div className="mt-3 flex flex-wrap gap-1.5 sm:gap-2">
               {MESSAGE_PATTERNS.quickActions.map((prompt) => (
                 <button
                   key={prompt}
                   onClick={() => { agent.setInput(prompt); requestAnimationFrame(() => composerRef.current?.focus()); }}
-                  className="rounded-full border border-[#92400e]/40 bg-[#1a1610]/60 px-2.5 py-1 sm:px-3 sm:py-1.5 text-[12px] sm:text-[13px] text-[#fde68a] transition-colors hover:border-[#b45309]/70 hover:text-[#fef3c7]"
+                  className="rounded-full border border-[#D97736]/35 bg-[#0a0a0a]/70 px-2.5 py-1 sm:px-3 sm:py-1.5 text-[12.5px] sm:text-[13.5px] font-body text-[#F2A649] transition-colors hover:border-[#D97736]/65 hover:text-[#fef3c7]"
                 >
                   {prompt}
                 </button>
@@ -127,50 +158,68 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
           </div>
         </section>
 
-        {/* Scrollable response area */}
+        {/* ── Scrollable response area ── */}
         <main ref={scrollRef} className="flex-1 overflow-y-auto min-h-0 px-3 sm:px-4 py-3 sm:py-4">
           <div className="mx-auto w-full max-w-3xl space-y-3 sm:space-y-4">
+
+            {/* Safety notice */}
             {agent.safetyMessage && (
-              <div className="flex items-start gap-2 rounded-xl border border-[#b45309]/35 bg-[#92400e]/20 p-3">
-                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#fbbf24]" />
-                <p className="text-[13px] text-[#fde68a]">{agent.safetyMessage}</p>
+              <div className="flex items-start gap-2 rounded-xl border border-[#D97736]/35 bg-[#D97736]/10 p-3">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#F2A649]" />
+                <p className="text-[13.5px] font-body text-[#F2A649]">{agent.safetyMessage}</p>
               </div>
             )}
 
+            {/* Voice notice */}
             {agent.voiceMessage && (
-              <div className="flex items-start gap-2 rounded-xl border border-[#b45309]/35 bg-[#1a1610]/60 p-3">
-                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#fbbf24]" />
-                <p className="text-[13px] text-[#fde68a]">{agent.voiceMessage}</p>
+              <div className="flex items-start gap-2 rounded-xl border border-[#D97736]/35 bg-[#0a0a0a]/60 p-3">
+                <AlertCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#F2A649]" />
+                <p className="text-[13.5px] font-body text-[#F2A649]">{agent.voiceMessage}</p>
               </div>
             )}
 
+            {/* Empty conversation state */}
             {!agent.result && (
-              <div className="rounded-2xl border border-[#92400e]/25 bg-[#1a1610]/55 p-4 sm:p-5">
-                <p className="text-[13px] uppercase tracking-[0.18em] text-[#fbbf24]">Conversation Space</p>
-                <p className="mt-2 text-[15px] leading-relaxed text-[#fde68a]">
+              <div className="rounded-2xl border border-[#D97736]/20 bg-[#0a0a0a]/55 p-4 sm:p-5">
+                <p className="text-[13.5px] uppercase tracking-[0.18em] text-[#F2A649]">
+                  Conversation Space
+                </p>
+                <p className="mt-2 text-[15.75px] font-body leading-relaxed text-[#F2A649]/80">
                   Your guidance will appear here in a clear sequence: scripture, reflection, questions, then prayer.
                 </p>
               </div>
             )}
 
+            {/* Agent result */}
             {agent.result && (
               <>
+                {/* Theme tags */}
                 {agent.result.themes.length > 0 && (
                   <div className="flex flex-wrap gap-1.5">
                     {agent.result.themes.map((t) => (
-                      <span key={t} className="rounded-full bg-[#92400e]/30 px-2 py-0.5 text-[11px] font-medium capitalize text-[#fde68a]">{t}</span>
+                      <span
+                        key={t}
+                        className="rounded-full bg-[#D97736]/15 px-2 py-0.5 text-[11.5px] font-medium capitalize text-[#F2A649]"
+                      >
+                        {t}
+                      </span>
                     ))}
                   </div>
                 )}
 
-                <section className="rounded-xl border border-[#92400e]/25 bg-[#92400e]/15 p-3 sm:p-4">
-                  <p className="mb-1 text-[13px] font-semibold uppercase tracking-wider text-[#fbbf24]">{agent.result.passage.reference}</p>
-                  <p className="font-serif text-[15px] leading-relaxed text-[#fef3c7]">{agent.result.passage.text}</p>
+                {/* Scripture passage — Cormorant Garamond (font-display) */}
+                <section className="rounded-xl border border-[#D97736]/20 bg-[#D97736]/10 p-3 sm:p-4">
+                  <p className="mb-1 text-[13.5px] font-semibold uppercase tracking-wider text-[#F2A649]">
+                    {agent.result.passage.reference}
+                  </p>
+                  <p className="font-display text-[15.75px] leading-relaxed text-[#fef3c7]">
+                    {agent.result.passage.text}
+                  </p>
                   <button
                     onClick={agent.handleSave}
                     className={cn(
-                      'mt-3 flex items-center gap-1 text-[11px] uppercase tracking-wider transition-colors',
-                      agent.saved ? 'text-[#fbbf24]' : 'text-[#fde68a]/70 hover:text-[#fde68a]'
+                      'mt-3 flex items-center gap-1 text-[11.5px] uppercase tracking-wider transition-colors',
+                      agent.saved ? 'text-[#F2A649]' : 'text-[#F2A649]/60 hover:text-[#F2A649]'
                     )}
                   >
                     <Bookmark className="h-3 w-3" fill={agent.saved ? 'currentColor' : 'none'} />
@@ -178,18 +227,26 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
                   </button>
                 </section>
 
-                <section className="rounded-xl border border-[#92400e]/22 bg-[#92400e]/10 p-3 sm:p-4">
-                  <p className="mb-2 text-[13px] font-semibold uppercase tracking-wider text-[#fbbf24]">Pastoral Reflection</p>
-                  <p className="text-[15px] leading-relaxed text-[#fde68a]">{agent.result.pastoralFraming}</p>
+                {/* Pastoral reflection — EB Garamond (font-body) */}
+                <section className="rounded-xl border border-[#D97736]/20 bg-[#D97736]/10 p-3 sm:p-4">
+                  <p className="mb-2 text-[13.5px] font-semibold uppercase tracking-wider text-[#F2A649]">
+                    Pastoral Reflection
+                  </p>
+                  <p className="text-[15.75px] font-body leading-relaxed text-[#fde68a]">
+                    {agent.result.pastoralFraming}
+                  </p>
                 </section>
 
+                {/* Reflection questions */}
                 {agent.result.reflectionQuestions.length > 0 && (
-                  <section className="rounded-xl border border-[#92400e]/22 bg-[#92400e]/10 p-3 sm:p-4">
-                    <p className="mb-2 text-[13px] font-semibold uppercase tracking-wider text-[#fbbf24]">Sit With These</p>
+                  <section className="rounded-xl border border-[#D97736]/20 bg-[#D97736]/10 p-3 sm:p-4">
+                    <p className="mb-2 text-[13.5px] font-semibold uppercase tracking-wider text-[#F2A649]">
+                      Sit With These
+                    </p>
                     <ul className="space-y-1.5">
                       {agent.result.reflectionQuestions.map((q, i) => (
-                        <li key={i} className="flex gap-2 text-[15px] text-[#fde68a]">
-                          <span className="shrink-0 text-[#fbbf24]">{i + 1}.</span>
+                        <li key={i} className="flex gap-2 text-[15.75px] font-body text-[#fde68a]">
+                          <span className="shrink-0 text-[#F2A649]">{i + 1}.</span>
                           <span>{q}</span>
                         </li>
                       ))}
@@ -197,10 +254,15 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
                   </section>
                 )}
 
+                {/* Prayer — Cormorant Garamond italic (font-display) */}
                 {agent.result.prayer && (
-                  <section className="rounded-xl border border-[#92400e]/22 bg-[#92400e]/10 p-3 sm:p-4">
-                    <p className="mb-2 text-[13px] font-semibold uppercase tracking-wider text-[#fbbf24]">Prayer</p>
-                    <p className="text-[15px] italic leading-relaxed text-[#fde68a]">{agent.result.prayer}</p>
+                  <section className="rounded-xl border border-[#D97736]/20 bg-[#D97736]/10 p-3 sm:p-4">
+                    <p className="mb-2 text-[13.5px] font-semibold uppercase tracking-wider text-[#F2A649]">
+                      Prayer
+                    </p>
+                    <p className="text-[15.75px] font-display italic leading-relaxed text-[#fde68a]">
+                      {agent.result.prayer}
+                    </p>
                   </section>
                 )}
               </>
@@ -208,16 +270,16 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
           </div>
         </main>
 
-        {/* Composer - pinned bottom */}
-        <section className="shrink-0 border-t border-[#92400e]/30 bg-[#1a1610]/78 px-3 sm:px-4 pb-3 sm:pb-4 pt-2 sm:pt-3 backdrop-blur-md safe-bottom">
+        {/* ── Composer — pinned bottom ── */}
+        <section className="shrink-0 border-t border-[#D97736]/25 bg-[#0a0a0a]/85 px-3 sm:px-4 pb-3 sm:pb-4 pt-2 sm:pt-3 backdrop-blur-md safe-bottom">
           <div className="mx-auto w-full max-w-3xl space-y-2 sm:space-y-3">
             <div className="flex items-end gap-2">
               <Textarea
                 ref={composerRef}
                 value={agent.input}
                 onChange={(e) => agent.setInput(e.target.value)}
-                placeholder="What's on your heart..."
-                className="min-h-[44px] sm:min-h-[52px] max-h-[90px] sm:max-h-[110px] resize-none border-[#92400e]/45 bg-[#1a1610]/70 text-[#fef3c7] placeholder:text-[#fde68a]/45 text-[15px]"
+                placeholder="What's on your heart…"
+                className="min-h-[44px] sm:min-h-[52px] max-h-[90px] sm:max-h-[110px] resize-none border-[#D97736]/40 bg-[#0a0a0a]/70 font-body text-[#fef3c7] placeholder:text-[#F2A649]/40 text-[15.75px]"
                 maxLength={500}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); agent.handleSubmit(); }
@@ -227,7 +289,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
                 onClick={agent.handleSubmit}
                 disabled={agent.loading || !agent.input.trim()}
                 size="icon"
-                className="h-10 w-10 sm:h-11 sm:w-11 shrink-0 rounded-full border-0 bg-[#b45309] text-[#fef3c7] hover:bg-[#d97706]"
+                className="h-10 w-10 sm:h-11 sm:w-11 shrink-0 rounded-full border-0 bg-[#D97736] text-white hover:bg-[#c2682d]"
                 title="Send guidance request"
               >
                 <Send className="h-4 w-4" />
@@ -239,7 +301,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
                 <Button
                   variant={agent.isListening ? 'destructive' : 'outline'}
                   size="icon"
-                  className="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-[#92400e]/45 bg-[#1a1610]/70 text-[#fde68a] hover:bg-[#1a1610] hover:text-[#fef3c7]"
+                  className="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-[#D97736]/40 bg-[#0a0a0a]/70 text-[#F2A649] hover:bg-[#0f0f0f] hover:text-[#fef3c7]"
                   onClick={() => agent.toggleListening(() => composerRef.current?.focus())}
                   title={agent.isListening ? 'Stop listening' : 'Use microphone'}
                 >
@@ -248,20 +310,26 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-[#92400e]/45 bg-[#1a1610]/70 text-[#fde68a] hover:bg-[#1a1610] hover:text-[#fef3c7]"
+                  className="h-8 w-8 sm:h-9 sm:w-9 rounded-full border-[#D97736]/40 bg-[#0a0a0a]/70 text-[#F2A649] hover:bg-[#0f0f0f] hover:text-[#fef3c7]"
                   onClick={agent.toggleSpeech}
                   title={agent.isSpeechEnabled ? 'Mute voice playback' : 'Enable voice playback'}
                 >
                   {agent.isSpeechEnabled ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
                 </Button>
               </div>
-              <div className="flex items-center gap-2 sm:gap-3 text-[11px] sm:text-[12px] text-[#fde68a]/65">
-                {agent.loading && <span className="font-serif italic text-[#fbbf24]">{MESSAGE_PATTERNS.agentStates.thinking}</span>}
+
+              <div className="flex items-center gap-2 sm:gap-3 text-[11.5px] sm:text-[12.5px] text-[#F2A649]/65">
+                {agent.loading && (
+                  <span className="font-display italic text-[#F2A649]">
+                    {MESSAGE_PATTERNS.agentStates.thinking}
+                  </span>
+                )}
                 <span>{agent.input.length}/500</span>
               </div>
             </div>
           </div>
         </section>
+
       </div>
     </div>
   );

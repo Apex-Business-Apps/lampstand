@@ -36,7 +36,7 @@ they just need to log back in.
 |------|--------|-------|
 | `/` | `MarketingPage` | Primary marketing entry |
 | `/welcome` | `MarketingPage` | Legacy alias — preserved for old links/bookmarks |
-| `/lite` | `LiteLandingPage` | Unauthenticated burning-bush preview (no FloatingAgent) |
+| `/lite` | `LiteLandingPage` | Unauthenticated burning-bush preview (no FloatingAgent). Internal state: `landing` → `agent`. Authenticated users are redirected to `/app`. |
 | `/entry` | `EntryPage` | PWA entry point — evaluates standalone mode |
 | `/auth` | Auth flow | Login / magic-link |
 | `/app` | Main app (guarded) | Requires auth — redirects via `ProfileGuard` |
@@ -77,5 +77,6 @@ const HIDDEN_PATHS = [
 
 | Version | Date | Change |
 |---------|------|--------|
+| 2.0.2 | 2026-06-16 | `/lite` now uses internal state machine (`landing`→`agent`); minimize returns to landing view, not `/`. Authenticated users on `/lite` redirect to `/app`. `FullscreenAgent` visually unified with MarketingPage. |
 | 2.0.1 | 2026-06-16 | Added `/welcome` alias, `/lite` burning-bush preview route, HIDDEN_PATHS table, and versioning header. |
 | 2.0.0 | 2026-06-10 | Initial routing rules document. |
