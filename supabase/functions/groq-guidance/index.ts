@@ -30,51 +30,30 @@ async function checkRateLimit(
   supabase: ReturnType<typeof createClient>,
   bucketKey: string,
   limit: number,
+  endpoint: string,
 ): Promise<{ allowed: boolean; remaining: number }> {
   const windowStart = new Date();
   windowStart.setHours(0, 0, 0, 0);
 
-  // Upsert the rate limit record for today's window
-  const { data, error } = await supabase
-    .from("api_rate_limits")
-    .upsert(
-      {
-        bucket_key: bucketKey,
-        endpoint: "groq-guidance",
-        request_count: 1,
-        window_start: windowStart.toISOString(),
-      },
-      {
-        onConflict: "bucket_key,endpoint,window_start",
-        ignoreDuplicates: false,
-      },
-    )
-    .select("request_count")
-    .single();
+  try {
+    const { data, error } = await supabase.rpc('increment_api_rate_limit', {
+      p_bucket_key: bucketKey,
+      p_endpoint: endpoint,
+      p_window_start: windowStart.toISOString(),
+    });
 
-  if (error) {
-    // If we can't check the rate limit, allow but log
-    console.warn("[groq-guidance] rate limit check failed:", error.message);
-    return { allowed: true, remaining: limit };
-  }
+    if (error) {
+      // Rate limit bookkeeping failed — DENY to protect costs (fail-safe)
+      console.warn(`[${endpoint}] rate limit RPC failed:`, error.message);
+      return { allowed: false, remaining: 0 };
+    }
 
-  // Increment if record already existed (upsert above inserted 1 for new records)
-  if (data && data.request_count > 1) {
-    // Record existed, we need to increment it
-    const { data: updated } = await supabase
-      .from("api_rate_limits")
-      .update({ request_count: data.request_count + 1 })
-      .eq("bucket_key", bucketKey)
-      .eq("endpoint", "groq-guidance")
-      .gte("window_start", windowStart.toISOString())
-      .select("request_count")
-      .single();
-
-    const count = updated?.request_count ?? data.request_count + 1;
+    const count = data as number;
     return { allowed: count <= limit, remaining: Math.max(0, limit - count) };
+  } catch (e) {
+    console.warn(`[${endpoint}] rate limit check threw:`, e);
+    return { allowed: false, remaining: 0 };
   }
-
-  return { allowed: 1 <= limit, remaining: Math.max(0, limit - 1) };
 }
 
 serve(async (req) => {
@@ -118,7 +97,7 @@ serve(async (req) => {
       rateLimit = ANON_IP_DAILY_LIMIT;
     }
 
-    const { allowed, remaining } = await checkRateLimit(supabase, bucketKey, rateLimit);
+    const { allowed, remaining } = await checkRateLimit(supabase, bucketKey, rateLimit, 'groq-guidance');
     if (!allowed) {
       return new Response(JSON.stringify({ error: "Daily request limit reached. Please try again tomorrow." }), {
         status: 429,
