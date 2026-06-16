@@ -246,10 +246,6 @@ export default function MarketingPage() {
               Try without signing up
             </Button>
           </div>
-
-          <p className="pt-2 text-center text-xs uppercase tracking-[0.18em] text-[#6a6a6a]">
-            Move your cursor let the lamp light the page
-          </p>
         </div>
       </div>
 
