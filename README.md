@@ -133,5 +133,5 @@ npm run build
 /legal/company
 ```
 
-Ownership language references APEX Business Systems LTD with explicit
+Ownership language references TheLampStand Business Systems LTD with explicit
 counsel-review markers where legal finalization is required.

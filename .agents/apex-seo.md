@@ -3,7 +3,7 @@ name: apex-seo
 description: Use this skill for SEO audits, keyword research, content briefs, on-page optimization, schema recommendations, internal linking, competitor analysis, local SEO, GEO or AI-search optimization, and 30/60/90-day SEO roadmaps. Do not use for paid ads, social media management, or generic copywriting without search intent.
 ---
 
-# APEX SEO
+# TheLampStand SEO
 
 ## Mission
 

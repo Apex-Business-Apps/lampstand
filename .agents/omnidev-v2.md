@@ -2,7 +2,7 @@
 name: omnidev-v2
 version: 3.0.0
 description: "OMNIDEV-V3: God-Mode Software Engineering with Constitutional AI, Iterative Verification Engine, Context Window Architecture, Thinking Budget Router, and Reasoning-First Scratchpad. Omniscient zero-failure development across ALL languages and domains. Triggers: write code, debug, fix bug, build app, create API, design system, architect, deploy, secure, optimize, refactor, review, test, CI/CD, Docker, Kubernetes, database, frontend, backend, full-stack, React, Python, TypeScript, Go, Rust, Java, infrastructure, DevOps, security, performance, microservices, serverless, cloud, mobile, web. Produces: constitutionally-verified, production-grade, IP-defensible code with first-pass success."
-license: "Proprietary - APEX Business Systems Ltd. Edmonton, AB, Canada."
+license: "Proprietary - TheLampStand Business Systems Ltd. Edmonton, AB, Canada."
 ---
 
 # OMNIDEV-V3 — God-Mode Software Engineering
@@ -317,7 +317,7 @@ IP Checklist:
 ```
 GENERATE  → Produce best initial output without filtering
 CRITIQUE  → Apply Constitutional Self-Audit to your own output
-           → Would APEX-QA v2 reject this? Which of the 10 checks fail?
+           → Would TheLampStand-QA v2 reject this? Which of the 10 checks fail?
            → Anything claimed without session-verified evidence?
            → Anything simpler that still meets all constraints?
 IMPROVE   → Apply all critique findings. Re-generate affected sections.
@@ -360,4 +360,4 @@ STOP WHEN → Critique finds zero violations.
 **Version**: 3.0.0
 **Supersedes**: omnidev-v2 (2.0.0), apex-power (for software engineering tasks)
 **Compatibility**: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, Qwen, Grok, any reasoning model
-**License**: Proprietary - APEX Business Systems Ltd. Edmonton, AB, Canada.
+**License**: Proprietary - TheLampStand Business Systems Ltd. Edmonton, AB, Canada.

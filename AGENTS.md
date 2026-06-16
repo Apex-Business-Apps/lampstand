@@ -1,6 +1,6 @@
-# APEX-OmniHub Repository Instructions
+# TheLampStand-OmniHub Repository Instructions
 
-This repository belongs to APEX Business Systems LTD and supports APEX-OmniHub. Treat it as production-grade software.
+This repository belongs to TheLampStand Business Systems LTD and supports TheLampStand-OmniHub. Treat it as production-grade software.
 
 ## Product Standard
 
@@ -137,7 +137,7 @@ When finishing a task, respond with:
 
 Keep responses concise and actionable.
 
-## APEX Workflow Frameworks
+## TheLampStand Workflow Frameworks
 
 Apply these workflows when relevant:
 

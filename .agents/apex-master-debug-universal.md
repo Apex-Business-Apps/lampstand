@@ -2,7 +2,7 @@
 name: apex-master-debug
 version: 2.0.0
 description: >
-  APEX-MASTER-DEBUG v2: Omnipotent, Omniscient, Predictive Debugging Intelligence.
+  TheLampStand-MASTER-DEBUG v2: Omnipotent, Omniscient, Predictive Debugging Intelligence.
   Upgraded with Thinking Budget Allocation, Self-Consistency Cross-Check, Constitutional
   Fix Review, AI/LLM-specific debug patterns, and Phase 9 Trajectory Audit.
   Universal across ALL languages, frameworks, platforms. Zero loops. Zero guessing.
@@ -16,11 +16,11 @@ description: >
 
   Produces: Single surgical fix with 100% certainty, proactive elimination of future bugs,
   and a permanent regression shield.
-license: Proprietary — APEX Business Systems Ltd. Edmonton, AB, Canada.
+license: Proprietary — TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
 compatibility: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any LLM
 ---
 
-# APEX-MASTER-DEBUG v2.0
+# TheLampStand-MASTER-DEBUG v2.0
 
 > **"Omniscient agents don't debug. They PREVENT. When they must fix — ONE pass, ONE change, DONE."**
 
@@ -153,7 +153,7 @@ Evidence Sufficiency Gate:
 
 ---
 
-## PHASE 3: TEMPORAL ROOT CAUSE ANALYSIS ⟨The APEX Core⟩
+## PHASE 3: TEMPORAL ROOT CAUSE ANALYSIS ⟨The TheLampStand Core⟩
 
 **Travel through time. Find WHERE, WHEN, and WHY the invariant broke.**
 
@@ -292,7 +292,7 @@ SIMULATION PASS 4 — REGRESSION PROBE
 ⛔ ALL must be GREEN. No exceptions. No "mostly."
 
 ╔══════════════════════════════════════════════════════════╗
-║                  APEX PRE-FLIGHT GATE                   ║
+║                  TheLampStand PRE-FLIGHT GATE                   ║
 ╠══════════════════════════════════════════════════════════╣
 ║  □ Scope locked (no drift from original problem)         ║
 ║  □ ALL evidence collected (no gaps, no assumptions)      ║
@@ -645,9 +645,9 @@ Reject if change degrades anything else
 ---
 
 ```
-APEX-MASTER-DEBUG v2.0.0
+TheLampStand-MASTER-DEBUG v2.0.0
 Supersedes: apex-master-debug v1.0.0, one-pass-debug (all versions)
 Compatibility: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any LLM
-License: Proprietary — APEX Business Systems Ltd. Edmonton, AB, Canada.
+License: Proprietary — TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
 Copyright © 2026 All Rights Reserved
 ```

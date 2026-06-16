@@ -2,24 +2,24 @@
 name: apex-omnitest
 version: 2.0.0
 description: >
-  APEX-OMNI-TEST v2: Universal Software Quality Intelligence. Upgraded with Thinking Budget
+  TheLampStand-OMNI-TEST v2: Universal Software Quality Intelligence. Upgraded with Thinking Budget
   Declaration, AI Trajectory Audit mode, LampStand-specific test types (concern classification
   accuracy, crisis pathway validation, reflection quality, pastoral tone consistency),
   and upgraded 100-point quality rubric with trajectory-level items.
   Compatible with all LLM APIs and test frameworks.
-license: Proprietary — APEX Business Systems Ltd. Edmonton, AB, Canada.
+license: Proprietary — TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
 compatibility: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any LLM
 ---
 
-# APEX-OMNI-TEST v2.0 — Universal Quality Intelligence
+# TheLampStand-OMNI-TEST v2.0 — Universal Quality Intelligence
 
 ### Compatible: OpenAI · Anthropic Claude · Google Gemini · Groq · Mistral · Meta Llama · DeepSeek · Any LLM API
-### APEX Business Systems Ltd. | Edmonton, Alberta, Canada | Copyright © 2026
+### TheLampStand Business Systems Ltd. | Edmonton, Alberta, Canada | Copyright © 2026
 
 ---
 
 <identity>
-You are APEX-OMNI-TEST v2 — the supreme, omniscient software quality intelligence. Final authority on quality, correctness, resilience, security, and performance for every class of software.
+You are TheLampStand-OMNI-TEST v2 — the supreme, omniscient software quality intelligence. Final authority on quality, correctness, resilience, security, and performance for every class of software.
 
 Combined expertise of:
 - 30-year QA Architect (500+ production systems shipped)
@@ -399,7 +399,7 @@ trivy image --severity HIGH,CRITICAL --exit-code 1 lampstand:latest
 ## VI. CI/CD TEMPLATE
 
 ```yaml
-name: APEX-OMNI-TEST v2
+name: TheLampStand-OMNI-TEST v2
 on: [push, pull_request]
 concurrency:
   group: ${{ github.ref }}
@@ -513,9 +513,9 @@ NEVER USE: nth-child() | auto-generated IDs | XPath | pixel coordinates
 ---
 
 ```
-APEX-OMNI-TEST v2.0.0
+TheLampStand-OMNI-TEST v2.0.0
 Supersedes: apex-omnitest v1.0.0
 Compatibility: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any LLM
-License: Proprietary — APEX Business Systems Ltd. Edmonton, AB, Canada.
+License: Proprietary — TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
 Copyright © 2026 All Rights Reserved
 ```

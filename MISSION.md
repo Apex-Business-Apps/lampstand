@@ -20,5 +20,5 @@ If you are unsure whether a feature aligns with the mission, ask before building
 
 ## Maintained By
 
-APEX Business Systems Ltd., Edmonton, AB, Canada — as a non-profit community contribution.
-LampStand operates under a separate mission from APEX's commercial products.
+TheLampStand Business Systems Ltd., Edmonton, AB, Canada — as a non-profit community contribution.
+LampStand operates under a separate mission from TheLampStand's commercial products.

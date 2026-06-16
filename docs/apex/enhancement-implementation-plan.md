@@ -1,4 +1,4 @@
-# APEX Enhancement Implementation Plan
+# TheLampStand Enhancement Implementation Plan
 
 ## Scope Chosen From Repo Evidence
 This pass implemented enhancements only in verified modules: local storage write paths, local scripture retrieval, AI conversation orchestration, Cloudflare worker delivery, and tests/docs.
@@ -32,7 +32,7 @@ This pass implemented enhancements only in verified modules: local storage write
 - No database schema migration, because existing local-first and Supabase RLS/primary-key patterns support this pass without destructive changes.
 - No broad UI rewrite.
 
-### APEX-POWER-20X & OMNIDEV-V2 Architectural Upgrades
+### TheLampStand-POWER-20X & OMNIDEV-V2 Architectural Upgrades
 
 5. On-Device Prosody to Resonance Engine
    - Enhanced `audioAnalyzer.ts` to natively calculate clinical prosody metrics (dynamic range, speech rate, pause durations) without network cost.
