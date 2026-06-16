@@ -1,9 +1,10 @@
-/* The LampStand — service worker v2
+/* The LampStand — service worker v3
+ * v3: bump cache name to clear stale v2 entries (old chunk hashes).
  * v2: adds cache-first strategy for hashed static assets.
  * Notification click handling from v1 is preserved unchanged.
  */
 
-const CACHE_NAME = 'lampstand-shell-v2';
+const CACHE_NAME = 'lampstand-shell-v3';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
