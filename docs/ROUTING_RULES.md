@@ -1,6 +1,6 @@
 # LampStand — Critical Routing Architecture
 
-**Version:** 2.0.1  
+**Version:** 2.1.0  
 **Last updated:** 2026-06-16  
 **Status:** Locked — DO NOT modify without explicit founder authorization.
 
@@ -22,11 +22,15 @@ proposition before login/signup.
 ### 2. PWA / Installed App Users
 
 **Rule:** When a user opens the installed PWA (standalone display mode) while
-not logged in, they **MUST** bypass the Marketing Page and go directly to
-`/auth`.
+not logged in and has no local profile, they **MUST** enter guest mode directly
+at `/app`. They are NOT forced to `/auth`.
 
-**Why:** Installed-app users are already converted. Marketing is unnecessary —
-they just need to log back in.
+**Why:** Guest mode is core to LampStand's mission (privacy-first, no login required).
+Installed-app users should be able to use the full app locally without creating an account.
+The auth flow remains accessible at `/auth` for users who want cloud sync.
+
+> **Note:** Auth is always reachable at `/auth` but is never forced on PWA users
+> who have no profile. Guest mode is the default for new standalone installs.
 
 ---
 
@@ -48,14 +52,14 @@ they just need to log back in.
 ### `EntryPage.tsx`
 
 Handles the `/entry` route. Evaluates `isStandaloneDisplayMode()`.
-- If `true` → redirect unauthenticated users to `/auth`
+- If `true` → unauthenticated guest users proceed directly to `/app` (guest mode)
 - If `false` → redirect to `/` (MarketingPage)
 
 ### `ProfileGuard.tsx`
 
 Wraps all internal app routes (`/app`, `/daily`, etc.) in `App.tsx`.
 If an unauthenticated user hits a guarded route directly:
-- Standalone/PWA → redirect to `/auth`
+- Standalone/PWA → allowed through (guest mode; no redirect to `/auth`)
 - Standard browser → redirect to `/`
 
 ### `FloatingAgent.tsx` — HIDDEN_PATHS
@@ -77,5 +81,6 @@ const HIDDEN_PATHS = [
 
 | Version | Date | Change |
 |---------|------|--------|
+| 2.1.0 | 2026-06-16 | Updated PWA routing to reflect guest-mode-first implementation. Standalone unauthenticated users now go to `/app` (guest mode), not `/auth`. ProfileGuard allows PWA users through. Aligns with README and MISSION. |
 | 2.0.1 | 2026-06-16 | Added `/welcome` alias, `/lite` burning-bush preview route, HIDDEN_PATHS table, and versioning header. |
 | 2.0.0 | 2026-06-10 | Initial routing rules document. |
