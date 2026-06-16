@@ -203,7 +203,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
           </div>
         </main>
 
-        {/* Composer - pinned bottom */}
+        {/* Composer — pinned bottom */}
         <section className="shrink-0 border-t border-[#92400e]/30 bg-[#1a1610]/78 px-3 sm:px-4 pb-3 sm:pb-4 pt-2 sm:pt-3 backdrop-blur-md safe-bottom">
           <div className="mx-auto w-full max-w-3xl space-y-2 sm:space-y-3">
             <div className="flex items-end gap-2">

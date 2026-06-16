@@ -491,13 +491,13 @@ export const DAILY_LIGHT_LIBRARY: DailyLightTemplate[] = [
   },
   {
     passage: passagesById['psalm-91-1-2'],
-    reflection: 'Shelter is not always a physical location. It can be a posture of the heart - turning toward God before turning toward anxiety.',
+    reflection: 'Shelter is not always a physical location. It can be a posture of the heart — turning toward God before turning toward anxiety.',
     prayer: 'Most High God, be my refuge today when the world feels exposing. Amen.',
     theme: 'shelter',
   },
   {
     passage: passagesById['isaiah-43-1-2'],
-    reflection: 'God does not promise the absence of deep water. He promises presence in the middle of it. That is a different kind of safety - one that does not require circumstances to cooperate.',
+    reflection: 'God does not promise the absence of deep water. He promises presence in the middle of it. That is a different kind of safety — one that does not require circumstances to cooperate.',
     prayer: 'Lord, walk with me through what I cannot go around. Amen.',
     theme: 'presence',
   },
@@ -509,7 +509,7 @@ export const DAILY_LIGHT_LIBRARY: DailyLightTemplate[] = [
   },
   {
     passage: passagesById['psalm-103-2-4'],
-    reflection: 'Memory can be short when it comes to grace. This psalm is a deliberate act of remembering - every pardon, every healing, every rescue from the pit.',
+    reflection: 'Memory can be short when it comes to grace. This psalm is a deliberate act of remembering — every pardon, every healing, every rescue from the pit.',
     prayer: 'Generous God, keep my memory of your mercy long and my gratitude fresh. Amen.',
     theme: 'remembrance',
   },
@@ -527,7 +527,7 @@ export const DAILY_LIGHT_LIBRARY: DailyLightTemplate[] = [
   },
   {
     passage: passagesById['eph-3-20-21'],
-    reflection: 'Your imagination is not the ceiling. God works beyond what you can picture, through power that is already at work within you - not someday, but now.',
+    reflection: 'Your imagination is not the ceiling. God works beyond what you can picture, through power that is already at work within you — not someday, but now.',
     prayer: 'God of immeasurably more, stretch my expectations and surprise me with your faithfulness. Amen.',
     theme: 'abundance',
   },
@@ -551,7 +551,7 @@ export const DAILY_LIGHT_LIBRARY: DailyLightTemplate[] = [
   },
   {
     passage: passagesById['2-tim-1-7'],
-    reflection: 'The spirit you received is not one of timidity. Power, love, and self-control - these are already part of your equipment. Use them.',
+    reflection: 'The spirit you received is not one of timidity. Power, love, and self-control — these are already part of your equipment. Use them.',
     prayer: 'God, activate the courage and love you have already placed inside me. Amen.',
     theme: 'boldness',
   },
@@ -569,7 +569,7 @@ export const DAILY_LIGHT_LIBRARY: DailyLightTemplate[] = [
   },
   {
     passage: passagesById['rom-8-28'],
-    reflection: 'This verse is not a promise that everything will feel good. It is a promise that nothing is wasted - not the pain, not the confusion, not the waiting.',
+    reflection: 'This verse is not a promise that everything will feel good. It is a promise that nothing is wasted — not the pain, not the confusion, not the waiting.',
     prayer: 'Lord, help me trust that you are weaving good from what I cannot yet understand. Amen.',
     theme: 'providence',
   },

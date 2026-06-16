@@ -3,12 +3,6 @@
 import { audioAnalyzer } from '@/lib/audioAnalyzer';
 import { getConsentState, getVoicePreferences, pushVoiceTranscript } from '@/lib/storage';
 
-// Minimal ambient type so TS accepts the Web Speech API in browsers.
-/* eslint-disable @typescript-eslint/no-explicit-any */
-type SpeechRecognition = any;
-type SpeechRecognitionEvent = any;
-type SpeechRecognitionErrorEvent = any;
-
 export type VoiceGender = 'male' | 'female';
 
 export interface SpeechToTextProvider {
@@ -44,7 +38,7 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
       if (!this.recognition) return reject(new Error('Speech recognition not supported'));
       let settled = false;
 
-      // Timeout safety net - if no result after 15s, reject gracefully
+      // Timeout safety net — if no result after 15s, reject gracefully
       const timeout = setTimeout(() => {
         try { this.recognition.abort(); } catch { /* noop */ }
         if (!settled) {

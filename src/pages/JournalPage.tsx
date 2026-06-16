@@ -1,16 +1,13 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { AppShell } from '@/components/AppShell';
 import { Textarea } from '@/components/ui/textarea';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Haptics, ImpactStyle, NotificationType } from '@capacitor/haptics';
 import { Button } from '@/components/ui/button';
 import { saveJournalEntry, getJournalEntries, removeJournalEntry } from '@/lib/storage';
 import { getDailyLight } from '@/lib/dailyLight';
 import { recordSignal } from '@/lib/resonance/ResonanceEngine';
 import type { JournalEntry } from '@/types';
-import { PenLine, Trash2, Mic, Square, Loader2 } from 'lucide-react';
+import { PenLine, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useLocalSTT } from '@/hooks/useLocalSTT';
 
 type MoodOption = 'grateful' | 'struggling' | 'peaceful' | 'seeking';
 
@@ -36,22 +33,8 @@ export default function JournalPage() {
   const [linkPassage, setLinkPassage] = useState(false);
   const [entries, setEntries] = useState(getJournalEntries);
 
-  const { isReady, isDownloading, isRecording, isProcessing, transcript, error, startRecording, stopRecording, clearTranscript } = useLocalSTT();
-
-  useEffect(() => {
-    if (transcript) {
-      setContent(prev => (prev ? prev + ' ' + transcript : transcript));
-      clearTranscript();
-    }
-  }, [transcript, clearTranscript]);
-
-  async function handleSave() {
+  function handleSave() {
     if (!content.trim()) return;
-    
-    try {
-      await Haptics.impact({ style: ImpactStyle.Medium });
-    } catch (e) { /* ignore */ }
-
     const entry: JournalEntry = {
       id: crypto.randomUUID(),
       content: content.trim(),
@@ -68,7 +51,7 @@ export default function JournalPage() {
         passage: linkPassage ? today.passage : undefined,
         theme: selectedMood ? MOOD_THEME_MAP[selectedMood] : today.theme,
       });
-    } catch (e) { /* best-effort */ }
+    } catch { /* best-effort */ }
 
     setContent('');
     setSelectedMood(null);
@@ -76,57 +59,27 @@ export default function JournalPage() {
     setEntries(getJournalEntries());
   }
 
-  async function handleDelete(id: string) {
-    try {
-      await Haptics.impact({ style: ImpactStyle.Light });
-    } catch (e) { /* ignore */ }
+  function handleDelete(id: string) {
     removeJournalEntry(id);
     setEntries(getJournalEntries());
   }
 
   return (
     <AppShell>
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 260, damping: 20 }}
-        className="px-5 pt-8 pb-6 space-y-6"
-      >
+      <div className="px-5 pt-8 pb-6 space-y-6">
         <h1 className="text-2xl font-serif font-semibold">Journal</h1>
         <p className="text-sm text-muted-foreground">
           A private space for your thoughts, reflections, and prayers. Everything stays on your device.
         </p>
 
         <div className="space-y-3">
-          <div className="relative">
-            <Textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Write what's on your heart..."
-              className="min-h-[120px] resize-none bg-card pb-12"
-              maxLength={2000}
-            />
-            <div className="absolute bottom-3 right-3 flex items-center gap-2">
-              {error && <span className="text-xs text-destructive max-w-[200px] truncate">{error}</span>}
-              {isDownloading && !isReady && <span className="text-xs text-muted-foreground">Downloading STT model...</span>}
-              <Button
-                size="icon"
-                variant={isRecording ? "destructive" : "secondary"}
-                className={`h-8 w-8 rounded-full transition-all ${isRecording ? 'animate-pulse' : ''}`}
-                disabled={(!isReady && !isDownloading) || isProcessing}
-                onClick={isRecording ? stopRecording : startRecording}
-                title={!isReady && !isDownloading ? "Initializing STT..." : isRecording ? "Stop Dictation" : "Start Dictation"}
-              >
-                {isProcessing || isDownloading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : isRecording ? (
-                  <Square className="h-4 w-4" />
-                ) : (
-                  <Mic className="h-4 w-4" />
-                )}
-              </Button>
-            </div>
-          </div>
+          <Textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Write what's on your heart..."
+            className="min-h-[120px] resize-none bg-card"
+            maxLength={2000}
+          />
 
           {/* Optional mood selection */}
           <div className="space-y-1.5">
@@ -165,18 +118,9 @@ export default function JournalPage() {
         </div>
 
         <div className="space-y-3">
-          <AnimatePresence mode="popLayout">
-            {entries.map((e) => (
-              <motion.div 
-                key={e.id} 
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className="bg-card rounded-xl p-5 border border-border"
-              >
-                <div className="flex justify-between items-start gap-2">
+          {entries.map((e) => (
+            <div key={e.id} className="bg-card rounded-xl p-5 border border-border animate-fade-in">
+              <div className="flex justify-between items-start gap-2">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-foreground whitespace-pre-wrap">{e.content}</p>
                   {e.relatedPassage && (
@@ -201,11 +145,10 @@ export default function JournalPage() {
                   <Trash2 className="h-4 w-4" />
                 </button>
               </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+            </div>
+          ))}
         </div>
-      </motion.div>
+      </div>
     </AppShell>
   );
 }

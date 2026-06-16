@@ -38,7 +38,7 @@ describe('Lectio Divina', () => {
     }
   });
 
-  it('completes idempotently - re-completing same day does not duplicate', () => {
+  it('completes idempotently — re-completing same day does not duplicate', () => {
     const responses = {
       lectio: 'Let not your hearts be troubled',
       meditatio: 'I notice my anxiety',

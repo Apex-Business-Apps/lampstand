@@ -80,7 +80,7 @@ export function FloatingAgent() {
     return <FullscreenAgent onMinimize={() => setViewMode('mini-collapsed')} />;
   }
 
-  // Mini collapsed - small flame button
+  // Mini collapsed — small flame button
   if (viewMode === 'mini-collapsed') {
     return (
       <button
@@ -98,7 +98,7 @@ export function FloatingAgent() {
     );
   }
 
-  // Mini expanded - widget with controls
+  // Mini expanded — widget with controls
   return (
     <div className={cn(
       'fixed bottom-20 right-4 z-[60]',

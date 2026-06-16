@@ -54,7 +54,7 @@ export default function HomePage() {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-muted-foreground">{greeting}</p>
-            <h1 className="text-2xl font-serif font-semibold text-foreground">The Lamp Stand</h1>
+            <h1 className="text-2xl font-serif font-semibold text-foreground">LampStand</h1>
           </div>
           {knowledge.streak > 0 && (
             <div className="flex items-center gap-1.5 bg-accent/60 px-3 py-1.5 rounded-full">

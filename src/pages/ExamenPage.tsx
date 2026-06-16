@@ -27,7 +27,7 @@ export default function ExamenPage() {
       setStep((s) => s + 1);
     } else {
       // Persist responses and fire resonance signals via the flow module.
-      completeExamen(responses as unknown as ExamenResponses, tone);
+      completeExamen(responses as ExamenResponses, tone);
       updateStreak();
       navigate('/app');
     }

@@ -74,7 +74,7 @@ export default function GuidancePage() {
       setResult(guidance);
       setInput('');
       incrementPresenceScore(4);
-      // Resonance: user actively sought guidance - informs season + tone.
+      // Resonance: user actively sought guidance — informs season + tone.
       try {
         recordSignal({
           signal: 'guided',
@@ -100,7 +100,7 @@ export default function GuidancePage() {
     savePassage(entry);
     setSaved(true);
     // Saving from a guidance result is the strongest engagement signal we get
-    // on this surface - record it as both 'saved' and 'reflected' so the
+    // on this surface — record it as both 'saved' and 'reflected' so the
     // fingerprint captures both the passage affinity and the depth of intent.
     try {
       recordSignal({ signal: 'saved', passage: result.passage, theme: result.themes?.[0] });

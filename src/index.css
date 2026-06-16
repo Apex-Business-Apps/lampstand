@@ -3,68 +3,97 @@
 @tailwind utilities;
 
 @layer base {
-  :root,
-  .dark {
-    --background: 0 0% 4%; /* Obsidian */
-    --foreground: 40 20% 90%; /* Light ivory text */
+  :root {
+    --background: 40 33% 96%;
+    --foreground: 25 20% 18%;
 
-    --card: 0 0% 6%;
-    --card-foreground: 40 20% 90%;
+    --card: 40 30% 98%;
+    --card-foreground: 25 20% 18%;
 
-    --popover: 0 0% 6%;
-    --popover-foreground: 40 20% 90%;
+    --popover: 40 30% 98%;
+    --popover-foreground: 25 20% 18%;
 
-    --primary: 24 67% 53%; /* Amber #D97736 */
-    --primary-foreground: 0 0% 4%;
+    --primary: 36 70% 50%;
+    --primary-foreground: 40 33% 98%;
 
-    --secondary: 33 87% 62%; /* Gold #F2A649 */
-    --secondary-foreground: 0 0% 4%;
+    --secondary: 40 20% 92%;
+    --secondary-foreground: 25 20% 25%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 40 10% 60%;
+    --muted: 40 15% 93%;
+    --muted-foreground: 25 10% 50%;
 
-    --accent: 24 40% 20%;
-    --accent-foreground: 40 20% 90%;
+    --accent: 36 50% 88%;
+    --accent-foreground: 25 20% 18%;
 
-    --destructive: 0 60% 40%;
+    --destructive: 0 60% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 24 67% 53%;
+    --border: 36 20% 88%;
+    --input: 36 20% 88%;
+    --ring: 36 70% 50%;
 
     --radius: 0.75rem;
 
-    --warm-glow: 24 67% 53%;
-    --warm-glow-soft: 24 40% 20%;
-    --sacred-gold: 33 87% 62%;
-    --sacred-gold-soft: 33 50% 30%;
+    --warm-glow: 36 80% 60%;
+    --warm-glow-soft: 36 60% 85%;
+    --sacred-gold: 42 75% 55%;
+    --sacred-gold-soft: 42 50% 90%;
     --sage: 140 15% 55%;
-    --sage-soft: 140 15% 20%;
-    --cream: 40 33% 90%;
-    --ivory: 40 30% 95%;
-    --ember: 24 67% 53%;
-    --ember-soft: 24 40% 20%;
+    --sage-soft: 140 15% 92%;
+    --cream: 40 33% 96%;
+    --ivory: 40 30% 98%;
+    --ember: 20 70% 45%;
+    --ember-soft: 20 40% 90%;
 
     --kids-primary: 200 70% 55%;
     --kids-primary-foreground: 0 0% 100%;
-    --kids-background: 0 0% 8%;
+    --kids-background: 200 50% 97%;
     --kids-accent: 340 60% 65%;
-    --kids-accent-soft: 340 40% 20%;
+    --kids-accent-soft: 340 40% 92%;
 
-    --sidebar-background: 0 0% 6%;
-    --sidebar-foreground: 40 20% 90%;
-    --sidebar-primary: 24 67% 53%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 24 40% 20%;
-    --sidebar-accent-foreground: 40 20% 90%;
-    --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 24 67% 53%;
+    --sidebar-background: 40 25% 95%;
+    --sidebar-foreground: 25 20% 25%;
+    --sidebar-primary: 36 70% 50%;
+    --sidebar-primary-foreground: 40 33% 98%;
+    --sidebar-accent: 40 20% 90%;
+    --sidebar-accent-foreground: 25 20% 18%;
+    --sidebar-border: 36 20% 88%;
+    --sidebar-ring: 36 70% 50%;
 
     --font-display: "Cormorant Garamond", "Times New Roman", serif;
     --font-body: "EB Garamond", Georgia, serif;
-    --font-ui: "EB Garamond", Georgia, serif;
-    --font-sans: var(--font-body);
+    --font-ui: Inter, ui-sans-serif, system-ui, sans-serif;
+    --font-sans: var(--font-ui);
+  }
+
+  .dark {
+    --background: 25 15% 10%;
+    --foreground: 40 20% 90%;
+    --card: 25 15% 13%;
+    --card-foreground: 40 20% 90%;
+    --popover: 25 15% 13%;
+    --popover-foreground: 40 20% 90%;
+    --primary: 36 70% 55%;
+    --primary-foreground: 25 15% 10%;
+    --secondary: 25 10% 18%;
+    --secondary-foreground: 40 20% 85%;
+    --muted: 25 10% 18%;
+    --muted-foreground: 40 10% 55%;
+    --accent: 36 30% 22%;
+    --accent-foreground: 40 20% 90%;
+    --destructive: 0 60% 40%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 25 10% 20%;
+    --input: 25 10% 20%;
+    --ring: 36 70% 55%;
+    --sidebar-background: 25 15% 8%;
+    --sidebar-foreground: 40 20% 85%;
+    --sidebar-primary: 36 70% 55%;
+    --sidebar-primary-foreground: 25 15% 10%;
+    --sidebar-accent: 25 10% 15%;
+    --sidebar-accent-foreground: 40 20% 90%;
+    --sidebar-border: 25 10% 20%;
+    --sidebar-ring: 36 70% 55%;
   }
 }
 
@@ -76,12 +105,7 @@
     @apply bg-background text-foreground;
     font-family: var(--font-body);
   }
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
   }
 }
@@ -103,20 +127,11 @@
     color: hsl(var(--foreground) / 0.8);
   }
   .glow-card {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--card)),
-      hsl(var(--warm-glow-soft))
-    );
+    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--warm-glow-soft)));
     box-shadow: 0 4px 24px -4px hsl(var(--warm-glow) / 0.15);
   }
   .glow-orb {
-    background: radial-gradient(
-      circle,
-      hsl(var(--warm-glow) / 0.6),
-      hsl(var(--sacred-gold) / 0.2),
-      transparent
-    );
+    background: radial-gradient(circle, hsl(var(--warm-glow) / 0.6), hsl(var(--sacred-gold) / 0.2), transparent);
     filter: blur(40px);
     will-change: transform;
     transform: translateZ(0);
@@ -124,11 +139,7 @@
     pointer-events: none;
   }
   .kids-mode .glow-card {
-    background: linear-gradient(
-      135deg,
-      hsl(var(--kids-background)),
-      hsl(var(--kids-accent-soft))
-    );
+    background: linear-gradient(135deg, hsl(var(--kids-background)), hsl(var(--kids-accent-soft)));
   }
 }
 
@@ -148,58 +159,24 @@
   .animate-slide-up {
     animation: slideUp 0.5s ease-out;
   }
-  .animate-realistic-fire {
-    animation: realistic-fire 4s ease-in-out infinite;
-  }
 }
 
 @keyframes glowPulse {
-  0%,
-  100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
 }
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Multi-stage turbulent fire physics */
-@keyframes realistic-fire {
-  0%, 100% { transform: scaleY(1) scaleX(1) skewX(0deg) translateY(0px); opacity: 0.95; }
-  10% { transform: scaleY(1.1) scaleX(0.95) skewX(-1deg) translateY(-1px); opacity: 1; }
-  25% { transform: scaleY(0.95) scaleX(1.05) skewX(1deg) translateY(0px); opacity: 0.90; }
-  50% { transform: scaleY(1.15) scaleX(0.90) skewX(-1.5deg) translateY(-2px); opacity: 0.98; }
-  75% { transform: scaleY(0.98) scaleX(1.02) skewX(1.5deg) translateY(0px); opacity: 0.88; }
-  90% { transform: scaleY(1.05) scaleX(0.98) skewX(-0.5deg) translateY(-1px); opacity: 0.96; }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Safe area insets for mobile notch/home-bar */
-.safe-top {
-  padding-top: env(safe-area-inset-top, 0px);
-}
-.safe-bottom {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
+.safe-top { padding-top: env(safe-area-inset-top, 0px); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
 
 /* Performance: skip off-screen rendering for long-page sections */
 @layer utilities {
@@ -207,24 +184,4 @@
     content-visibility: auto;
     contain-intrinsic-size: 0 400px;
   }
-}
-
-@keyframes flame-flicker {
-  0%,
-  100% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-  25%,
-  75% {
-    transform: scale(0.98);
-    opacity: 0.85;
-  }
-}
-.animate-flame-flicker {
-  animation: flame-flicker 4s ease-in-out infinite;
 }

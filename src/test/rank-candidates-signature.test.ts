@@ -12,7 +12,7 @@ import type { ScripturePassage } from '@/types';
  * If this test fails, the call sites in GuidancePage / DailyLightPage / etc.
  * must be updated in the same change.
  */
-describe('rankCandidates - signature contract', () => {
+describe('rankCandidates — signature contract', () => {
   const p = (id: string, ref: string): ScripturePassage => ({
     id,
     book: 'X',

@@ -7,7 +7,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 // Shared style guide used for all GroqAIAdapter calls (replaces the old vague SYS string).
-// Kept in sync with src/lib/agent/Prompts.ts - the guidance mode here is tighter
+// Kept in sync with src/lib/agent/Prompts.ts — the guidance mode here is tighter
 // because it must produce structured JSON; the free-text ConversationOrchestrator path
 // uses Prompts.ts directly.
 const STYLE_GUIDE = `You are Lampstand, a pastoral companion shaped by Scripture.
@@ -138,7 +138,7 @@ export class GroqAIAdapter implements IAIAdapter {
     const systemPrompt = systemParts.join('\n\n');
 
     const passageBlock = selectedPassage
-      ? `\n\nUse this passage as the scriptural grounding: ${selectedPassage.reference} - "${selectedPassage.text}"`
+      ? `\n\nUse this passage as the scriptural grounding: ${selectedPassage.reference} — "${selectedPassage.text}"`
       : '';
 
     try {

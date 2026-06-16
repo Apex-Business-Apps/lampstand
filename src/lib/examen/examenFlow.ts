@@ -1,10 +1,10 @@
 /**
- * The Daily Examen - Ignatian 5-step contemplative practice.
+ * The Daily Examen — Ignatian 5-step contemplative practice.
  *
  * Deterministic, dependency-free, tone-adapted. Generates prompts locally
  * (no model calls), feeds rich signals into the Resonance Engine, and
  * persists a single bounded JournalEntry per session so /journal stays
- * the single source of truth (idempotent - same sessionId never duplicates).
+ * the single source of truth (idempotent — same sessionId never duplicates).
  *
  * Theology guardrail: the Examen is a Church-attested practice. We never
  * invent doctrine; prompts only invite reflection, never declare it.
@@ -28,7 +28,7 @@ export interface ExamenStep {
   title: string;
   prompt: string;
   placeholder: string;
-  /** Theme tag for resonance - chosen for pastoral, not doctrinal, weight. */
+  /** Theme tag for resonance — chosen for pastoral, not doctrinal, weight. */
   theme: string;
   /** Signal strength hint: gratitude/resolve flourishing; sorrow consolation. */
   signal: 'reflected' | 'returned';
@@ -38,21 +38,21 @@ const PROMPTS: Record<ToneStyle, Record<ExamenStepId, Omit<ExamenStep, 'id' | 's
   gentle: {
     presence: { title: 'Become Present', prompt: 'Take a slow breath. You are not alone. Where do you feel God meeting you right now?', placeholder: 'A word, a feeling, a place…', theme: 'stillness' },
     gratitude: { title: 'Give Thanks', prompt: 'What in today, however small, would you like to thank God for?', placeholder: 'A kindness, a small mercy…', theme: 'gratitude' },
-    review: { title: 'Review the Day', prompt: 'Walk gently through the hours. What moments stand out - light or shadow?', placeholder: 'No need to list everything…', theme: 'discernment' },
+    review: { title: 'Review the Day', prompt: 'Walk gently through the hours. What moments stand out — light or shadow?', placeholder: 'No need to list everything…', theme: 'discernment' },
     sorrow: { title: 'Notice Where You Stumbled', prompt: 'Without harshness, name a moment you wish had gone differently.', placeholder: 'You are loved through this…', theme: 'consolation' },
     resolve: { title: 'Look to Tomorrow', prompt: 'What is one small grace you would ask for tomorrow?', placeholder: 'A hope, a courage, a patience…', theme: 'returning' },
   },
   balanced: {
     presence: { title: 'Become Present', prompt: 'Settle into stillness. Recall that God is here. What is the state of your heart this evening?', placeholder: 'Name it honestly…', theme: 'stillness' },
-    gratitude: { title: 'Give Thanks', prompt: 'Look back over the day. What gifts - people, moments, small graces - surface?', placeholder: 'Anything you noticed…', theme: 'gratitude' },
+    gratitude: { title: 'Give Thanks', prompt: 'Look back over the day. What gifts — people, moments, small graces — surface?', placeholder: 'Anything you noticed…', theme: 'gratitude' },
     review: { title: 'Review the Day', prompt: 'Replay the day. Where did you sense consolation? Where desolation?', placeholder: 'A scene, a conversation…', theme: 'discernment' },
-    sorrow: { title: 'Acknowledge Shortcomings', prompt: 'Name where you fell short - in word, action, or omission - without condemnation.', placeholder: 'Honest, not punishing…', theme: 'consolation' },
+    sorrow: { title: 'Acknowledge Shortcomings', prompt: 'Name where you fell short — in word, action, or omission — without condemnation.', placeholder: 'Honest, not punishing…', theme: 'consolation' },
     resolve: { title: 'Resolve for Tomorrow', prompt: 'Looking ahead, what one intention will you carry into tomorrow?', placeholder: 'A concrete step…', theme: 'returning' },
   },
   traditional: {
     presence: { title: 'Place Yourself in God\u2019s Presence', prompt: 'Recall that you stand before the Lord. Quiet the soul and beg the light of the Holy Spirit.', placeholder: 'A prayer of placing…', theme: 'stillness' },
     gratitude: { title: 'Give Thanks for Benefits Received', prompt: 'For what graces of this day do you owe particular thanks to God?', placeholder: 'Name the benefits…', theme: 'gratitude' },
-    review: { title: 'Examine the Day Hour by Hour', prompt: 'Pass through the day. Note the motions of the soul - consolations and desolations.', placeholder: 'Hour by hour…', theme: 'discernment' },
+    review: { title: 'Examine the Day Hour by Hour', prompt: 'Pass through the day. Note the motions of the soul — consolations and desolations.', placeholder: 'Hour by hour…', theme: 'discernment' },
     sorrow: { title: 'Ask Pardon for Faults', prompt: 'With contrition, name your faults of thought, word, deed, and omission.', placeholder: 'In humility…', theme: 'consolation' },
     resolve: { title: 'Resolve and Beg Grace', prompt: 'Resolve amendment for tomorrow and beg the grace to fulfill it.', placeholder: 'A firm purpose…', theme: 'returning' },
   },
@@ -76,7 +76,7 @@ export function getExamenSteps(tone: ToneStyle = 'balanced'): ExamenStep[] {
   }));
 }
 
-/** Stable id for today's session - guarantees one-per-day idempotency. */
+/** Stable id for today's session — guarantees one-per-day idempotency. */
 export function todayExamenSessionId(): string {
   return `examen-${todayKey()}`;
 }
@@ -105,7 +105,7 @@ export function completeExamen(responses: ExamenResponses, tone: ToneStyle = 'ba
   const sections = steps
     .map((s) => `## ${s.title}\n${(responses[s.id] || '').trim()}`)
     .join('\n\n');
-  const content = `# Daily Examen - ${todayKey()}\n\n${sections}`.trim();
+  const content = `# Daily Examen — ${todayKey()}\n\n${sections}`.trim();
 
   const entry: JournalEntry = {
     id: todayExamenSessionId(),
@@ -115,7 +115,7 @@ export function completeExamen(responses: ExamenResponses, tone: ToneStyle = 'ba
   };
   saveJournalEntry(entry);
 
-  // Feed resonance per-step - only when the user actually wrote something.
+  // Feed resonance per-step — only when the user actually wrote something.
   for (const step of steps) {
     const text = (responses[step.id] || '').trim();
     if (text.length < 2) continue;

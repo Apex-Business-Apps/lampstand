@@ -5,7 +5,7 @@ export class SafetyGate {
     /absolutely/i, /certainly/i, /of course/i, /let['']s/i,
     /i hear you/i, /i appreciate that/i, /that['']s a great question/i,
     /i['']m here for you/i, /it['']s important to note/i, /at the end of the day/i,
-    /-/, /–/ // Em and En dashes
+    /—/, /–/ // Em and En dashes
   ];
 
   private injectionPatterns = [
@@ -50,6 +50,6 @@ export class SafetyGate {
   }
 
   cleanOutput(output: string): string {
-    return output.replace(/-/g, ',').replace(/–/g, ',');
+    return output.replace(/—/g, ',').replace(/–/g, ',');
   }
 }

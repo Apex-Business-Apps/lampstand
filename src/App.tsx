@@ -7,12 +7,12 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/hooks/useAuth";
 import { AuthGuard } from "@/components/AuthGuard";
-import { ProfileGuard } from "@/components/ProfileGuard";
 import { FloatingAgent } from "@/components/FloatingAgent";
 import { ConsentModal } from "@/components/ConsentModal";
 import { useAppBoot } from "@/hooks/useAppBoot";
 
 // Lazy-load all pages for optimal code splitting
+const EntryPage = lazy(() => import("./pages/EntryPage"));
 const MarketingPage = lazy(() => import("./pages/MarketingPage"));
 const LiteLandingPage = lazy(() => import("./pages/LiteLandingPage"));
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -37,18 +37,15 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const ReturnPage = lazy(() => import("./pages/ReturnPage"));
 const InstallPage = lazy(() => import("./pages/InstallPage"));
 const PrayerCirclesPage = lazy(() => import("./pages/PrayerCirclesPage"));
-const PrayerCircleDetailPage = lazy(
-  () => import("./pages/PrayerCircleDetailPage"),
-);
+const PrayerCircleDetailPage = lazy(() => import("./pages/PrayerCircleDetailPage"));
 const LectioPage = lazy(() => import("./pages/LectioPage"));
 const ExamenPage = lazy(() => import("./pages/ExamenPage"));
-const EntryPage = lazy(() => import("./pages/EntryPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 5 * 60 * 1000, // 5 minutes before refetch
-      gcTime: 30 * 60 * 1000, // 30 minutes garbage collection
+      gcTime: 30 * 60 * 1000,   // 30 minutes garbage collection
       retry: 1,
       refetchOnWindowFocus: false,
     },
@@ -64,10 +61,7 @@ function PageFallback() {
     >
       <div className="flex flex-col items-center gap-3">
         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-        <p
-          className="text-sm text-muted-foreground"
-          style={{ fontFamily: "var(--font-ui)" }}
-        >
+        <p className="text-sm text-muted-foreground" style={{ fontFamily: 'var(--font-ui)' }}>
           Loading…
         </p>
       </div>
@@ -82,87 +76,53 @@ function AppBootGate({ children }: { children: React.ReactNode }) {
 
 const App = () => (
   <ErrorBoundary>
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AppBootGate>
-              <Suspense fallback={<PageFallback />}>
-                <Routes>
-                  <Route path="/" element={<MarketingPage />} />
-                  <Route path="/entry" element={<EntryPage />} />
-
-                  <Route path="/lite" element={<LiteLandingPage />} />
-                  <Route path="/onboarding" element={<Onboarding />} />
-
-                  {/*
-                ========================================================================
-                CRITICAL ROUTING RULE (DO NOT DRIFT):
-                The ProfileGuard explicitly enforces that browser users go to /welcome 
-                (Marketing) and standalone/PWA users go to /auth (Login) if they are 
-                unauthenticated. Do not expose these app routes without this guard.
-                ========================================================================
-              */}
-                  <Route element={<ProfileGuard />}>
-                    <Route path="/app" element={<HomePage />} />
-                    <Route path="/daily" element={<DailyLightPage />} />
-                    <Route path="/sermon" element={<SermonPage />} />
-                    <Route path="/guidance" element={<GuidancePage />} />
-                    <Route path="/kids" element={<KidsPage />} />
-                    <Route path="/saved" element={<SavedPage />} />
-                    <Route path="/journal" element={<JournalPage />} />
-                    <Route path="/settings" element={<SettingsPage />} />
-                    <Route path="/examen" element={<ExamenPage />} />
-                    <Route path="/lectio" element={<LectioPage />} />
-                    <Route path="/circles" element={<PrayerCirclesPage />} />
-                    <Route
-                      path="/circles/:id"
-                      element={<PrayerCircleDetailPage />}
-                    />
-                  </Route>
-
-                  <Route path="/return" element={<ReturnPage />} />
-                  <Route path="/install" element={<InstallPage />} />
-                  <Route
-                    path="/admin"
-                    element={
-                      <AuthGuard>
-                        <AdminPage />
-                      </AuthGuard>
-                    }
-                  />
-                  <Route path="/auth" element={<AuthPage />} />
-                  <Route
-                    path="/reset-password"
-                    element={<ResetPasswordPage />}
-                  />
-                  <Route path="/legal" element={<LegalPage />} />
-                  <Route
-                    path="/legal/privacy"
-                    element={<PrivacyPolicyPage />}
-                  />
-                  <Route path="/legal/terms" element={<TermsPage />} />
-                  <Route
-                    path="/legal/acceptable-use"
-                    element={<AcceptableUsePage />}
-                  />
-                  <Route
-                    path="/legal/disclaimer"
-                    element={<DisclaimerPage />}
-                  />
-                  <Route path="/legal/company" element={<CompanyPage />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Suspense>
-            </AppBootGate>
-            <FloatingAgent />
-            <ConsentModal />
-          </BrowserRouter>
-        </TooltipProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AppBootGate>
+          <Suspense fallback={<PageFallback />}>
+            <Routes>
+              <Route path="/" element={<EntryPage />} />
+              <Route path="/entry" element={<EntryPage />} />
+              <Route path="/welcome" element={<MarketingPage />} />
+              <Route path="/lite" element={<LiteLandingPage />} />
+              <Route path="/app" element={<HomePage />} />
+              <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/daily" element={<DailyLightPage />} />
+              <Route path="/sermon" element={<SermonPage />} />
+              <Route path="/guidance" element={<GuidancePage />} />
+              <Route path="/kids" element={<KidsPage />} />
+              <Route path="/saved" element={<SavedPage />} />
+              <Route path="/journal" element={<JournalPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/return" element={<ReturnPage />} />
+              <Route path="/install" element={<InstallPage />} />
+              <Route path="/examen" element={<ExamenPage />} />
+              <Route path="/lectio" element={<LectioPage />} />
+              <Route path="/admin" element={<AuthGuard><AdminPage /></AuthGuard>} />
+              <Route path="/auth" element={<AuthPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/legal" element={<LegalPage />} />
+              <Route path="/legal/privacy" element={<PrivacyPolicyPage />} />
+              <Route path="/legal/terms" element={<TermsPage />} />
+              <Route path="/legal/acceptable-use" element={<AcceptableUsePage />} />
+              <Route path="/legal/disclaimer" element={<DisclaimerPage />} />
+              <Route path="/legal/company" element={<CompanyPage />} />
+              <Route path="/circles" element={<PrayerCirclesPage />} />
+              <Route path="/circles/:id" element={<PrayerCircleDetailPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+          </AppBootGate>
+          <FloatingAgent />
+          <ConsentModal />
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
+  </QueryClientProvider>
   </ErrorBoundary>
 );
 

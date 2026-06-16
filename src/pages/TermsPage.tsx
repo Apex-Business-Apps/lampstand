@@ -7,7 +7,7 @@ export default function TermsPage() {
 
       <h2 className="text-lg font-semibold mt-6 mb-2">What LampStand is</h2>
       <p>
-        LampStand is a community spiritual companion - a free, ad-free space for daily reflection,
+        LampStand is a community spiritual companion — a free, ad-free space for daily reflection,
         scripture engagement, and pastoral guidance. It is a labour of love, not a commercial product.
         There are no subscriptions, no upsells, and no dark patterns.
       </p>

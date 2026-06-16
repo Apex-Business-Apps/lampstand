@@ -1,8 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-type SpeechRecognition = any;
-type SpeechRecognitionEvent = any;
-type SpeechRecognitionErrorEvent = any;
-
 export class VoiceManager {
   private synth = window.speechSynthesis;
   private recognition: SpeechRecognition | null = null;
