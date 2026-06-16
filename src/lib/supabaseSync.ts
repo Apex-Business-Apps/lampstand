@@ -73,6 +73,7 @@ export async function syncPassagesToCloud(userId: string): Promise<void> {
   if (passages.length === 0) return;
 
   const rows = passages.map(p => ({
+    id: p.id,
     user_id: userId,
     passage_ref: p.passage.reference,
     passage_data: JSON.parse(JSON.stringify(p.passage)) as Json,
@@ -122,10 +123,12 @@ export async function syncJournalToCloud(userId: string): Promise<void> {
   if (entries.length === 0) return;
 
   const rows = entries.map(e => ({
+    id: e.id,
     user_id: userId,
     content: e.content,
     mood: e.mood || null,
     related_passage: e.relatedPassage ? (JSON.parse(JSON.stringify(e.relatedPassage)) as Json) : null,
+    created_at: e.createdAt,
   }));
 
   const { error } = await supabase.from('journal_entries').upsert(rows, { onConflict: 'id', ignoreDuplicates: true });
