@@ -1,50 +1,48 @@
 # codemagic.yaml — Lampstand Mobile CI/CD
-# App: icu.thelampstand.app | Version: managed via BUILD_NUMBER
-# iOS  → TestFlight internal testing
-# Android → Google Play internal testing track (AAB)
+# App ID:  icu.thelampstand.app
+# Route:   Codemagic cloud Mac M2 (iOS) + Linux (Android) → TestFlight / Play Internal
+# No local Mac or Android SDK required — Codemagic provides all native build infrastructure.
+# ios/ and android/ directories are NOT committed to the repo.
+# Codemagic generates them via "npx cap add ios/android" on first build, then syncs.
 #
-# Required Codemagic environment variables (set in UI → Teams → Global variables):
-#   iOS:
-#     APP_STORE_CONNECT_ISSUER_ID        — App Store Connect API key issuer UUID
-#     APP_STORE_CONNECT_KEY_IDENTIFIER   — Key ID (e.g. ABC1234567)
-#     APP_STORE_CONNECT_PRIVATE_KEY      — .p8 private key content (multiline secret)
-#     CERTIFICATE_PRIVATE_KEY            — RSA private key for iOS signing cert
-#   Android:
-#     ANDROID_KEYSTORE                   — base64-encoded .jks keystore
-#     ANDROID_KEY_ALIAS                  — key alias inside keystore
-#     ANDROID_KEYSTORE_PASS              — keystore password
-#     ANDROID_KEY_PASS                   — key password
-#     GCLOUD_SERVICE_ACCOUNT_CREDENTIALS — Google Play service account JSON
-#   Shared (web build):
-#     VITE_SUPABASE_URL                  — https://<project>.supabase.co
-#     VITE_SUPABASE_PUBLISHABLE_KEY      — anon/publishable key (safe to expose)
+# ── Required environment variables (Codemagic UI → Teams → Global variables) ──
+# iOS signing (configure via Codemagic Code Signing tab — do NOT hardcode):
+#   APP_STORE_CONNECT_ISSUER_ID         App Store Connect API key issuer UUID
+#   APP_STORE_CONNECT_KEY_IDENTIFIER    Key ID (e.g. ABC1234567)
+#   APP_STORE_CONNECT_PRIVATE_KEY       Contents of the .p8 file (multiline secret)
+#   CERTIFICATE_PRIVATE_KEY             RSA private key matching your iOS dist certificate
+# Android signing (reference keystore "lampstand_keystore" in Codemagic UI):
+#   CM_KEYSTORE                         base64-encoded .jks keystore (upload via UI)
+#   CM_KEY_ALIAS                        Key alias inside the keystore
+#   CM_KEYSTORE_PASSWORD                Keystore password
+#   CM_KEY_PASSWORD                     Key password
+#   GCLOUD_SERVICE_ACCOUNT_CREDENTIALS  Google Play service account JSON (for publishing)
+# Web build (injected into Vite at build time):
+#   VITE_SUPABASE_URL                   https://<project-ref>.supabase.co
+#   VITE_SUPABASE_PUBLISHABLE_KEY       Supabase anon/publishable key
 
 definitions:
-  env_versions: &env_versions
-    node: 22.x
-    xcode: latest
-    cocoapods: default
-
-  install_and_build: &install_and_build
-    - name: Install dependencies
+  steps:
+    - &step_install
+      name: Install npm dependencies
       script: npm ci --ignore-scripts
-    - name: Build web app
+
+    - &step_build_web
+      name: Build Vite web app
       script: |
         export VITE_SUPABASE_URL=$VITE_SUPABASE_URL
         export VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
         npm run build
-    - name: Sync Capacitor
-      script: npx cap sync
 
 workflows:
 
-  # ─────────────────────────────────────────────
+  # ═══════════════════════════════════════════════════════════
   # iOS — TestFlight Internal Testing
-  # Triggers: push to main or release/* branches
-  # ─────────────────────────────────────────────
+  # Codemagic provides the Mac Mini M2. No local Mac required.
+  # ═══════════════════════════════════════════════════════════
   ios-testflight-internal:
     name: iOS → TestFlight Internal
-    max_build_duration: 75
+    max_build_duration: 90
     instance_type: mac_mini_m2
 
     triggering:
@@ -57,7 +55,9 @@ workflows:
           include: true
 
     environment:
-      <<: *env_versions
+      node: 22.x
+      xcode: latest
+      cocoapods: default
       ios_signing:
         distribution_type: app_store
         bundle_identifier: icu.thelampstand.app
@@ -68,32 +68,99 @@ workflows:
         CERTIFICATE_PRIVATE_KEY: $CERTIFICATE_PRIVATE_KEY
 
     scripts:
-      - *install_and_build
-      - name: Sync Capacitor iOS
+      - *step_install
+      - *step_build_web
+
+      - name: Generate iOS native project
+        # ios/ is not committed. Codemagic's Mac Mini M2 generates it here.
+        # Idempotent: skips if ios/ somehow exists from a cached workspace.
+        # cap add ios also runs "pod install" via cap sync chain.
+        script: |
+          if [ ! -d "ios" ]; then
+            npx cap add ios
+          fi
+
+      - name: Sync Capacitor to iOS (copies dist + plugins into Xcode project)
         script: npx cap sync ios
-      - name: Set version and build number
+
+      - name: Patch Info.plist — inject required usage descriptions
+        # NSMicrophoneUsageDescription: required for Whisper STT (Xenova/whisper-tiny.en).
+        # NSSpeechRecognitionUsageDescription: required for SFSpeechRecognizer on iOS.
+        # App Store Review WILL reject without these — injection here avoids committing
+        # generated ios/ files to source control.
         script: |
-          CURRENT_VERSION=$(cat package.json | python3 -c "import sys,json; print(json.load(sys.stdin)['version'])")
-          agvtool new-marketing-version $CURRENT_VERSION
-          agvtool new-version -all $BUILD_NUMBER
-        working_directory: ios/App
-      - name: Build iOS IPA
+          PLIST="ios/App/App/Info.plist"
+          /usr/libexec/PlistBuddy -c \
+            "Add :NSMicrophoneUsageDescription string 'LampStand uses your microphone only when you choose to speak a prayer or question. Audio is processed on-device and never stored.'" \
+            "$PLIST" 2>/dev/null || \
+          /usr/libexec/PlistBuddy -c \
+            "Set :NSMicrophoneUsageDescription 'LampStand uses your microphone only when you choose to speak a prayer or question. Audio is processed on-device and never stored.'" \
+            "$PLIST"
+          /usr/libexec/PlistBuddy -c \
+            "Add :NSSpeechRecognitionUsageDescription string 'LampStand uses on-device speech recognition to transcribe your spoken prayers. No audio leaves your device.'" \
+            "$PLIST" 2>/dev/null || \
+          /usr/libexec/PlistBuddy -c \
+            "Set :NSSpeechRecognitionUsageDescription 'LampStand uses on-device speech recognition to transcribe your spoken prayers. No audio leaves your device.'" \
+            "$PLIST"
+
+      - name: Set version name and build number
         script: |
-          xcode-project use-profiles
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          cd ios/App
+          agvtool new-marketing-version "$CURRENT_VERSION"
+          agvtool new-version -all "$BUILD_NUMBER"
+
+      - name: Generate ExportOptions.plist
+        # ExportOptions.plist is not committed — generated fresh each build
+        # from the signing identity Codemagic resolves via ios_signing above.
+        script: |
+          cat > ios/App/ExportOptions.plist << 'PLIST_EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>teamID</key>
+            <string>$(DEVELOPMENT_TEAM)</string>
+            <key>uploadBitcode</key>
+            <false/>
+            <key>compileBitcode</key>
+            <false/>
+            <key>uploadSymbols</key>
+            <true/>
+            <key>signingStyle</key>
+            <string>automatic</string>
+          </dict>
+          </plist>
+          PLIST_EOF
+
+      - name: Apply Codemagic provisioning profiles
+        script: xcode-project use-profiles
+
+      - name: Build and archive iOS app
+        script: |
           xcodebuild \
             -workspace ios/App/App.xcworkspace \
             -scheme App \
             -configuration Release \
-            -archivePath build/App.xcarchive \
-            archive
+            -archivePath "$CM_BUILD_DIR/App.xcarchive" \
+            -destination generic/platform=iOS \
+            CODE_SIGNING_ALLOWED=YES \
+            archive | xcpretty
+
+      - name: Export IPA
+        script: |
           xcodebuild \
             -exportArchive \
-            -archivePath build/App.xcarchive \
+            -archivePath "$CM_BUILD_DIR/App.xcarchive" \
             -exportOptionsPlist ios/App/ExportOptions.plist \
-            -exportPath build/ipa
+            -exportPath "$CM_BUILD_DIR/ipa" \
+            | xcpretty
 
     artifacts:
-      - build/ipa/*.ipa
+      - $CM_BUILD_DIR/ipa/*.ipa
+      - $CM_BUILD_DIR/App.xcarchive
       - /tmp/xcodebuild_logs/*.log
 
     publishing:
@@ -111,10 +178,10 @@ workflows:
           success: true
           failure: true
 
-  # ─────────────────────────────────────────────
+  # ═══════════════════════════════════════════════════════════
   # Android — Google Play Internal Testing (AAB)
-  # Triggers: push to main or release/* branches
-  # ─────────────────────────────────────────────
+  # Runs on Codemagic Linux x2 — no local Android SDK needed.
+  # ═══════════════════════════════════════════════════════════
   android-play-internal:
     name: Android → Play Store Internal
     max_build_duration: 60
@@ -134,28 +201,44 @@ workflows:
       android_signing:
         - lampstand_keystore
       vars:
-        ANDROID_KEY_ALIAS: $ANDROID_KEY_ALIAS
-        ANDROID_KEYSTORE_PASS: $ANDROID_KEYSTORE_PASS
-        ANDROID_KEY_PASS: $ANDROID_KEY_PASS
+        CM_KEY_ALIAS: $CM_KEY_ALIAS
+        CM_KEYSTORE_PASSWORD: $CM_KEYSTORE_PASSWORD
+        CM_KEY_PASSWORD: $CM_KEY_PASSWORD
 
     scripts:
-      - *install_and_build
-      - name: Sync Capacitor Android
-        script: npx cap sync android
-      - name: Set version code from build number
+      - *step_install
+      - *step_build_web
+
+      - name: Generate Android native project
+        # android/ is not committed. Codemagic's Linux runner generates it here.
+        # Idempotent: skips if android/ exists from a cached workspace.
         script: |
-          CURRENT_VERSION=$(cat package.json | python3 -c "import sys,json; print(json.load(sys.stdin)['version'])")
-          # Patch build.gradle versionName and versionCode
-          sed -i "s/versionCode .*/versionCode $BUILD_NUMBER/" android/app/build.gradle
-          sed -i "s/versionName .*/versionName \"$CURRENT_VERSION\"/" android/app/build.gradle
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+
+      - name: Sync Capacitor to Android (copies dist + plugins into Gradle project)
+        script: npx cap sync android
+
+      - name: Set versionCode and versionName
+        script: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          sed -i \
+            "s/versionCode [0-9]*/versionCode $BUILD_NUMBER/" \
+            android/app/build.gradle
+          sed -i \
+            "s/versionName \"[^\"]*\"/versionName \"$CURRENT_VERSION\"/" \
+            android/app/build.gradle
+
       - name: Build release AAB
+        # AAB (not APK) is required for Play Store submission (2021+ requirement).
         script: |
           cd android
           ./gradlew bundleRelease \
-            -Pandroid.injected.signing.store.file=$CM_KEYSTORE_PATH \
-            -Pandroid.injected.signing.store.password=$ANDROID_KEYSTORE_PASS \
-            -Pandroid.injected.signing.key.alias=$ANDROID_KEY_ALIAS \
-            -Pandroid.injected.signing.key.password=$ANDROID_KEY_PASS
+            -Pandroid.injected.signing.store.file="$CM_KEYSTORE_PATH" \
+            -Pandroid.injected.signing.store.password="$CM_KEYSTORE_PASSWORD" \
+            -Pandroid.injected.signing.key.alias="$CM_KEY_ALIAS" \
+            -Pandroid.injected.signing.key.password="$CM_KEY_PASSWORD"
 
     artifacts:
       - android/app/build/outputs/bundle/release/*.aab
@@ -173,10 +256,10 @@ workflows:
           success: true
           failure: true
 
-  # ─────────────────────────────────────────────
-  # PR Validation — fast quality gate (no signing)
-  # Triggers: pull_request to main
-  # ─────────────────────────────────────────────
+  # ═══════════════════════════════════════════════════════════
+  # PR Quality Gate — lint + typecheck + tests + build
+  # Fast, no signing, no native projects, triggers on every PR to main
+  # ═══════════════════════════════════════════════════════════
   pr-validation:
     name: PR Quality Gate
     max_build_duration: 20
@@ -193,15 +276,14 @@ workflows:
       node: 22.x
 
     scripts:
-      - name: Install
-        script: npm ci --ignore-scripts
+      - *step_install
       - name: Lint
         script: npm run lint
       - name: Type check
         script: npm run typecheck
       - name: Unit tests
-        script: npm run test:unit -- --reporter=verbose
-      - name: Build (verify no compile errors)
+        script: npm run test -- --run
+      - name: Production build (smoke test)
         script: |
           export VITE_SUPABASE_URL=https://placeholder.supabase.co
           export VITE_SUPABASE_PUBLISHABLE_KEY=placeholder
