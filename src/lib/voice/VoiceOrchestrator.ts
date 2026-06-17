@@ -1,5 +1,6 @@
 import { BrowserSTTAdapter } from './stt/BrowserSTTAdapter';
 import { BrowserTTSAdapter } from './tts/BrowserTTSAdapter';
+import { getConsentState } from '@/lib/storage';
 
 export class VoiceOrchestrator {
   private stt = new BrowserSTTAdapter();
@@ -12,8 +13,8 @@ export class VoiceOrchestrator {
   }
 
   async startListening(onResult: (text: string) => void, onError: (err: string) => void) {
-    const hasConsent = localStorage.getItem("lampstand_consent_voice") === "true";
-    if (!hasConsent) {
+    // F-001 FIX: read voiceOutput from the canonical consent object (key: "lampstand_consent")
+    if (!getConsentState().voiceOutput) {
       onError("Voice access is disabled in settings.");
       return;
     }
@@ -37,8 +38,8 @@ export class VoiceOrchestrator {
   }
 
   speak(text: string, rate?: number) {
-    const hasConsent = localStorage.getItem("lampstand_consent_voice") === "true";
-    if (!hasConsent) return;
+    // F-001 FIX: canonical consent check
+    if (!getConsentState().voiceOutput) return;
     this.isSpeaking = true;
     this.tts.speak(text, rate);
   }
