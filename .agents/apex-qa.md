@@ -12,7 +12,7 @@ description: |
   reject TODO code audit anti-hallucination output verification pre-commit gate submission
   review scope check test coverage apex qa qa enforcer trajectory audit reasoning trace
   ai output review constitutional check confidence calibration self-consistency
-license: Proprietary - TheLampStand Business Systems Ltd.
+license: Proprietary - APEX Business Systems Ltd.
 ---
 
 # TheLampStand-QA v2.0 — Zero-Trust Verification Gatekeeper
@@ -275,6 +275,6 @@ HALLUCINATION PATTERN LIBRARY — check each:
 TheLampStand-QA v2.0.0
 Supersedes: apex-qa v1.0.0
 Compatibility: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any LLM
-License: Proprietary — TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
+License: Proprietary — APEX Business Systems Ltd. Edmonton, AB, Canada.
 Copyright © 2026 All Rights Reserved
 ```

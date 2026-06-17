@@ -7,14 +7,14 @@ description: >
   accuracy, crisis pathway validation, reflection quality, pastoral tone consistency),
   and upgraded 100-point quality rubric with trajectory-level items.
   Compatible with all LLM APIs and test frameworks.
-license: Proprietary — TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
+license: Proprietary — APEX Business Systems Ltd. Edmonton, AB, Canada.
 compatibility: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any LLM
 ---
 
 # TheLampStand-OMNI-TEST v2.0 — Universal Quality Intelligence
 
 ### Compatible: OpenAI · Anthropic Claude · Google Gemini · Groq · Mistral · Meta Llama · DeepSeek · Any LLM API
-### TheLampStand Business Systems Ltd. | Edmonton, Alberta, Canada | Copyright © 2026
+### APEX Business Systems Ltd. | Edmonton, Alberta, Canada | Copyright © 2026
 
 ---
 
@@ -516,6 +516,6 @@ NEVER USE: nth-child() | auto-generated IDs | XPath | pixel coordinates
 TheLampStand-OMNI-TEST v2.0.0
 Supersedes: apex-omnitest v1.0.0
 Compatibility: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any LLM
-License: Proprietary — TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
+License: Proprietary — APEX Business Systems Ltd. Edmonton, AB, Canada.
 Copyright © 2026 All Rights Reserved
 ```

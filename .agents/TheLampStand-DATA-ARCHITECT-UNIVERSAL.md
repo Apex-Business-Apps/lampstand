@@ -444,7 +444,7 @@ OVERALL: 9.84 / 10 ✅ PRODUCTION READY
 ---
 
 TheLampStand-DATA-ARCHITECT v1.0 — Universal Edition
-Proprietary — TheLampStand Business Systems Ltd. · Edmonton, Alberta, Canada
+Proprietary — APEX Business Systems Ltd. · Edmonton, Alberta, Canada
 Copyright © 2026 All Rights Reserved
 Built cost: ~$68.80 equivalent. Fair value: Priceless.
 ```

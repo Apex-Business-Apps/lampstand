@@ -2,7 +2,7 @@
 name: apex-power
 version: 2.0.0
 description: "TheLampStand-POWER v2: Universal Meta-Skill for Omnipotent Execution with Constitutional AI Core. Embeds 12 constitutional principles, thinking-mode declaration, reasoning-first mandate, and Generate→Critique→Improve self-verification loop. Transforms any agent into an TheLampStand-level expert that self-audits every output before delivering. Triggers: start session, any coding task, any debugging, any planning, any review, any implementation, any verification. Produces: First-pass success, zero-drift, constitutionally-aligned execution."
-license: "Proprietary - TheLampStand Business Systems Ltd. Edmonton, AB, Canada. https://apexbusiness-systems.com"
+license: "Proprietary - APEX Business Systems Ltd. Edmonton, AB, Canada. https://apexbusiness-systems.com"
 ---
 
 # TheLampStand-POWER v2.0
@@ -304,4 +304,4 @@ RED → GREEN → REFACTOR. No shortcuts. No exceptions.
 **Version**: 2.0.0
 **Supersedes**: apex-power v1.0.0, superpowers (all versions)
 **Compatibility**: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any reasoning model
-**License**: Proprietary - TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
+**License**: Proprietary - APEX Business Systems Ltd. Edmonton, AB, Canada.

@@ -2,7 +2,7 @@
 
 **Version:** 2.1.0  
 **Last updated:** 2026-06-16  
-**Maintained by:** TheLampStand Business Systems Ltd.  
+**Maintained by:** APEX Business Systems Ltd.  
 **Status:** Authoritative — all contributors MUST follow this specification.
 
 ---

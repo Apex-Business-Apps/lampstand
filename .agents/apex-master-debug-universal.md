@@ -16,7 +16,7 @@ description: >
 
   Produces: Single surgical fix with 100% certainty, proactive elimination of future bugs,
   and a permanent regression shield.
-license: Proprietary — TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
+license: Proprietary — APEX Business Systems Ltd. Edmonton, AB, Canada.
 compatibility: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any LLM
 ---
 
@@ -648,6 +648,6 @@ Reject if change degrades anything else
 TheLampStand-MASTER-DEBUG v2.0.0
 Supersedes: apex-master-debug v1.0.0, one-pass-debug (all versions)
 Compatibility: Claude, GPT-4o/o1/o3, Gemini, Llama, Mistral, DeepSeek, any LLM
-License: Proprietary — TheLampStand Business Systems Ltd. Edmonton, AB, Canada.
+License: Proprietary — APEX Business Systems Ltd. Edmonton, AB, Canada.
 Copyright © 2026 All Rights Reserved
 ```
