@@ -1,10 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createClient } from '@supabase/supabase-js';
 
-// Mock the supabase-js module
 vi.mock('@supabase/supabase-js', () => ({
   createClient: vi.fn(),
 }));
+
+const VALID_URL = 'https://example.supabase.co';
+const VALID_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiJ9.test';
 
 describe('Supabase Client Initialization', () => {
   beforeEach(() => {
@@ -13,32 +15,58 @@ describe('Supabase Client Initialization', () => {
     vi.unstubAllEnvs();
   });
 
-  it('should initialize with environment variables', async () => {
-    const mockUrl = 'https://test.supabase.co';
-    const mockKey = 'test-key';
+  it('initializes with valid environment variables', async () => {
+    vi.stubEnv('VITE_SUPABASE_URL', VALID_URL);
+    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', VALID_KEY);
 
-    // Set environment variables using vi.stubEnv
-    vi.stubEnv('VITE_SUPABASE_URL', mockUrl);
-    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', mockKey);
-
-    // Import the client (this will trigger createClient call)
     await import('./client');
 
-    expect(createClient).toHaveBeenCalledWith(
-      mockUrl,
-      mockKey,
-      expect.any(Object)
-    );
+    expect(createClient).toHaveBeenCalledWith(VALID_URL, VALID_KEY, expect.any(Object));
   });
 
-  it('should throw error if environment variables are missing', async () => {
-    // Ensure environment variables are missing
+  it('throws when VITE_SUPABASE_URL is missing', async () => {
     vi.stubEnv('VITE_SUPABASE_URL', '');
+    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', VALID_KEY);
+
+    await expect(import('./client')).rejects.toThrow('VITE_SUPABASE_URL is not set');
+  });
+
+  it('throws when VITE_SUPABASE_PUBLISHABLE_KEY is missing', async () => {
+    vi.stubEnv('VITE_SUPABASE_URL', VALID_URL);
     vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', '');
 
-    // We expect the import to fail because of the throw in client.ts
-    await expect(import('./client')).rejects.toThrow(
-      'Missing Supabase environment variables'
-    );
+    await expect(import('./client')).rejects.toThrow('VITE_SUPABASE_PUBLISHABLE_KEY is not set');
+  });
+
+  it('throws when VITE_SUPABASE_PUBLISHABLE_KEY is a test/placeholder value', async () => {
+    vi.stubEnv('VITE_SUPABASE_URL', VALID_URL);
+    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', 'test_anon_key');
+
+    await expect(import('./client')).rejects.toThrow('not a valid Supabase API key');
+  });
+
+  it('never logs the API key to the console', async () => {
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    vi.stubEnv('VITE_SUPABASE_URL', VALID_URL);
+    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', VALID_KEY);
+
+    await import('./client');
+
+    const allLoggedArgs = [
+      ...logSpy.mock.calls.flat(),
+      ...warnSpy.mock.calls.flat(),
+      ...errorSpy.mock.calls.flat(),
+    ].map(String);
+
+    for (const logged of allLoggedArgs) {
+      expect(logged).not.toContain(VALID_KEY);
+    }
+
+    logSpy.mockRestore();
+    warnSpy.mockRestore();
+    errorSpy.mockRestore();
   });
 });

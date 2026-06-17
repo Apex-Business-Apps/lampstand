@@ -6,13 +6,13 @@ vi.mock('@/integrations/supabase/client', () => ({
   supabase: {
     auth: { getSession },
   },
+  supabasePublishableKey: 'anon-key',
 }));
 
 describe('edge function auth headers', () => {
   beforeEach(() => {
     vi.resetModules();
     getSession.mockReset();
-    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', 'anon-key');
   });
 
   it('uses the signed-in session access token for authenticated calls', async () => {

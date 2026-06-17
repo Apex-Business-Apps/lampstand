@@ -30,4 +30,5 @@ if (typeof localStorage === 'undefined') {
 // Mock environment variables for Supabase
 import { vi } from 'vitest';
 vi.stubEnv('VITE_SUPABASE_URL', 'https://mock.supabase.co');
-vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', 'mock-key');
+// Must start with eyJ (JWT shape) to pass production validation in config.ts
+vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.test');
