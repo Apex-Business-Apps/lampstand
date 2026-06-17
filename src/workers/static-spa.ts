@@ -1,9 +1,15 @@
 const MEDIA_EXT = /\.(mp4|webm|mov|avi|mkv|ogv|ogg|mp3|wav|flac|m4a)$/i;
 const FILE_EXT  = /\.[a-zA-Z0-9]{1,8}$/;
 
+// F-010 FIX: removed 'unsafe-inline' from script-src — Vite ESM production
+// builds emit no inline <script> tags. 'unsafe-eval' is retained because
+// Transformers.js (ai.worker.ts / whisper.worker.ts) requires it for ONNX
+// model execution inside web workers. Track removal in:
+// https://github.com/xenova/transformers.js/issues — when upstream drops eval,
+// remove 'unsafe-eval' here too.
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  "script-src 'self' 'unsafe-eval'",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https:",

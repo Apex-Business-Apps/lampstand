@@ -162,7 +162,9 @@ export class TurnPipeline {
   }
 }
 
-export class VoiceOrchestrator {
+/** Lightweight cancellation-state tracker for the agent turn pipeline.
+ * NOT the audio VoiceOrchestrator — see src/lib/voice/VoiceOrchestrator.ts for TTS/STT. */
+export class VoiceCancellationController {
   private cancelled = false;
   cancel() { this.cancelled = true; }
   reset() { this.cancelled = false; }
@@ -171,7 +173,7 @@ export class VoiceOrchestrator {
 
 export class AgentRuntime {
   readonly session = new SessionStateMachine();
-  readonly voice = new VoiceOrchestrator();
+  readonly voice = new VoiceCancellationController();
   readonly pipeline = new TurnPipeline();
 
   async runGuidance(input: string, tone: ToneStyle) {

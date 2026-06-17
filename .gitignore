@@ -42,3 +42,7 @@ artifacts/
 test-results/
 playwright-report/
 .wrangler/
+
+# Standardised on npm — reject bun lockfile
+bun.lock
+bun.lockb

@@ -1,0 +1,208 @@
+# codemagic.yaml — Lampstand Mobile CI/CD
+# App: icu.thelampstand.app | Version: managed via BUILD_NUMBER
+# iOS  → TestFlight internal testing
+# Android → Google Play internal testing track (AAB)
+#
+# Required Codemagic environment variables (set in UI → Teams → Global variables):
+#   iOS:
+#     APP_STORE_CONNECT_ISSUER_ID        — App Store Connect API key issuer UUID
+#     APP_STORE_CONNECT_KEY_IDENTIFIER   — Key ID (e.g. ABC1234567)
+#     APP_STORE_CONNECT_PRIVATE_KEY      — .p8 private key content (multiline secret)
+#     CERTIFICATE_PRIVATE_KEY            — RSA private key for iOS signing cert
+#   Android:
+#     ANDROID_KEYSTORE                   — base64-encoded .jks keystore
+#     ANDROID_KEY_ALIAS                  — key alias inside keystore
+#     ANDROID_KEYSTORE_PASS              — keystore password
+#     ANDROID_KEY_PASS                   — key password
+#     GCLOUD_SERVICE_ACCOUNT_CREDENTIALS — Google Play service account JSON
+#   Shared (web build):
+#     VITE_SUPABASE_URL                  — https://<project>.supabase.co
+#     VITE_SUPABASE_PUBLISHABLE_KEY      — anon/publishable key (safe to expose)
+
+definitions:
+  env_versions: &env_versions
+    node: 22.x
+    xcode: latest
+    cocoapods: default
+
+  install_and_build: &install_and_build
+    - name: Install dependencies
+      script: npm ci --ignore-scripts
+    - name: Build web app
+      script: |
+        export VITE_SUPABASE_URL=$VITE_SUPABASE_URL
+        export VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
+        npm run build
+    - name: Sync Capacitor
+      script: npx cap sync
+
+workflows:
+
+  # ─────────────────────────────────────────────
+  # iOS — TestFlight Internal Testing
+  # Triggers: push to main or release/* branches
+  # ─────────────────────────────────────────────
+  ios-testflight-internal:
+    name: iOS → TestFlight Internal
+    max_build_duration: 75
+    instance_type: mac_mini_m2
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+        - pattern: release/*
+          include: true
+
+    environment:
+      <<: *env_versions
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: icu.thelampstand.app
+      vars:
+        APP_STORE_CONNECT_ISSUER_ID: $APP_STORE_CONNECT_ISSUER_ID
+        APP_STORE_CONNECT_KEY_IDENTIFIER: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        APP_STORE_CONNECT_PRIVATE_KEY: $APP_STORE_CONNECT_PRIVATE_KEY
+        CERTIFICATE_PRIVATE_KEY: $CERTIFICATE_PRIVATE_KEY
+
+    scripts:
+      - *install_and_build
+      - name: Sync Capacitor iOS
+        script: npx cap sync ios
+      - name: Set version and build number
+        script: |
+          CURRENT_VERSION=$(cat package.json | python3 -c "import sys,json; print(json.load(sys.stdin)['version'])")
+          agvtool new-marketing-version $CURRENT_VERSION
+          agvtool new-version -all $BUILD_NUMBER
+        working_directory: ios/App
+      - name: Build iOS IPA
+        script: |
+          xcode-project use-profiles
+          xcodebuild \
+            -workspace ios/App/App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -archivePath build/App.xcarchive \
+            archive
+          xcodebuild \
+            -exportArchive \
+            -archivePath build/App.xcarchive \
+            -exportOptionsPlist ios/App/ExportOptions.plist \
+            -exportPath build/ipa
+
+    artifacts:
+      - build/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true
+        beta_groups:
+          - Internal Testers
+      email:
+        recipients:
+          - aspiral.icu@gmail.com
+        notify:
+          success: true
+          failure: true
+
+  # ─────────────────────────────────────────────
+  # Android — Google Play Internal Testing (AAB)
+  # Triggers: push to main or release/* branches
+  # ─────────────────────────────────────────────
+  android-play-internal:
+    name: Android → Play Store Internal
+    max_build_duration: 60
+    instance_type: linux_x2
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+        - pattern: release/*
+          include: true
+
+    environment:
+      node: 22.x
+      android_signing:
+        - lampstand_keystore
+      vars:
+        ANDROID_KEY_ALIAS: $ANDROID_KEY_ALIAS
+        ANDROID_KEYSTORE_PASS: $ANDROID_KEYSTORE_PASS
+        ANDROID_KEY_PASS: $ANDROID_KEY_PASS
+
+    scripts:
+      - *install_and_build
+      - name: Sync Capacitor Android
+        script: npx cap sync android
+      - name: Set version code from build number
+        script: |
+          CURRENT_VERSION=$(cat package.json | python3 -c "import sys,json; print(json.load(sys.stdin)['version'])")
+          # Patch build.gradle versionName and versionCode
+          sed -i "s/versionCode .*/versionCode $BUILD_NUMBER/" android/app/build.gradle
+          sed -i "s/versionName .*/versionName \"$CURRENT_VERSION\"/" android/app/build.gradle
+      - name: Build release AAB
+        script: |
+          cd android
+          ./gradlew bundleRelease \
+            -Pandroid.injected.signing.store.file=$CM_KEYSTORE_PATH \
+            -Pandroid.injected.signing.store.password=$ANDROID_KEYSTORE_PASS \
+            -Pandroid.injected.signing.key.alias=$ANDROID_KEY_ALIAS \
+            -Pandroid.injected.signing.key.password=$ANDROID_KEY_PASS
+
+    artifacts:
+      - android/app/build/outputs/bundle/release/*.aab
+      - android/app/build/outputs/mapping/release/mapping.txt
+
+    publishing:
+      google_play:
+        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        track: internal
+        submit_as_draft: false
+      email:
+        recipients:
+          - aspiral.icu@gmail.com
+        notify:
+          success: true
+          failure: true
+
+  # ─────────────────────────────────────────────
+  # PR Validation — fast quality gate (no signing)
+  # Triggers: pull_request to main
+  # ─────────────────────────────────────────────
+  pr-validation:
+    name: PR Quality Gate
+    max_build_duration: 20
+    instance_type: linux_x2
+
+    triggering:
+      events:
+        - pull_request
+      branch_patterns:
+        - pattern: main
+          include: true
+
+    environment:
+      node: 22.x
+
+    scripts:
+      - name: Install
+        script: npm ci --ignore-scripts
+      - name: Lint
+        script: npm run lint
+      - name: Type check
+        script: npm run typecheck
+      - name: Unit tests
+        script: npm run test:unit -- --reporter=verbose
+      - name: Build (verify no compile errors)
+        script: |
+          export VITE_SUPABASE_URL=https://placeholder.supabase.co
+          export VITE_SUPABASE_PUBLISHABLE_KEY=placeholder
+          npm run build
