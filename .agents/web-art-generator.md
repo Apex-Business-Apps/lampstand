@@ -1,7 +1,7 @@
 ---
 name: web-art-generator
 description: "Silicon Valley production house-grade web artifact generation. Triggers: app icon, hero image, favicon, splash screen, UI animation, demo video, marketing banner, loading animation, button design, brand assets, social cards, og:image, Apple touch icon, PWA assets, store screenshots, feature graphics. Produces: .png, .svg, .gif, .mp4, .html, .jsx at Apple-polish quality. Zero generic AI aesthetics."
-license: "Proprietary - TheLampStand Business Systems Ltd. Complete terms in LICENSE.txt"
+license: "Proprietary - APEX Business Systems Ltd. Complete terms in LICENSE.txt"
 ---
 
 # web-art-generator

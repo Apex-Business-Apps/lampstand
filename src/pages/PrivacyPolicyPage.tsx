@@ -7,7 +7,7 @@ export default function PrivacyPolicyPage() {
 
       <h2 className="text-lg font-semibold mt-6 mb-2">Who we are</h2>
       <p>
-        LampStand is a community spiritual companion app operated by TheLampStand Business Systems LTD.
+        LampStand is a community spiritual companion app operated by APEX Business Systems Ltd.
         We are not a commercial product. There are no ads, no paywalls, and no data sold to third parties.
       </p>
 

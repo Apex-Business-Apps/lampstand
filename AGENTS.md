@@ -1,6 +1,6 @@
 # TheLampStand-OmniHub Repository Instructions
 
-This repository belongs to TheLampStand Business Systems LTD and supports TheLampStand-OmniHub. Treat it as production-grade software.
+This repository belongs to APEX Business Systems Ltd. and supports TheLampStand-OmniHub. Treat it as production-grade software.
 
 ## Product Standard
 

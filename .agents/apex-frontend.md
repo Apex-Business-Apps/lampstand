@@ -1,7 +1,7 @@
 ---
 name: apex-frontend
 description: "Ultimate UI/UX + frontend engineering + debugging operating system for mobile, web, and desktop. Use for design, audit, implement, debug, performance, accessibility, and design systems."
-license: "Proprietary - TheLampStand Business Systems Ltd. Edmonton, AB, Canada. https://apexbusiness-systems.com"
+license: "Proprietary - APEX Business Systems Ltd. Edmonton, AB, Canada. https://apexbusiness-systems.com"
 ---
 
 # TheLampStand-FRONTEND
