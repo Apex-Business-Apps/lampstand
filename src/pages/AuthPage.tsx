@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { isSupabaseConfigured } from '@/integrations/supabase/config';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AgentPresence } from '@/components/AgentPresence';
@@ -9,6 +10,24 @@ import { toast } from 'sonner';
 
 type AuthMode = 'login' | 'signup' | 'magic-link';
 
+function ConfigErrorBanner() {
+  return (
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-5">
+      <div className="w-full max-w-sm text-center space-y-4">
+        <AgentPresence size="md" className="mx-auto" />
+        <h1 className="text-2xl font-serif font-semibold">Configuration Error</h1>
+        <p className="text-muted-foreground text-sm">
+          Authentication is unavailable. The service API key is missing or invalid.
+        </p>
+        <p className="text-muted-foreground text-xs">
+          Please contact the administrator to configure{' '}
+          <code className="font-mono">VITE_SUPABASE_PUBLISHABLE_KEY</code>.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function AuthPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,6 +35,10 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<AuthMode>('login');
   const navigate = useNavigate();
+
+  if (!isSupabaseConfigured()) {
+    return <ConfigErrorBanner />;
+  }
 
   const handlePasswordAuth = async (e: React.FormEvent) => {
     e.preventDefault();

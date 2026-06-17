@@ -1,6 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
-
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
+import { supabase, supabasePublishableKey } from '@/integrations/supabase/client';
 
 /**
  * Returns headers for Supabase edge function calls:
@@ -12,7 +10,7 @@ const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
 export async function getEdgeFunctionHeaders(): Promise<Record<string, string>> {
   const base: Record<string, string> = {
     'Content-Type': 'application/json',
-    apikey: SUPABASE_KEY,
+    apikey: supabasePublishableKey,
   };
 
   try {

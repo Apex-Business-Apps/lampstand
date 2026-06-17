@@ -12,7 +12,8 @@ export default defineConfig({
     },
     env: {
       VITE_SUPABASE_URL: 'https://mock.supabase.co',
-      VITE_SUPABASE_PUBLISHABLE_KEY: 'mock-key',
+      // Must start with eyJ (JWT shape) to pass production validation in config.ts
+      VITE_SUPABASE_PUBLISHABLE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.test',
     }
   }
 })

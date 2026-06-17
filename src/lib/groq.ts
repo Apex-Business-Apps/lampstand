@@ -3,9 +3,9 @@ import { LocalAIAdapter } from './adapters';
 import type { GuidanceContext } from './guidance/contextAssembler';
 import { formatContextForPrompt } from './guidance/contextAssembler';
 import { getEdgeFunctionHeaders } from '@/lib/supabaseAuthHeaders';
+import { getSupabaseConfig } from '@/integrations/supabase/config';
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const { url: SUPABASE_URL } = getSupabaseConfig();
 
 // Shared style guide used for all GroqAIAdapter calls (replaces the old vague SYS string).
 // Kept in sync with src/lib/agent/Prompts.ts - the guidance mode here is tighter
@@ -47,8 +47,6 @@ export class GroqAIAdapter implements IAIAdapter {
   private fallback = new LocalAIAdapter();
 
   private async ask(messages: { role: string; content: string }[], json = false, maxTokens = 400) {
-    if (!SUPABASE_URL || !SUPABASE_KEY) throw new Error('Missing Supabase configuration');
-
     const res = await fetch(`${SUPABASE_URL}/functions/v1/groq-guidance`, {
       method: 'POST',
       headers: await getEdgeFunctionHeaders(),
