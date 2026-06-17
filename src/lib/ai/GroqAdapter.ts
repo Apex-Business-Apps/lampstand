@@ -1,3 +1,4 @@
+import { getSupabaseConfig, isSupabaseConfigured } from '@/integrations/supabase/config';
 import { AIProviderAdapter } from './types';
 
 export class GroqAdapter implements AIProviderAdapter {
@@ -6,8 +7,14 @@ export class GroqAdapter implements AIProviderAdapter {
   private supabaseKey: string;
 
   constructor() {
-    this.supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-    this.supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || '';
+    if (isSupabaseConfigured()) {
+      const config = getSupabaseConfig();
+      this.supabaseUrl = config.url;
+      this.supabaseKey = config.publishableKey;
+    } else {
+      this.supabaseUrl = '';
+      this.supabaseKey = '';
+    }
   }
 
   isAvailable(): boolean {

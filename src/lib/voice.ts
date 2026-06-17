@@ -1,6 +1,7 @@
 import { audioAnalyzer } from '@/lib/audioAnalyzer';
 import { getConsentState, getVoicePreferences, pushVoiceTranscript } from '@/lib/storage';
 import { getEdgeFunctionHeaders } from '@/lib/supabaseAuthHeaders';
+import { isSupabaseConfigured, getSupabaseConfig } from '@/integrations/supabase/config';
 
 // Minimal ambient type so TS accepts the Web Speech API in browsers.
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -164,10 +165,11 @@ export class TextToSpeechAdapter {
 
     // 1) Cloud TTS path
     try {
-      if (import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
+      if (isSupabaseConfigured()) {
+        const { url: supabaseUrl } = getSupabaseConfig();
         this.onStateChange?.('loading');
         this.abortController = new AbortController();
-        const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/elevenlabs-tts`, {
+        const response = await fetch(`${supabaseUrl}/functions/v1/elevenlabs-tts`, {
           method: 'POST',
           headers: await getEdgeFunctionHeaders(),
           body: JSON.stringify({ text, voice }),
