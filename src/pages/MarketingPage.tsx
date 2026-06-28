@@ -241,7 +241,7 @@ export default function MarketingPage() {
               size="lg"
               variant="outline"
               className="h-14 border-[hsl(var(--primary)/0.5)] bg-[#0a0a0a]/80 px-7 text-base text-[#d0d0d0] backdrop-blur hover:bg-[#D97736]/15 hover:text-white"
-              onClick={() => navigate("/lite?source=web")}
+              onClick={() => navigate("/onboarding")}
             >
               Try without signing up
             </Button>
