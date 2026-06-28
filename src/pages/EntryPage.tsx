@@ -50,7 +50,7 @@ export default function EntryPage() {
     }
 
     if (forceLite) {
-      navigate("/lite", { replace: true });
+      navigate("/onboarding", { replace: true });
       return;
     }
 

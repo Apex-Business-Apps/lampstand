@@ -190,7 +190,7 @@ export default function AuthPage() {
           <Button
             variant="outline"
             className="w-full"
-            onClick={() => navigate('/lite?source=web')}
+            onClick={() => navigate('/onboarding')}
           >
             Try without signing up
           </Button>
