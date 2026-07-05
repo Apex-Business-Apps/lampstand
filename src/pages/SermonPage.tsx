@@ -3,9 +3,8 @@ import { AppShell } from '@/components/AppShell';
 import { ScriptureCard } from '@/components/ScriptureCard';
 import { ReflectionBlock } from '@/components/ReflectionBlock';
 import { AgentPresence } from '@/components/AgentPresence';
-import { SEED_SERMONS } from '@/data/seed';
 import { SEED_PASSAGES } from '@/data/seed';
-import { getAIAdapter } from '@/lib/adapters';
+import { buildGroundedSermon } from '@/data/sermonLibrary';
 import { getProfile } from '@/lib/storage';
 import { Button } from '@/components/ui/button';
 import { getSecureRandomInt } from '@/lib/utils';
@@ -14,7 +13,10 @@ import { RefreshCw } from 'lucide-react';
 import { recordSignal } from '@/lib/resonance/ResonanceEngine';
 
 export default function SermonPage() {
-  const [sermon, setSermon] = useState<Sermon>(SEED_SERMONS[0]);
+  const [sermon, setSermon] = useState<Sermon>(() => {
+    const profile = getProfile();
+    return buildGroundedSermon(SEED_PASSAGES[0], profile?.toneStyle || 'balanced');
+  });
   const [loading, setLoading] = useState(false);
 
   async function generateNew() {
@@ -22,8 +24,7 @@ export default function SermonPage() {
     try {
       const profile = getProfile();
       const randomPassage = SEED_PASSAGES[getSecureRandomInt(SEED_PASSAGES.length)];
-      const ai = getAIAdapter();
-      const newSermon = await ai.generateSermon(randomPassage, profile?.toneStyle || 'balanced');
+      const newSermon = buildGroundedSermon(randomPassage, profile?.toneStyle || 'balanced');
       setSermon(newSermon);
       try {
         recordSignal({ signal: 'reflected', passage: newSermon.passage });
