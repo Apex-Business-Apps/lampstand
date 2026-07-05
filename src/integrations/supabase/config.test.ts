@@ -9,7 +9,7 @@ describe('getSupabaseConfig', () => {
     vi.unstubAllEnvs();
   });
 
-  it('returns config when URL and key are valid', async () => {
+  it('returns config when URL and key (JWT) are valid', async () => {
     vi.stubEnv('VITE_SUPABASE_URL', VALID_URL);
     vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', VALID_KEY);
     const { getSupabaseConfig } = await import('./config');
@@ -18,6 +18,18 @@ describe('getSupabaseConfig', () => {
     expect(config.url).toBe(VALID_URL);
     expect(config.publishableKey).toBe(VALID_KEY);
   });
+
+  it('returns config when URL and key (sb_publishable_) are valid', async () => {
+    const sbKey = 'sb_publishable_mEfQxgtJ7WzxVnHfiAMwzA_gpfNHM4k';
+    vi.stubEnv('VITE_SUPABASE_URL', VALID_URL);
+    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', sbKey);
+    const { getSupabaseConfig } = await import('./config');
+
+    const config = getSupabaseConfig();
+    expect(config.url).toBe(VALID_URL);
+    expect(config.publishableKey).toBe(sbKey);
+  });
+
 
   it('throws when VITE_SUPABASE_URL is missing', async () => {
     vi.stubEnv('VITE_SUPABASE_URL', '');
@@ -83,9 +95,18 @@ describe('isSupabaseConfigured', () => {
     vi.unstubAllEnvs();
   });
 
-  it('returns true when config is valid', async () => {
+  it('returns true when config is valid (JWT)', async () => {
     vi.stubEnv('VITE_SUPABASE_URL', VALID_URL);
     vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', VALID_KEY);
+    const { isSupabaseConfigured } = await import('./config');
+
+    expect(isSupabaseConfigured()).toBe(true);
+  });
+
+  it('returns true when config is valid (sb_publishable_)', async () => {
+    const sbKey = 'sb_publishable_mEfQxgtJ7WzxVnHfiAMwzA_gpfNHM4k';
+    vi.stubEnv('VITE_SUPABASE_URL', VALID_URL);
+    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', sbKey);
     const { isSupabaseConfigured } = await import('./config');
 
     expect(isSupabaseConfigured()).toBe(true);
