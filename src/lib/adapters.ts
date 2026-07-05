@@ -2,7 +2,8 @@ import type {
   IRetrievalAdapter, IAIAdapter, RetrievalRequest, RetrievalResult,
   ScripturePassage, ToneStyle, Sermon, GuidanceResult,
 } from '@/types';
-import { SEED_PASSAGES, SEED_SERMONS, SEED_GUIDANCE_MAP } from '@/data/seed';
+import { SEED_PASSAGES, SEED_GUIDANCE_MAP } from '@/data/seed';
+import { buildGroundedSermon } from '@/data/sermonLibrary';
 import { getKnowledge, updateKnowledge } from './storage';
 import { checkInputSafety } from './safety';
 import { GraphRAGAdapter, setGraphRAGFallback } from './retrieval/graphRAGAdapter';
@@ -171,33 +172,7 @@ function buildConcernAnchor(concern: string, themes: string[], passage: Scriptur
   return `\n\n${anchor}`;
 }
 
-// ─── Sermon structure ─────────────────────────────────────────────────────────
-function buildSermonBody(passage: ScripturePassage, tone: ToneStyle): { reflection: string; relevance: string; prayer: string } {
-  const toneMap = {
-    gentle: {
-      opening: 'Hold these words lightly, like something precious you don\'t want to crush by gripping too hard.',
-      connector: 'In the ordinary moments - the commute, the quiet evening, the moment of doubt - this passage shows up.',
-      closing: 'So today, carry it with you. Not as a burden, but as a companion.',
-    },
-    balanced: {
-      opening: 'This passage speaks on multiple levels: to the immediate situation, and to the deeper pattern beneath it.',
-      connector: 'In our world of noise and acceleration, this word cuts through with unusual clarity.',
-      closing: 'Let it reorient you - not toward a feeling, but toward a Person.',
-    },
-    traditional: {
-      opening: 'The Fathers of the Church understood this passage as a window into the very nature of God\'s relationship with his people.',
-      connector: 'In every age, the faithful have found in these words a constant that outlasts every circumstance.',
-      closing: 'May this word be written on your heart, as it has been written on the hearts of the saints before you.',
-    },
-  };
-
-  const parts = toneMap[tone];
-  return {
-    reflection: `${parts.opening}\n\n${passage.reference} does not speak from a distance. It enters our actual situation - the worry, the hope, the grief, the waiting - and offers something that the world cannot manufacture: a word from beyond circumstances, pointing to what is unshakeable.\n\nThis is not optimism. It is not advice. It is revelation.`,
-    relevance: `${parts.connector}\n\nWhen we feel the ground shifting - in relationships, in health, in meaning - this passage functions as an anchor. Not by explaining our situation, but by locating us within a larger story: one where we are not forgotten, not abandoned, and not the final word on our own lives.\n\n${parts.closing}`,
-    prayer: `Lord, as we receive this word, let it do in us what we cannot do for ourselves. Where we are fearful, let it bring courage. Where we are numb, let it bring feeling. Where we are lost, let it bring orientation.\n\nNot our will, but yours. Amen.`,
-  };
-}
+// ─── Sermon content is now generated from a passage-specific research bank ─────
 
 // ─── Multi-theme composite guidance ──────────────────────────────────────────
 // Returns guidance data + an internal `_isCrisis` sentinel.
@@ -341,25 +316,7 @@ export class LocalAIAdapter implements IAIAdapter {
   }
 
   async generateSermon(passage: ScripturePassage, tone: ToneStyle): Promise<Sermon> {
-    const seed = SEED_SERMONS.find(s => s.passage.reference === passage.reference);
-    if (seed) return seed;
-
-    const body = buildSermonBody(passage, tone);
-    const toneTitle: Record<ToneStyle, string> = {
-      gentle:      `A Gentle Word from ${passage.reference}`,
-      balanced:    `Reflections on ${passage.reference}`,
-      traditional: `A Meditation on ${passage.reference}`,
-    };
-
-    return {
-      id: crypto.randomUUID(),
-      title: toneTitle[tone],
-      passage,
-      reflection: body.reflection,
-      relevance: body.relevance,
-      prayer: body.prayer,
-      createdAt: new Date().toISOString(),
-    };
+    return buildGroundedSermon(passage, tone);
   }
 
   async generateGuidance(concern: string, tone: ToneStyle): Promise<GuidanceResult> {

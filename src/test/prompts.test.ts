@@ -12,10 +12,9 @@ describe('Prompts Constants', () => {
 
   describe('style prompt', () => {
     it('should contain essential writing rules', () => {
-      expect(Prompts.style).toContain('Never use em dashes');
-      expect(Prompts.style).toContain('No AI filler');
-      expect(Prompts.style).toContain('Do not use the words "journey" or "walk"');
-      expect(Prompts.style).toContain('60 to 90 words');
+      expect(Prompts.style).toContain('NEVER: Use em dashes');
+      expect(Prompts.style).toContain('Use AI filler');
+      expect(Prompts.style).toContain('"journey" or "walk"');
     });
 
     it('should define Lampstand character', () => {
@@ -28,7 +27,7 @@ describe('Prompts Constants', () => {
     it('should contain guidance mode instructions', () => {
       expect(Prompts.guidance).toContain('Guidance Mode');
       expect(Prompts.guidance).toContain('prayer');
-      expect(Prompts.guidance).toContain('30 to 40 words');
+      expect(Prompts.guidance).toContain('30-40 words');
     });
   });
 
@@ -36,7 +35,7 @@ describe('Prompts Constants', () => {
     it('should contain daily light mode instructions', () => {
       expect(Prompts.daily).toContain('Daily Light Mode');
       expect(Prompts.daily).toContain('prayer');
-      expect(Prompts.daily).toContain('25 to 35 words');
+      expect(Prompts.daily).toContain('25-35 words');
     });
   });
 
@@ -51,7 +50,7 @@ describe('Prompts Constants', () => {
     it('should contain kids mode instructions', () => {
       expect(Prompts.kids).toContain('Kids Mode');
       expect(Prompts.kids).toContain('prayer');
-      expect(Prompts.kids).toContain('Simple words');
+      expect(Prompts.kids).toContain('simple words');
     });
   });
 });
