@@ -11,10 +11,11 @@ function isValidHttpsUrl(value: string): boolean {
   }
 }
 
-// Real Supabase anon/publishable keys are signed JWTs — they always start with eyJ.
+// Real Supabase anon/publishable keys are either signed JWTs (start with eyJ)
+// or the newer format publishable keys (start with sb_publishable_).
 // A value that fails this check is a placeholder, stale value, or wrong project key.
 function isValidApiKey(value: string): boolean {
-  return value.startsWith('eyJ');
+  return value.startsWith('eyJ') || value.startsWith('sb_publishable_');
 }
 
 export function getSupabaseConfig(): SupabaseConfig {
