@@ -26,8 +26,8 @@ jobs:
 
       - name: Build app
         env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_URL: "https://jfqivpqedhmgyqwqpwim.supabase.co"
+          VITE_SUPABASE_PUBLISHABLE_KEY: "sb_publishable_mEfQxgtJ7WzxVnHfiAMwzA_gpfNHM4k"
         run: npm run build
 
       - name: Deploy Worker with custom domains

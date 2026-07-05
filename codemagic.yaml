@@ -30,8 +30,8 @@ definitions:
     - &step_build_web
       name: Build Vite web app
       script: |
-        export VITE_SUPABASE_URL=$VITE_SUPABASE_URL
-        export VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY
+        export VITE_SUPABASE_URL="https://jfqivpqedhmgyqwqpwim.supabase.co"
+        export VITE_SUPABASE_PUBLISHABLE_KEY="sb_publishable_mEfQxgtJ7WzxVnHfiAMwzA_gpfNHM4k"
         npm run build
 
 workflows:
