@@ -3,14 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { getProfile } from "@/lib/storage";
 import { supabase } from "@/integrations/supabase/client";
-
-function isStandaloneDisplayMode() {
-  const mediaMatch = window.matchMedia("(display-mode: standalone)").matches;
-  const iosStandalone =
-    (window.navigator as Navigator & { standalone?: boolean }).standalone ===
-    true;
-  return mediaMatch || iosStandalone;
-}
+import { isStandaloneDisplayMode } from "@/lib/pwa/standalone";
 
 export default function EntryPage() {
   const navigate = useNavigate();

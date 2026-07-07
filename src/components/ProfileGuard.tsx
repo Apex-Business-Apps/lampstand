@@ -2,14 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { getProfile } from "@/lib/storage";
 import { useAuth } from "@/hooks/useAuth";
 import type { ReactNode } from "react";
-
-function isStandaloneDisplayMode() {
-  const mediaMatch = window.matchMedia("(display-mode: standalone)").matches;
-  const iosStandalone =
-    (window.navigator as Navigator & { standalone?: boolean }).standalone ===
-    true;
-  return mediaMatch || iosStandalone;
-}
+import { isStandaloneDisplayMode } from "@/lib/pwa/standalone";
 
 interface ProfileGuardProps {
   children?: ReactNode;

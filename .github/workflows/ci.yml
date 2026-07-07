@@ -44,11 +44,24 @@ jobs:
       - name: Worker bundle (dry-run)
         run: npx wrangler deploy --dry-run --config wrangler.json
 
-      - name: Verify PWA manifest and icons exist in build output
+      - name: Verify PWA manifest, service worker, and icons exist in build output
         run: |
           test -f dist/manifest.json || (echo "ERROR: manifest.json missing from build output" && exit 1)
+          test -f dist/sw.js || (echo "ERROR: sw.js missing from build output" && exit 1)
           test -f dist/icons/icon-192.png || (echo "ERROR: icon-192.png missing from build output" && exit 1)
           test -f dist/icons/icon-512.png || (echo "ERROR: icon-512.png missing from build output" && exit 1)
+          test -f dist/icons/icon-512-maskable.png || (echo "ERROR: icon-512-maskable.png missing from build output" && exit 1)
+          grep -q '<link rel="manifest" href="/manifest.json" />' dist/index.html || (echo "ERROR: dist/index.html lost its manifest link" && exit 1)
+          cmp -s public/sw.js dist/sw.js || (echo "ERROR: dist/sw.js does not match public/sw.js byte-for-byte (build pipeline is transforming it)" && exit 1)
+          node -e "
+            const m = require('./dist/manifest.json');
+            const required = ['name','short_name','start_url','display','theme_color','background_color','icons'];
+            const missing = required.filter((k) => !m[k]);
+            if (missing.length) { console.error('ERROR: manifest.json missing fields: ' + missing.join(', ')); process.exit(1); }
+            if (!m.icons.some((i) => i.sizes === '192x192')) { console.error('ERROR: manifest.json missing a 192x192 icon'); process.exit(1); }
+            if (!m.icons.some((i) => i.sizes === '512x512')) { console.error('ERROR: manifest.json missing a 512x512 icon'); process.exit(1); }
+            if (!m.icons.some((i) => i.purpose === 'maskable')) { console.error('ERROR: manifest.json missing a maskable icon'); process.exit(1); }
+          "
           echo "PWA artifacts verified"
 
       - name: Verify no private API keys in bundle
@@ -58,3 +71,25 @@ jobs:
             exit 1
           fi
           echo "Bundle key scan passed"
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: PWA end-to-end smoke test (manifest fetchable, SW actually registers in a real browser)
+        env:
+          # Real deploy secrets take precedence; these mock values only exist so the
+          # app can boot in this throwaway build and let Playwright drive it — they
+          # are never used for the real "Production build" step above or for deploy.
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || 'https://mock.supabase.co' }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.mock' }}
+        run: |
+          npm run build
+          npx playwright test tests/e2e/pwa.spec.ts
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
