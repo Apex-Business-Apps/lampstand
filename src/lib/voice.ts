@@ -3,11 +3,6 @@ import { getConsentState, getVoicePreferences, pushVoiceTranscript } from '@/lib
 import { getEdgeFunctionHeaders } from '@/lib/supabaseAuthHeaders';
 import { isSupabaseConfigured, getSupabaseConfig } from '@/integrations/supabase/config';
 
-// Minimal ambient type so TS accepts the Web Speech API in browsers.
-/* eslint-disable @typescript-eslint/no-explicit-any */
-type SpeechRecognition = any;
-type SpeechRecognitionEvent = any;
-type SpeechRecognitionErrorEvent = any;
 
 export type VoiceGender = 'male' | 'female';
 
@@ -23,10 +18,10 @@ class BrowserSpeechToTextProvider implements SpeechToTextProvider {
 
   constructor() {
     try {
-      const w = window as any;
-      if (w.webkitSpeechRecognition || w.SpeechRecognition) {
-        const SpeechRecognition = w.SpeechRecognition || w.webkitSpeechRecognition;
-        this.recognition = new SpeechRecognition();
+      const w = window as unknown as { webkitSpeechRecognition?: typeof SpeechRecognition, SpeechRecognition?: typeof SpeechRecognition };
+      const SR = w.SpeechRecognition || w.webkitSpeechRecognition;
+      if (SR) {
+        this.recognition = new SR();
         this.recognition.continuous = false;
         this.recognition.interimResults = false;
         this.recognition.maxAlternatives = 1;

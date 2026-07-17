@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-type SpeechRecognition = any;
-type SpeechRecognitionEvent = any;
-type SpeechRecognitionErrorEvent = any;
 
 export class VoiceManager {
   private synth = window.speechSynthesis;
@@ -9,9 +5,10 @@ export class VoiceManager {
   private isListening = false;
 
   constructor() {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      this.recognition = new SpeechRecognition();
+    const w = window as unknown as { webkitSpeechRecognition?: typeof SpeechRecognition, SpeechRecognition?: typeof SpeechRecognition };
+    const SR = w.SpeechRecognition || w.webkitSpeechRecognition;
+    if (SR) {
+      this.recognition = new SR();
       this.recognition.continuous = false;
       this.recognition.interimResults = false;
     }

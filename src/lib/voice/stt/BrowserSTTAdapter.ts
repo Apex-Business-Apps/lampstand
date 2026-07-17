@@ -1,42 +1,11 @@
-interface SpeechRecognitionEvent extends Event {
-  results: {
-    [index: number]: {
-      [index: number]: {
-        transcript: string;
-      };
-    };
-  };
-}
-
-interface SpeechRecognitionErrorEvent extends Event {
-  error: string;
-}
-
-interface SpeechRecognition extends EventTarget {
-  continuous: boolean;
-  interimResults: boolean;
-  onresult: (event: SpeechRecognitionEvent) => void;
-  onerror: (event: SpeechRecognitionErrorEvent) => void;
-  start(): void;
-  stop(): void;
-}
-
-interface Window {
-  SpeechRecognition?: {
-    new (): SpeechRecognition;
-  };
-  webkitSpeechRecognition?: {
-    new (): SpeechRecognition;
-  };
-}
-
 export class BrowserSTTAdapter {
   private recognition: SpeechRecognition | null = null;
 
   constructor() {
-    const SpeechRecognition = (window as unknown as Window).SpeechRecognition || (window as unknown as Window).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      this.recognition = new SpeechRecognition();
+    const w = window as unknown as { webkitSpeechRecognition?: typeof SpeechRecognition, SpeechRecognition?: typeof SpeechRecognition };
+    const SR = w.SpeechRecognition || w.webkitSpeechRecognition;
+    if (SR) {
+      this.recognition = new SR();
       this.recognition.continuous = false;
       this.recognition.interimResults = false;
     }
