@@ -76,7 +76,7 @@ export async function syncPassagesToCloud(userId: string): Promise<void> {
     id: p.id,
     user_id: userId,
     passage_ref: p.passage.reference,
-    passage_data: JSON.parse(JSON.stringify(p.passage)) as Json,
+    passage_data: p.passage as unknown as Json,
     note: p.note || null,
     saved_at: p.savedAt,
   }));
@@ -127,7 +127,7 @@ export async function syncJournalToCloud(userId: string): Promise<void> {
     user_id: userId,
     content: e.content,
     mood: e.mood || null,
-    related_passage: e.relatedPassage ? (JSON.parse(JSON.stringify(e.relatedPassage)) as Json) : null,
+    related_passage: e.relatedPassage ? (e.relatedPassage as unknown as Json) : null,
     created_at: e.createdAt,
   }));
 
