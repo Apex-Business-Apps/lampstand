@@ -70,35 +70,57 @@ export function clearProfile() { localStorage.removeItem(KEYS.profile); }
 
 export function getSavedPassages(): SavedPassage[] { return get(KEYS.saved, []); }
 export function savePassage(p: SavedPassage) {
-  const passageKey = normalizeIdempotencyKey(p.passage.reference || p.id);
-  const { meta } = writeListAtomically<SavedPassage, { added: boolean }>(KEYS.saved, (all) => {
-    const existingIndex = all.findIndex((s) => s.id === p.id || normalizeIdempotencyKey(s.passage.reference || s.id) === passageKey);
-    if (existingIndex >= 0) {
-      all[existingIndex] = { ...all[existingIndex], ...p, id: all[existingIndex].id, savedAt: all[existingIndex].savedAt };
-      return { next: all, changed: true, meta: { added: false } };
-    }
-
-    return { next: [p, ...all].slice(0, 200), changed: true, meta: { added: true } };
-  });
-  if (meta?.added) incrementPresenceScore(3);
+  savePassages([p]);
 }
 export function savePassages(passages: SavedPassage[]) {
   if (passages.length === 0) return;
   const { meta } = writeListAtomically<SavedPassage, { added: number }>(KEYS.saved, (all) => {
     let added = 0;
+    const idToIndex = new Map<string, number>();
+    const refToIndex = new Map<string, number>();
+
+    for (let i = 0; i < all.length; i++) {
+      const item = all[i];
+      idToIndex.set(item.id, i);
+      refToIndex.set(normalizeIdempotencyKey(item.passage.reference || item.id), i);
+    }
+
+    const newPassages: SavedPassage[] = [];
+    // Keep track of the elements added in the current batch to prevent duplicates within the batch
+    const addedIds = new Set<string>();
+    const addedRefs = new Set<string>();
 
     for (const passage of passages) {
       const referenceKey = normalizeIdempotencyKey(passage.passage.reference || passage.id);
-      const existingIndex = all.findIndex((item) => item.id === passage.id || normalizeIdempotencyKey(item.passage.reference || item.id) === referenceKey);
+
+      let existingIndex = -1;
+      if (idToIndex.has(passage.id)) {
+        existingIndex = idToIndex.get(passage.id)!;
+      } else if (refToIndex.has(referenceKey)) {
+        existingIndex = refToIndex.get(referenceKey)!;
+      }
+
       if (existingIndex >= 0) {
         all[existingIndex] = { ...all[existingIndex], ...passage, id: all[existingIndex].id, savedAt: all[existingIndex].savedAt };
         continue;
       }
 
-      all.unshift(passage);
+      if (addedIds.has(passage.id) || addedRefs.has(referenceKey)) {
+        // If it was already added in this batch, update it in newPassages
+        const batchExistingIndex = newPassages.findIndex((p) => p.id === passage.id || normalizeIdempotencyKey(p.passage.reference || p.id) === referenceKey);
+        if (batchExistingIndex >= 0) {
+            newPassages[batchExistingIndex] = { ...newPassages[batchExistingIndex], ...passage, id: newPassages[batchExistingIndex].id, savedAt: newPassages[batchExistingIndex].savedAt };
+        }
+        continue;
+      }
+
+      newPassages.push(passage);
+      addedIds.add(passage.id);
+      addedRefs.add(referenceKey);
       added += 1;
     }
 
+    all.unshift(...newPassages.reverse());
     return { next: all.slice(0, 200), changed: added > 0 || passages.length > 0, meta: { added } };
   });
   if (meta?.added) incrementPresenceScore(3 * meta.added);
