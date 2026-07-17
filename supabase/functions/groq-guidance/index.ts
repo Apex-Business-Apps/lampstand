@@ -71,8 +71,6 @@ serve(async (req) => {
     });
   }
 
-  // F-014 FIX: guard Supabase env vars before use — non-null assertions
-  // would throw a runtime TypeError if misconfigured, swallowed by the catch block.
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   if (!supabaseUrl || !supabaseServiceKey) {
