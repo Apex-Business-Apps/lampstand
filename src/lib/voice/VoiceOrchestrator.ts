@@ -13,7 +13,6 @@ export class VoiceOrchestrator {
   }
 
   async startListening(onResult: (text: string) => void, onError: (err: string) => void) {
-    // F-001 FIX: read voiceOutput from the canonical consent object (key: "lampstand_consent")
     if (!getConsentState().voiceOutput) {
       onError("Voice access is disabled in settings.");
       return;
@@ -38,7 +37,6 @@ export class VoiceOrchestrator {
   }
 
   speak(text: string, rate?: number) {
-    // F-001 FIX: canonical consent check
     if (!getConsentState().voiceOutput) return;
     this.isSpeaking = true;
     this.tts.speak(text, rate);
