@@ -354,11 +354,6 @@ export class LocalAIAdapter implements IAIAdapter {
     return classifyConcernV2(input);
   }
 
-  // FIX: validateSafety was previously dead code (always returned { safe: true }).
-  // ROOT CAUSE: The method was never wired to the actual checkInputSafety implementation.
-  // CHANGE: Delegates to checkInputSafety from safety.ts - the single source of truth
-  //         for all input safety decisions. The IAIAdapter contract is now honored.
-  // REGRESSION TEST: validateSafety must return safe=false for injection patterns.
   async validateSafety(input: string): Promise<{ safe: boolean; reason?: string }> {
     const result = checkInputSafety(input);
     if (!result.safe) {
