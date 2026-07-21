@@ -257,6 +257,86 @@ export const SEED_PASSAGES: ScripturePassage[] = [
     id: 'rev-3-20', book: 'Revelation', chapter: 3, verseStart: 20, verseEnd: 20,
     text: '"Behold, I stand at the door and knock. If anyone hears my voice and opens the door, I will come in to him and eat with him, and he with me."', translation: 'ESV', reference: 'Revelation 3:20',
   },
+  {
+    id: 'psalm-130-1-2', book: 'Psalms', chapter: 130, verseStart: 1, verseEnd: 2,
+    text: '"Out of the depths I cry to you, O LORD! O Lord, hear my voice! Let your ears be attentive to the voice of my pleas for mercy!"', translation: 'ESV', reference: 'Psalm 130:1-2',
+  },
+  {
+    id: 'isa-43-1-2', book: 'Isaiah', chapter: 43, verseStart: 1, verseEnd: 2,
+    text: '"Fear not, for I have redeemed you; I have called you by name, you are mine. When you pass through the waters, I will be with you; and through the rivers, they shall not overwhelm you; when you walk through fire you shall not be burned, and the flame shall not consume you."', translation: 'ESV', reference: 'Isaiah 43:1-2',
+  },
+  {
+    id: 'lam-3-19-21', book: 'Lamentations', chapter: 3, verseStart: 19, verseEnd: 21,
+    text: '"Remember my affliction and my wanderings, the wormwood and the gall! My soul continually remembers it and is bowed down within me. But this I call to mind, and therefore I have hope:"', translation: 'ESV', reference: 'Lamentations 3:19-21',
+  },
+  {
+    id: 'psalm-51-17', book: 'Psalms', chapter: 51, verseStart: 17, verseEnd: 17,
+    text: '"The sacrifices of God are a broken spirit; a broken and contrite heart, O God, you will not despise."', translation: 'ESV', reference: 'Psalm 51:17',
+  },
+  {
+    id: '2-cor-4-7-9', book: '2 Corinthians', chapter: 4, verseStart: 7, verseEnd: 9,
+    text: '"But we have this treasure in jars of clay, to show that the surpassing power belongs to God and not to us. We are afflicted in every way, but not crushed; perplexed, but not driven to despair; persecuted, but not forsaken; struck down, but not destroyed;"', translation: 'ESV', reference: '2 Corinthians 4:7-9',
+  },
+  {
+    id: 'mark-4-39-40', book: 'Mark', chapter: 4, verseStart: 39, verseEnd: 40,
+    text: '"And he awoke and rebuked the wind and said to the sea, \'Peace! Be still!\' And the wind ceased, and there was a great calm. He said to them, \'Why are you so afraid? Have you still no faith?\'"', translation: 'ESV', reference: 'Mark 4:39-40',
+  },
+  {
+    id: 'john-13-7', book: 'John', chapter: 13, verseStart: 7, verseEnd: 7,
+    text: '"Jesus answered him, \'What I am doing you do not understand now, but afterward you will understand.\'"', translation: 'ESV', reference: 'John 13:7',
+  },
+  {
+    id: 'rom-8-26', book: 'Romans', chapter: 8, verseStart: 26, verseEnd: 26,
+    text: '"Likewise the Spirit helps us in our weakness. For we do not know what to pray for as we ought, but the Spirit himself intercedes for us with groanings too deep for words."', translation: 'ESV', reference: 'Romans 8:26',
+  },
+  {
+    id: 'job-13-15', book: 'Job', chapter: 13, verseStart: 15, verseEnd: 15,
+    text: '"Though he slay me, I will hope in him; yet I will argue my ways to his face."', translation: 'ESV', reference: 'Job 13:15',
+  },
+  {
+    id: 'psalm-88-18', book: 'Psalms', chapter: 88, verseStart: 18, verseEnd: 18,
+    text: '"You have caused my beloved and my friend to shun me; my companions have become darkness."', translation: 'ESV', reference: 'Psalm 88:18',
+  },
+  {
+    id: 'matt-26-39', book: 'Matthew', chapter: 26, verseStart: 39, verseEnd: 39,
+    text: '"And going a little farther he fell on his face and prayed, saying, \'My Father, if it be possible, let this cup pass from me; nevertheless, not as I will, but as you will.\'"', translation: 'ESV', reference: 'Matthew 26:39',
+  },
+  {
+    id: 'john-20-27-28', book: 'John', chapter: 20, verseStart: 27, verseEnd: 28,
+    text: '"Then he said to Thomas, \'Put your finger here, and see my hands; and put out your hand, and place it in my side. Do not disbelieve, but believe.\' Thomas answered him, \'My Lord and my God!\'"', translation: 'ESV', reference: 'John 20:27-28',
+  },
+  {
+    id: 'luke-22-31-32', book: 'Luke', chapter: 22, verseStart: 31, verseEnd: 32,
+    text: '"Simon, Simon, behold, Satan demanded to have you, that he might sift you like wheat, but I have prayed for you that your faith may not fail. And when you have turned again, strengthen your brothers."', translation: 'ESV', reference: 'Luke 22:31-32',
+  },
+  {
+    id: 'psalm-27-13-14', book: 'Psalms', chapter: 27, verseStart: 13, verseEnd: 14,
+    text: '"I believe that I shall look upon the goodness of the LORD in the land of the living! Wait for the LORD; be strong, and let your heart take courage; wait for the LORD!"', translation: 'ESV', reference: 'Psalm 27:13-14',
+  },
+  {
+    id: 'isa-54-10', book: 'Isaiah', chapter: 54, verseStart: 10, verseEnd: 10,
+    text: '"For the mountains may depart and the hills be removed, but my steadfast love shall not depart from you, and my covenant of peace shall not be removed, says the LORD, who has compassion on you."', translation: 'ESV', reference: 'Isaiah 54:10',
+  },
+  {
+    id: '1-kings-19-4', book: '1 Kings', chapter: 19, verseStart: 4, verseEnd: 4,
+    text: '"But he himself went a day\'s journey into the wilderness and came and sat down under a broom tree. And he asked that he might die, saying, \'It is enough; now, O LORD, take away my life, for I am no better than my fathers.\'"', translation: 'ESV', reference: '1 Kings 19:4',
+  },
+  {
+    id: 'psalm-139-11-12', book: 'Psalms', chapter: 139, verseStart: 11, verseEnd: 12,
+    text: '"If I say, \'Surely the darkness shall cover me, and the light about me be night,\' even the darkness is not dark to you; the night is bright as the day, for darkness is as light with you."', translation: 'ESV', reference: 'Psalm 139:11-12',
+  },
+  {
+    id: 'rom-5-3-5', book: 'Romans', chapter: 5, verseStart: 3, verseEnd: 5,
+    text: '"Not only that, but we rejoice in our sufferings, knowing that suffering produces endurance, and endurance produces character, and character produces hope, and hope does not put us to shame..."', translation: 'ESV', reference: 'Romans 5:3-5',
+  },
+  {
+    id: 'heb-11-1', book: 'Hebrews', chapter: 11, verseStart: 1, verseEnd: 1,
+    text: '"Now faith is the assurance of things hoped for, the conviction of things not seen."', translation: 'ESV', reference: 'Hebrews 11:1',
+  },
+  {
+    id: '2-cor-1-8-9', book: '2 Corinthians', chapter: 1, verseStart: 8, verseEnd: 9,
+    text: '"For we do not want you to be unaware, brothers, of the affliction we experienced in Asia. For we were so utterly burdened beyond our strength that we despaired of life itself. Indeed, we felt that we had received the sentence of death. But that was to make us rely not on ourselves but on God who raises the dead."', translation: 'ESV', reference: '2 Corinthians 1:8-9',
+  },
 ];
 
 export const SEED_SERMONS: Sermon[] = [
@@ -379,6 +459,126 @@ export const SEED_DAILY_LIGHTS: DailyLight[] = [
     passage: SEED_PASSAGES[0], // John 14:27
     reflection: "Peace isn't the absence of noise - it's a presence that holds you in the middle of it. Today, you're invited to receive a peace that doesn't depend on everything being okay. It simply is, and it's offered freely.",
     prayer: "Jesus, let your peace settle over me like morning light. Not because everything is resolved, but because you are here. Amen.",
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-0',
+    date: new Date(Date.now() - 0).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'psalm-130-1-2')!,
+    reflection: 'We often feel that our prayers are invalid if we are depressed, failing, or overwhelmed. We think we need to clean ourselves up before God will listen. This text shatters that requirement. If you are in the depths today, do not waste your energy trying to pretend you are standing on solid ground. Let your plea for mercy be honest. The God of the heights is listening to the depths.',
+    prayer: 'Lord, I am crying out to you from the depths. I cannot pull myself out. Hear my voice. Let your ears be attentive to my plea for mercy today. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-1',
+    date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'isa-43-1-2')!,
+    reflection: 'When disaster strikes, our first conclusion is often that God has abandoned us, because we equate His love with a comfortable life. Isaiah redefines safety. True safety is not the absence of the flood; it is the presence of God in the flood. The invitation today is to stop demanding a life without fire, and to lean entirely on the One who promises to walk through it with you.',
+    prayer: 'Father, I am terrified of the waters and the fire in front of me. Anchor my soul in your promise. Remind me that I belong to you, and that you are with me in the flood. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-2',
+    date: new Date(Date.now() - 172800000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'lam-3-19-21')!,
+    reflection: 'Trauma has a way of hijacking our memory, forcing us to replay our worst moments until they feel like our only reality. Jeremiah offers a survival tactic. When the bitter memories threaten to pull you under, you must actively call to mind the character of God. The practice today is to intercept your spiraling thoughts with deliberate, stubborn remembrance of grace.',
+    prayer: 'Lord, my mind is bowing down under the weight of bitter memories. Give me the strength to forcefully call your faithfulness to mind. Let my hope be anchored in your character. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-3',
+    date: new Date(Date.now() - 259200000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'psalm-51-17')!,
+    reflection: 'When we fail, our instinct is to manage our image, make excuses, or try to balance the scales with good deeds. David stops the cover-up. The most liberating thing you can do when you are crushed by your own failure is to hand the broken pieces directly to God without a PR spin. He does not despise the broken; He heals them.',
+    prayer: 'God, I have nothing impressive to offer you today. I bring you the only acceptable sacrifice: a broken and contrite heart. Do not despise my failure. Heal me. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-4',
+    date: new Date(Date.now() - 345600000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === '2-cor-4-7-9')!,
+    reflection: 'We spend our lives trying to pretend we are titanium vaults, hiding our cracks and our weariness. Paul says the cracks are precisely where the light gets out. You do not have to be unbreakable to carry the glory of God. If you feel like a fragile, crumbling jar of clay today, you are the exact vessel God designed to demonstrate His surviving power.',
+    prayer: 'Lord, I feel fragile and easily broken. Forgive my desperate attempts to look strong. Let my cracks display your surpassing power. Hold me together today. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-5',
+    date: new Date(Date.now() - 432000000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'mark-4-39-40')!,
+    reflection: 'We often interpret God\'s silence during our crises as abandonment. We want Him to wake up and panic with us. But His calm is evidence of His control. The storm in your life is terrifying to you, but it is entirely subject to His voice. The invitation today is to stop demanding that God panic, and instead, rest in the boat with Him.',
+    prayer: 'Jesus, the storm around me is loud, and I am terrified that you are asleep. Rebuke the chaos. Give me the faith to trust that a life anchored to you cannot sink. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-6',
+    date: new Date(Date.now() - 518400000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'john-13-7')!,
+    reflection: 'We are obsessed with the \'why\' of our circumstances. We feel entitled to an explanation before we submit to the process. Jesus asks for the exact opposite. He is doing something in your life right now that makes no sense to you. The challenge is to let Him wash your feet—to let Him work—without demanding the blueprint first. The understanding will come later.',
+    prayer: 'Lord, I am deeply confused by what you are allowing in my life right now. I surrender my demand for an immediate explanation. Help me to trust what you are doing in the dark. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-7',
+    date: new Date(Date.now() - 604800000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'rom-8-26')!,
+    reflection: 'If you are too exhausted, too grieving, or too confused to pray today, do not add guilt to your burden. You do not need to construct a coherent theological argument to get God\'s attention. Your silence and your tears are already being translated by the Spirit. Rest in the profound comfort that you are being prayed for, even when you cannot pray.',
+    prayer: 'Holy Spirit, I have no words left. I do not know what to ask for. Take my confusion and my groaning, and intercede for me according to the will of God. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-8',
+    date: new Date(Date.now() - 691200000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'job-13-15')!,
+    reflection: 'Faith is often presented as a serene, untroubled disposition. Job proves that true faith can look like a furious, heartbroken argument with the Almighty. You are allowed to be angry. You are allowed to demand answers. But true faith takes its argument directly to God, refusing to walk away. The practice today is to stay in the room with God, even if all you have is tears and questions.',
+    prayer: 'Lord, my life feels like a paradox, and I am struggling to understand your hand in my pain. Though I am crushed, give me the fierce grace to keep hoping in you. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-9',
+    date: new Date(Date.now() - 777600000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'psalm-88-18')!,
+    reflection: 'If you are in a season of darkness that refuses to lift, the church often makes you feel like a spiritual failure for not \'getting over it.\' Psalm 88 is your defense attorney. You do not have to fake a breakthrough. The fact that you are still crying out to God, even when the only answer is darkness, is an act of profound, stubborn faith.',
+    prayer: 'God, the darkness feels absolute, and the isolation is heavy. I have no praise left to offer today. Accept my raw lament as my prayer. Sit with me in the dark. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-10',
+    date: new Date(Date.now() - 864000000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'matt-26-39')!,
+    reflection: 'We are often taught that if we just have enough faith, God will give us what we want. Gethsemane shatters that theology. Sometimes, the cup does not pass. True faith is not the ability to command God to change our circumstances; it is the agonizing, beautiful surrender to His ultimate purpose, even when it costs us everything.',
+    prayer: 'Father, I am begging for this cup of suffering to pass from me. But if it cannot, give me the strength of Christ to say: nevertheless, not my will, but yours be done. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-11',
+    date: new Date(Date.now() - 950400000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'john-20-27-28')!,
+    reflection: 'We often feel shame over our doubts, believing that God is disgusted by our need for proof. This passage reveals a Savior who moves toward the skeptic. Furthermore, it reminds us that our God knows what it is to be wounded. If you are struggling to believe today, you don\'t need a philosophical argument; you need to look at the scars of the God who suffered for you.',
+    prayer: 'Jesus, I am struggling with doubt and I need reassurance. Thank you that you do not despise my questions. Let me see your scars, and let my doubt turn into worship. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-12',
+    date: new Date(Date.now() - 1036800000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'luke-22-31-32')!,
+    reflection: 'When we undergo intense spiritual or emotional sifting, we assume we are outside of God\'s protection. But the sifting is often permitted to destroy our deadly self-reliance. Your security does not rest on your flawless performance; it rests on the fact that the Son of God is actively praying for you right now. Your failure will not be fatal.',
+    prayer: 'Lord, the sifting is intense, and my courage is failing. I take refuge in the fact that you are praying for me. Hold my faith together when I cannot hold it myself. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-13',
+    date: new Date(Date.now() - 1123200000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'psalm-27-13-14')!,
+    reflection: 'We are a culture that demands immediate resolution. When God delays, we assume He is denying. David challenges us to an active, courageous waiting. The command to \'let your heart take courage\' implies that courage is a choice you make while waiting in the dark. Do not abandon your post today. The goodness of God is coming.',
+    prayer: 'God, I am exhausted from waiting, and I am tempted to take control of the situation. Give my heart the courage to stay at my post. Let me see your goodness in the land of the living. Amen.',
+    theme: 'peace',
+  },
+  {
+    id: 'daily-new-14',
+    date: new Date(Date.now() - 1209600000).toISOString().split('T')[0],
+    passage: SEED_PASSAGES.find(p => p.id === 'isa-54-10')!,
+    reflection: 'When the structures of our lives—our health, our careers, our relationships—begin to shake and crumble, we feel like we are in freefall. Isaiah offers a tether. The things you thought were permanent may depart, but the steadfast love of God will not. If your mountains are shaking today, shift your weight onto the only promise that survives the earthquake.',
+    prayer: 'Father, the foundations of my life feel like they are shaking, and I am terrified. Anchor my soul to your covenant of peace. Remind me that your steadfast love outlasts the mountains. Amen.',
     theme: 'peace',
   },
 ];
