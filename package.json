@@ -71,7 +71,7 @@
     "react-hook-form": "^7.61.1",
     "react-markdown": "^9.0.0",
     "react-resizable-panels": "^2.1.9",
-    "react-router-dom": "^6.30.4",
+    "react-router-dom": "^7.18.2",
     "recharts": "^2.15.4",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",
@@ -112,6 +112,7 @@
   "overrides": {
     "ws": "^8.21.0",
     "adm-zip": "^0.6.0",
-    "tar": "^7.5.20"
+    "tar": "^7.5.20",
+    "sharp": "^0.35.3"
   }
 }
