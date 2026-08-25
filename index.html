@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TheLampStand</title>
-    <meta name="description" content="LampStand is a Bible companion app with daily reflections, pastoral guidance, sermon mode, prayer, and a warm conversational AI agent.">
-    <meta name="author" content="Apex Business Apps" />
+    <title>LampStand — Free Daily Bible Companion & AI Pastoral Guidance</title>
+    <meta name="description" content="LampStand is a free, privacy-first Bible companion with daily scripture reflections, homiletic sermons, lectio divina, and contemplative pastoral AI guidance. 100% offline-capable.">
+    <meta name="keywords" content="Bible companion, daily scripture reflection, pastoral AI guidance, sermon mode, lectio divina app, Christian meditation, offline bible app, Catholic scripture companion, prayer journal, daily examen">
+    <meta name="author" content="APEX Business Systems Ltd." />
     <link rel="canonical" href="https://thelampstand.icu/" />
     <meta name="theme-color" content="#D97736" />
     <link rel="dns-prefetch" href="%VITE_SUPABASE_URL%" />
@@ -24,46 +25,146 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/ios/Icon-180.png" />
     <link rel="manifest" href="/manifest.json" />
 
+    <!-- Open Graph / Social Sharing -->
     <meta property="og:type" content="website" />
-    
-    
+    <meta property="og:site_name" content="LampStand" />
+    <meta property="og:title" content="LampStand — Free Daily Bible Companion & AI Pastoral Guidance" />
+    <meta property="og:description" content="A quiet, private companion for daily scripture, homiletic sermons, lectio divina, and warm pastoral AI conversation. Free forever, no ads, no telemetry." />
     <meta property="og:url" content="https://thelampstand.icu/" />
     <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/egqlfens9WdnayHgiABuCHj0EG22/social-images/social-1781659412969-social.webp">
+    <meta property="og:image:alt" content="LampStand - Walk with the Light" />
 
+    <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
-    
-    
+    <meta name="twitter:site" content="@ApexBusinessSys" />
+    <meta name="twitter:creator" content="@ApexBusinessSys" />
+    <meta name="twitter:title" content="LampStand — Free Daily Bible Companion & AI Pastoral Guidance" />
+    <meta name="twitter:description" content="A quiet, private companion for daily scripture, homiletic sermons, lectio divina, and warm pastoral AI conversation. Free forever, no ads, no telemetry." />
     <meta name="twitter:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/egqlfens9WdnayHgiABuCHj0EG22/social-images/social-1781659412969-social.webp">
 
+    <!-- Structured Data (Schema.org Graph for SEO & Generative Engine Optimization) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "LampStand",
-      "description": "A Bible companion app with daily reflections, pastoral guidance, and a warm conversational AI agent.",
-      "url": "https://thelampstand.icu",
-      "applicationCategory": "ReligiousApp",
-      "operatingSystem": "Web",
-      "browserRequirements": "Requires JavaScript",
-      "softwareVersion": "2.1.0",
-      "isAccessibleForFree": true,
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-      },
-      "creator": {
-        "@type": "Organization",
-        "name": "Apex Business Apps",
-        "url": "https://thelampstand.icu"
-      },
-      "featureList": "Daily Scripture Reflections, AI Pastoral Guidance, Sermon Mode, Prayer Companion, Voice Interaction, Kids Mode, Journal"
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://thelampstand.icu/#website",
+          "url": "https://thelampstand.icu",
+          "name": "LampStand",
+          "description": "Free offline-first Bible companion with daily scripture reflections, sermon mode, and pastoral AI guidance.",
+          "publisher": {
+            "@id": "https://thelampstand.icu/#organization"
+          },
+          "inLanguage": "en-US"
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://thelampstand.icu/#organization",
+          "name": "APEX Business Systems Ltd.",
+          "url": "https://thelampstand.icu",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://thelampstand.icu/icons/icon-512.png"
+          },
+          "sameAs": [
+            "https://github.com/Apex-Business-Apps/lampstand",
+            "https://twitter.com/ApexBusinessSys"
+          ],
+          "knowsAbout": [
+            "Bible Study",
+            "Pastoral Care",
+            "Contemplative Prayer",
+            "Lectio Divina",
+            "Christian Theology",
+            "Spiritual Direction"
+          ]
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://thelampstand.icu/#app",
+          "name": "LampStand",
+          "url": "https://thelampstand.icu",
+          "applicationCategory": "LifestyleApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript",
+          "softwareVersion": "2.1.0",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "creator": {
+            "@id": "https://thelampstand.icu/#organization"
+          },
+          "featureList": [
+            "Daily Scripture Reflections (Daily Light)",
+            "AI Pastoral Guidance (Burning Bush Agent)",
+            "Homiletic Sermon Meditations",
+            "Benedictine Lectio Divina",
+            "Ignatian Daily Examen",
+            "Local-First Private Spiritual Journal",
+            "Voice Guidance & Contemplative Audio"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://thelampstand.icu/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is LampStand?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "LampStand is a private, free-forever Bible companion and pastoral AI application. It provides daily scripture reflections (Daily Light), structured homiletic teachings (Sermon Mode), contemplative prayer practices (Lectio Divina and Daily Examen), and a warm conversational pastoral AI agent (the Burning Bush Agent)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is LampStand completely free with no ads or subscriptions?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. LampStand is 100% free forever under a strict non-monetization Mission Lock. There are zero advertisements, zero paywalls, zero in-app purchases, and zero paid tiers."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How does the Burning Bush AI agent provide pastoral guidance?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The Burning Bush Agent operates from a theology of the cross, providing quiet, grounded reflection rather than superficial advice. It retrieves relevant scripture passages on-device, incorporates local resonance signals, strictly prevents generic AI filler, and never asks users for personal identifying information."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does LampStand work offline without an internet connection?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. LampStand is built local-first. All canonical scripture passages, Daily Light reflections, homiletic sermons, and contemplative prayer guides are bundled on-device and function fully offline."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How does LampStand protect my privacy and spiritual reflections?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "All journals, prayers, reflections, and personalization data are stored locally in your browser or device storage. LampStand collects zero personal identifying information (PII) and includes zero advertising trackers or surveillance telemetry."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Which Bible translations and contemplative traditions are supported?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "LampStand draws from canonical translations including the NABRE, ESV, and NIV, and embraces rich historical contemplative traditions including Benedictine Lectio Divina, Ignatian Examen, and classical homiletics."
+              }
+            }
+          ]
+        }
+      ]
     }
     </script>
-    <meta property="og:title" content="TheLampStand">
-  <meta name="twitter:title" content="TheLampStand">
-  <meta property="og:description" content="LampStand is a Bible companion app with daily reflections, pastoral guidance, sermon mode, prayer, and a warm conversational AI agent.">
-  <meta name="twitter:description" content="LampStand is a Bible companion app with daily reflections, pastoral guidance, sermon mode, prayer, and a warm conversational AI agent.">
 </head>
   <body>
     <!-- Inline critical CSS: prevents body/root CLS before React hydrates -->

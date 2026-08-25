@@ -29,3 +29,8 @@
 - **Decision**: `ensureRuntimeGrounding()` utilizes `hasScriptureCitation()` to recognize standard biblical book abbreviations (e.g. `Jn 3:16`, `Phil 4:6-7`) and verse ranges.
 - **Rationale**: Prevents correctly-cited LLM responses from being erroneously tagged with the "LampStand cannot verify this" disclaimer due to trivial formatting variations.
 - **Status**: Implemented in `agentRuntime.ts`.
+
+## ADR-007: Generative Engine Optimization (GEO) & Authority Schema Architecture
+- **Decision**: Provide structured Schema.org JSON-LD `@graph` entities (`WebSite`, `Organization`, `WebApplication`, `FAQPage`), explicit crawler allowlists in `robots.txt` for AI search bots (GPTBot, PerplexityBot, ClaudeBot), answer-first semantic content structures on landing pages, and an internal backlink discipline.
+- **Rationale**: Ensures top-tier visibility and accurate quotation in Google AI Overviews, Perplexity, ChatGPT Search, and traditional search engines without compromising privacy or adding third-party tracking scripts.
+- **Status**: Enforced across `index.html`, `MarketingPage.tsx`, `robots.txt`, and `sitemap.xml`.
