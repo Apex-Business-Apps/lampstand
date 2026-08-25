@@ -1,6 +1,15 @@
-import React from "react";
-import { ArrowRight, Flame, HeartHandshake, PlayCircle, Sun } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  ArrowRight,
+  BookOpen,
+  ExternalLink,
+  Flame,
+  HeartHandshake,
+  HelpCircle,
+  PlayCircle,
+  ShieldCheck,
+  Sparkles,
+  Sun,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import CandleRevealCanvas from "@/components/CandleRevealCanvas";
@@ -264,6 +273,20 @@ export default function MarketingPage() {
           ⚠️  MUST stay at z-[200] or higher. Lowering below z-100 hides
           these sections permanently behind the obsidian mask. */}
       <section className="relative z-[200] mx-auto mt-[100vh] max-w-6xl px-6 py-24 sm:px-10 lg:px-16">
+        {/* GEO & AI Search Answer-First Definition Block */}
+        <div className="mb-16 rounded-3xl border border-primary/20 bg-card/90 p-8 sm:p-12 shadow-2xl backdrop-blur">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+            <Sparkles className="h-3.5 w-3.5" />
+            <span>Spiritual Technology for Contemplative Life</span>
+          </div>
+          <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-4xl text-foreground">
+            What is LampStand?
+          </h2>
+          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <strong>LampStand</strong> is a private, free-forever Bible companion and pastoral AI application developed by APEX Business Systems Ltd. It delivers grounded daily scripture reflections, homiletic sermon meditations, and contemplative spiritual guidance using offline-capable local intelligence and privacy-first design.
+          </p>
+        </div>
+
         <div className="grid gap-6 md:grid-cols-3">
           {highlights.map((item, index) => (
             <article
@@ -282,7 +305,44 @@ export default function MarketingPage() {
           ))}
         </div>
 
-        <section className="mt-32 rounded-3xl border border-border/70 bg-card/75 p-10 sm:p-16">
+        {/* Feature Hub & Internal Backlinks */}
+        <section className="mt-28 rounded-3xl border border-border/70 bg-card/75 p-10 sm:p-14">
+          <div className="mb-8 flex items-center gap-3">
+            <BookOpen className="h-7 w-7 text-primary" />
+            <h3 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+              Spiritual Disciplines & Tools
+            </h3>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <Link to="/daily" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+              <h4 className="font-semibold text-foreground">Daily Light & Reflections</h4>
+              <p className="mt-1.5 text-xs text-muted-foreground">Fresh daily scripture readings and focused morning prayers.</p>
+            </Link>
+            <Link to="/guidance" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+              <h4 className="font-semibold text-foreground">Pastoral AI Guidance</h4>
+              <p className="mt-1.5 text-xs text-muted-foreground">The Burning Bush companion for prayerful discernment.</p>
+            </Link>
+            <Link to="/sermon" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+              <h4 className="font-semibold text-foreground">Homiletic Sermon Mode</h4>
+              <p className="mt-1.5 text-xs text-muted-foreground">Structured theological expositions for study and meditation.</p>
+            </Link>
+            <Link to="/lectio" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+              <h4 className="font-semibold text-foreground">Lectio Divina</h4>
+              <p className="mt-1.5 text-xs text-muted-foreground">The four classic monastic stages of divine reading and prayer.</p>
+            </Link>
+            <Link to="/examen" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+              <h4 className="font-semibold text-foreground">Ignatian Daily Examen</h4>
+              <p className="mt-1.5 text-xs text-muted-foreground">Evening prayerful review to discern God's presence in daily life.</p>
+            </Link>
+            <Link to="/journal" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+              <h4 className="font-semibold text-foreground">Encrypted Local Journal</h4>
+              <p className="mt-1.5 text-xs text-muted-foreground">Private spiritual notebook with on-device resonance tracking.</p>
+            </Link>
+          </div>
+        </section>
+
+        {/* How LampStand Creates Momentum */}
+        <section className="mt-28 rounded-3xl border border-border/70 bg-card/75 p-10 sm:p-16">
           <div className="mb-12 flex items-center gap-4">
             <Flame className="h-8 w-8 text-primary" />
             <h3 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -306,16 +366,108 @@ export default function MarketingPage() {
           </div>
         </section>
 
+        {/* Theological Foundations & Authority Links */}
+        <section className="mt-28 rounded-3xl border border-border/70 bg-card/75 p-10 sm:p-14">
+          <div className="mb-6 flex items-center gap-3">
+            <ShieldCheck className="h-7 w-7 text-primary" />
+            <h3 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
+              Biblical Foundations & Theological Integrity
+            </h3>
+          </div>
+          <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
+            LampStand adheres to classical orthodox theology, drawing from canonical translations and historical Christian contemplative traditions. It uses strict on-device grounding rules to eliminate superficial answers and prevent hallucinations.
+          </p>
+          <div className="mt-6 flex flex-wrap gap-4 text-xs font-medium text-muted-foreground">
+            <a
+              href="https://bible.usccb.org/bible"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border/80 bg-background/80 px-3 py-2 text-foreground hover:border-primary/50"
+            >
+              <span>NABRE Bible (USCCB)</span>
+              <ExternalLink className="h-3.5 w-3.5 text-primary" />
+            </a>
+            <a
+              href="https://www.newadvent.org/fathers/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border/80 bg-background/80 px-3 py-2 text-foreground hover:border-primary/50"
+            >
+              <span>Early Church Fathers</span>
+              <ExternalLink className="h-3.5 w-3.5 text-primary" />
+            </a>
+            <a
+              href="https://github.com/Apex-Business-Apps/lampstand"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border/80 bg-background/80 px-3 py-2 text-foreground hover:border-primary/50"
+            >
+              <span>Open Source on GitHub</span>
+              <ExternalLink className="h-3.5 w-3.5 text-primary" />
+            </a>
+          </div>
+        </section>
+
+        {/* Semantic FAQ Section for AI Search & Rich Results */}
+        <section className="mt-28 rounded-3xl border border-border/70 bg-card/75 p-10 sm:p-16">
+          <div className="mb-10 flex items-center gap-3">
+            <HelpCircle className="h-7 w-7 text-primary" />
+            <h3 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+              Frequently Asked Questions
+            </h3>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-border/80 bg-background/70 p-6">
+              <h4 className="font-display text-lg font-semibold text-foreground">
+                Is LampStand completely free?
+              </h4>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Yes. LampStand is free forever with zero ads, zero paywalls, zero in-app purchases, and no subscription tiers. It operates under a permanent non-monetization Mission Lock.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border/80 bg-background/70 p-6">
+              <h4 className="font-display text-lg font-semibold text-foreground">
+                How does the pastoral AI agent work?
+              </h4>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                The Burning Bush Agent operates from a theology of the cross, providing quiet, scripturally grounded reflection. It retrieves relevant scripture passages on-device, incorporates local resonance signals, and strictly prohibits generic AI filler.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border/80 bg-background/70 p-6">
+              <h4 className="font-display text-lg font-semibold text-foreground">
+                Does LampStand work offline?
+              </h4>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Yes. LampStand is built local-first. All canonical scripture passages, Daily Light reflections, homiletic sermons, and contemplative prayer guides are bundled on-device and function without internet.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-border/80 bg-background/70 p-6">
+              <h4 className="font-display text-lg font-semibold text-foreground">
+                How is my spiritual privacy protected?
+              </h4>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                All journal entries, prayers, reflections, and personalization data are stored locally in your device storage. LampStand collects zero PII and includes zero advertising trackers or surveillance telemetry.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <footer className="mt-32 border-t border-border/50 pt-10 text-center text-xs text-muted-foreground">
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <Link to="/install" className="hover:text-foreground">Install App</Link>
+            <span>·</span>
             <Link to="/legal/privacy" className="hover:text-foreground">Privacy</Link>
             <span>·</span>
             <Link to="/legal/terms" className="hover:text-foreground">Terms</Link>
             <span>·</span>
             <Link to="/legal/disclaimer" className="hover:text-foreground">AI Disclaimer</Link>
+            <span>·</span>
+            <Link to="/legal/acceptable-use" className="hover:text-foreground">Acceptable Use</Link>
+            <span>·</span>
+            <Link to="/legal/company" className="hover:text-foreground">About APEX</Link>
           </div>
-          <p className="mt-2 text-[11px] uppercase tracking-[0.12em] text-muted-foreground/90">
-            APEX Business Systems Ltd. · Edmonton, AB Canada
+          <p className="mt-3 text-[11px] uppercase tracking-[0.12em] text-muted-foreground/90">
+            APEX Business Systems Ltd. · Edmonton, AB Canada · © 2026 All rights reserved
           </p>
         </footer>
       </section>

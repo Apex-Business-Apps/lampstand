@@ -1,7 +1,13 @@
+# https://www.robotstxt.org/robotstxt.html
+# Search engine & AI crawler permissions for LampStand (https://thelampstand.icu)
+
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
 Allow: /
 
 User-agent: Twitterbot
@@ -10,7 +16,23 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 User-agent: *
 Allow: /
+Disallow: /admin
 
 Sitemap: https://thelampstand.icu/sitemap.xml
