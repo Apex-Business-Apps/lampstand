@@ -140,6 +140,35 @@ export class SpeechToTextAdapter {
   }
 }
 
+function updateMediaSession(title = 'Scripture Reflection') {
+  if (typeof navigator !== 'undefined' && 'mediaSession' in navigator && typeof MediaMetadata !== 'undefined') {
+    try {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title,
+        artist: 'The Lamp Stand',
+        album: 'Scripture Companion',
+        artwork: [
+          { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+        ],
+      });
+      navigator.mediaSession.playbackState = 'playing';
+    } catch {
+      // Ignored in unsupported or restricted environments
+    }
+  }
+}
+
+function clearMediaSession() {
+  if (typeof navigator !== 'undefined' && 'mediaSession' in navigator) {
+    try {
+      navigator.mediaSession.playbackState = 'none';
+    } catch {
+      // Ignored
+    }
+  }
+}
+
 export class TextToSpeechAdapter {
   private audio: HTMLAudioElement | null = null;
   private abortController: AbortController | null = null;
@@ -179,13 +208,18 @@ export class TextToSpeechAdapter {
         this.audio = new Audio(audioUrl);
         try { audioAnalyzer.attach(this.audio); } catch { /* no-op */ }
 
-        this.audio.onplay = () => this.onStateChange?.('speaking');
+        this.audio.onplay = () => {
+          updateMediaSession('Pastoral Reflection');
+          this.onStateChange?.('speaking');
+        };
         this.audio.onended = () => {
+          clearMediaSession();
           this.onStateChange?.('idle');
           URL.revokeObjectURL(audioUrl);
           onEnd?.();
         };
         this.audio.onerror = () => {
+          clearMediaSession();
           this.onStateChange?.('idle');
           URL.revokeObjectURL(audioUrl);
           this.browserSpeak(text, voicePref.speed, onEnd);
@@ -196,6 +230,7 @@ export class TextToSpeechAdapter {
     } catch (err) {
       // Silently fall through to browser TTS
       if ((err as Error)?.name === 'AbortError') {
+        clearMediaSession();
         this.onStateChange?.('idle');
         onEnd?.();
         return;
@@ -208,6 +243,7 @@ export class TextToSpeechAdapter {
 
   private browserSpeak(text: string, speed: number, onEnd?: () => void) {
     if (!('speechSynthesis' in window)) {
+      clearMediaSession();
       this.onStateChange?.('idle');
       onEnd?.();
       return;
@@ -217,9 +253,20 @@ export class TextToSpeechAdapter {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = speed;
     utterance.pitch = 0.9;
-    utterance.onstart = () => this.onStateChange?.('speaking');
-    utterance.onend = () => { this.onStateChange?.('idle'); onEnd?.(); };
-    utterance.onerror = () => { this.onStateChange?.('idle'); onEnd?.(); };
+    utterance.onstart = () => {
+      updateMediaSession('Pastoral Reflection');
+      this.onStateChange?.('speaking');
+    };
+    utterance.onend = () => {
+      clearMediaSession();
+      this.onStateChange?.('idle');
+      onEnd?.();
+    };
+    utterance.onerror = () => {
+      clearMediaSession();
+      this.onStateChange?.('idle');
+      onEnd?.();
+    };
     synth.speak(utterance);
   }
 
@@ -228,6 +275,7 @@ export class TextToSpeechAdapter {
   }
 
   stop() {
+    clearMediaSession();
     try { this.abortController?.abort(); } catch { /* noop */ }
     this.abortController = null;
     if (this.audio) {

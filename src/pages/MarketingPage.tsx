@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { getProfile, saveProfile, saveAuthState } from "@/lib/storage";
 import CandleRevealCanvas from "@/components/CandleRevealCanvas";
 import LampstandCanvas from "@/components/LampstandCanvas";
 import { ConsentModal } from "@/components/ConsentModal";
@@ -35,42 +36,6 @@ import { BrandAnthemPlayer } from "@/components/BrandAnthemPlayer";
  *  │  z-500  ConsentModal           ABOVE EVERYTHING (Dialog Portal→body) │
  *  │  z-500  BrandAnthemPlayer     TOPMOST — sticky bottom-left player   │
  *  └─────────────────────────────────────────────────────────────────────┘
- *
- *  ⚠️  INVARIANTS — never break these:
- *
- *  1. ONLY z-0 (bible page) and z-10 (cross) may live BELOW z-100.
- *     Every other UI component MUST be z-150 or higher.
- *
- *  2. CandleRevealCanvas is a SINGLETON fixed canvas at z-100.
- *     Do NOT add a second canvas, do NOT change its z-index.
- *     It draws the obsidian mask + cursor-tracked amber reveal every frame.
- *
- *  3. LampstandCanvas (z-150) has a dark radial contrast anchor behind it
- *     (position:absolute, inset:-15%, rgba(10,10,10,0.90) gradient, z:0).
- *     This prevents luma-key optical washout when the cursor reveal blob
- *     punches through the obsidian behind the lamp. Do NOT remove it.
- *
- *  4. The lamp wrapper uses style={{ top: "calc(42% - 38px)" }} (≈ 1 cm
- *     above viewport center) and marginLeft: "-4vw" to close the gap
- *     between hero text and lamp. Do NOT revert to top-1/2.
- *
- *  5. LampstandCanvas size is clamp(280px, 35vw, 500px) — width-relative,
- *     not height-relative. Do NOT switch back to vh-based sizing.
- *
- *  6. Below-the-fold <section> must stay at z-[200]. Lowering it below
- *     z-100 will hide the cards behind the obsidian mask permanently.
- *
- *  7. Header (wordmark + Log In) sits at top-4 / lg:top-6 — anchored near the
- *     top edge. Do NOT push it lower; do NOT cross the top edge (top < top-4).
- *     Wordmark height is h-[3.24rem] / sm:h-[3.78rem] (= the h-12/h-14 baseline
- *     scaled +8%). Keep the +8% ratio if rescaling; do NOT revert to h-12/h-14.
- *
- *  8. BrandAnthemPlayer sits at bottom-6 left-6 z-[500] — bottom-left corner,
- *     topmost layer (same tier as modals). ConsentModal overlay (later in DOM)
- *     covers it while consent is pending. Do NOT move right (conflicts with FAB).
- *     Audio stops on unmount; do NOT hoist this component above MarketingPage.
- *
- *  See /docs/LAYER_STACK.md for the authoritative z-index reference and layer invariants.
  * ════════════════════════════════════════════════════════════════════════════ */
 
 const highlights = [
@@ -98,25 +63,27 @@ const journey = [
   {
     step: "01",
     title: "Choose your tone",
-    description: "Set your spiritual voice once, then LampStand keeps every reflection consistent with it.",
+    description:
+      "Select contemplative, traditional, or plain-spoken. LampStand adapts to how you actually pray.",
   },
   {
     step: "02",
-    title: "Receive focused guidance",
-    description: "Ask one question, get scripture-first insight, prayer, and a practical next action.",
+    title: "Receive daily light",
+    description:
+      "Start each morning with an anchored passage, a focused reflection, and an open audio player.",
   },
   {
     step: "03",
-    title: "Build momentum",
-    description: "Save passages, keep a journal, and carry one clear thought through your day.",
+    title: "Seek when you need to",
+    description:
+      "Open the Burning Bush agent whenever you need pastoral clarity, study direction, or comfort in scripture.",
   },
 ];
 
 export default function MarketingPage() {
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
 
-  // Authenticated users bypass the marketing page and go straight to the app
-  const { user, loading } = useAuth();
   React.useEffect(() => {
     if (!loading && user) {
       navigate("/app", { replace: true });
@@ -130,6 +97,22 @@ export default function MarketingPage() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const handleStartGuest = (targetPath = "/app") => {
+    const existing = getProfile();
+    if (!existing) {
+      saveProfile({
+        id: crypto.randomUUID(),
+        name: "Seeker",
+        tone: "contemplative",
+        created_at: new Date().toISOString(),
+        privacyConsentGiven: true,
+        optionalCloudSync: false,
+      });
+      saveAuthState({ mode: "guest" });
+    }
+    navigate(targetPath);
+  };
 
   return (
     <div className="relative min-h-screen w-full bg-[#0a0a0a] text-foreground selection:bg-[#F2A649]/30">
@@ -161,9 +144,7 @@ export default function MarketingPage() {
       {/* ── z-100: CandleRevealCanvas — THE VEIL (singleton, do not duplicate) ── */}
       <CandleRevealCanvas />
 
-      {/* ── z-150: Lamp hero — ABOVE THE VEIL, always visible ──
-          Wrapper: top calc(42% - 38px) ≈ 1 cm above center, marginLeft -4vw closes gap.
-          Inner contrast anchor (z:0) prevents luma-key washout on hover. */}
+      {/* ── z-150: Lamp hero — ABOVE THE VEIL, always visible ── */}
       <div
         style={{ top: "calc(42% - 38px)" }}
         className={`pointer-events-none fixed right-0 z-[150] hidden h-screen w-1/2 -translate-y-1/2 items-center justify-center transition-opacity duration-500 lg:flex ${
@@ -171,7 +152,6 @@ export default function MarketingPage() {
         }`}
       >
         <div style={{ position: "relative", marginLeft: "-4vw" }}>
-          {/* Contrast anchor — keeps luma-key solid when candle blob reveals behind lamp */}
           <div
             aria-hidden="true"
             style={{
@@ -217,7 +197,7 @@ export default function MarketingPage() {
           heroVisible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
       >
-        <div className="flex w-full max-w-[420px] flex-col gap-5 px-6 text-center">
+        <div className="flex w-full max-w-[440px] flex-col gap-5 px-6 text-center">
           <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-[#D97736]/30 bg-[#0a0a0a]/80 px-4 py-1.5 backdrop-blur">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#F2A649] opacity-60" />
@@ -235,7 +215,7 @@ export default function MarketingPage() {
             </span>
           </h1>
 
-          <p className="mx-auto max-w-[300px] font-body text-base font-medium leading-relaxed text-[#a0a0a0] drop-shadow-md sm:text-[17px]">
+          <p className="mx-auto max-w-[320px] font-body text-base font-medium leading-relaxed text-[#a0a0a0] drop-shadow-md sm:text-[17px]">
             A quiet companion for daily scripture and warm pastoral conversation. No noise. Just the word.
           </p>
 
@@ -252,23 +232,16 @@ export default function MarketingPage() {
               size="lg"
               variant="outline"
               className="h-14 border-[hsl(var(--primary)/0.5)] bg-[#0a0a0a]/80 px-7 text-base text-[#d0d0d0] backdrop-blur hover:bg-[#D97736]/15 hover:text-white"
-              onClick={() => navigate("/onboarding")}
+              onClick={() => handleStartGuest("/app")}
             >
-              Try without signing up
+              Try in browser as guest
             </Button>
           </div>
         </div>
       </div>
 
-      {/* ── z-500: ConsentModal — TOPMOST LAYER (Dialog Portal renders to body)
-          Scoped here so it only fires when the user lands on the hero page.
-          z-[500] is enforced by DialogOverlay + DialogContent in ui/dialog.tsx. */}
       <ConsentModal />
 
-      {/* ── z-500: BrandAnthemPlayer — TOPMOST, sticky bottom-left.
-          Plays /brand-anthem.mp3 on landing; stops on unmount (page leave).
-          ConsentModal overlay (later in DOM, same z-[500]) covers it while
-          consent is pending — correct, intentional. */}
       <BrandAnthemPlayer />
 
       {/* ── z-200: Below-the-fold — ABOVE THE VEIL, always visible ──
