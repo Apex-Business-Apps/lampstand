@@ -29,3 +29,9 @@
 - **Root Cause**: `HAS_SCRIPTURE_CITATION_RE` lacked common biblical book abbreviations and verse ranges.
 - **Fix**: Added `hasScriptureCitation()` supporting 30+ canonical book abbreviations and dashed verse ranges.
 - **Regression Shield**: `src/test/runtime.test.ts` validates abbreviations across OT and NT.
+
+## 6. ReferenceError: useNavigate is not Defined on Landing Page (`MarketingPage.tsx`)
+- **Symptom**: Visitors landing on `thelampstand.icu/` immediately saw the React ErrorBoundary ("Something went wrong"). Hard resets temporarily disguised the error when service workers or browser cache served older bundles or routed elsewhere.
+- **Root Cause**: An icon import update in `src/pages/MarketingPage.tsx` accidentally replaced the line `import { Link, useNavigate } from "react-router-dom";` and `import React from "react";`.
+- **Fix**: Restored `import React from "react";` and `import { Link, useNavigate } from "react-router-dom";`.
+- **Regression Shield**: Added `src/pages/MarketingPage.test.tsx` which mounts `MarketingPage` within a React Router context and tests all navigation, hooks, and DOM nodes.
