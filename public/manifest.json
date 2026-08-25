@@ -8,6 +8,36 @@
   "theme_color": "#D97736",
   "orientation": "portrait-primary",
   "categories": ["lifestyle", "education"],
+  "shortcuts": [
+    {
+      "name": "Daily Light",
+      "short_name": "Daily Light",
+      "description": "Morning and evening Scripture reflections",
+      "url": "/daily",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Burning Bush Guidance",
+      "short_name": "Guidance",
+      "description": "Scripture-first pastoral reflection",
+      "url": "/guidance",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Lectio Divina",
+      "short_name": "Lectio",
+      "description": "Contemplative prayer discipline",
+      "url": "/lectio",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Spiritual Journal",
+      "short_name": "Journal",
+      "description": "Encrypted local prayer notes",
+      "url": "/journal",
+      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
   "icons": [
     {
       "src": "/icons/icon-192.png",

@@ -35,4 +35,15 @@ describe('PWA manifest', () => {
     expect(match, 'index.html is missing <meta name="theme-color">').toBeTruthy();
     expect(match![1]).toBe(manifest.theme_color);
   });
+
+  it('declares quick action shortcuts for Daily Light, Guidance, Lectio, and Journal', () => {
+    expect(manifest.shortcuts).toBeDefined();
+    expect(Array.isArray(manifest.shortcuts)).toBe(true);
+    expect(manifest.shortcuts.length).toBeGreaterThanOrEqual(4);
+    const urls = manifest.shortcuts.map((s: { url: string }) => s.url);
+    expect(urls).toContain('/daily');
+    expect(urls).toContain('/guidance');
+    expect(urls).toContain('/lectio');
+    expect(urls).toContain('/journal');
+  });
 });

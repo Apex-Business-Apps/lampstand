@@ -39,3 +39,8 @@
 - **Decision**: All crisis, sensitive counseling, and self-harm interventions are handled canonically by `Grounding.ts` (`getRequestGuardrail()`) at the entrance of the agent pipeline, rendering pastoral reflection with emergency contact notices and Scripture comfort. Redundant classification regexes in legacy modules are eliminated.
 - **Rationale**: Avoids ambiguous classification conflicts between generic abuse gates and specialized pastoral crisis intervention; verified via Playwright E2E tests against the real UI.
 - **Status**: Implemented in `Grounding.ts`, `safety.ts`, and `tests/e2e/guidance-safety.spec.ts`.
+
+## ADR-009: Responsive Desktop Sanctuary, 1-Click Web Guest Experience, and PWA Distribution Hooks
+- **Decision**: Elevate `AppShell` with a responsive side-rail navigation and expanded reading surface (`max-w-4xl`) on desktop viewports (≥768px). Provide an instant 1-click web guest mode on `MarketingPage` to eliminate browser onboarding friction. Register PWA quick action shortcuts in `manifest.json` and lock-screen `MediaSession` metadata during audio playback.
+- **Rationale**: Closes key market gaps against venture-backed competitors by providing a world-class desktop reading experience, zero-friction web discovery, and native distribution hooks while preserving 100% sovereign privacy.
+- **Status**: Implemented in `AppShell.tsx`, `MarketingPage.tsx`, `manifest.json`, and `voice.ts`.
