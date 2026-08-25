@@ -339,7 +339,26 @@ export interface RankedCandidate<T extends RankableCandidate> {
     novelty: number;
     care: number;
     prior: number;
+    continuity?: number;
   };
+}
+
+/**
+ * Calculate topic continuity weight (0..1) based on active themes in recent context.
+ * Pure on-device calculation without network calls.
+ */
+export function calculateTopicContinuity(
+  candidateTheme: string | undefined,
+  contextThemes: string[] = [],
+): number {
+  if (!candidateTheme || !contextThemes.length) return 0;
+  const normalizedCandidate = candidateTheme.toLowerCase().trim();
+  const matchIndex = contextThemes.findIndex(
+    (t) => t.toLowerCase().trim() === normalizedCandidate
+  );
+  if (matchIndex === -1) return 0;
+  // Weight higher for most recent context themes (e.g., 0.3 for first, decaying for subsequent)
+  return Math.max(0.05, 0.3 - matchIndex * 0.05);
 }
 
 /**
@@ -383,17 +402,20 @@ function scoreCandidate<T extends RankableCandidate>(
   // Axis 5 - caller-supplied prior (e.g. retrieval confidence)
   const prior = c.prior ?? 0.5;
 
+  // Axis 6 - topic continuity: slight weighting when matching recent active themes
+  const continuity = calculateTopicContinuity(theme, fp.recentThemes);
+
   // Confidence blending: when we don't have much signal yet, weight novelty
   // and prior more heavily so we don't over-personalize on thin data.
   const confidence = Math.min(1, fp.signalCount / 25);
   const personal = 0.4 * affinity + 0.3 * season + 0.3 * care;
   const generic = 0.6 * novelty + 0.4 * prior;
-  const score = confidence * personal + (1 - confidence) * generic + 0.2 * novelty;
+  const score = confidence * personal + (1 - confidence) * generic + 0.2 * novelty + 0.15 * continuity;
 
   return {
     candidate: c,
     score,
-    axes: { affinity, season, novelty, care, prior },
+    axes: { affinity, season, novelty, care, prior, continuity },
   };
 }
 

@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { RetrievalOrchestrator } from '../lib/agent/RetrievalOrchestrator';
-import { setRetrievalAdapter, getRetrievalAdapter } from '../lib/adapters';
-import { IRetrievalAdapter, ScripturePassage, RetrievalResult } from '@/types';
+import { RetrievalOrchestrator } from '@/lib/runtime/agentRuntime';
+import { setRetrievalAdapter, getRetrievalAdapter } from '@/lib/adapters';
+import type { IRetrievalAdapter, ScripturePassage, RetrievalResult } from '@/types';
 
-describe('RetrievalOrchestrator', () => {
+describe('RetrievalOrchestrator (live runtime)', () => {
   let originalAdapter: IRetrievalAdapter;
 
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe('RetrievalOrchestrator', () => {
     setRetrievalAdapter(originalAdapter);
   });
 
-  it('should retrieve context using the configured adapter', async () => {
+  it('should retrieve passages using the configured adapter with topK: 5', async () => {
     const mockPassages: ScripturePassage[] = [
       {
         id: '1',
@@ -24,46 +24,46 @@ describe('RetrievalOrchestrator', () => {
         verseEnd: 1,
         text: 'The Lord is my shepherd; I shall not want.',
         translation: 'KJV',
-        reference: 'Psalm 23:1'
-      }
+        reference: 'Psalm 23:1',
+      },
     ];
 
     const mockAdapter: IRetrievalAdapter = {
       search: vi.fn().mockResolvedValue({
         passages: mockPassages,
         confidence: 0.95,
-        source: 'mock'
+        source: 'mock',
       } as RetrievalResult),
-      getByReference: vi.fn()
+      getByReference: vi.fn(),
     };
 
     setRetrievalAdapter(mockAdapter);
 
     const orchestrator = new RetrievalOrchestrator();
     const query = 'comforting verses';
-    const result = await orchestrator.retrieveContext(query);
+    const result = await orchestrator.retrieve(query);
 
     expect(mockAdapter.search).toHaveBeenCalledWith({
-      query: query,
-      topK: 3
+      query,
+      topK: 5,
     });
     expect(result).toEqual(mockPassages);
   });
 
-  it('should handle empty results from adapter', async () => {
+  it('should handle empty results gracefully', async () => {
     const mockAdapter: IRetrievalAdapter = {
       search: vi.fn().mockResolvedValue({
         passages: [],
         confidence: 0.3,
-        source: 'mock-empty'
+        source: 'mock-empty',
       } as RetrievalResult),
-      getByReference: vi.fn()
+      getByReference: vi.fn(),
     };
 
     setRetrievalAdapter(mockAdapter);
 
     const orchestrator = new RetrievalOrchestrator();
-    const result = await orchestrator.retrieveContext('non-existent');
+    const result = await orchestrator.retrieve('non-existent');
 
     expect(result).toEqual([]);
   });

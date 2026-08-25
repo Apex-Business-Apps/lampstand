@@ -1,9 +1,11 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { sttAdapter, ttsAdapter } from '@/lib/voice';
 import { getProfile, incrementPresenceScore, savePassage } from '@/lib/storage';
 import { checkInputSafety, shouldCircuitBreak, SAFE_FALLBACK_RESPONSE } from '@/lib/safety';
 import { agentRuntime } from '@/lib/runtime/agentRuntime';
 import { assembleGuidanceContext } from '@/lib/guidance/contextAssembler';
+import { normalizeUserInput } from '@/lib/agent/Grounding';
+import { recordSignal } from '@/lib/resonance/ResonanceEngine';
 import type { GuidanceResult, SavedPassage } from '@/types';
 
 export type AgentMode = 'idle' | 'listening' | 'thinking' | 'speaking' | 'error';
@@ -104,10 +106,20 @@ export function useAgentController() {
     };
     savePassage(entry);
     setSaved(true);
+    try {
+      recordSignal({ signal: 'saved', passage: result.passage, theme: result.themes?.[0] });
+      recordSignal({ signal: 'reflected', passage: result.passage, theme: result.themes?.[0] });
+    } catch {
+      /* quota / private mode - silent */
+    }
   }, [result, saved]);
 
   const handleSubmit = useCallback(async () => {
-    if (!input.trim()) return;
+    const rawConcern = input.trim();
+    if (!rawConcern) return;
+    const normalizedInput = normalizeUserInput(rawConcern);
+    if (!normalizedInput) return;
+
     setSafetyMessage('');
     setVoiceMessage('');
     setSaved(false);
@@ -117,7 +129,7 @@ export function useAgentController() {
     if (shouldCircuitBreak()) {
       setSafetyMessage("Let's take a gentle pause. Here is a passage to rest with.");
       const r: GuidanceResult = {
-        id: 'circuit-break', concern: input, themes: ['peace'],
+        id: 'circuit-break', concern: normalizedInput, themes: ['peace'],
         passage: SAFE_FALLBACK_RESPONSE.passage,
         pastoralFraming: SAFE_FALLBACK_RESPONSE.message,
         reflectionQuestions: ['What do you most need right now?'],
@@ -126,12 +138,12 @@ export function useAgentController() {
       setResult(r); setInput(''); speakText(r.pastoralFraming); return;
     }
 
-    const safety = checkInputSafety(input);
+    const safety = checkInputSafety(normalizedInput);
     if (!safety.safe) {
       const msg = safety.reason || 'Let me offer you a scripture instead.';
       setSafetyMessage(msg);
       const r: GuidanceResult = {
-        id: 'safety-fallback', concern: input, themes: ['peace'],
+        id: 'safety-fallback', concern: normalizedInput, themes: ['peace'],
         passage: SAFE_FALLBACK_RESPONSE.passage, pastoralFraming: msg,
         reflectionQuestions: ['What would bring you peace right now?'],
         createdAt: new Date().toISOString(),
@@ -142,16 +154,25 @@ export function useAgentController() {
     setLoading(true);
     setAgentMode('thinking');
     try {
-      const concern = input.trim();
-      const guidance = await agentRuntime.runGuidance(concern, profile?.toneStyle || 'balanced');
+      const guidance = await agentRuntime.runGuidance(normalizedInput, profile?.toneStyle || 'balanced');
       setResult(guidance);
       setInput('');
       incrementPresenceScore(4);
+      try {
+        recordSignal({
+          signal: 'guided',
+          passage: guidance.passage,
+          theme: guidance.themes?.[0],
+          tone: profile?.toneStyle || 'balanced',
+        });
+      } catch {
+        /* ignore */
+      }
       speakText(guidance.pastoralFraming);
     } catch {
       const fallback: GuidanceResult = {
         id: 'fullscreen-fallback',
-        concern: input,
+        concern: normalizedInput,
         themes: ['peace'],
         passage: SAFE_FALLBACK_RESPONSE.passage,
         pastoralFraming: SAFE_FALLBACK_RESPONSE.message,
@@ -176,10 +197,15 @@ export function useAgentController() {
     }
   }, [agentMode]);
 
+  const replay = useCallback(() => {
+    ttsAdapter.replay(voiceGender);
+  }, [voiceGender]);
+
   return {
     agentMode,
     isListening,
     isSpeechEnabled,
+    setIsSpeechEnabled,
     input,
     setInput,
     loading,
@@ -193,6 +219,8 @@ export function useAgentController() {
     handleSave,
     handleSubmit,
     stopSpeaking,
-    speakText
+    speakText,
+    replay,
+    voiceGender,
   };
 }

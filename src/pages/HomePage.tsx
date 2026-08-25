@@ -56,7 +56,7 @@ export default function HomePage() {
             <p className="text-sm text-muted-foreground">{greeting}</p>
             <h1 className="text-2xl font-serif font-semibold text-foreground">The Lamp Stand</h1>
           </div>
-          {knowledge.streak > 0 && (
+          {!profile.hideStreakVisuals && knowledge.streak > 0 && (
             <div className="flex items-center gap-1.5 bg-accent/60 px-3 py-1.5 rounded-full">
               <Flame className="h-4 w-4 text-primary" />
               <span className="text-sm font-medium text-foreground">{knowledge.streak}</span>

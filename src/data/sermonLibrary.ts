@@ -548,6 +548,96 @@ A faithful response is to make goodness concrete enough to help someone else. Te
     relevance: `When we are pushed beyond our limits, we feel like we are failing. Paul says that reaching the end of your strength is actually the beginning of true faith. If you are utterly burdened today, do not try to manufacture more strength. Let your self-reliance die, and fall entirely on the God who raises the dead. You are exactly where He wants you.`,
     prayer: `Lord, I am burdened beyond my strength, and I am despairing. I have nothing left. Break my illusion of self-reliance, and teach me to rely entirely on the God who raises the dead. Amen.`,
   },
+  'romans-12-1-2': {
+    title: 'The Living Sacrifice and the Renewed Mind',
+    reflection: `Paul pivots from eleven chapters of soaring theology into concrete ethics with two words: 'therefore' and 'mercy.' True worship is not a ritual performed in a designated building; it is the offering of ordinary physical bodies—our schedules, desires, appetites, and energy—as a continuous living sacrifice. Conformity to this world happens passively by default, like water taking the shape of a mold. Transformation requires the deliberate, daily renewal of the mind through truth.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `Every commercial, feed, and cultural pressure works to conform your mind to anxiety, consumerism, and self-protection. If you do not intentionally renew your mind, the culture will disciple you by default. The practical invitation is to inspect where your thoughts naturally run when unprompted, and offer your daily physical routine back to God as an act of intelligent worship.`,
+    prayer: `Father, I present my body and my mind to you today as a living sacrifice. Break the patterns of this world in my thinking, renew my perspective, and let me discern your good and perfect will. Amen.`,
+  },
+  'matt-6-25-34': {
+    title: 'The Cure for Frantic Care',
+    reflection: `Jesus does not command us not to plan; He commands us not to be consumed by anxious care. He points to the birds and the lilies not as a call to laziness, but as a proof of Fatherly care. Worry is functionally a declaration that God has abandoned the universe and that we must keep all things running by our own nervous sweat. Jesus re-centers reality: your heavenly Father knows what you need before you ask.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `Modern life trains us to borrow trouble from next week, next month, and next year. We live in future catastrophes that never arrive. Jesus offers a boundary: each day has enough trouble of its own. Your responsibility is today; God's sovereignty covers tomorrow. Seek His kingdom first today, and let the Father manage the horizon.`,
+    prayer: `Jesus, forgive me for living as though you have forgotten me. Deliver me from the frantic urge to control tomorrow. I seek your kingdom today; provide what I need for this single day. Amen.`,
+  },
+  'psalm-91-1-4': {
+    title: 'Under the Shadow of the Almighty',
+    reflection: `Psalm 91 does not promise an immune system against trouble; it promises a refuge within it. To 'dwell in the secret place' is to make God your permanent habitat rather than an emergency shelter you visit only during a storm. The imagery of wings and feathers is tender and fierce: like a mother bird shielding her brood, God puts His own presence between His children and the arrows of the dark.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `When fear threatens to expose us, we instinctively construct flimsy shelters of money, control, or avoidance. Psalm 91 invites us to relocate our sense of safety entirely. The arrow may fly, but the shelter of the Most High is impregnable. You are not at the mercy of chaotic forces; you are guarded by sovereign love.`,
+    prayer: `Most High God, I make you my dwelling place today. Under your wings I seek refuge. Deliver me from the snare of fear, and let your faithfulness be my shield and rampart. Amen.`,
+  },
+  'galatians-5-22-23': {
+    title: 'The Organic Harvest of the Spirit',
+    reflection: `Paul speaks of 'fruit,' not 'factory goods.' You do not manufacture love, joy, peace, and patience through willpower and gritted teeth. Fruit is the natural, organic byproduct of a branch remaining connected to the living vine. When you try to produce Christian character in your own strength, you produce legalism or burnout. When you abide in the Spirit, the fruit grows inevitably over time.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `We often approach our character flaws with an industrial mindset: 'I need to force myself to be patient today.' This almost always ends in frustration. The Christian life is not self-improvement; it is Spirit-cultivation. If you lack kindness or gentleness today, your primary task is not to strain harder, but to draw nearer to Christ in quiet surrender.`,
+    prayer: `Holy Spirit, cultivate your fruit in my heart. Where there is bitterness, grow love; where there is anxiety, grow peace; where there is frustration, grow patience. I yield to your life in me. Amen.`,
+  },
+  'colossians-3-12-17': {
+    title: 'The Wardrobe of Holy Compassion',
+    reflection: `Paul uses the metaphor of putting on clothes: as God's chosen and beloved, we are to clothe ourselves in heartfelt compassion, kindness, humility, gentleness, and patience. And over all these virtues, we put on love, which binds everything together in perfect harmony. Peace is not just a personal feeling; it is called to be the 'umpire' (rule) in the corporate body of Christ.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `Every morning you choose what clothes to put on; Paul says you must make the same deliberate choice with your relational posture. Before you enter a meeting, a conversation, or a family room, choose to put on gentleness. When someone offends you, forgive as Christ forgave you. Let the peace of Christ referee your reactions today.`,
+    prayer: `Lord Jesus, clothe my soul in your kindness and humility. Forgive my quickness to take offense. Let your peace rule in my heart, and let everything I do be done in your name with thanksgiving. Amen.`,
+  },
+  'ephesians-2-8-10': {
+    title: 'Crafted by Grace for Good Works',
+    reflection: `Grace destroys both despair and pride in a single breath. Salvation is not your achievement; it is God's unconditional gift, leaving zero room for boasting. But Paul immediately adds: we are His 'workmanship' (poiema—masterpiece), created in Christ Jesus for good works that God prepared beforehand. You are not saved by good works, but you are saved for them.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `When we feel unworthy, grace reminds us that our acceptance was never based on our performance. When we feel aimless, God's workmanship reminds us that our lives have divine design and purpose. You do not need to invent a destiny; you simply need to walk in the good works of love, service, and faithfulness God has placed before you today.`,
+    prayer: `Father, thank you that I am saved entirely by grace through faith. Free me from the exhaustion of trying to earn your love. Show me the good works you have prepared for me to walk in today. Amen.`,
+  },
+  'john-15-4-5': {
+    title: 'The Branch, the Vine, and True Vitality',
+    reflection: `Jesus uses an unmistakable biological truth: a detached branch cannot produce a single grape. It can wither, rot, or be burned, but it cannot bear fruit. 'Apart from me you can do nothing.' This is not an insult; it is reality. The spiritual life is not an imitation of Jesus from afar; it is the vital flow of His life through us as we remain intimately connected in prayer and obedience.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `We live in an accomplishment-driven culture that measures value by immediate output and speed. Jesus reverses the priority: abiding precedes producing. If your spiritual life feels dry and strained, stop trying to produce fruit on your own. Slow down, return to the Vine, and let His life flow through your soul again.`,
+    prayer: `Jesus, you are the Vine and I am the branch. Forgive me for trying to live and work apart from you. Prune what is dead in me, deepen my connection to you, and let your life bear fruit through me. Amen.`,
+  },
+  'psalm-103-1-5': {
+    title: 'Bless the Lord: An Act of Defiant Memory',
+    reflection: `David commands his own soul: 'Bless the LORD, and forget not all his benefits.' This is not a polite devotional poem; it is an active spiritual discipline. The human heart suffers from severe spiritual amnesia, easily forgetting years of deliverance the moment a new crisis appears. David counteracts this by naming God's mercies: He forgives iniquity, heals diseases, redeems from the pit, and crowns with steadfast love.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `When discouragement sets in, your feelings will tell you that God has never done anything for you. That is when you must command your soul to remember. Rehearse the times God sustained you, forgave you, and pulled you out of the pit. Memory is the fuel of present faith.`,
+    prayer: `Bless the Lord, O my soul! Forgive my amnesia, Father. I remember your benefits today: your forgiveness, your healing, your steadfast love. Renew my youth and strength like the eagle's. Amen.`,
+  },
+  '1-peter-5-6-7': {
+    title: 'Humbled Under the Mighty Hand',
+    reflection: `Peter connects two things we often separate: humility and anxiety. 'Humble yourselves under the mighty hand of God... casting all your anxieties on him, because he cares for you.' Carrying anxiety is often a subtle form of pride—the belief that we are smart enough and strong enough to carry the universe on our shoulders. Humility is acknowledging that God is God and we are not, and handing the burden over.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `When you refuse to cast your anxieties on God, you are essentially saying, 'I can manage this better than God can.' That pride will crush you. Humility looks like taking the specific problems you cannot solve and releasing them into the hands of the One who genuinely cares for you.`,
+    prayer: `Lord, I humble myself under your mighty hand. I confess my pride in trying to control what I cannot change. I cast all my anxieties on you right now, trusting that you care for me. Amen.`,
+  },
+  'psalm-1-1-3': {
+    title: 'Planted by Streams of Living Water',
+    reflection: `Psalm 1 establishes the two paths of human life: the path of the chaff (weightless, blown by every wind of circumstance) and the path of the tree (rooted, deep, nourished by water). The difference is what the soul delights in. When the soul meditates on God's truth day and night, it develops roots that draw nourishment even in scorching drought. Its leaf does not wither because its source is subterranean and eternal.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `We are bombarded with competing counsels and noisy opinions that leave us spiritually shallow and easily shaken. If you want resilience in hard seasons, you must plant your roots in something deeper than cultural chatter. A few minutes of quiet immersion in Scripture each morning will anchor your entire day.`,
+    prayer: `Lord, plant my soul deep by your streams of living water. Deliver me from shallow distractions, and let your word nourish my thoughts so that I may bear faithful fruit in every season. Amen.`,
+  },
+  'isaiah-55-1-3': {
+    title: 'The Free Banquet of the Thirsty',
+    reflection: `Isaiah issues an astonishing invitation to the bankrupt and exhausted: 'Come, buy wine and milk without money and without price.' Why spend your money on what is not bread, and your labor on what does not satisfy? Humanity spends enormous spiritual and emotional capital trying to satisfy the ache of the soul with things that only leave it hungrier. God offers the deepest satisfaction as a free gift of grace.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `Notice where you run when you are exhausted or lonely: shopping, scrolling, achievement, approval. None of it is bread; none of it satisfies. God invites you to stop spending your life on counterfeit nourishment and come to Him with empty hands. Incline your ear, come to the water, and your soul shall live.`,
+    prayer: `Father, forgive me for spending my energy on things that leave my soul empty. I come to your waters today without currency or pretense. Satisfy my thirst with your everlasting covenant of love. Amen.`,
+  },
+  'matthew-7-7-11': {
+    title: 'The Father’s Good Gifts and Persistent Prayer',
+    reflection: `Jesus uses three progressive verbs: ask, seek, knock. Prayer is not a one-time transaction; it is an ongoing, relational pursuit. And Jesus anchors this pursuit in the character of the Father. If flawed human parents know how to give good gifts to their children, how much more will your Father in heaven give good things to those who ask Him? God does not give stones when you ask for bread.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `When answers to prayer are delayed, we easily slip into the suspicion that God is stingy, distant, or mocking us. Jesus shatters that slander. God is a good Father. Keep asking, keep seeking, keep knocking. If the door hasn't opened yet, trust that the Father is preparing either the room or the child who will enter it.`,
+    prayer: `Good Father, thank you that you do not give stones when I ask for bread. Give me the faith to keep knocking, the patience to keep seeking, and the confidence that your gifts are always good. Amen.`,
+  },
+  '2-cor-4-16-18': {
+    title: 'Renewed in the Hidden Places',
+    reflection: `Paul does not deny that the physical body, emotional energy, and earthly circumstances decay. 'Our outer self is wasting away.' But that decay is not the whole story. Simultaneously, in the secret place of communion with God, 'our inner self is being renewed day by day.' What feels like crushing affliction in the present is, in the mathematics of eternity, 'light and momentary,' preparing an eternal weight of glory that surpasses all comparison.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `When you look in the mirror or look at your bank account, you see the visible, temporary world. It can feel like you are losing ground. Paul asks you to adjust your focal length. Look not at what is seen, but at what is unseen. God is renewing your soul today in ways the physical eye cannot detect.`,
+    prayer: `Lord, when my body is tired and circumstances wear me down, renew my inner self by your Spirit. Fix my eyes on the unseen, eternal realities, and let me rest in your eternal weight of glory. Amen.`,
+  },
+  'revelation-21-3-4': {
+    title: 'No More Tears: The Final Consolation',
+    reflection: `The biblical story ends not with humans floating up to a disembodied heaven, but with God coming down to dwell with humanity. 'Behold, the dwelling place of God is with man.' And in that holy city, the Creator of the cosmos does something breathtakingly intimate: He personally wipes away every tear from their eyes. Death, mourning, crying, and pain will be permanently banished because the old order has passed away.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `Grief and sorrow are real, but they are not ultimate. The tears you cry in this life are not forgotten; they are the exact tears God will one day wipe away with His own hand. When sorrow feels bottomless today, remember the destination: the story ends with restoration, joy, and the permanent presence of God.`,
+    prayer: `Lord God, when grief is heavy, comfort my heart with the promise of your new creation. Thank you that tears and death do not have the final word. Come, Lord Jesus, and dwell with us. Amen.`,
+  },
+  'john-10-10-11': {
+    title: 'The Abundant Life of the Good Shepherd',
+    reflection: `Jesus draws a sharp contrast between the thief and the Shepherd. The thief comes only to steal, kill, and destroy—draining joy, distorting truth, and leaving the soul impoverished. Jesus comes with a completely opposite mandate: 'that they may have life and have it abundantly.' And the cost of that abundance is borne entirely by the Shepherd Himself, who lays down His life for the sheep.\n\n${TONE_SUFFIX.balanced}`,
+    relevance: `The enemy constantly lies about God, suggesting that following Christ will make your life narrow, boring, and miserable. Jesus says the exact opposite: true abundance—peace, joy, purpose, and deep life—is found only in following the Shepherd who died to save you. Refuse the thief's counterfeit promises today, and trust the Good Shepherd's care.`,
+    prayer: `Jesus, Good Shepherd, thank you that you laid down your life for me. Protect me from the lies of the enemy, lead me into your abundant life, and let me hear your voice above all others today. Amen.`,
+  },
 };
 
 function buildFallbackDraft(passage: ScripturePassage, tone: ToneStyle): SermonDraft {
