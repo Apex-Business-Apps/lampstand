@@ -28,7 +28,7 @@ import type { SpiritualSeason } from '@/lib/resonance/ResonanceEngine';
 const MAX_JOURNAL_EXCERPT_CHARS = 90;
 const MAX_JOURNAL_ENTRIES = 3;
 const MAX_SAVED_REFS = 5;
-const MAX_CONTEXT_CHARS = 600;
+export const MAX_CONTEXT_CHARS = 600;
 
 export interface GuidanceContext {
   resonanceSeason: SpiritualSeason;
