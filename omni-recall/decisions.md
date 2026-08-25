@@ -34,3 +34,8 @@
 - **Decision**: Provide structured Schema.org JSON-LD `@graph` entities (`WebSite`, `Organization`, `WebApplication`, `FAQPage`), explicit crawler allowlists in `robots.txt` for AI search bots (GPTBot, PerplexityBot, ClaudeBot), answer-first semantic content structures on landing pages, and an internal backlink discipline.
 - **Rationale**: Ensures top-tier visibility and accurate quotation in Google AI Overviews, Perplexity, ChatGPT Search, and traditional search engines without compromising privacy or adding third-party tracking scripts.
 - **Status**: Enforced across `index.html`, `MarketingPage.tsx`, `robots.txt`, and `sitemap.xml`.
+
+## ADR-008: Canonical Crisis Safety Pipeline and Clean Dependency Security
+- **Decision**: All crisis, sensitive counseling, and self-harm interventions are handled canonically by `Grounding.ts` (`getRequestGuardrail()`) at the entrance of the agent pipeline, rendering pastoral reflection with emergency contact notices and Scripture comfort. Redundant classification regexes in legacy modules are eliminated.
+- **Rationale**: Avoids ambiguous classification conflicts between generic abuse gates and specialized pastoral crisis intervention; verified via Playwright E2E tests against the real UI.
+- **Status**: Implemented in `Grounding.ts`, `safety.ts`, and `tests/e2e/guidance-safety.spec.ts`.

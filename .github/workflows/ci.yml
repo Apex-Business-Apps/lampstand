@@ -75,7 +75,7 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: PWA end-to-end smoke test (manifest fetchable, SW actually registers in a real browser)
+      - name: End-to-end smoke & safety tests (PWA harness, SW registration, guidance crisis guardrail)
         env:
           # Real deploy secrets take precedence; these mock values only exist so the
           # app can boot in this throwaway build and let Playwright drive it — they
@@ -84,7 +84,7 @@ jobs:
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.mock' }}
         run: |
           npm run build
-          npx playwright test tests/e2e/pwa.spec.ts
+          npx playwright test
 
       - name: Upload Playwright report
         if: failure()

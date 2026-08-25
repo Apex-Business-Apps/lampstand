@@ -16,7 +16,6 @@ const INJECTION_PATTERNS = [
 
 const ABUSE_PATTERNS = [
   /\b(fuck|shit|damn|hell|bitch|ass)\b/i,
-  /kill\s+(your|my)self/i,
   /hate\s+(god|jesus|christ|church)/i,
 ];
 
