@@ -114,6 +114,7 @@ npm run build
 
 | Document | Purpose |
 |----------|---------|
+| [`omni-recall/`](omni-recall/) | Institutional memory: architecture, decisions, constraints, debugging history, and content catalog |
 | [`docs/LAYER_STACK.md`](docs/LAYER_STACK.md) | Authoritative z-index stack — read before touching any fixed/overlay element |
 | [`docs/ROUTING_RULES.md`](docs/ROUTING_RULES.md) | Browser vs PWA routing bifurcation — do not modify without founder sign-off |
 | [`MISSION.md`](MISSION.md) | Non-monetization commitment and contribution guidelines |

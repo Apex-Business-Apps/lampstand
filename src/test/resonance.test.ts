@@ -145,4 +145,31 @@ describe('ResonanceEngine', () => {
     const after = JSON.stringify(loadFingerprint());
     expect(after).toBe(before);
   });
+
+  describe('calculateTopicContinuity', () => {
+    it('returns 0 when candidate theme is undefined or context themes are empty', async () => {
+      const { calculateTopicContinuity } = await import('@/lib/resonance/ResonanceEngine');
+      expect(calculateTopicContinuity(undefined, ['peace', 'hope'])).toBe(0);
+      expect(calculateTopicContinuity('peace', [])).toBe(0);
+      expect(calculateTopicContinuity('courage', ['peace', 'hope'])).toBe(0);
+    });
+
+    it('returns higher continuity score for most recent context theme', async () => {
+      const { calculateTopicContinuity } = await import('@/lib/resonance/ResonanceEngine');
+      const recentScore = calculateTopicContinuity('peace', ['peace', 'hope', 'love']);
+      const olderScore = calculateTopicContinuity('love', ['peace', 'hope', 'love']);
+      expect(recentScore).toBeGreaterThan(olderScore);
+      expect(recentScore).toBeGreaterThan(0);
+      expect(olderScore).toBeGreaterThan(0);
+    });
+
+    it('executes entirely on-device with zero network calls', async () => {
+      const { calculateTopicContinuity } = await import('@/lib/resonance/ResonanceEngine');
+      const fetchSpy = vi.spyOn(globalThis, 'fetch');
+      const score = calculateTopicContinuity('peace', ['peace', 'hope']);
+      expect(score).toBeGreaterThan(0);
+      expect(fetchSpy).not.toHaveBeenCalled();
+      fetchSpy.mockRestore();
+    });
+  });
 });

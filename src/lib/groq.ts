@@ -5,11 +5,9 @@ import { formatContextForPrompt } from './guidance/contextAssembler';
 import { getEdgeFunctionHeaders } from '@/lib/supabaseAuthHeaders';
 import { getSupabaseConfig } from '@/integrations/supabase/config';
 
-const { url: SUPABASE_URL } = getSupabaseConfig();
-
 // Shared style guide used for all GroqAIAdapter calls (replaces the old vague SYS string).
 // Kept in sync with src/lib/agent/Prompts.ts - the guidance mode here is tighter
-// because it must produce structured JSON; the free-text ConversationOrchestrator path
+// because it must produce structured JSON; the free-text guidance path
 // uses Prompts.ts directly.
 const STYLE_GUIDE = `You are Lampstand, a pastoral companion shaped by Scripture.
 You do not advise from a distance. You sit with people in what they carry.
@@ -47,7 +45,8 @@ export class GroqAIAdapter implements IAIAdapter {
   private fallback = new LocalAIAdapter();
 
   private async ask(messages: { role: string; content: string }[], json = false, maxTokens = 400) {
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/groq-guidance`, {
+    const { url: supabaseUrl } = getSupabaseConfig();
+    const res = await fetch(`${supabaseUrl}/functions/v1/groq-guidance`, {
       method: 'POST',
       headers: await getEdgeFunctionHeaders(),
       body: JSON.stringify({ messages, json, maxTokens }),

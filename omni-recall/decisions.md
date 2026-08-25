@@ -1,0 +1,31 @@
+# LampStand Architectural & Product Decisions
+
+## ADR-001: Zero-Cost and Zero-Telemetry Mission Lock
+- **Decision**: LampStand remains completely free forever, with 0 ads, 0 paid tiers, 0 monetization features, and 0 PII tracking.
+- **Rationale**: Spiritual tools must never exploit user vulnerability, monetize religious reflection, or extract behavioral surveillance data.
+- **Status**: Non-negotiable core constraint.
+
+## ADR-002: Local-First Deterministic Fallbacks
+- **Decision**: Every feature in LampStand (Daily Light, Guidance, Sermon Mode, Examen, Lectio, Journal) must function completely offline with high-quality bundled content.
+- **Rationale**: Network unavailability, edge API outages, or remote rate limits must never prevent a user from receiving steady, scripture-grounded pastoral care.
+- **Status**: Implemented across `adapters.ts`, `contentLibrary.ts`, `seed.ts`, `sermonLibrary.ts`.
+
+## ADR-003: Single Unified State Machine for Agent Surfaces
+- **Decision**: All UI surfaces that interact with the Burning Bush Agent (`FloatingAgent`, `FullscreenAgent`, `GuidancePage`) must consume the canonical `useAgentController()` hook. Independent `useState` state machines are strictly prohibited.
+- **Rationale**: Eliminates state desynchronization bugs between mini, fullscreen, and dedicated page views, and guarantees consistent audio, speech, and safety state.
+- **Status**: Fully reconciled in Execution Contract v2.
+
+## ADR-004: Standardized Input and Context Bounds
+- **Decision**: Define exactly one input cap (`MAX_AI_INPUT_CHARS = 1200`) and one assembled context cap (`MAX_CONTEXT_CHARS = 600`) across the entire repository.
+- **Rationale**: Prevents prompt flooding, bounds edge worker compute/token consumption, and eliminates conflicting constant definitions across modules.
+- **Status**: Enforced in `Grounding.ts` and `contextAssembler.ts`.
+
+## ADR-005: Targeted Clause-Level AI Filler Sanitization
+- **Decision**: Rather than nuking the entire AI response when a single filler phrase ("Let's", "Of course") appears, strip only the sentence containing the filler phrase, preserving the rest of the response and its valid citations unless >50% of the message is gutted.
+- **Rationale**: Avoids falsely discarding rich, well-cited responses over trivial provider filler words while maintaining zero-filler standards.
+- **Status**: Implemented via `sanitizeAIFiller()` in `agentRuntime.ts`.
+
+## ADR-006: Abbreviation-Tolerant Citation Grounding
+- **Decision**: `ensureRuntimeGrounding()` utilizes `hasScriptureCitation()` to recognize standard biblical book abbreviations (e.g. `Jn 3:16`, `Phil 4:6-7`) and verse ranges.
+- **Rationale**: Prevents correctly-cited LLM responses from being erroneously tagged with the "LampStand cannot verify this" disclaimer due to trivial formatting variations.
+- **Status**: Implemented in `agentRuntime.ts`.

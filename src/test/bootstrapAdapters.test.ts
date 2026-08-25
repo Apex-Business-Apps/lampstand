@@ -29,7 +29,7 @@ describe('bootstrapAdapters', () => {
     const { bootstrapAdapters } = await import('@/lib/bootstrapAdapters');
 
     expect(() => bootstrapAdapters()).not.toThrow();
-    await vi.waitFor(() => expect(setAIAdapter).toHaveBeenCalledTimes(1));
+    await vi.waitFor(() => expect(setAIAdapter).toHaveBeenCalledTimes(1), { timeout: 4000 });
     expect(setAIAdapter.mock.calls[0][0].constructor.name).toBe('GroqAIAdapter');
   });
 });

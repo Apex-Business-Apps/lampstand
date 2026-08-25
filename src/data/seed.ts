@@ -442,6 +442,60 @@ export const SEED_GUIDANCE_MAP: Record<string, Omit<GuidanceResult, 'id' | 'conc
     ],
     prayer: "God, I trust you with what I cannot see. Guide my steps and give me courage for the unknown. Amen.",
   },
+  anxiety: {
+    passage: SEED_PASSAGES[3], // Phil 4:6-7
+    pastoralFraming: "Anxiety often turns the mind into a courtroom where every worry gets to argue without interruption. Scripture gives your heart somewhere else to bring the case: not to panic, but directly into the guarding presence of God.",
+    reflectionQuestions: [
+      "What specific scenario is your mind trying to solve in advance?",
+      "What is one concrete reality you can thank God for right in this room?"
+    ],
+    prayer: "God of peace, take what keeps circling in my thoughts. Guard my heart and mind, and grant me your stillness. Amen.",
+  },
+  burnout: {
+    passage: SEED_PASSAGES[2], // Matt 11:28-30
+    pastoralFraming: "Exhaustion is not a spiritual failure; it is the human body and spirit asking for true rest. Jesus does not offer another task list. He offers unhurried companionship and an easy yoke that does not crush you.",
+    reflectionQuestions: [
+      "Which burden are you carrying that was never actually asked of you?",
+      "What would true, guilt-free rest look like for you today?"
+    ],
+    prayer: "Jesus, I lay down the false expectations that have worn me out. Teach me your gentle pace and restore my soul. Amen.",
+  },
+  guilt: {
+    passage: SEED_PASSAGES[5], // Rom 8:28 / Rom 8:1
+    pastoralFraming: "Guilt replays past mistakes as if they were your permanent title. Grace declares that failure does not get the final word over your life. You are invited to step out of self-accusation into redemption.",
+    reflectionQuestions: [
+      "What mistake are you still holding against yourself that God has already forgiven?",
+      "What would it feel like to receive forgiveness without having to earn it back?"
+    ],
+    prayer: "Lord, forgive my shortcomings and quiet the voice of self-condemnation. Let your mercy be my clean slate today. Amen.",
+  },
+  betrayal: {
+    passage: SEED_PASSAGES[6], // Psalm 46:10
+    pastoralFraming: "When trust is broken by someone close, the ground feels unstable. In the upheaval of broken relationships, God remains the unshakeable refuge who sees every hidden wound and stays faithful.",
+    reflectionQuestions: [
+      "Where has the pain of broken trust made you want to build walls?",
+      "Can you bring the raw hurt to God before deciding your next move?"
+    ],
+    prayer: "Father, heal the places where trust has been wounded. Be my refuge when human promises fail, and guard my heart from bitterness. Amen.",
+  },
+  waiting: {
+    passage: SEED_PASSAGES[13], // Isaiah 40:31
+    pastoralFraming: "Waiting is not wasted time; it is the active tethering of the heart to God when the timeline is out of your control. Strength is renewed not by frantic effort, but by waiting in trust.",
+    reflectionQuestions: [
+      "What outcome are you waiting for, and how is the delay testing your heart?",
+      "How might God be forming your character in this holding space?"
+    ],
+    prayer: "Lord, give me patience to wait for your timing. Renew my strength when I am weary, and help me keep walking faithfully today. Amen.",
+  },
+  strength: {
+    passage: SEED_PASSAGES[4], // Isaiah 41:10
+    pastoralFraming: "Strength in the biblical tradition is not self-manufactured bravado; it is the gift of being held by the victorious right hand of God. When your capacity runs dry, God's presence remains abundant.",
+    reflectionQuestions: [
+      "Where are you trying to be strong in your own power right now?",
+      "What would change if you leaned entirely on God's strength today?"
+    ],
+    prayer: "Lord, I am not as strong as I pretend to be. Be my strength, uphold me, and carry me through today. Amen.",
+  },
 };
 
 export const SEED_DAILY_LIGHTS: DailyLight[] = [

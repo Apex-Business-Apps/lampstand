@@ -1,8 +1,8 @@
 import type { ScripturePassage } from '@/types';
+import { MAX_CONTEXT_CHARS } from '@/lib/guidance/contextAssembler';
 
 export const MAX_AI_INPUT_CHARS = 1200;
 export const MAX_CONTEXT_PASSAGES = 3;
-export const MAX_CONTEXT_CHARS = 1800;
 
 const FABRICATION_PATTERNS = [
   /make\s+up\s+(a\s+)?(bible\s+)?verse/i,
