@@ -8,7 +8,6 @@ import {
   Flame,
   PenLine,
   Layers,
-  ShieldCheck,
 } from 'lucide-react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
@@ -63,18 +62,15 @@ export function AppShell({ children, kidsMode }: AppShellProps) {
     <div className={`min-h-screen flex ${kidsMode ? 'kids-mode' : ''} bg-background text-foreground`}>
       {/* Desktop Side Rail Navigation (md and above) */}
       <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border/60 bg-card/40 backdrop-blur-xl z-40">
-        <div className="p-5 border-b border-border/40 flex items-center gap-3">
-          <div className="h-9 w-9 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center text-primary shadow-sm">
-            <Flame className="h-5 w-5 fill-primary/20" />
-          </div>
-          <div>
-            <Link to="/app" className="font-serif text-lg font-semibold tracking-tight text-foreground hover:text-primary transition-colors">
-              LampStand
-            </Link>
-            <p className="text-[11px] text-muted-foreground flex items-center gap-1 font-medium">
-              <ShieldCheck className="h-3 w-3 text-primary" /> Free & Sovereign
-            </p>
-          </div>
+        <div className="p-5 border-b border-border/40 flex items-center">
+          <Link to="/app" className="flex items-center">
+            <img
+              src="/images/wordmark-logo.png"
+              alt="TheLampStand"
+              className="h-8 w-auto object-contain"
+              draggable={false}
+            />
+          </Link>
         </div>
 
         <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
@@ -124,11 +120,13 @@ export function AppShell({ children, kidsMode }: AppShellProps) {
       <div className="flex-1 flex flex-col min-h-screen md:pl-64 w-full">
         {/* Mobile Header (Hidden on md) */}
         <header className="md:hidden flex justify-between items-center px-4 py-3 border-b border-border/40 bg-card/60 backdrop-blur-md sticky top-0 z-30">
-          <Link to="/app" className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center text-primary">
-              <Flame className="h-4 w-4" />
-            </div>
-            <span className="font-serif font-semibold text-base">LampStand</span>
+          <Link to="/app" className="flex items-center">
+            <img
+              src="/images/wordmark-logo.png"
+              alt="TheLampStand"
+              className="h-7 w-auto object-contain"
+              draggable={false}
+            />
           </Link>
           <AuthStatus />
         </header>
