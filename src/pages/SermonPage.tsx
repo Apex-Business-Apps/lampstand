@@ -47,14 +47,14 @@ export default function SermonPage() {
   const [loading, setLoading] = useState(false);
 
   const [saved, setSaved] = useState(() =>
-    getSavedPassages().some((s) => s.passage.reference === CONTENT_PASSAGES[0].reference)
+    getSavedPassages().some((s) => s.passage?.reference === CONTENT_PASSAGES[0].reference)
   );
 
   // Update sermon whenever passage or tone changes
   useEffect(() => {
     const updated = buildGroundedSermon(currentPassage, profileTone);
     setSermon(updated);
-    setSaved(getSavedPassages().some((s) => s.passage.reference === currentPassage.reference));
+    setSaved(getSavedPassages().some((s) => s.passage?.reference === currentPassage.reference));
   }, [currentPassage, profileTone]);
 
   // Clean up speech on unmount

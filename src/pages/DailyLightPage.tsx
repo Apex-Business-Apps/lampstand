@@ -27,7 +27,7 @@ export default function DailyLightPage() {
   const [today, setToday] = useState<DailyLight>(() => getDailyLight());
   const [showDeeper, setShowDeeper] = useState(false);
   const [saved, setSaved] = useState(() =>
-    getSavedPassages().some((s) => s.passage.reference === today.passage.reference)
+    getSavedPassages().some((s) => s.passage?.reference === today?.passage?.reference)
   );
 
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -42,7 +42,7 @@ export default function DailyLightPage() {
     getDailyLightWithHistory(user.id).then((d) => {
       if (!cancelled) {
         setToday(d);
-        setSaved(getSavedPassages().some((s) => s.passage.reference === d.passage.reference));
+        setSaved(getSavedPassages().some((s) => s.passage?.reference === d?.passage?.reference));
       }
     });
     return () => {

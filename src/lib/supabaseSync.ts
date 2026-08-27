@@ -75,7 +75,7 @@ export async function syncPassagesToCloud(userId: string): Promise<void> {
   const rows = passages.map(p => ({
     id: p.id,
     user_id: userId,
-    passage_ref: p.passage.reference,
+    passage_ref: p.passage?.reference || '',
     passage_data: p.passage as unknown as Json,
     note: p.note || null,
     saved_at: p.savedAt,
