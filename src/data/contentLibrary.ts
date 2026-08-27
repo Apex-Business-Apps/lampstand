@@ -503,7 +503,7 @@ const EXTRA_PASSAGES: ScripturePassage[] = [
   {
     id: 'psalm-63-1-4',
     book: 'Psalms', chapter: 63, verseStart: 1, verseEnd: 4,
-    text: '"O God, you are my God—for you I long! For you my body yearns; for you my soul thirsts, like a land parched, lifeless, and without water... Thus I will bless you through my life; in your name I will lift up my hands."',
+    text: '"O God, you are my God, for you I long! For you my body yearns; for you my soul thirsts, like a land parched, lifeless, and without water... Thus I will bless you through my life; in your name I will lift up my hands."',
     translation: 'NABRE', reference: 'Psalm 63:1-4',
   },
   {
@@ -1008,7 +1008,7 @@ export const DAILY_LIGHT_LIBRARY: DailyLightTemplate[] = [
   },
   {
     passage: passagesById['john-10-10-11'],
-    reflection: 'The Good Shepherd came so that you might have abundant life—not frantic busyness or surface success, but deep, unshakeable vitality in communion with God.',
+    reflection: 'The Good Shepherd came so that you might have abundant life: not frantic busyness or surface success, but deep, unshakeable vitality in communion with God.',
     prayer: 'Jesus, Good Shepherd, lead me into the fullness of your life and protect my soul today. Amen.',
     theme: 'life',
   },

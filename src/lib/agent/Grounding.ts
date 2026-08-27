@@ -29,7 +29,7 @@ export function getRequestGuardrail(input: string): { blocked: boolean; reason?:
     return {
       blocked: true,
       reason: 'validation_error',
-      response: 'Share a question or concern, and I will answer from the LampStand scripture library when I can verify a source.',
+      response: 'Share a question or concern, and I will answer from TheLampStand scripture library when I can verify a source.',
     };
   }
 
@@ -37,7 +37,7 @@ export function getRequestGuardrail(input: string): { blocked: boolean; reason?:
     return {
       blocked: true,
       reason: 'fabricated_scripture',
-      response: 'I cannot invent or rewrite Scripture. I can help reflect on verified passages available in LampStand instead.',
+      response: 'I cannot invent or rewrite Scripture. I can help reflect on verified passages available in TheLampStand instead.',
     };
   }
 
@@ -81,8 +81,8 @@ export function buildGroundingContext(passages: ScripturePassage[]): string {
 export function buildGroundedSystemPrompt(stylePrompt: string, modePrompt: string, passages: ScripturePassage[]): string {
   const contextText = buildGroundingContext(passages);
   const groundingInstruction = contextText
-    ? `Use only these LampStand source passages for scripture claims. Cite references in the answer.\n${contextText}`
-    : 'No LampStand source passage was retrieved. Say clearly that LampStand cannot verify the answer from available sources and avoid scripture claims.';
+    ? `Use only these TheLampStand source passages for scripture claims. Cite references in the answer.\n${contextText}`
+    : 'No TheLampStand source passage was retrieved. Say clearly that TheLampStand cannot verify the answer from available sources and avoid scripture claims.';
 
   return [
     stylePrompt,
@@ -98,7 +98,7 @@ export function enforceGroundedAnswer(output: string, passages: ScripturePassage
   const cleaned = output.trim();
 
   if (!citations) {
-    const prefix = 'LampStand cannot verify this from available source passages.';
+    const prefix = 'TheLampStand cannot verify this from available source passages.';
     return cleaned.startsWith(prefix) ? cleaned : `${prefix} ${cleaned}`;
   }
 

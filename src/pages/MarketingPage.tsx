@@ -64,7 +64,7 @@ const journey = [
     step: "01",
     title: "Choose your tone",
     description:
-      "Select contemplative, traditional, or plain-spoken. LampStand adapts to how you actually pray.",
+      "Select contemplative, traditional, or plain-spoken. TheLampStand adapts to how you actually pray.",
   },
   {
     step: "02",
@@ -255,10 +255,10 @@ export default function MarketingPage() {
             <span>Spiritual Technology for Contemplative Life</span>
           </div>
           <h2 className="mt-4 font-display text-3xl font-semibold tracking-tight sm:text-4xl text-foreground">
-            What is LampStand?
+            What is TheLampStand?
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
-            <strong>LampStand</strong> is a private, free-forever Bible companion and pastoral AI application developed by APEX Business Systems Ltd. It delivers grounded daily scripture reflections, homiletic sermon meditations, and contemplative spiritual guidance using offline-capable local intelligence and privacy-first design.
+            <strong>TheLampStand</strong> is a private, free-forever Bible companion and pastoral AI application developed by APEX Business Systems Ltd. It delivers grounded daily scripture reflections, homiletic sermon meditations, and contemplative spiritual guidance using offline-capable local intelligence and privacy-first design.
           </p>
         </div>
 
@@ -316,12 +316,12 @@ export default function MarketingPage() {
           </div>
         </section>
 
-        {/* How LampStand Creates Momentum */}
+        {/* How TheLampStand Creates Momentum */}
         <section className="mt-28 rounded-3xl border border-border/70 bg-card/75 p-10 sm:p-16">
           <div className="mb-12 flex items-center gap-4">
             <Flame className="h-8 w-8 text-primary" />
             <h3 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              How LampStand creates momentum
+              How TheLampStand creates momentum
             </h3>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -350,7 +350,7 @@ export default function MarketingPage() {
             </h3>
           </div>
           <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-            LampStand adheres to classical orthodox theology, drawing from canonical translations and historical Christian contemplative traditions. It uses strict on-device grounding rules to eliminate superficial answers and prevent hallucinations.
+            TheLampStand adheres to classical orthodox theology, drawing from canonical translations and historical Christian contemplative traditions. It uses strict on-device grounding rules to eliminate superficial answers and prevent hallucinations.
           </p>
           <div className="mt-6 flex flex-wrap gap-4 text-xs font-medium text-muted-foreground">
             <a
@@ -394,10 +394,10 @@ export default function MarketingPage() {
           <div className="grid gap-6 md:grid-cols-2">
             <div className="rounded-2xl border border-border/80 bg-background/70 p-6">
               <h4 className="font-display text-lg font-semibold text-foreground">
-                Is LampStand completely free?
+                Is TheLampStand completely free?
               </h4>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Yes. LampStand is free forever with zero ads, zero paywalls, zero in-app purchases, and no subscription tiers. It operates under a permanent non-monetization Mission Lock.
+                Yes. TheLampStand is free forever with zero ads, zero paywalls, zero in-app purchases, and no subscription tiers. It operates under a permanent non-monetization Mission Lock.
               </p>
             </div>
             <div className="rounded-2xl border border-border/80 bg-background/70 p-6">
@@ -410,10 +410,10 @@ export default function MarketingPage() {
             </div>
             <div className="rounded-2xl border border-border/80 bg-background/70 p-6">
               <h4 className="font-display text-lg font-semibold text-foreground">
-                Does LampStand work offline?
+                Does TheLampStand work offline?
               </h4>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Yes. LampStand is built local-first. All canonical scripture passages, Daily Light reflections, homiletic sermons, and contemplative prayer guides are bundled on-device and function without internet.
+                Yes. TheLampStand is built local-first. All canonical scripture passages, Daily Light reflections, homiletic sermons, and contemplative prayer guides are bundled on-device and function without internet.
               </p>
             </div>
             <div className="rounded-2xl border border-border/80 bg-background/70 p-6">
@@ -421,7 +421,7 @@ export default function MarketingPage() {
                 How is my spiritual privacy protected?
               </h4>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                All journal entries, prayers, reflections, and personalization data are stored locally in your device storage. LampStand collects zero PII and includes zero advertising trackers or surveillance telemetry.
+                All journal entries, prayers, reflections, and personalization data are stored locally in your device storage. TheLampStand collects zero PII and includes zero advertising trackers or surveillance telemetry.
               </p>
             </div>
           </div>

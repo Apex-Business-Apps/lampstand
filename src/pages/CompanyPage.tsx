@@ -4,9 +4,9 @@ export default function CompanyPage() {
   return (
     <LegalLayout title="Contact, Legal, and Company">
       <p>Owner: APEX Business Systems Ltd.</p>
-      <p>Product: LampStand.</p>
+      <p>Product: TheLampStand.</p>
       <p>Licensing model: proprietary software with limited end-user license.</p>
-      <p>Formal notices and support requests should be sent through the official APEX Business Systems Ltd. contact channels made available for LampStand users.</p>
+      <p>Formal notices and support requests should be sent through the official APEX Business Systems Ltd. contact channels made available for TheLampStand users.</p>
     </LegalLayout>
   );
 }

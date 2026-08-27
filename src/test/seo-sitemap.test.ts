@@ -44,6 +44,6 @@ describe('SEO & Sitemap Contract', () => {
     expect(html).toContain('"@type": "Organization"');
     expect(html).toContain('"@type": "FAQPage"');
     expect(html).toContain('"@type": "WebSite"');
-    expect(html).toContain('LampStand — Free Daily Bible Companion & AI Pastoral Guidance');
+    expect(html).toContain('TheLampStand: Free Daily Bible Companion & AI Pastoral Guidance');
   });
 });

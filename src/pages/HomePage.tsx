@@ -106,7 +106,7 @@ export default function HomePage() {
             </div>
             <div className="flex-1">
               <p className="text-sm font-semibold text-foreground">
-                {lectioDone ? 'Today\u2019s Lectio \u2014 Complete' : 'Lectio Divina'}
+                {lectioDone ? 'Today\u2019s Lectio: Complete' : 'Lectio Divina'}
               </p>
               <p className="text-xs text-muted-foreground">
                 {lectioDone
@@ -136,7 +136,7 @@ export default function HomePage() {
             </div>
             <div className="flex-1">
               <p className="text-sm font-semibold text-foreground">
-                {examenDone ? 'Today\u2019s Examen — Complete' : 'The Daily Examen'}
+                {examenDone ? 'Today\u2019s Examen: Complete' : 'The Daily Examen'}
               </p>
               <p className="text-xs text-muted-foreground">
                 {examenDone

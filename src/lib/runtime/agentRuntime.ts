@@ -131,7 +131,7 @@ export function sanitizeAIFiller(text: string): { sanitized: string; hadFiller: 
 
 export function ensureRuntimeGrounding(result: GuidanceResult, passage: ScripturePassage | null): GuidanceResult {
   if (!passage?.reference) {
-    const prefix = 'LampStand cannot verify this from available source passages.';
+    const prefix = 'TheLampStand cannot verify this from available source passages.';
     return {
       ...result,
       pastoralFraming: result.pastoralFraming.trim().startsWith(prefix)

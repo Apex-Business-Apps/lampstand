@@ -7,13 +7,13 @@ export default function PrivacyPolicyPage() {
 
       <h2 className="text-lg font-semibold mt-6 mb-2">Who we are</h2>
       <p>
-        LampStand is a community spiritual companion app operated by APEX Business Systems Ltd.
+        TheLampStand is a community spiritual companion app operated by APEX Business Systems Ltd.
         We are not a commercial product. There are no ads, no paywalls, and no data sold to third parties.
       </p>
 
       <h2 className="text-lg font-semibold mt-6 mb-2">What we store and where</h2>
       <p>
-        LampStand is <strong>local-first by design</strong>. The following data lives only on your device
+        TheLampStand is <strong>local-first by design</strong>. The following data lives only on your device
         by default:
       </p>
       <ul className="list-disc pl-6 space-y-1 mt-2">
@@ -44,12 +44,12 @@ export default function PrivacyPolicyPage() {
       </p>
       <ul className="list-disc pl-6 space-y-1 mt-2">
         <li>
-          <strong>Groq (Llama 3 model)</strong> - for pastoral AI responses. Your request text is
+          <strong>Groq (Llama 3 model)</strong>: for pastoral AI responses. Your request text is
           processed by Groq's API and subject to their privacy policy. Groq does not train on API
           request data by default.
         </li>
         <li>
-          <strong>ElevenLabs</strong> - for text-to-speech audio. Response text is sent to ElevenLabs
+          <strong>ElevenLabs</strong>: for text-to-speech audio. Response text is sent to ElevenLabs
           for voice synthesis. ElevenLabs does not retain audio for training by default.
         </li>
       </ul>
@@ -62,12 +62,12 @@ export default function PrivacyPolicyPage() {
       <p>
         Account authentication is handled by Supabase Auth. If you sign in with a social provider
         (e.g. Google), that provider shares your email address with us. We use it only to identify
-        your account - it is never used for marketing.
+        your account; it is never used for marketing.
       </p>
 
       <h2 className="text-lg font-semibold mt-6 mb-2">Cookies and local storage</h2>
       <p>
-        LampStand does not use third-party cookies or tracking pixels. We use browser localStorage
+        TheLampStand does not use third-party cookies or tracking pixels. We use browser localStorage
         to store your settings and local data as described above. No advertising or analytics cookies
         are set.
       </p>
@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
 
       <h2 className="text-lg font-semibold mt-6 mb-2">Children</h2>
       <p>
-        LampStand is intended for users aged 13 and over. Kids Mode simplifies the interface for
+        TheLampStand is intended for users aged 13 and over. Kids Mode simplifies the interface for
         younger users but does not change data handling. We do not knowingly collect data from
         children under 13.
       </p>

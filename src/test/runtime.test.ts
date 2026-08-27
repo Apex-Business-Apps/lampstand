@@ -152,7 +152,7 @@ describe('agent runtime safety', () => {
     setAIAdapter(adapter);
 
     const result = await agentRuntime.runGuidance('Tell me about God\'s love', 'balanced');
-    expect(result.pastoralFraming).not.toContain('LampStand cannot verify');
+    expect(result.pastoralFraming).not.toContain('TheLampStand cannot verify');
     expect(result.pastoralFraming).not.toContain('Sources: John 3:16.');
     expect(result.pastoralFraming).toContain('Jn 3:16');
   });
@@ -220,6 +220,6 @@ describe('agent runtime safety', () => {
     });
 
     const result = await agentRuntime.runGuidance('A question with no matching source', 'balanced');
-    expect(result.pastoralFraming).toMatch(/^LampStand cannot verify this from available source passages\./);
+    expect(result.pastoralFraming).toMatch(/^TheLampStand cannot verify this from available source passages\./);
   });
 });
