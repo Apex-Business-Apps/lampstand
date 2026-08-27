@@ -1,7 +1,7 @@
-# LampStand Content & Scripture Catalog
+# TheLampStand Content & Scripture Catalog
 
 ## Summary Statistics
-- **Total Canonical Scripture Passages**: 48+ passages (`SEED_PASSAGES` in `src/data/seed.ts` + `EXTRA_PASSAGES` in `src/data/contentLibrary.ts`).
+- **Total Canonical Scripture Passages**: 100+ passages (`SEED_PASSAGES` in `src/data/seed.ts` + expanded `EXTRA_PASSAGES` in `src/data/contentLibrary.ts`).
 - **Total Daily Light Templates**: 60+ curated reflections and prayers in `DAILY_LIGHT_LIBRARY`.
 - **Total Homiletic Sermon Drafts**: 35+ full sermon drafts in `SERMON_LIBRARY` (`src/data/sermonLibrary.ts`).
 - **Total Guidance Themes**: 16+ pastoral themes with dedicated scripture, framing, reflection inquiries, and prayers (`fear`, `grief`, `loneliness`, `forgiveness`, `purpose`, `peace`, `gratitude`, `temptation`, `conflict`, `uncertainty`, `anxiety`, `burnout`, `guilt`, `betrayal`, `waiting`, `strength`).
@@ -60,6 +60,32 @@
 45. `james-1-2-4`: James 1:2-4 (Trials Produce Perseverance)
 46. `psalm-63-1-4`: Psalm 63:1-4 (Thirsting for God)
 47. `john-10-10-11`: John 10:10-11 (The Good Shepherd and Abundant Life)
+48. `psalm-103-1-5`: Psalm 103:1-5 (Bless the Lord, O My Soul)
+49. `isaiah-58-11`: Isaiah 58:11 (Like a Watered Garden)
+50. `matthew-6-31-34`: Matthew 6:31-34 (Seek First the Kingdom)
+51. `romans-15-13`: Romans 15:13 (God of Hope)
+52. `psalm-37-3-5`: Psalm 37:3-5 (Commit Your Way to the Lord)
+53. `philippians-4-11-13`: Philippians 4:11-13 (Strength in Christ)
+54. `2-peter-1-3-4`: 2 Peter 1:3-4 (Precious and Magnificent Promises)
+55. `psalm-119-105`: Psalm 119:105 (A Lamp to My Feet)
+56. `ephesians-2-8-10`: Ephesians 2:8-10 (Created in Christ for Good Works)
+57. `isaiah-30-15`: Isaiah 30:15 (In Returning and Rest)
+58. `1-peter-5-6-7`: 1 Peter 5:6-7 (Casting All Your Cares)
+59. `psalm-42-1-3`: Psalm 42:1-3 (As the Deer Pants)
+60. `john-15-4-5`: John 15:4-5 (Abide in Me)
+61. `galatians-5-22-23`: Galatians 5:22-23 (Fruit of the Spirit)
+62. `psalm-19-14`: Psalm 19:14 (Words of My Mouth)
+63. `joshua-1-9`: Joshua 1:9 (Be Strong and Courageous)
+64. `colossians-1-15-17`: Colossians 1:15-17 (Supremacy of Christ)
+65. `psalm-27-4`: Psalm 27:4 (One Thing I Have Asked)
+66. `romans-5-1-5`: Romans 5:1-5 (Peace with God and Hope)
+67. `2-corinthians-5-17-18`: 2 Corinthians 5:17-18 (New Creation in Christ)
+68. `psalm-147-3-5`: Psalm 147:3-5 (Heals the Brokenhearted)
+69. `titus-3-4-7`: Titus 3:4-7 (Kindness of God Our Savior)
+70. `isaiah-12-2-3`: Isaiah 12:2-3 (God is My Salvation)
+71. `1-john-4-18-19`: 1 John 4:18-19 (Perfect Love Casts Out Fear)
+72. `psalm-62-5-8`: Psalm 62:5-8 (Rest in God Alone)
+73. `revelation-22-1-3`: Revelation 22:1-3 (River of the Water of Life)
 
 ---
 

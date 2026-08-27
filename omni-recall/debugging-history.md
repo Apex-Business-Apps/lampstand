@@ -1,4 +1,4 @@
-# LampStand Root-Cause Debugging & Resolution History
+# TheLampStand Root-Cause Debugging & Resolution History
 
 ## 1. Dead File References and Ghost Orchestrators
 - **Symptom**: `docs/apex/` referenced 7 deleted orchestration files (`ConversationOrchestrator.ts`, `RetrievalOrchestrator.ts`, `CircuitBreaker.ts`, `SafetyGate.ts`, `AgentInterfaces.ts`, `GroqAdapter.ts`, `NullAdapter.ts`).
@@ -35,3 +35,15 @@
 - **Root Cause**: An icon import update in `src/pages/MarketingPage.tsx` accidentally replaced the line `import { Link, useNavigate } from "react-router-dom";` and `import React from "react";`.
 - **Fix**: Restored `import React from "react";` and `import { Link, useNavigate } from "react-router-dom";`.
 - **Regression Shield**: Added `src/pages/MarketingPage.test.tsx` which mounts `MarketingPage` within a React Router context and tests all navigation, hooks, and DOM nodes.
+
+## 7. ESLint prefer-const Rule Violation in `Grounding.ts`
+- **Symptom**: GitHub Actions CI lint check failed with exit code 1 due to `error 'cleaned' is never reassigned. Use 'const' instead prefer-const`.
+- **Root Cause**: `let cleaned` was declared in `enforceGroundedAnswer` but never reassigned.
+- **Fix**: Changed `let cleaned` to `const cleaned`.
+- **Regression Shield**: `npm run lint` runs in pre-commit and CI verifying 0 warnings and 0 errors.
+
+## 8. Playwright E2E Guidance Safety Strict-Mode Locator Ambiguity
+- **Symptom**: Playwright E2E suite failed with strict-mode violation because `getByText('If there is immediate danger, contact emergency services now.')` resolved to two elements in the DOM.
+- **Root Cause**: `useAgentController.ts` set `safetyMessage` state (rendered as a banner at the top of the form) while simultaneously populating `pastoralFraming` in the `result` reflection block with identical text.
+- **Fix**: Removed redundant top banner message when setting the canonical reflection block result, and restored canonical placeholder `What is weighing on you today?` in `GuidancePage.tsx`.
+- **Regression Shield**: `npm run test:e2e` runs in CI across all 6 test specs with 100% pass rate.
