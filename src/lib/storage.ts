@@ -82,7 +82,7 @@ export function savePassages(passages: SavedPassage[]) {
     for (let i = 0; i < all.length; i++) {
       const item = all[i];
       idToIndex.set(item.id, i);
-      refToIndex.set(normalizeIdempotencyKey(item.passage.reference || item.id), i);
+      refToIndex.set(normalizeIdempotencyKey(item.passage?.reference || item.id), i);
     }
 
     const newPassages: SavedPassage[] = [];
@@ -91,7 +91,7 @@ export function savePassages(passages: SavedPassage[]) {
     const addedRefs = new Set<string>();
 
     for (const passage of passages) {
-      const referenceKey = normalizeIdempotencyKey(passage.passage.reference || passage.id);
+      const referenceKey = normalizeIdempotencyKey(passage.passage?.reference || passage.id);
 
       let existingIndex = -1;
       if (idToIndex.has(passage.id)) {
@@ -107,7 +107,7 @@ export function savePassages(passages: SavedPassage[]) {
 
       if (addedIds.has(passage.id) || addedRefs.has(referenceKey)) {
         // If it was already added in this batch, update it in newPassages
-        const batchExistingIndex = newPassages.findIndex((p) => p.id === passage.id || normalizeIdempotencyKey(p.passage.reference || p.id) === referenceKey);
+        const batchExistingIndex = newPassages.findIndex((p) => p.id === passage.id || normalizeIdempotencyKey(p.passage?.reference || p.id) === referenceKey);
         if (batchExistingIndex >= 0) {
             newPassages[batchExistingIndex] = { ...newPassages[batchExistingIndex], ...passage, id: newPassages[batchExistingIndex].id, savedAt: newPassages[batchExistingIndex].savedAt };
         }
