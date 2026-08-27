@@ -73,7 +73,7 @@ export default function GuidancePage() {
           <Textarea
             value={agent.input}
             onChange={(e) => agent.setInput(e.target.value)}
-            placeholder="What is weighing on your heart today?"
+            placeholder="What is weighing on you today?"
             className="min-h-[100px] resize-none bg-card text-sm"
             maxLength={500}
             onKeyDown={(e) => {

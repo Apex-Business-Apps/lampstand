@@ -59,7 +59,7 @@ export function checkInputSafety(input: string): SafetyCheckResult {
       return {
         safe: false,
         type: 'crisis',
-        reason: 'If you or someone you know is struggling or in crisis, help is available. You are not alone. Please dial 988 in the US/Canada or contact your local emergency services immediately for trained support.',
+        reason: 'If there is immediate danger, contact emergency services now. If you or someone you know is struggling or in crisis, help is available. You are not alone. Please dial 988 in the US/Canada or contact your local emergency services immediately for trained support.',
       };
     }
   }

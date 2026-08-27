@@ -45,7 +45,7 @@ export function getRequestGuardrail(input: string): { blocked: boolean; reason?:
     return {
       blocked: true,
       reason: 'sensitive_counseling',
-      response: 'I can offer prayerful support from Scripture, but I cannot replace emergency care, licensed counselors, doctors, lawyers, pastors, or trusted local support. If there is immediate danger, contact emergency services now (such as dialing 988 in the US/Canada).',
+      response: 'I can offer prayerful support from Scripture, but I cannot replace emergency care, licensed counselors, doctors, lawyers, pastors, or trusted local support. If there is immediate danger, contact emergency services now. Please reach out to local emergency care or dial 988 in the US/Canada.',
     };
   }
 

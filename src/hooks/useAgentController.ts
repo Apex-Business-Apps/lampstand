@@ -141,7 +141,6 @@ export function useAgentController() {
     const safety = checkInputSafety(normalizedInput);
     if (!safety.safe) {
       const msg = safety.reason || 'Let me offer you a scripture instead.';
-      setSafetyMessage(msg);
       const r: GuidanceResult = {
         id: 'safety-fallback', concern: normalizedInput, themes: ['peace'],
         passage: SAFE_FALLBACK_RESPONSE.passage, pastoralFraming: msg,
