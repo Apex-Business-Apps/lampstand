@@ -17,7 +17,7 @@ const preloads = chunks
   .join('\n');
 
 if (!preloads) {
-  console.log('[modulepreload] No matching chunks found — skipping.');
+  console.log('[modulepreload] No matching chunks found: skipping.');
   process.exit(0);
 }
 

@@ -21,20 +21,20 @@ import { ConsentModal } from "@/components/ConsentModal";
 import { BrandAnthemPlayer } from "@/components/BrandAnthemPlayer";
 
 /* ════════════════════════════════════════════════════════════════════════════
- * MARKETING PAGE — LAYER STACK  (bottom → top)
+ * MARKETING PAGE: LAYER STACK  (bottom → top)
  *
  *  ┌─────────────────────────────────────────────────────────────────────┐
- *  │  z-0    Bible page texture    BELOW THE VEIL — hidden, cursor-only  │
- *  │  z-10   Cross silhouette      BELOW THE VEIL — hidden, cursor-only  │
+ *  │  z-0    Bible page texture    BELOW THE VEIL: hidden, cursor-only   │
+ *  │  z-10   Cross silhouette      BELOW THE VEIL: hidden, cursor-only   │
  *  │  ─────────────────────────────────────────────────────────────────  │
  *  │  z-100  CandleRevealCanvas ◄── THE VEIL (obsidian mask + glow)      │
  *  │  ─────────────────────────────────────────────────────────────────  │
- *  │  z-150  LampstandCanvas       ABOVE THE VEIL — always visible       │
- *  │  z-200  Hero text / CTAs      ABOVE THE VEIL — always visible       │
- *  │  z-200  Header (wordmark)     ABOVE THE VEIL — always visible       │
- *  │  z-200  Below-fold sections   ABOVE THE VEIL — always visible       │
+ *  │  z-150  LampstandCanvas       ABOVE THE VEIL: always visible        │
+ *  │  z-200  Hero text / CTAs      ABOVE THE VEIL: always visible        │
+ *  │  z-200  Header (wordmark)     ABOVE THE VEIL: always visible        │
+ *  │  z-200  Below-fold sections   ABOVE THE VEIL: always visible        │
  *  │  z-500  ConsentModal           ABOVE EVERYTHING (Dialog Portal→body) │
- *  │  z-500  BrandAnthemPlayer     TOPMOST — sticky bottom-left player   │
+ *  │  z-500  BrandAnthemPlayer     TOPMOST: sticky bottom-left player    │
  *  └─────────────────────────────────────────────────────────────────────┘
  * ════════════════════════════════════════════════════════════════════════════ */
 
@@ -117,7 +117,7 @@ export default function MarketingPage() {
   return (
     <div className="relative min-h-screen w-full bg-[#0a0a0a] text-foreground selection:bg-[#F2A649]/30">
 
-      {/* ── z-0: Bible page — BELOW THE VEIL, cursor-revealed only ── */}
+      {/* ── z-0: Bible page: BELOW THE VEIL, cursor-revealed only ── */}
       <div className="fixed inset-0 z-0" aria-hidden="true">
         <img
           src="/images/bible_page.png"
@@ -128,7 +128,7 @@ export default function MarketingPage() {
         <div className="absolute inset-0 bg-[#0a0a0a]/35" />
       </div>
 
-      {/* ── z-10: Cross silhouette — BELOW THE VEIL, cursor-revealed only ── */}
+      {/* ── z-10: Cross silhouette: BELOW THE VEIL, cursor-revealed only ── */}
       <div
         className="fixed left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
         aria-hidden="true"
@@ -141,10 +141,10 @@ export default function MarketingPage() {
         />
       </div>
 
-      {/* ── z-100: CandleRevealCanvas — THE VEIL (singleton, do not duplicate) ── */}
+      {/* ── z-100: CandleRevealCanvas: THE VEIL (singleton, do not duplicate) ── */}
       <CandleRevealCanvas />
 
-      {/* ── z-150: Lamp hero — ABOVE THE VEIL, always visible ── */}
+      {/* ── z-150: Lamp hero: ABOVE THE VEIL, always visible ── */}
       <div
         style={{ top: "calc(42% - 38px)" }}
         className={`pointer-events-none fixed right-0 z-[150] hidden h-screen w-1/2 -translate-y-1/2 items-center justify-center transition-opacity duration-500 lg:flex ${
@@ -175,11 +175,11 @@ export default function MarketingPage() {
         </div>
       </div>
 
-      {/* ── z-200: Header — ABOVE THE VEIL, always visible ── */}
+      {/* ── z-200: Header: ABOVE THE VEIL, always visible ── */}
       <header className="pointer-events-auto fixed left-8 right-8 top-4 z-[200] flex items-center justify-between lg:left-16 lg:right-16 lg:top-6">
         <img
           src="/images/wordmark-logo.png"
-          alt="The Lamp Stand"
+          alt="TheLampStand"
           className="h-[3.24rem] w-auto sm:h-[3.78rem]"
           draggable={false}
         />
@@ -191,7 +191,7 @@ export default function MarketingPage() {
         </Button>
       </header>
 
-      {/* ── z-200: Hero typography — ABOVE THE VEIL, always visible ── */}
+      {/* ── z-200: Hero typography: ABOVE THE VEIL, always visible ── */}
       <div
         className={`fixed left-0 top-1/2 z-[200] flex w-full -translate-y-1/2 items-center justify-center transition-opacity duration-500 lg:w-1/2 ${
           heroVisible ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
@@ -244,7 +244,7 @@ export default function MarketingPage() {
 
       <BrandAnthemPlayer />
 
-      {/* ── z-200: Below-the-fold — ABOVE THE VEIL, always visible ──
+      {/* ── z-200: Below-the-fold: ABOVE THE VEIL, always visible ──
           ⚠️  MUST stay at z-[200] or higher. Lowering below z-100 hides
           these sections permanently behind the obsidian mask. */}
       <section className="relative z-[200] mx-auto mt-[100vh] max-w-6xl px-6 py-24 sm:px-10 lg:px-16">

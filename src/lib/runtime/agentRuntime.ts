@@ -286,7 +286,7 @@ export class TurnPipeline {
 }
 
 /** Lightweight cancellation-state tracker for the agent turn pipeline.
- * NOT the audio VoiceOrchestrator — see src/lib/voice/VoiceOrchestrator.ts for TTS/STT. */
+ * NOT the audio VoiceOrchestrator: see src/lib/voice/VoiceOrchestrator.ts for TTS/STT. */
 export class VoiceCancellationController {
   private cancelled = false;
   cancel() { this.cancelled = true; }

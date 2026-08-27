@@ -1,28 +1,28 @@
 import React from "react";
 
 /**
- * CandleRevealCanvas — global obsidian mask with pointer-tracked candlelight glow.
+ * CandleRevealCanvas: global obsidian mask with pointer-tracked candlelight glow.
  *
  * Single full-viewport fixed canvas (z-100). Every frame it:
  *   1. Fills the entire canvas with fully opaque #0a0a0a.
  *   2. Melts a soft, ORGANIC, noise-distorted glow around the pointer
- *      (destination-out + blurred radial falloff) — a glow, never a spotlight.
+ *      (destination-out + blurred radial falloff), a glow, never a spotlight.
  *   3. Washes the whole illuminated surface in warm amber (flames are not white)
  *      with a halo that bleeds past the reveal onto the dark mask.
- *   4. Static punch-out at the lamp's fixed screen position — the lamp is a real
+ *   4. Static punch-out at the lamp's fixed screen position: the lamp is a real
  *      light source, it permanently illuminates the text beneath it.
  *
  * The glow breathes ±10px and each vertex carries its own phase/frequency,
  * simulating the irregular pool of light from a single candle flame.
  *
- * Mounted once at the top level of the landing page — not inside any section.
+ * Mounted once at the top level of the landing page, not inside any section.
  */
 
 const VERTS = 16;          // vertices in the organic polygon
-const BASE_RADIUS = 110;   // px — intimate candlelight, not a spotlight
-const VERT_VARIATION = 26; // px — per-vertex radius offset amplitude
-const BREATH = 10;         // px — global breathing oscillation
-const EDGE_BLUR = 24;      // px — feathering of the reveal edge (soft glow)
+const BASE_RADIUS = 110;   // px: intimate candlelight, not a spotlight
+const VERT_VARIATION = 26; // px: per-vertex radius offset amplitude
+const BREATH = 10;         // px: global breathing oscillation
+const EDGE_BLUR = 24;      // px: feathering of the reveal edge (soft glow)
 
 type Vert = { p1: number; p2: number; f1: number; f2: number; amp: number };
 
@@ -107,13 +107,13 @@ export default function CandleRevealCanvas() {
       const w = window.innerWidth;
       const h = window.innerHeight;
 
-      // 1 — fully opaque obsidian mask, edge to edge
+      // 1: fully opaque obsidian mask, edge to edge
       ctx.globalCompositeOperation = "source-over";
       ctx.filter = "none";
       ctx.fillStyle = "#0a0a0a";
       ctx.fillRect(0, 0, w, h);
 
-      // 2 — cursor blob: melt the glow out of the mask
+      // 2: cursor blob: melt the glow out of the mask
       ctx.globalCompositeOperation = "destination-out";
       ctx.filter = `blur(${EDGE_BLUR}px)`;
       const maxR = blobPath(t, pos.x, pos.y, 1);
@@ -125,7 +125,7 @@ export default function CandleRevealCanvas() {
       ctx.fillStyle = punch;
       ctx.fill();
 
-      // 3 — cursor amber wash
+      // 3: cursor amber wash
       ctx.globalCompositeOperation = "source-over";
       ctx.filter = `blur(${EDGE_BLUR + 6}px)`;
       blobPath(t, pos.x, pos.y, 1.35);

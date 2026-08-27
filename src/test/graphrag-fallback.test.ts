@@ -8,7 +8,7 @@ vi.mock('@/lib/storage/embeddingsDB', () => ({
 }));
 
 // Mock the Worker constructor so GraphRAGAdapter's EmbeddingWorkerClient
-// immediately rejects — simulating a CSP block that prevents the worker script
+// immediately rejects: simulating a CSP block that prevents the worker script
 // from loading (the real failure mode this test guards against).
 beforeAll(() => {
   class MockWorkerCSPFailure {

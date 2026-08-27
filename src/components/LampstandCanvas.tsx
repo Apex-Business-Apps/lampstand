@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 
 /*
- * Single-canvas luma key — no synthetic stone.
+ * Single-canvas luma key: no synthetic stone.
  * The video (lampstand_anim_v2.mp4) already contains the lamp + stone pedestal.
  * We just strip the black background via luminance key.
  *

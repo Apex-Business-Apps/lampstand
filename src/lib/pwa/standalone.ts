@@ -2,7 +2,7 @@
  * Single source of truth for "is this an installed PWA" detection.
  *
  * This gates critical routing (EntryPage, ProfileGuard) and install-state UI
- * (InstallPage, dailyReminder). Do not re-implement locally — three separate
+ * (InstallPage, dailyReminder). Do not re-implement locally: three separate
  * copies of this check previously existed and could drift out of sync,
  * silently breaking the installed-app routing rule. Import from here instead.
  */

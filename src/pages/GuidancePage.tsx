@@ -1,18 +1,43 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppShell } from '@/components/AppShell';
 import { ScriptureCard } from '@/components/ScriptureCard';
 import { ReflectionBlock } from '@/components/ReflectionBlock';
 import { AgentPresence } from '@/components/AgentPresence';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Send, Mic, MicOff, Volume2, VolumeX, RotateCcw, AlertCircle } from 'lucide-react';
+import {
+  Send,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+  RotateCcw,
+  AlertCircle,
+  BookOpen,
+  Sparkles,
+} from 'lucide-react';
 import { useAgentController } from '@/hooks/useAgentController';
+
+const STARTER_PROMPTS = [
+  'Help me find peace in anxiety',
+  'Grief and loss are heavy today',
+  'Discerning a difficult decision',
+  'I feel distant from God lately',
+  'Help me pray right now',
+];
 
 export default function GuidancePage() {
   const agent = useAgentController();
+  const navigate = useNavigate();
+
+  function handleSelectStarter(prompt: string) {
+    agent.setInput(prompt);
+  }
 
   return (
     <AppShell>
-      <div className="px-5 pt-8 pb-6 space-y-6">
+      <div className="px-5 pt-8 pb-10 space-y-6 max-w-2xl mx-auto">
         <div className="text-center space-y-2">
           <div
             onClick={() => (agent.agentMode === 'speaking' ? agent.stopSpeaking() : agent.result && agent.speakText(agent.result.pastoralFraming))}
@@ -21,19 +46,35 @@ export default function GuidancePage() {
           >
             <AgentPresence size="sm" className="mx-auto" mode={agent.agentMode} />
           </div>
-          <h1 className="text-2xl font-serif font-semibold">Guidance</h1>
+          <h1 className="text-2xl sm:text-3xl font-serif font-semibold text-foreground">Guidance</h1>
           <p className="text-sm text-muted-foreground">Share what is on your heart. Scripture appears first, then reflection.</p>
           {agent.activeContext && (
             <p className="text-xs text-muted-foreground">{agent.activeContext}</p>
           )}
         </div>
 
+        {/* Quick Starter Prompts */}
+        <div className="space-y-1.5">
+          <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wider">Quick Starters</p>
+          <div className="flex flex-wrap gap-1.5">
+            {STARTER_PROMPTS.map((prompt) => (
+              <button
+                key={prompt}
+                onClick={() => handleSelectStarter(prompt)}
+                className="rounded-full border border-border/80 bg-secondary/50 px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:bg-secondary hover:text-foreground"
+              >
+                {prompt}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="space-y-3">
           <Textarea
             value={agent.input}
             onChange={(e) => agent.setInput(e.target.value)}
-            placeholder="What is weighing on you today?"
-            className="min-h-[100px] resize-none bg-card"
+            placeholder="What is weighing on your heart today?"
+            className="min-h-[100px] resize-none bg-card text-sm"
             maxLength={500}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
@@ -113,6 +154,18 @@ export default function GuidancePage() {
               </div>
             )}
             {agent.result.prayer && <ReflectionBlock label="Prayer" content={agent.result.prayer} variant="prayer" />}
+
+            {/* Explore Sermon Link */}
+            <div className="pt-2">
+              <Button
+                variant="outline"
+                className="w-full gap-2 text-xs py-4"
+                onClick={() => navigate('/sermon')}
+              >
+                <BookOpen className="h-3.5 w-3.5 text-primary" />
+                <span>Explore Full Expository Sermons</span>
+              </Button>
+            </div>
           </div>
         )}
       </div>

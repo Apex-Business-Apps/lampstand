@@ -14,7 +14,7 @@ interface State {
 /**
  * Detects Vite/Rollup dynamic-import chunk 404s.
  * These appear as "Failed to fetch dynamically imported module"
- * and cannot be recovered by resetting React state alone — a full
+ * and cannot be recovered by resetting React state alone, a full
  * page reload is required to load the updated asset manifest.
  */
 function isChunkLoadError(error: Error): boolean {
@@ -28,7 +28,7 @@ function isChunkLoadError(error: Error): boolean {
 }
 
 const CHUNK_RELOAD_KEY = 'lampstand_chunk_reload_at';
-const CHUNK_RELOAD_COOLDOWN_MS = 10_000; // 10 s — prevent infinite reload loops
+const CHUNK_RELOAD_COOLDOWN_MS = 10_000; // 10 s: prevent infinite reload loops
 
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false, error: null, isChunkError: false };
