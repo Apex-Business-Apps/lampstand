@@ -68,7 +68,11 @@ export function getProfile(): UserProfile | null {
 export function saveProfile(p: UserProfile) { set(KEYS.profile, p); }
 export function clearProfile() { localStorage.removeItem(KEYS.profile); }
 
-export function getSavedPassages(): SavedPassage[] { return get(KEYS.saved, []); }
+export function getSavedPassages(): SavedPassage[] {
+  const raw = get<SavedPassage[]>(KEYS.saved, []);
+  if (!Array.isArray(raw)) return [];
+  return raw.filter((p) => Boolean(p && typeof p === 'object' && p.passage && typeof p.passage === 'object' && p.passage.reference));
+}
 export function savePassage(p: SavedPassage) {
   savePassages([p]);
 }
@@ -129,7 +133,11 @@ export function removePassage(id: string) {
   set(KEYS.saved, getSavedPassages().filter((p) => p.id !== id));
 }
 
-export function getJournalEntries(): JournalEntry[] { return get(KEYS.journal, []); }
+export function getJournalEntries(): JournalEntry[] {
+  const raw = get<JournalEntry[]>(KEYS.journal, []);
+  if (!Array.isArray(raw)) return [];
+  return raw.filter((e) => Boolean(e && typeof e === 'object' && typeof e.content === 'string'));
+}
 export function saveJournalEntry(e: JournalEntry) {
   if (!getConsentState().localJournalStorage) return;
   const { meta } = writeListAtomically<JournalEntry, { added: boolean }>(KEYS.journal, (all) => {
@@ -218,7 +226,11 @@ export function logSafetyEvent(e: SafetyEvent) {
   });
 }
 
-export function getCachedDaily(): DailyLight | null { return get(KEYS.dailyCache, null); }
+export function getCachedDaily(): DailyLight | null {
+  const raw = get<DailyLight | null>(KEYS.dailyCache, null);
+  if (!raw || typeof raw !== 'object' || !raw.passage || typeof raw.passage !== 'object' || !raw.passage.reference) return null;
+  return raw;
+}
 export function setCachedDaily(d: DailyLight) { set(KEYS.dailyCache, d); }
 
 const defaultConsent: ConsentState = {

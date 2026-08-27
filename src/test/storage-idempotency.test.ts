@@ -44,8 +44,20 @@ describe('local write idempotency', () => {
     const before = getPresenceScore().score;
     saveJournalEntry(journal('entry-1', 'first draft'));
     saveJournalEntry(journal('entry-1', 'edited draft'));
-
     expect(getJournalEntries()).toEqual([journal('entry-1', 'edited draft')]);
     expect(getPresenceScore().score).toBe(before + 4);
+  });
+
+  it('gracefully ignores malformed legacy localStorage entries without crashing', () => {
+    localStorage.setItem('lampstand_saved', JSON.stringify([
+      { id: 'corrupt-1' },
+      { id: 'corrupt-2', passage: null },
+      { id: 'corrupt-3', passage: { reference: null } },
+      saved('valid-1', 'John 3:16'),
+    ]));
+
+    const result = getSavedPassages();
+    expect(result).toHaveLength(1);
+    expect(result[0].passage.reference).toBe('John 3:16');
   });
 });

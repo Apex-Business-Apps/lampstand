@@ -23,10 +23,10 @@ export default function SavedPage() {
     // Record a 'returned' signal the first time the user re-opens a saved
     // passage in this session - feeds the Resonance fingerprint so it learns
     // which passages keep drawing them back.
-    if (openedRefs.has(s.passage.reference)) return;
+    if (!s.passage?.reference || openedRefs.has(s.passage.reference)) return;
     setOpenedRefs(prev => new Set(prev).add(s.passage.reference));
     try {
-      recordSignal({ signal: 'returned', passage: s.passage });
+      if (s.passage) recordSignal({ signal: 'returned', passage: s.passage });
     } catch { /* private mode - ignore */ }
   }
 
@@ -62,8 +62,8 @@ export default function SavedPage() {
                 >
                   <div className="flex justify-between items-start gap-2">
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm text-foreground">{s.passage.reference}</p>
-                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{s.passage.text}</p>
+                      <p className="font-medium text-sm text-foreground">{s.passage?.reference}</p>
+                      <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{s.passage?.text}</p>
                       {s.note && <p className="text-xs text-muted-foreground mt-2 italic">Note: {s.note}</p>}
                       <p className="text-xs text-muted-foreground/60 mt-2">
                         {new Date(s.savedAt).toLocaleDateString()}

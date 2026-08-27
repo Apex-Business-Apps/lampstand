@@ -165,8 +165,8 @@ export default function HomePage() {
             <div className="space-y-2">
               {saved.slice(0, 2).map(s => (
                 <div key={s.id} className="bg-card rounded-lg p-4 border border-border">
-                  <p className="text-sm font-medium text-foreground">{s.passage.reference}</p>
-                  <p className="text-xs text-muted-foreground line-clamp-1 mt-1">{s.passage.text}</p>
+                  <p className="text-sm font-medium text-foreground">{s.passage?.reference}</p>
+                  <p className="text-xs text-muted-foreground line-clamp-1 mt-1">{s.passage?.text}</p>
                 </div>
               ))}
             </div>
