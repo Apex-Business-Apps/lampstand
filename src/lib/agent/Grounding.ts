@@ -96,7 +96,7 @@ export function buildGroundedSystemPrompt(stylePrompt: string, modePrompt: strin
 
 export function enforceGroundedAnswer(output: string, passages: ScripturePassage[]): string {
   const citations = formatCitations(selectGroundingPassages(passages));
-  let cleaned = output.replace(/—|–/g, ', ').trim();
+  const cleaned = output.replace(/—|–/g, ', ').trim();
 
   if (!citations) {
     const prefix = 'TheLampStand cannot verify this from available source passages.';
