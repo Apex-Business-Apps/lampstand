@@ -59,8 +59,8 @@ export function assembleGuidanceContext(): GuidanceContext | null {
 
     const savedPassageRefs = getSavedPassages()
       .slice(0, MAX_SAVED_REFS)
-      .map((s) => s.passage.reference)
-      .filter(Boolean);
+      .map((s) => s.passage?.reference)
+      .filter(Boolean) as string[];
 
     const recentJournalExcerpts = getJournalEntries()
       .slice(0, MAX_JOURNAL_ENTRIES)
