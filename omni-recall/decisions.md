@@ -1,12 +1,12 @@
-# LampStand Architectural & Product Decisions
+# TheLampStand Architectural & Product Decisions
 
 ## ADR-001: Zero-Cost and Zero-Telemetry Mission Lock
-- **Decision**: LampStand remains completely free forever, with 0 ads, 0 paid tiers, 0 monetization features, and 0 PII tracking.
+- **Decision**: TheLampStand remains completely free forever, with 0 ads, 0 paid tiers, 0 monetization features, and 0 PII tracking.
 - **Rationale**: Spiritual tools must never exploit user vulnerability, monetize religious reflection, or extract behavioral surveillance data.
 - **Status**: Non-negotiable core constraint.
 
 ## ADR-002: Local-First Deterministic Fallbacks
-- **Decision**: Every feature in LampStand (Daily Light, Guidance, Sermon Mode, Examen, Lectio, Journal) must function completely offline with high-quality bundled content.
+- **Decision**: Every feature in TheLampStand (Daily Light, Guidance, Sermon Mode, Examen, Lectio, Journal) must function completely offline with high-quality bundled content.
 - **Rationale**: Network unavailability, edge API outages, or remote rate limits must never prevent a user from receiving steady, scripture-grounded pastoral care.
 - **Status**: Implemented across `adapters.ts`, `contentLibrary.ts`, `seed.ts`, `sermonLibrary.ts`.
 
@@ -27,11 +27,11 @@
 
 ## ADR-006: Abbreviation-Tolerant Citation Grounding
 - **Decision**: `ensureRuntimeGrounding()` utilizes `hasScriptureCitation()` to recognize standard biblical book abbreviations (e.g. `Jn 3:16`, `Phil 4:6-7`) and verse ranges.
-- **Rationale**: Prevents correctly-cited LLM responses from being erroneously tagged with the "LampStand cannot verify this" disclaimer due to trivial formatting variations.
+- **Rationale**: Prevents correctly-cited LLM responses from being erroneously tagged with the "TheLampStand cannot verify this" disclaimer due to trivial formatting variations.
 - **Status**: Implemented in `agentRuntime.ts`.
 
 ## ADR-007: Generative Engine Optimization (GEO) & Authority Schema Architecture
-- **Decision**: Provide structured Schema.org JSON-LD `@graph` entities (`WebSite`, `Organization`, `WebApplication`, `FAQPage`), explicit crawler allowlists in `robots.txt` for AI search bots (GPTBot, PerplexityBot, ClaudeBot), answer-first semantic content structures on landing pages, and an internal backlink discipline.
+- **Decision**: Provide structured Schema.org JSON-LD `@graph` entities (`WebSite`, `Organization`, `WebApplication`, `FAQPage`, `HowTo`, `BreadcrumbList`), explicit crawler allowlists in `robots.txt` for AI search bots (Google-Extended, GPTBot, PerplexityBot, ClaudeBot, OAI-SearchBot, Applebot-Extended), answer-first semantic content structures on landing pages, and an internal backlink discipline.
 - **Rationale**: Ensures top-tier visibility and accurate quotation in Google AI Overviews, Perplexity, ChatGPT Search, and traditional search engines without compromising privacy or adding third-party tracking scripts.
 - **Status**: Enforced across `index.html`, `MarketingPage.tsx`, `robots.txt`, and `sitemap.xml`.
 
@@ -44,3 +44,13 @@
 - **Decision**: Elevate `AppShell` with a responsive side-rail navigation and expanded reading surface (`max-w-4xl`) on desktop viewports (≥768px). Provide an instant 1-click web guest mode on `MarketingPage` to eliminate browser onboarding friction. Register PWA quick action shortcuts in `manifest.json` and lock-screen `MediaSession` metadata during audio playback.
 - **Rationale**: Closes key market gaps against venture-backed competitors by providing a world-class desktop reading experience, zero-friction web discovery, and native distribution hooks while preserving 100% sovereign privacy.
 - **Status**: Implemented in `AppShell.tsx`, `MarketingPage.tsx`, `manifest.json`, and `voice.ts`.
+
+## ADR-010: Brand Unification, Wordmark Asset Standard, and Strict Zero Em-Dash Typography
+- **Decision**: Unify brand casing globally to `TheLampStand` and enforce exclusive use of `/images/wordmark-logo.png` in place of composite flame icons. Enforce zero em-dashes (`—`) or en-dashes (`–`) across all user-facing copy, code comments, and documentation.
+- **Rationale**: Elevates visual authority, eliminates fragmented logo presentation, and creates clean, humanized typography.
+- **Status**: Enforced across `AppShell.tsx`, `HomePage.tsx`, `Grounding.ts`, `README.md`, and `omni-recall/`.
+
+## ADR-011: Expanded Canonical Scripture Catalog & Multi-Theme Grounding
+- **Decision**: Expand bundled offline scripture catalog to 100+ canonical passages, 60+ Daily Light reflections, and 35+ homiletic sermons, covering a broader array of pastoral themes (`purpose`, `gratitude`, `burnout`, `betrayal`, `waiting`, `strength`).
+- **Rationale**: Dramatically enhances response intelligence, variety, and depth across all app modes while retaining zero-network local offline capability.
+- **Status**: Implemented in `contentLibrary.ts`, `sermonLibrary.ts`, and `DailyLightPage.tsx`.

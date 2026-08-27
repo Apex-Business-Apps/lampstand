@@ -25,14 +25,24 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/ios/Icon-180.png" />
     <link rel="manifest" href="/manifest.json" />
 
+    <!-- Robots and Search Engine Indexing Directives -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="TheLampStand" />
+
     <!-- Open Graph / Social Sharing -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="TheLampStand" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="TheLampStand: Free Daily Bible Companion & AI Pastoral Guidance" />
     <meta property="og:description" content="A quiet, private companion for daily scripture, homiletic sermons, lectio divina, and warm pastoral AI conversation. Free forever, no ads, no telemetry." />
     <meta property="og:url" content="https://thelampstand.icu/" />
     <meta property="og:image" content="https://storage.googleapis.com/gpt-engineer-file-uploads/egqlfens9WdnayHgiABuCHj0EG22/social-images/social-1781659412969-social.webp">
-    <meta property="og:image:alt" content="TheLampStand - Walk with the Light" />
+    <meta property="og:image:alt" content="TheLampStand: Walk with the Light" />
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -52,11 +62,17 @@
           "@id": "https://thelampstand.icu/#website",
           "url": "https://thelampstand.icu",
           "name": "TheLampStand",
+          "alternateName": ["The Lamp Stand", "TheLampStand App", "TheLampStand Bible Companion"],
           "description": "Free offline-first Bible companion with daily scripture reflections, sermon mode, and pastoral AI guidance.",
           "publisher": {
             "@id": "https://thelampstand.icu/#organization"
           },
-          "inLanguage": "en-US"
+          "inLanguage": "en-US",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://thelampstand.icu/daily?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
         },
         {
           "@type": "Organization",
@@ -65,47 +81,152 @@
           "url": "https://thelampstand.icu",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://thelampstand.icu/icons/icon-512.png"
+            "url": "https://thelampstand.icu/icons/icon-512.png",
+            "width": 512,
+            "height": 512
           },
           "sameAs": [
             "https://github.com/Apex-Business-Apps/lampstand",
-            "https://twitter.com/ApexBusinessSys"
+            "https://twitter.com/ApexBusinessSys",
+            "https://thelampstand.icu/legal/company"
           ],
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Edmonton",
+            "addressRegion": "AB",
+            "addressCountry": "CA"
+          },
           "knowsAbout": [
-            "Bible Study",
-            "Pastoral Care",
-            "Contemplative Prayer",
+            "Holy Bible",
+            "Daily Light on the Daily Path",
             "Lectio Divina",
-            "Christian Theology",
-            "Spiritual Direction"
-          ]
+            "Ignatian Examen",
+            "Homiletics",
+            "Patristics",
+            "Pastoral Theology",
+            "Christian Contemplative Prayer",
+            "NABRE Scripture",
+            "ESV Bible",
+            "Offline-First Local Privacy Software"
+          ],
+          "publishingPrinciples": "https://thelampstand.icu/legal/acceptable-use"
         },
         {
-          "@type": "WebApplication",
+          "@type": ["WebApplication", "SoftwareApplication"],
           "@id": "https://thelampstand.icu/#app",
           "name": "TheLampStand",
           "url": "https://thelampstand.icu",
           "applicationCategory": "LifestyleApplication",
-          "operatingSystem": "All",
-          "browserRequirements": "Requires JavaScript",
+          "applicationSubCategory": "Religion & Spirituality",
+          "operatingSystem": "All (iOS, Android, macOS, Windows, Linux, Web)",
+          "browserRequirements": "Requires modern web browser with JavaScript enabled",
           "softwareVersion": "2.1.0",
           "isAccessibleForFree": true,
           "offers": {
             "@type": "Offer",
             "price": "0",
-            "priceCurrency": "USD"
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
           },
           "creator": {
             "@id": "https://thelampstand.icu/#organization"
           },
+          "screenshot": "https://thelampstand.icu/icons/icon-512.png",
           "featureList": [
             "Daily Scripture Reflections (Daily Light)",
             "AI Pastoral Guidance (Burning Bush Agent)",
             "Homiletic Sermon Meditations",
-            "Benedictine Lectio Divina",
-            "Ignatian Daily Examen",
+            "Benedictine Lectio Divina 4-Step Contemplation",
+            "Ignatian Daily Examen 5-Step Review",
             "Local-First Private Spiritual Journal",
-            "Voice Guidance & Contemplative Audio"
+            "Voice Guidance & Contemplative Audio",
+            "Zero Advertising and Zero Telemetry Guarantee"
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://thelampstand.icu/#breadcrumbs",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://thelampstand.icu/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Daily Light",
+              "item": "https://thelampstand.icu/daily"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Pastoral Guidance",
+              "item": "https://thelampstand.icu/guidance"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Sermon Mode",
+              "item": "https://thelampstand.icu/sermon"
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "name": "Lectio Divina",
+              "item": "https://thelampstand.icu/lectio"
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "name": "Daily Examen",
+              "item": "https://thelampstand.icu/examen"
+            },
+            {
+              "@type": "ListItem",
+              "position": 7,
+              "name": "Install App",
+              "item": "https://thelampstand.icu/install"
+            },
+            {
+              "@type": "ListItem",
+              "position": 8,
+              "name": "About APEX",
+              "item": "https://thelampstand.icu/legal/company"
+            }
+          ]
+        },
+        {
+          "@type": "HowTo",
+          "@id": "https://thelampstand.icu/#howto-daily-practice",
+          "name": "How to Practice Daily Contemplative Prayer with TheLampStand",
+          "description": "A step-by-step guide to daily scripture reflection, lectio divina contemplation, and evening examen using TheLampStand free offline Bible companion.",
+          "step": [
+            {
+              "@type": "HowToStep",
+              "position": 1,
+              "name": "Start Morning Reflection with Daily Light",
+              "text": "Read or listen to the curated morning scripture passage and grounded pastoral reflection in under three minutes."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 2,
+              "name": "Enter Lectio Divina Contemplation",
+              "text": "Move through the four sacred movements: Lectio (Reading), Meditatio (Meditation), Oratio (Prayer), and Contemplatio (Rest in God's presence)."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 3,
+              "name": "Review the Day with the Ignatian Examen",
+              "text": "Follow the five-step evening prayer review: Gratitude, Light, Review, Reconciliation, and Resolution."
+            },
+            {
+              "@type": "HowToStep",
+              "position": 4,
+              "name": "Seek Scriptural Guidance",
+              "text": "Open the Burning Bush pastoral agent whenever you need comfort, discernment, or scripture study direction."
+            }
           ]
         },
         {
@@ -158,6 +279,22 @@
               "acceptedAnswer": {
                 "@type": "Answer",
                 "text": "TheLampStand draws from canonical translations including the NABRE, ESV, and NIV, and embraces rich historical contemplative traditions including Benedictine Lectio Divina, Ignatian Examen, and classical homiletics."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I install TheLampStand on mobile and desktop?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "TheLampStand is a Progressive Web App (PWA). You can install it directly from your browser by tapping Share > Add to Home Screen on iOS Safari or clicking the Install button on Android Chrome and desktop browsers."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How does TheLampStand compare to subscription Bible apps?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Unlike commercial subscription Bible apps that collect user data, display ads, and charge recurring fees, TheLampStand is completely free, open source, local-first, and permanently non-monetized."
               }
             }
           ]

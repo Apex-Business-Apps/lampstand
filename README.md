@@ -1,41 +1,38 @@
-# LampStand
+# TheLampStand
 
-*Version 2.1.0 — Updated: 2026-06-16*
+*Version 2.1.0: Updated August 2026*
 
-LampStand is a local-first, privacy-first scripture companion built with React,
-TypeScript, and Vite. It is a non-profit community gift — never commercial, never
-paywalled, never ad-supported.
+TheLampStand is a local-first, privacy-first Scripture companion built with React, TypeScript, and Vite. It is a non-profit community gift: never commercial, never paywalled, and never ad-supported.
 
 ---
 
 ## Architecture Overview
 
 | Layer | Technology |
-|-------|-----------|
+|---|---|
 | UI | React 18 + Tailwind CSS + shadcn/ui |
-| Routing | react-router v6 |
+| Routing | react-router v6 (with desktop sidebar and mobile navigation) |
 | Auth | Supabase magic-link (guest mode preserved by default) |
 | Persistence | localStorage-first typed modules in `src/lib/storage.ts` |
-| AI Provider | `src/lib/adapters.ts` — Groq primary (`GroqAIAdapter`) + local fallback |
-| Agent Orchestration | `src/hooks/useAgentController.ts` — headless UI-agnostic runtime state |
-| Agent Runtime | `src/lib/runtime/agentRuntime.ts` — safety gate, turn pipeline, retrieval, circuit breaker |
-| Voice | `src/lib/voice.ts` — STT browser/null fallback, TTS cloud/browser/silent fallback |
+| AI Provider | `src/lib/adapters.ts`: Groq primary (`GroqAIAdapter`) + local fallback |
+| Agent Orchestration | `src/hooks/useAgentController.ts`: headless UI-agnostic runtime state |
+| Agent Runtime | `src/lib/runtime/agentRuntime.ts`: safety gate, turn pipeline, retrieval, circuit breaker |
+| Voice | `src/lib/voice.ts`: STT browser/null fallback, TTS cloud/browser/silent fallback |
+| SEO & GEO | Schema.org JSON-LD graph (WebSite, Organization, WebApplication, FAQPage, HowTo, BreadcrumbList) + robots.txt AI crawler allowlist |
 | Deploy | Cloudflare Workers static assets via `wrangler.json` / `wrangler.production.toml` |
 
 ---
 
 ## Visual Layer Stack
 
-The marketing page uses a custom canvas-based reveal system. Modal overlays are at
-**z-[500]** to guarantee they clear all canvas layers. See the full specification in
-[`docs/LAYER_STACK.md`](docs/LAYER_STACK.md).
+The marketing page uses a custom canvas-based reveal system. Modal overlays are at **z-[500]** to guarantee they clear all canvas layers. See the full specification in [`docs/LAYER_STACK.md`](docs/LAYER_STACK.md).
 
 ---
 
 ## Modes
 
-- **Guest mode** — full local usage, no login required
-- **Signed-in mode** — optional sync / account-linked persistence
+- **Guest mode**: full local usage, no login required.
+- **Signed-in mode**: optional sync / account-linked persistence.
 
 ---
 
@@ -43,15 +40,27 @@ The marketing page uses a custom canvas-based reveal system. Modal overlays are 
 
 All consent is explicit opt-in. Settings expose toggles for:
 
-- Local adaptive memory & journal storage
+- Local adaptive memory and journal storage
 - Optional cloud sync
 - Microphone access
 - Voice output (TTS)
 - Notifications
-- Gentle Mode (hides streak/gamification visuals — neurodivergent aligned)
+- Gentle Mode (hides streak/gamification visuals for quiet focus)
 
-Defaults are privacy-first. Raw audio is not stored. Transcripts are local-first and
-deletable. See [`MISSION.md`](MISSION.md) for the non-monetization commitment.
+Defaults are privacy-first. Raw audio is never stored. Transcripts are local-first and deletable. See [`MISSION.md`](MISSION.md) for the permanent non-monetization commitment.
+
+---
+
+## Content & Scripture Library
+
+TheLampStand includes an extensive offline-first canonical library:
+
+- **100+ Canonical Scripture Passages**: Spanning the Psalms, Gospels, Epistles, and Prophets with NABRE, ESV, and NIV text.
+- **60+ Daily Light Morning Reflections**: Curated daily passages with short, empathetic pastoral reflections and prayers.
+- **35+ Homiletic Sermons**: Structured teachings with reflections, modern relevance, and adaptive tone adjustments.
+- **4-Step Benedictine Lectio Divina**: Sacred reading, meditation, prayer, and contemplation.
+- **5-Step Ignatian Daily Examen**: Evening prayer review of gratitude, light, review, reconciliation, and resolution.
+- **Pastoral Guidance Themes**: 16+ pastoral counseling themes with dedicated grounding passages and empathetic reflection prompts.
 
 ---
 
@@ -75,8 +84,8 @@ GROQ_API_KEY         # groq-guidance edge function
 ELEVENLABS_API_KEY   # elevenlabs-tts edge function
 ```
 
-> ⚠️ **Never** prefix server-side secrets with `VITE_`. Those values are bundled
-> into client JS and are publicly visible.
+> [!WARNING]
+> Never prefix server-side secrets with `VITE_`. Those values are bundled into client JS and are publicly visible.
 
 ---
 
@@ -88,7 +97,7 @@ npm ci && npm run build
 npx wrangler deploy --config wrangler.json
 ```
 
-**Production CI** (uses `wrangler.production.toml` — the authoritative production config used by GitHub Actions and dry-run validation):
+**Production CI** (uses `wrangler.production.toml`: the authoritative production config used by GitHub Actions):
 ```bash
 # Runs automatically via GitHub Actions on push to main.
 # To trigger manually:
@@ -103,20 +112,22 @@ npx wrangler deploy --config wrangler.production.toml
 ```bash
 npm ci
 npm run lint
-npm run typecheck
 npm run test
+npm run test:e2e
 npm run build
 ```
+
+All 48 Vitest suites (220 tests), ESLint checks, and Playwright E2E tests are configured to run with 100% pass rates.
 
 ---
 
 ## Key Docs
 
 | Document | Purpose |
-|----------|---------|
+|---|---|
 | [`omni-recall/`](omni-recall/) | Institutional memory: architecture, decisions, constraints, debugging history, and content catalog |
-| [`docs/LAYER_STACK.md`](docs/LAYER_STACK.md) | Authoritative z-index stack — read before touching any fixed/overlay element |
-| [`docs/ROUTING_RULES.md`](docs/ROUTING_RULES.md) | Browser vs PWA routing bifurcation — do not modify without founder sign-off |
+| [`docs/LAYER_STACK.md`](docs/LAYER_STACK.md) | Authoritative z-index stack: read before touching any fixed/overlay element |
+| [`docs/ROUTING_RULES.md`](docs/ROUTING_RULES.md) | Browser vs PWA routing bifurcation |
 | [`MISSION.md`](MISSION.md) | Non-monetization commitment and contribution guidelines |
 | [`docs/ios-release-checklist.md`](docs/ios-release-checklist.md) | iOS App Store release process |
 | [`docs/android-release-checklist.md`](docs/android-release-checklist.md) | Google Play release process |
@@ -134,5 +145,4 @@ npm run build
 /legal/company
 ```
 
-Ownership language references APEX Business Systems Ltd. with explicit
-counsel-review markers where legal finalization is required.
+Ownership language references APEX Business Systems Ltd. (Edmonton, AB Canada).

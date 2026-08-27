@@ -1,13 +1,14 @@
-# LampStand Architecture Map
+# TheLampStand Architecture Map
 
 ## Overview
-LampStand is an offline-first, private Bible companion and pastoral AI web application developed by APEX Business Systems Ltd. It provides daily scripture reflections, contemplative lectio divina, daily examen, homiletically structured sermon reflections, and a warm, voice-capable conversational agent (the Burning Bush Agent).
+TheLampStand is an offline-first, private Bible companion and pastoral AI web application developed by APEX Business Systems Ltd. It provides daily scripture reflections, contemplative lectio divina, daily examen, homiletically structured sermon reflections, and a warm, voice-capable conversational agent (the Burning Bush Agent).
 
 ## Core Principles
 1. **Mission Lock**: 100% free forever, no advertisements, no paywalls, zero PII telemetry, zero monetization.
 2. **Local-First & Offline Capable**: All scripture content, sermon drafts, daily light templates, and personalization fingerprints run completely on-device without requiring remote databases or network connectivity.
-3. **Fail-Closed Safety**: Multi-stage safety gates block prompt injection, fabricated scripture requests, and medical/legal/crisis queries before provider execution.
+3. **Fail-Closed Safety**: Multi-stage safety gates block prompt injection, fabricated scripture requests, and crisis queries before provider execution.
 4. **Zero AI Filler**: Pastoral tone is grounded, still, and authoritative, strictly avoiding superficial AI platitudes.
+5. **Generative Engine Optimization (GEO) & Authority**: First-class Schema.org graph and robots.txt crawler permissions ensure accurate indexing and citation across Google AI Overviews, Perplexity, and ChatGPT Search.
 
 ---
 

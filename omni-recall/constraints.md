@@ -1,9 +1,11 @@
-# LampStand System Constraints & Invariants
+# TheLampStand System Constraints & Invariants
 
 ## 1. Product & Business Invariants
 - **NEVER** introduce subscription paywalls, Stripe, ads, in-app purchases, or paid features.
 - **NEVER** collect personal identifying information (PII), track user location, or send analytics telemetry.
 - **NEVER** introduce runtime dependencies outside vetted, essential open-source packages in `package.json`.
+- **NEVER** use em-dashes (—) or en-dashes (–) anywhere in UI copy, data libraries, or source text. Enforce natural commas, colons, or clean sentences.
+- **NEVER** composite, fragment, or invent alternate logo icons: use exclusively `/images/wordmark-logo.png` for header branding.
 
 ## 2. Technical Performance Limits
 - `MAX_AI_INPUT_CHARS = 1200`: User input normalization truncates at 1,200 characters in `src/lib/agent/Grounding.ts`.
@@ -18,7 +20,8 @@
 - **Content Security Policy**: `src/workers/static-spa.ts` enforces strict CSP allowlisting Google Fonts (`fonts.googleapis.com`, `fonts.gstatic.com`), Supabase, and Groq.
 
 ## 4. Architectural Layer Stack (`docs/LAYER_STACK.md`)
-- `z-[100]`: Fullscreen modals and fullscreen agent overlay.
-- `z-50`: Floating agent widget and global notification banners.
-- `z-40`: Navigation bars and headers.
-- `z-0`: Base content cards and background glowing canvas.
+- `z-[500]`: Fullscreen modals and consent dialogs.
+- `z-[200]`: Hero text, headers, and below-fold interactive sections.
+- `z-[150]`: Lampstand glowing canvas layer.
+- `z-[100]`: Candle reveal canvas veil mask.
+- `z-10` / `z-0`: Background cross silhouette and sacred texture layers.

@@ -18,14 +18,16 @@ describe('SEO & Sitemap Contract', () => {
       'https://thelampstand.icu/saved',
       'https://thelampstand.icu/kids',
       'https://thelampstand.icu/install',
+      'https://thelampstand.icu/legal/company',
       'https://thelampstand.icu/legal/privacy',
       'https://thelampstand.icu/legal/terms',
       'https://thelampstand.icu/legal/disclaimer',
+      'https://thelampstand.icu/legal/acceptable-use',
     ];
 
     const locMatches = Array.from(sitemap.matchAll(/<loc>(.*?)<\/loc>/g)).map((m) => m[1]);
     expect(locMatches).toEqual(expectedUrls);
-    expect(sitemap).toContain('<lastmod>2026-08-25</lastmod>');
+    expect(sitemap).toContain('<lastmod>2026-08-27</lastmod>');
   });
 
   it('includes Sitemap directive and AI crawler rules in public/robots.txt', () => {
@@ -33,17 +35,24 @@ describe('SEO & Sitemap Contract', () => {
     const robots = fs.readFileSync('public/robots.txt', 'utf8');
     expect(robots).toContain('Sitemap: https://thelampstand.icu/sitemap.xml');
     expect(robots).toContain('User-agent: Googlebot');
+    expect(robots).toContain('User-agent: Google-Extended');
     expect(robots).toContain('User-agent: GPTBot');
+    expect(robots).toContain('User-agent: OAI-SearchBot');
     expect(robots).toContain('User-agent: PerplexityBot');
     expect(robots).toContain('User-agent: ClaudeBot');
+    expect(robots).toContain('User-agent: anthropic-ai');
+    expect(robots).toContain('User-agent: Applebot-Extended');
   });
 
-  it('declares full Schema.org @graph with WebApplication, Organization, and FAQPage in index.html', () => {
+  it('declares full Schema.org @graph with WebApplication, Organization, FAQPage, HowTo, and BreadcrumbList in index.html', () => {
     const html = fs.readFileSync('index.html', 'utf8');
     expect(html).toContain('"isAccessibleForFree": true');
     expect(html).toContain('"@type": "Organization"');
     expect(html).toContain('"@type": "FAQPage"');
     expect(html).toContain('"@type": "WebSite"');
+    expect(html).toContain('"@type": "BreadcrumbList"');
+    expect(html).toContain('"@type": "HowTo"');
+    expect(html).toContain('https://github.com/Apex-Business-Apps/lampstand');
     expect(html).toContain('TheLampStand: Free Daily Bible Companion & AI Pastoral Guidance');
   });
 });
