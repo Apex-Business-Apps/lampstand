@@ -62,7 +62,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
             <div className="flex items-center gap-2 sm:gap-3 min-w-0">
               <img
                 src="/images/wordmark-logo.png"
-                alt="LampStand"
+                alt="TheLampStand"
                 className="h-6 sm:h-7 w-auto object-contain"
                 draggable={false}
               />
@@ -209,7 +209,7 @@ export function FullscreenAgent({ onMinimize }: FullscreenAgentProps) {
           </div>
         </main>
 
-        {/* ── Composer — pinned bottom ── */}
+        {/* ── Composer: pinned bottom ── */}
         <section className="shrink-0 border-t border-[#D97736]/30 bg-[#0a0a0a]/80 px-3 sm:px-4 pb-3 sm:pb-4 pt-2 sm:pt-3 backdrop-blur-md safe-bottom">
           <div className="mx-auto w-full max-w-3xl space-y-2 sm:space-y-3">
             <div className="flex items-end gap-2">

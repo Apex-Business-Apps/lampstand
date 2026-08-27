@@ -135,7 +135,7 @@ export class GraphRAGAdapter implements IRetrievalAdapter {
       };
     } catch (err) {
       console.error('GraphRAG retrieval failed (CSP or worker error), falling back', err);
-      // CSP or worker failure — fall back to deterministic local retrieval
+      // CSP or worker failure: fall back to deterministic local retrieval
       if (_localFallback) return _localFallback.search(req);
       // Ultimate fallback: return a seed passage
       return { passages: [SEED_PASSAGES[0]], confidence: 0.1, source: 'emergency-fallback' };

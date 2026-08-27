@@ -19,7 +19,7 @@ export function useAppBoot() {
         /* private mode / quota - ignore */
       }
 
-      // Register the SW whenever the browser supports it — not gated on
+      // Register the SW whenever the browser supports it: not gated on
       // Notification permission, which would break offline caching for users
       // who haven't granted notification access.
       if ('serviceWorker' in navigator) {

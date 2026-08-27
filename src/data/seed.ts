@@ -223,7 +223,7 @@ export const SEED_PASSAGES: ScripturePassage[] = [
   },
   {
     id: 'luke-7-47', book: 'Luke', chapter: 7, verseStart: 47, verseEnd: 47,
-    text: '"Therefore I tell you, her sins, which are many, are forgiven—for she loved much. But he who is forgiven little, loves little."', translation: 'ESV', reference: 'Luke 7:47',
+    text: '"Therefore I tell you, her sins, which are many, are forgiven, for she loved much. But he who is forgiven little, loves little."', translation: 'ESV', reference: 'Luke 7:47',
   },
   {
     id: 'john-11-35', book: 'John', chapter: 11, verseStart: 35, verseEnd: 35,
@@ -567,7 +567,7 @@ export const SEED_DAILY_LIGHTS: DailyLight[] = [
     id: 'daily-new-6',
     date: new Date(Date.now() - 518400000).toISOString().split('T')[0],
     passage: SEED_PASSAGES.find(p => p.id === 'john-13-7')!,
-    reflection: 'We are obsessed with the \'why\' of our circumstances. We feel entitled to an explanation before we submit to the process. Jesus asks for the exact opposite. He is doing something in your life right now that makes no sense to you. The challenge is to let Him wash your feet—to let Him work—without demanding the blueprint first. The understanding will come later.',
+    reflection: 'We are obsessed with the \'why\' of our circumstances. We feel entitled to an explanation before we submit to the process. Jesus asks for the exact opposite. He is doing something in your life right now that makes no sense to you. The challenge is to let Him wash your feet (to let Him work in your heart) without demanding the blueprint first. The understanding will come later.',
     prayer: 'Lord, I am deeply confused by what you are allowing in my life right now. I surrender my demand for an immediate explanation. Help me to trust what you are doing in the dark. Amen.',
     theme: 'peace',
   },
@@ -631,7 +631,7 @@ export const SEED_DAILY_LIGHTS: DailyLight[] = [
     id: 'daily-new-14',
     date: new Date(Date.now() - 1209600000).toISOString().split('T')[0],
     passage: SEED_PASSAGES.find(p => p.id === 'isa-54-10')!,
-    reflection: 'When the structures of our lives—our health, our careers, our relationships—begin to shake and crumble, we feel like we are in freefall. Isaiah offers a tether. The things you thought were permanent may depart, but the steadfast love of God will not. If your mountains are shaking today, shift your weight onto the only promise that survives the earthquake.',
+    reflection: 'When the structures of our lives (our health, our careers, our relationships) begin to shake and crumble, we feel like we are in freefall. Isaiah offers a tether. The things you thought were permanent may depart, but the steadfast love of God will not. If your mountains are shaking today, shift your weight onto the only promise that survives the earthquake.',
     prayer: 'Father, the foundations of my life feel like they are shaking, and I am terrified. Anchor my soul to your covenant of peace. Remind me that your steadfast love outlasts the mountains. Amen.',
     theme: 'peace',
   },

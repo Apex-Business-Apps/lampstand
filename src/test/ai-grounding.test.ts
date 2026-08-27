@@ -77,7 +77,7 @@ describe('grounded conversation safety and runtime pipeline', () => {
 
   it('marks ungrounded answers as unverifiable when no citation exists in output', () => {
     const enforced = enforceGroundedAnswer('That claim needs outside context.', []);
-    expect(enforced).toMatch(/^LampStand cannot verify this from available source passages\./);
+    expect(enforced).toMatch(/^TheLampStand cannot verify this from available source passages\./);
   });
 
   it('selects and deduplicates grounding passages correctly', () => {

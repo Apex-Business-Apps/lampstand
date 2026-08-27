@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 
 /* ── BrandAnthemPlayer ────────────────────────────────────────────────────────
- *  Sticky ambient music player — marketing hero only (mounted in MarketingPage).
- *  z-[500] — topmost layer, on par with modals. ConsentModal overlay (same z, later DOM) still
+ *  Sticky ambient music player: marketing hero only (mounted in MarketingPage).
+ *  z-[500]: topmost layer, on par with modals. ConsentModal overlay (same z, later DOM) still
  *  covers the player when open; once dismissed the player is always reachable.
  *  Positioned bottom-left so it never collides with the FloatingAgent FAB (bottom-right).
  *  Cleans up on unmount so audio stops when the user navigates away.
@@ -16,7 +16,7 @@ export function BrandAnthemPlayer() {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = 0.4;
-    // Attempt autoplay on landing; browsers may block — handled gracefully.
+    // Attempt autoplay on landing; browsers may block, handled gracefully.
     audio.play().then(() => setPlaying(true)).catch(() => {});
     return () => {
       audio.pause();

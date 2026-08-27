@@ -38,7 +38,7 @@ describe('MarketingPage Component', () => {
     expect(screen.getByText(/the Light\./i)).toBeDefined();
 
     // Verify GEO answer-first definition block
-    expect(screen.getByText(/What is LampStand\?/i)).toBeDefined();
+    expect(screen.getByText(/What is TheLampStand\?/i)).toBeDefined();
 
     // Verify FAQ and Spiritual Disciplines sections
     expect(screen.getByText(/Frequently Asked Questions/i)).toBeDefined();

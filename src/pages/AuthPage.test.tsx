@@ -43,7 +43,7 @@ function renderAuthPage() {
   );
 }
 
-describe('AuthPage — configuration error state', () => {
+describe('AuthPage: configuration error state', () => {
   beforeEach(() => {
     mockIsSupabaseConfigured.mockReset();
   });

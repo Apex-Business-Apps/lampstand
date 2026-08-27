@@ -1,6 +1,6 @@
 {
-  "name": "The Lamp Stand — Your Bible Companion",
-  "short_name": "The Lamp Stand",
+  "name": "TheLampStand: Your Bible Companion",
+  "short_name": "TheLampStand",
   "description": "Daily reflections, pastoral guidance, and a gentle AI companion for your scripture journey.",
   "start_url": "/app",
   "display": "standalone",

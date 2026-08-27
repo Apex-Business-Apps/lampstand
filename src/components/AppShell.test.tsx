@@ -22,8 +22,8 @@ describe('AppShell Component', () => {
     expect(screen.getByTestId('test-content')).toBeDefined();
     expect(screen.getByText('Sanctuary Content')).toBeDefined();
 
-    // Verify desktop side rail brand mark and sections
-    expect(screen.getAllByText('LampStand').length).toBeGreaterThanOrEqual(1);
+    // Verify desktop side rail and mobile wordmark logo
+    expect(screen.getAllByAltText('TheLampStand').length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText('Sanctuary')).toBeDefined();
     expect(screen.getByText('Disciplines')).toBeDefined();
     expect(screen.getByText('Account')).toBeDefined();

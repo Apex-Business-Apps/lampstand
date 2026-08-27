@@ -2,16 +2,18 @@ import type { SafetyEvent } from '@/types';
 import { logSafetyEvent } from './storage';
 
 const INJECTION_PATTERNS = [
-  /ignore\s+(all\s+)?previous/i,
-  /disregard\s+(all\s+)?instructions/i,
+  /ignore\s+(all\s+)?(previous|prior|system)/i,
+  /disregard\s+(all\s+)?(instructions|rules|safety)/i,
   /you\s+are\s+now/i,
   /pretend\s+to\s+be/i,
-  /act\s+as\s+(if|a)/i,
+  /act\s+as\s+(if|a|an)/i,
   /system\s*prompt/i,
+  /reveal\s+(your\s+)?(instructions|prompt|system)/i,
   /\bDAN\b/,
   /jailbreak/i,
-  /bypass\s+(safety|filter|guard)/i,
-  /override\s+(safety|system)/i,
+  /bypass\s+(safety|filter|guard|policy)/i,
+  /override\s+(safety|system|rules)/i,
+  /developer\s+mode/i,
 ];
 
 const ABUSE_PATTERNS = [
@@ -19,12 +21,19 @@ const ABUSE_PATTERNS = [
   /hate\s+(god|jesus|christ|church)/i,
 ];
 
+const SENSITIVE_CRISIS_PATTERNS = [
+  /\b(suicide|kill myself|end my life|self-harm|self harm|hurt myself|want to die)\b/i,
+  /\b(domestic abuse|sexual assault|physical violence)\b/i,
+];
+
 const OUT_OF_SCOPE_PATTERNS = [
-  /stock\s*(market|price|tip)/i,
-  /crypto(currency)?/i,
-  /betting|gambling/i,
-  /political\s+(party|candidate)/i,
+  /stock\s*(market|price|tip|pick)/i,
+  /crypto(currency)?|bitcoin|ethereum/i,
+  /betting|gambling|casino|lottery/i,
+  /political\s+(party|candidate|campaign)/i,
   /who\s+to\s+vote/i,
+  /medical\s+(diagnosis|prescription|dosage)/i,
+  /legal\s+(advice|lawsuit|contract)/i,
 ];
 
 export interface SafetyCheckResult {
@@ -37,6 +46,24 @@ export function checkInputSafety(input: string): SafetyCheckResult {
   const trimmed = input.trim();
   if (!trimmed) return { safe: true };
 
+  for (const p of SENSITIVE_CRISIS_PATTERNS) {
+    if (p.test(trimmed)) {
+      const event: SafetyEvent = {
+        id: crypto.randomUUID(),
+        type: 'crisis',
+        input: trimmed.slice(0, 200),
+        action: 'blocked',
+        timestamp: new Date().toISOString(),
+      };
+      logSafetyEvent(event);
+      return {
+        safe: false,
+        type: 'crisis',
+        reason: 'If there is immediate danger, contact emergency services now. If you or someone you know is struggling or in crisis, help is available. You are not alone. Please dial 988 in the US/Canada or contact your local emergency services immediately for trained support.',
+      };
+    }
+  }
+
   for (const p of INJECTION_PATTERNS) {
     if (p.test(trimmed)) {
       const event: SafetyEvent = {
@@ -47,7 +74,11 @@ export function checkInputSafety(input: string): SafetyCheckResult {
         timestamp: new Date().toISOString(),
       };
       logSafetyEvent(event);
-      return { safe: false, type: 'injection', reason: 'This input appears to contain instructions that fall outside what I can help with.' };
+      return {
+        safe: false,
+        type: 'injection',
+        reason: 'This input contains instructions that fall outside what TheLampStand is called to do. I am here for quiet spiritual reflection.',
+      };
     }
   }
 
@@ -61,7 +92,11 @@ export function checkInputSafety(input: string): SafetyCheckResult {
         timestamp: new Date().toISOString(),
       };
       logSafetyEvent(event);
-      return { safe: false, type: 'abuse', reason: 'I sense some strong feelings. Would you like to sit with a passage about peace instead?' };
+      return {
+        safe: false,
+        type: 'abuse',
+        reason: 'I sense strong distress. Would you like to sit with a quiet passage about peace instead?',
+      };
     }
   }
 
@@ -75,7 +110,11 @@ export function checkInputSafety(input: string): SafetyCheckResult {
         timestamp: new Date().toISOString(),
       };
       logSafetyEvent(event);
-      return { safe: false, type: 'out-of-scope', reason: 'That\'s outside the scope of what I can offer. I\'m here for scripture, reflection, and spiritual guidance.' };
+      return {
+        safe: false,
+        type: 'out-of-scope',
+        reason: 'That is outside the scope of what I can offer. I am here for scripture, reflection, and spiritual accompaniment.',
+      };
     }
   }
 

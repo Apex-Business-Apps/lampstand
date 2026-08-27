@@ -54,7 +54,7 @@ export default function HomePage() {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-muted-foreground">{greeting}</p>
-            <h1 className="text-2xl font-serif font-semibold text-foreground">The Lamp Stand</h1>
+            <h1 className="text-2xl font-serif font-semibold text-foreground">TheLampStand</h1>
           </div>
           {!profile.hideStreakVisuals && knowledge.streak > 0 && (
             <div className="flex items-center gap-1.5 bg-accent/60 px-3 py-1.5 rounded-full">
@@ -106,7 +106,7 @@ export default function HomePage() {
             </div>
             <div className="flex-1">
               <p className="text-sm font-semibold text-foreground">
-                {lectioDone ? 'Today\u2019s Lectio \u2014 Complete' : 'Lectio Divina'}
+                {lectioDone ? 'Today\u2019s Lectio: Complete' : 'Lectio Divina'}
               </p>
               <p className="text-xs text-muted-foreground">
                 {lectioDone
@@ -136,7 +136,7 @@ export default function HomePage() {
             </div>
             <div className="flex-1">
               <p className="text-sm font-semibold text-foreground">
-                {examenDone ? 'Today\u2019s Examen — Complete' : 'The Daily Examen'}
+                {examenDone ? 'Today\u2019s Examen: Complete' : 'The Daily Examen'}
               </p>
               <p className="text-xs text-muted-foreground">
                 {examenDone

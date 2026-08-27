@@ -17,8 +17,8 @@ describe('Prompts Constants', () => {
       expect(Prompts.style).toContain('"journey" or "walk"');
     });
 
-    it('should define Lampstand character', () => {
-      expect(Prompts.style).toContain('You are Lampstand');
+    it('should define TheLampStand character', () => {
+      expect(Prompts.style).toContain('You are TheLampStand');
       expect(Prompts.style).toContain('pastoral companion');
     });
   });

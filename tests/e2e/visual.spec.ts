@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import path from 'path';
 
-test('LampStand visual verification', async ({ page }) => {
+test('TheLampStand visual verification', async ({ page }) => {
   await page.goto('/');
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(1000); // Wait for any initial animations
@@ -14,7 +14,7 @@ test('LampStand visual verification', async ({ page }) => {
   if (agentTrigger) {
     await agentTrigger.click();
     // Wait for the fullscreen agent to load
-    await page.waitForSelector('text=LampStand', { state: 'visible', timeout: 5000 }).catch(() => {});
+    await page.waitForSelector('text=TheLampStand', { state: 'visible', timeout: 5000 }).catch(() => {});
     await page.waitForTimeout(1000); // Wait for animations
     await page.screenshot({ path: path.join(process.cwd(), 'artifacts', 'lampstand-fullscreen-agent.png') });
   }

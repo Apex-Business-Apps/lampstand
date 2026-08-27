@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'icu.thelampstand.app',
-  appName: 'LampStand',
+  appName: 'TheLampStand',
   webDir: 'dist',
   server: {
     androidScheme: 'https',

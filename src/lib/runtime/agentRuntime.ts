@@ -131,7 +131,7 @@ export function sanitizeAIFiller(text: string): { sanitized: string; hadFiller: 
 
 export function ensureRuntimeGrounding(result: GuidanceResult, passage: ScripturePassage | null): GuidanceResult {
   if (!passage?.reference) {
-    const prefix = 'LampStand cannot verify this from available source passages.';
+    const prefix = 'TheLampStand cannot verify this from available source passages.';
     return {
       ...result,
       pastoralFraming: result.pastoralFraming.trim().startsWith(prefix)
@@ -286,7 +286,7 @@ export class TurnPipeline {
 }
 
 /** Lightweight cancellation-state tracker for the agent turn pipeline.
- * NOT the audio VoiceOrchestrator — see src/lib/voice/VoiceOrchestrator.ts for TTS/STT. */
+ * NOT the audio VoiceOrchestrator: see src/lib/voice/VoiceOrchestrator.ts for TTS/STT. */
 export class VoiceCancellationController {
   private cancelled = false;
   cancel() { this.cancelled = true; }

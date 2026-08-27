@@ -1,11 +1,11 @@
 const MEDIA_EXT = /\.(mp4|webm|mov|avi|mkv|ogv|ogg|mp3|wav|flac|m4a)$/i;
 const FILE_EXT  = /\.[a-zA-Z0-9]{1,8}$/;
 
-// F-010 FIX: removed 'unsafe-inline' from script-src — Vite ESM production
+// F-010 FIX: removed 'unsafe-inline' from script-src: Vite ESM production
 // builds emit no inline <script> tags. 'unsafe-eval' is retained because
 // Transformers.js (ai.worker.ts / whisper.worker.ts) requires it for ONNX
 // model execution inside web workers. Track removal in:
-// https://github.com/xenova/transformers.js/issues — when upstream drops eval,
+// https://github.com/xenova/transformers.js/issues: when upstream drops eval,
 // remove 'unsafe-eval' here too.
 const CSP = [
   "default-src 'self'",
@@ -45,7 +45,7 @@ interface Env {
 
 // isHtml=true adds no-store so browsers never cache index.html across deploys.
 // Stale index.html causes "Failed to fetch dynamically imported module" when
-// chunk hashes change between builds — this is the permanent fix.
+// chunk hashes change between builds, this is the permanent fix.
 function addSecurityHeaders(headers: Headers, isHtml: boolean): void {
   headers.set("X-Content-Type-Options", "nosniff");
   headers.set("X-Frame-Options", "DENY");
@@ -63,7 +63,7 @@ export default {
     const url = new URL(request.url);
     const { pathname } = url;
 
-    // Health endpoint — never touches ASSETS
+    // Health endpoint: never touches ASSETS
     if (pathname === "/health") {
       return new Response(
         JSON.stringify({ status: "healthy", service: "lampstand-static-spa" }),

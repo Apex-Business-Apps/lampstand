@@ -180,7 +180,7 @@ export default function AuthPage() {
           </form>
         )}
 
-        {/* Try without signing up — always visible, prominent */}
+        {/* Try without signing up: always visible, prominent */}
         <div className="pt-2 space-y-3">
           <div className="relative flex items-center gap-3">
             <div className="flex-1 border-t border-border/50" />

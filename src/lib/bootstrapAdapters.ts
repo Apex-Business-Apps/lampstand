@@ -7,7 +7,7 @@ export function bootstrapAdapters(): void {
     import('@/lib/groq').then(({ GroqAIAdapter }) => {
       setAIAdapter(new GroqAIAdapter());
     }).catch(() => {
-      // GroqAIAdapter unavailable — LocalAIAdapter remains active (already the default)
+      // GroqAIAdapter unavailable: LocalAIAdapter remains active (already the default)
     });
   }
   // Otherwise LocalAIAdapter remains (already the default in adapters.ts)
