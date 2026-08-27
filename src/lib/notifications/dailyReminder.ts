@@ -45,7 +45,12 @@ export async function ensureServiceWorker(): Promise<ServiceWorkerRegistration |
   if (!('serviceWorker' in navigator)) return null;
   try {
     const existing = await navigator.serviceWorker.getRegistration(SW_PATH);
-    if (existing) return existing;
+    if (existing) {
+      if (typeof existing.update === 'function') {
+        existing.update().catch(() => {});
+      }
+      return existing;
+    }
     return await navigator.serviceWorker.register(SW_PATH, { scope: '/' });
   } catch (err) {
     console.warn('[reminder] sw register failed', err);
