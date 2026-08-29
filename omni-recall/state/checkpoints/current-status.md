@@ -1,8 +1,8 @@
 # Current Repository Status
 
 *As of: August 28, 2026*
-*Active Branch: `apex/lampstand/pr115-seo-geo-backlinks-authority`*
-*Active PR: [PR #115](https://github.com/Apex-Business-Apps/lampstand/pull/115)*
+*Active Branch: `apex/lampstand/fix-pwa-error-boundary-and-chunk-retry`*
+*Active PR: [PR #119](https://github.com/Apex-Business-Apps/lampstand/pull/119)*
 
 ## Operational Truth
 
