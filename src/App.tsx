@@ -1,4 +1,5 @@
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
+import { lazyWithRetry } from "@/lib/lazyWithRetry";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -11,37 +12,37 @@ import { ProfileGuard } from "@/components/ProfileGuard";
 import { FloatingAgent } from "@/components/FloatingAgent";
 import { useAppBoot } from "@/hooks/useAppBoot";
 
-// Lazy-load all pages for optimal code splitting
-const MarketingPage = lazy(() => import("./pages/MarketingPage"));
-const LiteLandingPage = lazy(() => import("./pages/LiteLandingPage"));
-const HomePage = lazy(() => import("./pages/HomePage"));
-const Onboarding = lazy(() => import("./pages/Onboarding"));
-const DailyLightPage = lazy(() => import("./pages/DailyLightPage"));
-const SermonPage = lazy(() => import("./pages/SermonPage"));
-const GuidancePage = lazy(() => import("./pages/GuidancePage"));
-const KidsPage = lazy(() => import("./pages/KidsPage"));
-const SavedPage = lazy(() => import("./pages/SavedPage"));
-const JournalPage = lazy(() => import("./pages/JournalPage"));
-const SettingsPage = lazy(() => import("./pages/SettingsPage"));
-const AdminPage = lazy(() => import("./pages/AdminPage"));
-const AuthPage = lazy(() => import("./pages/AuthPage"));
-const ResetPasswordPage = lazy(() => import("./pages/ResetPasswordPage"));
-const LegalPage = lazy(() => import("./pages/LegalPage"));
-const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
-const TermsPage = lazy(() => import("./pages/TermsPage"));
-const AcceptableUsePage = lazy(() => import("./pages/AcceptableUsePage"));
-const DisclaimerPage = lazy(() => import("./pages/DisclaimerPage"));
-const CompanyPage = lazy(() => import("./pages/CompanyPage"));
-const NotFound = lazy(() => import("./pages/NotFound"));
-const ReturnPage = lazy(() => import("./pages/ReturnPage"));
-const InstallPage = lazy(() => import("./pages/InstallPage"));
-const PrayerCirclesPage = lazy(() => import("./pages/PrayerCirclesPage"));
-const PrayerCircleDetailPage = lazy(
+// Lazy-load all pages with automated single-reload recovery for rotated chunk hashes
+const MarketingPage = lazyWithRetry(() => import("./pages/MarketingPage"));
+const LiteLandingPage = lazyWithRetry(() => import("./pages/LiteLandingPage"));
+const HomePage = lazyWithRetry(() => import("./pages/HomePage"));
+const Onboarding = lazyWithRetry(() => import("./pages/Onboarding"));
+const DailyLightPage = lazyWithRetry(() => import("./pages/DailyLightPage"));
+const SermonPage = lazyWithRetry(() => import("./pages/SermonPage"));
+const GuidancePage = lazyWithRetry(() => import("./pages/GuidancePage"));
+const KidsPage = lazyWithRetry(() => import("./pages/KidsPage"));
+const SavedPage = lazyWithRetry(() => import("./pages/SavedPage"));
+const JournalPage = lazyWithRetry(() => import("./pages/JournalPage"));
+const SettingsPage = lazyWithRetry(() => import("./pages/SettingsPage"));
+const AdminPage = lazyWithRetry(() => import("./pages/AdminPage"));
+const AuthPage = lazyWithRetry(() => import("./pages/AuthPage"));
+const ResetPasswordPage = lazyWithRetry(() => import("./pages/ResetPasswordPage"));
+const LegalPage = lazyWithRetry(() => import("./pages/LegalPage"));
+const PrivacyPolicyPage = lazyWithRetry(() => import("./pages/PrivacyPolicyPage"));
+const TermsPage = lazyWithRetry(() => import("./pages/TermsPage"));
+const AcceptableUsePage = lazyWithRetry(() => import("./pages/AcceptableUsePage"));
+const DisclaimerPage = lazyWithRetry(() => import("./pages/DisclaimerPage"));
+const CompanyPage = lazyWithRetry(() => import("./pages/CompanyPage"));
+const NotFound = lazyWithRetry(() => import("./pages/NotFound"));
+const ReturnPage = lazyWithRetry(() => import("./pages/ReturnPage"));
+const InstallPage = lazyWithRetry(() => import("./pages/InstallPage"));
+const PrayerCirclesPage = lazyWithRetry(() => import("./pages/PrayerCirclesPage"));
+const PrayerCircleDetailPage = lazyWithRetry(
   () => import("./pages/PrayerCircleDetailPage"),
 );
-const LectioPage = lazy(() => import("./pages/LectioPage"));
-const ExamenPage = lazy(() => import("./pages/ExamenPage"));
-const EntryPage = lazy(() => import("./pages/EntryPage"));
+const LectioPage = lazyWithRetry(() => import("./pages/LectioPage"));
+const ExamenPage = lazyWithRetry(() => import("./pages/ExamenPage"));
+const EntryPage = lazyWithRetry(() => import("./pages/EntryPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
