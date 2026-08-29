@@ -1,6 +1,6 @@
 # iOS Release Checklist
 
-LampStand targets the App Store as an installable iOS app via Capacitor.
+TheLampStand targets the App Store as an installable iOS app via Capacitor.
 
 ## Prerequisites
 
@@ -30,11 +30,11 @@ The generated `ios/` directory should be committed to the repository after initi
 In Xcode:
 1. Open `ios/App/App.xcworkspace`
 2. Select the `App` target → Signing & Capabilities
-3. Set your **Team** (Apple Developer Team ID — placeholder: `XXXXXXXXXX`)
+3. Set your **Team** (Apple Developer Team ID: placeholder: `XXXXXXXXXX`)
 4. Enable **Automatically manage signing**
 5. Choose the correct bundle identifier: `icu.thelampstand.app`
 
-For CI/CD signing, use environment variables via Xcode Cloud or fastlane — never hardcode.
+For CI/CD signing, use environment variables via Xcode Cloud or fastlane, never hardcode.
 
 ## Required Privacy Usage Strings
 
@@ -42,10 +42,10 @@ Add the following to `ios/App/App/Info.plist` if any of these APIs are used:
 
 ```xml
 <key>NSMicrophoneUsageDescription</key>
-<string>LampStand uses your microphone only when you tap the voice input button, to convert your spoken request into text. Audio is processed on-device and is never stored or transmitted.</string>
+<string>TheLampStand uses your microphone only when you tap the voice input button, to convert your spoken request into text. Audio is processed on-device and is never stored or transmitted.</string>
 
 <key>NSSpeechRecognitionUsageDescription</key>
-<string>LampStand uses speech recognition to transcribe your spoken requests into text. Transcripts are stored locally on your device only.</string>
+<string>TheLampStand uses speech recognition to transcribe your spoken requests into text. Transcripts are stored locally on your device only.</string>
 ```
 
 ## Release Build
@@ -68,7 +68,7 @@ npm run ios:build
 
 1. Create app record in [App Store Connect](https://appstoreconnect.apple.com).
 2. Bundle ID: `icu.thelampstand.app`
-3. App Name: **LampStand**
+3. App Name: **TheLampStand**
 4. Category: **Reference** (primary), **Lifestyle** (secondary)
 5. Age Rating: 4+ (no objectionable content)
 6. Upload build via Xcode → Distribute App → TestFlight
@@ -96,7 +96,7 @@ If the app requires authentication to use core features, provide reviewer creden
 - [ ] Complete onboarding flow end-to-end
 - [ ] Verify microphone permission prompt appears at correct time (only after user enables in Settings)
 - [ ] Test TTS playback
-- [ ] Test offline mode — app loads with locally cached content
+- [ ] Test offline mode: app loads with locally cached content
 - [ ] Verify app does not crash on first install
 - [ ] Verify app state persists correctly across background/foreground transitions
 - [ ] Test on both iPhone and iPad (ensure layout is acceptable on larger screen)
@@ -106,8 +106,8 @@ If the app requires authentication to use core features, provide reviewer creden
 
 | Risk | Mitigation |
 |---|---|
-| Guideline 4.0 — Design (thin wrapper) | App has offline capability, local-first data, native navigation patterns — not a simple web redirect |
-| Guideline 5.1.1 — Privacy practices disclosure | App Privacy answers accurately reflect all data handling; privacy policy URL included |
+| Guideline 4.0: Design (thin wrapper) | App has offline capability, local-first data, native navigation patterns: not a simple web redirect |
+| Guideline 5.1.1: Privacy practices disclosure | App Privacy answers accurately reflect all data handling; privacy policy URL included |
 | Missing usage string for microphone | NSMicrophoneUsageDescription added to Info.plist |
-| In-app purchase requirement for spiritual content | LampStand is free with no paywalls or IAP; clearly stated in store description |
-| Counselling / medical claims | All legal and disclaimer pages clearly state LampStand is not professional counselling, medical, or legal advice |
+| In-app purchase requirement for spiritual content | TheLampStand is free with no paywalls or IAP; clearly stated in store description |
+| Counselling / medical claims | All legal and disclaimer pages clearly state TheLampStand is not professional counselling, medical, or legal advice |

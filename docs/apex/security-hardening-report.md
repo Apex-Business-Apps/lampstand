@@ -5,7 +5,7 @@
 - Prompt-injection resistance is enforced by `src/lib/safety.ts` (`checkInputSafety`) and `SafetyGate` in `src/lib/runtime/agentRuntime.ts`.
 - Fabricated scripture requests are blocked before provider execution in `src/lib/agent/Grounding.ts`.
 - Sensitive counseling, emergency, medical, and legal replacement risks are redirected before provider execution in `src/lib/agent/Grounding.ts`.
-- Ungrounded AI answers are explicitly labeled as not verified from LampStand source passages in `src/lib/runtime/agentRuntime.ts` and `src/lib/agent/Grounding.ts`.
+- Ungrounded AI answers are explicitly labeled as not verified from TheLampStand source passages in `src/lib/runtime/agentRuntime.ts` and `src/lib/agent/Grounding.ts`.
 - Circuit breaker (`src/lib/safety.ts`, `shouldCircuitBreak`) fails closed to safe resting passage on repeated safety incidents.
 - Cloudflare worker health responses receive the same security headers as assets in `src/workers/static-spa.ts`.
 - Local write paths deduplicate retry submissions in `src/lib/storage.ts`.

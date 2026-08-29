@@ -1,5 +1,10 @@
 # Logs
 logs
+# ...but omni-recall/logs is the memory system's correction ledger, health
+# checks, and ingestion records, not build output. The bare `logs` rule above
+# matches a directory of that name at any depth, which silently kept the tree
+# the master blueprint documents out of the repository.
+!omni-recall/logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -31,7 +36,7 @@ dist-ssr
 .env.*
 !.env.example
 
-# Environment secrets — never commit
+# Environment secrets: never commit
 .env
 .env.local
 .env.production
@@ -43,6 +48,6 @@ test-results/
 playwright-report/
 .wrangler/
 
-# Standardised on npm — reject bun lockfile
+# Standardised on npm: reject bun lockfile
 bun.lock
 bun.lockb

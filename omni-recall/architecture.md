@@ -39,7 +39,7 @@ TheLampStand is an offline-first, private Bible companion and pastoral AI web ap
 |                                                              |                |
 |  +-----------------------------------------------------------+-------------+  |
 |  | Storage & Resonance Subsystem (Local-First)                             |  |
-|  | - localStorage (capped profiles, saved passages, journals, safety logs) |  |
+|  | - storage.ts: the single trusted read/write boundary over localStorage |  |
 |  | - ResonanceEngine (theme affinity, season, novelty, pastoral care)      |  |
 |  +-------------------------------------------------------------------------+  |
 +---------------------------------------+---------------------------------------+
@@ -84,3 +84,13 @@ TheLampStand is an offline-first, private Bible companion and pastoral AI web ap
   - `Content-Security-Policy`: Strictly allowlists Google Fonts, Supabase, Groq, and Cloudflare workers.
   - SPA Fallback: Deep routes (`/guidance`, `/daily`, `/sermon`, `/journal`) return `200 OK` with `index.html` shell.
   - Dedicated `/health` endpoint for uptime probes.
+
+### 4. Local Storage Boundary (`src/lib/storage.ts`)
+- **Single Boundary (ADR-012)**: private `get()` and `set()` helpers are the only path to `localStorage` for persisted records. No page or hook reads these keys directly.
+- **Untrusted Input**: `localStorage` outlives app versions and schema changes and is shared with anything on the origin. `get()` rejects a persisted `null` or `undefined`, falls back wholesale on shape drift, and completes a partial legacy record from the current default, so a getter can never return a shape its callers do not expect.
+- **Non-Throwing Writes**: `set()` degrades to in-memory behaviour when the store is full or disabled. `getPresenceScore()` writes during render, so a throwing `setItem` would take the whole app down.
+- **Caps**: saved passages 200, journal entries 500, safety events 100.
+
+### 5. Progressive Web App Shell (`public/manifest.json`, `public/sw.js`)
+- **Installed Entry**: `start_url` is `/app` in `standalone` display mode. `ProfileGuard` lets standalone traffic in as a local guest, so the installed app is the first surface to read every persisted record on first paint.
+- **Service Worker v5**: never intercepts Supabase or Groq traffic, cache-first for hashed `/assets/`, network-first for navigations with a cached shell fallback that each successful navigation refreshes.

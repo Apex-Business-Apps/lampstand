@@ -1,8 +1,8 @@
-# LampStand — Critical Routing Architecture
+# TheLampStand: Critical Routing Architecture
 
-**Version:** 2.1.1
-**Last updated:** 2026-06-28
-**Status:** Locked — DO NOT modify without explicit founder authorization.
+**Version:** 2.1.2
+**Last updated:** 2026-08-29
+**Status:** Locked, DO NOT modify without explicit founder authorization.
 
 ---
 
@@ -25,7 +25,7 @@ proposition before login/signup.
 not logged in and has no local profile, they **MUST** enter guest mode directly
 at `/app`. They are NOT forced to `/auth`.
 
-**Why:** Guest mode is core to LampStand's mission (privacy-first, no login required).
+**Why:** Guest mode is core to TheLampStand's mission (privacy-first, no login required).
 Installed-app users should be able to use the full app locally without creating an account.
 The auth flow remains accessible at `/auth` for users who want cloud sync.
 
@@ -39,11 +39,11 @@ The auth flow remains accessible at `/auth` for users who want cloud sync.
 | Path | Target | Notes |
 |------|--------|-------|
 | `/` | `MarketingPage` | Primary marketing entry |
-| `/welcome` | `MarketingPage` | Legacy alias — preserved for old links/bookmarks |
+| `/welcome` | `MarketingPage` | Legacy alias: preserved for old links/bookmarks |
 | `/lite` | Legacy alias only | Redirects to `/app` after completed local onboarding, otherwise redirects to `/onboarding` |
-| `/entry` | `EntryPage` | PWA entry point — evaluates standalone mode |
+| `/entry` | `EntryPage` | PWA entry point: evaluates standalone mode |
 | `/auth` | Auth flow | Login / magic-link |
-| `/app` | Main app (guarded) | Requires auth — redirects via `ProfileGuard` |
+| `/app` | Main app (guarded) | `ProfileGuard`: browser visitors without a profile go to `/`, standalone PWA users enter as local guests |
 
 ---
 
@@ -69,7 +69,7 @@ If an unauthenticated user hits a guarded route directly:
 - Standalone/PWA → allowed through (guest mode; no redirect to `/auth`)
 - Standard browser → redirect to `/`
 
-### `FloatingAgent.tsx` — HIDDEN_PATHS
+### `FloatingAgent.tsx`: HIDDEN_PATHS
 
 The FloatingAgent is hidden on the following paths to prevent UI overlap:
 
@@ -88,6 +88,7 @@ const HIDDEN_PATHS = [
 
 | Version | Date | Change |
 |---------|------|--------|
+| 2.1.2 | 2026-08-29 | Corrected the `/app` row, which still claimed the route requires auth and contradicted the standalone guest rule stated above it. Applied the zero em-dash typography rule and the `TheLampStand` brand casing. |
 | 2.1.1 | 2026-06-28 | Converted `/lite` to a legacy redirect alias only. Documented that `/lite` must never import or render `FullscreenAgent`, and that legacy `entry=lite` links redirect to `/onboarding`. |
 | 2.1.0 | 2026-06-16 | Updated PWA routing to reflect guest-mode-first implementation. Standalone unauthenticated users now go to `/app` (guest mode), not `/auth`. ProfileGuard allows PWA users through. Aligns with README and MISSION. |
 | 2.0.1 | 2026-06-16 | Added `/welcome` alias, `/lite` burning-bush preview route, HIDDEN_PATHS table, and versioning header. |

@@ -31,11 +31,11 @@ omni-recall/
 ├── logs/
 │   ├── correction_ledger/
 │   │   ├── template.md
-│   │   └── 2026-08-27-e2e-and-lint-remediation.md
+│   │   └── 2026-08-29-persisted-null-installed-pwa-crash.md
 │   ├── health_checks/
-│   │   └── 2026-08-27-pr115-verification.md
+│   │   └── 2026-08-29-pwa-storage-boundary-verification.md
 │   └── ingestion/
-│       └── 2026-08-27-repo-baseline-ingestion.md
+│       └── 2026-08-29-pwa-crash-investigation.md
 ├── wiki/
 │   ├── _core_directives/
 │   │   ├── thelampstand-core-directives.md
@@ -58,19 +58,24 @@ omni-recall/
 │   │   ├── playwright-strict-mode-guidance-locator.md
 │   │   ├── filler-sanitization-vs-whole-response-rejection.md
 │   │   ├── abbreviation-tolerant-scripture-citation.md
-│   │   └── marketing-page-usenavigate-reference-error.md
+│   │   ├── marketing-page-usenavigate-reference-error.md
+│   │   └── persisted-null-crashes-installed-pwa.md
 │   ├── decisions/
+│   │   ├── README.md
 │   │   ├── adr-001-mission-lock-zero-monetization.md
 │   │   ├── adr-002-local-first-bundled-scriptures.md
 │   │   ├── adr-003-unified-agent-controller.md
 │   │   ├── adr-004-standardized-bounds.md
 │   │   ├── adr-005-geo-and-authority-schema.md
 │   │   ├── adr-006-brand-unification-and-typography.md
-│   │   └── adr-007-desktop-sanctuary-and-pwa.md
+│   │   ├── adr-007-desktop-sanctuary-and-pwa.md
+│   │   └── adr-008-trusted-local-storage-boundary.md
 │   ├── open_loops/
+│   │   ├── error-boundary-local-diagnostics.md
 │   │   ├── offline-multilingual-scripture-packs.md
 │   │   ├── on-device-small-llm-webllm-fallback.md
-│   │   └── parish-and-study-circle-export.md
+│   │   ├── parish-and-study-circle-export.md
+│   │   └── service-worker-precache-on-install.md
 │   ├── projects/
 │   │   ├── thelampstand-v2-core.md
 │   │   └── thelampstand-content-expansion.md
@@ -99,3 +104,11 @@ Every agent modifying the codebase must update:
 2. `logs/health_checks/` with full machine test logs.
 3. `wiki/corrections/` whenever a bug or CI gate failure is resolved.
 4. `wiki/decisions/` whenever architectural changes are introduced.
+
+---
+
+## 4. Layout Accuracy Rule
+
+The tree above is a map of files that exist, not a plan for files that should. It named a `logs/` directory with three records that were never committed: the bare `logs` rule in `.gitignore` matches a directory of that name at any depth, so everything written under `omni-recall/logs/` was silently excluded. `.gitignore` now carries `!omni-recall/logs/`, and the tree names the records that actually exist.
+
+When a file is added, moved, or removed under `omni-recall/`, update this tree in the same commit. Before relying on it, `ls` the paths.

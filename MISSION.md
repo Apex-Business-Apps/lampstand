@@ -1,12 +1,12 @@
-# LampStand — Mission Statement
+# TheLampStand: Mission Statement
 
-LampStand is a non-profit scripture companion application built as a gift to the community.
+TheLampStand is a non-profit scripture companion application built as a gift to the community.
 
 ## Core Principles
 
-- **No monetization.** LampStand does not charge for access, does not display ads, and does not sell user data.
+- **No monetization.** TheLampStand does not charge for access, does not display ads, and does not sell user data.
 - **Privacy-first.** All scripture study data remains local to the user's device. No cloud sync of personal study notes without explicit opt-in.
-- **Accessibility & Affirmation.** LampStand must remain free, accessible, and neurologically affirming to every user. Gamification and artificial pressures (streaks) are strictly opt-in.
+- **Accessibility & Affirmation.** TheLampStand must remain free, accessible, and neurologically affirming to every user. Gamification and artificial pressures (streaks) are strictly opt-in.
 - **Mission-locked.** This project will never be converted to a commercial product.
 
 ## What This Means for Contributors
@@ -20,5 +20,5 @@ If you are unsure whether a feature aligns with the mission, ask before building
 
 ## Maintained By
 
-APEX Business Systems Ltd., Edmonton, AB, Canada — as a non-profit community contribution.
-LampStand operates under a separate mission from TheLampStand's commercial products.
+APEX Business Systems Ltd., Edmonton, AB, Canada, as a non-profit community contribution.
+TheLampStand operates under a separate mission from TheLampStand's commercial products.

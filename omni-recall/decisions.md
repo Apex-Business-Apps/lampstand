@@ -54,3 +54,9 @@
 - **Decision**: Expand bundled offline scripture catalog to 100+ canonical passages, 60+ Daily Light reflections, and 35+ homiletic sermons, covering a broader array of pastoral themes (`purpose`, `gratitude`, `burnout`, `betrayal`, `waiting`, `strength`).
 - **Rationale**: Dramatically enhances response intelligence, variety, and depth across all app modes while retaining zero-network local offline capability.
 - **Status**: Implemented in `contentLibrary.ts`, `sermonLibrary.ts`, and `DailyLightPage.tsx`.
+
+## ADR-012: Trusted Local Storage Boundary
+- **Decision**: `src/lib/storage.ts` owns exactly one read boundary and one write boundary for every persisted record. A getter never returns a value that is not the shape it declares: a persisted `null` or a value whose shape drifted from the declared default resolves to that default, and a partial legacy record is completed from it. Writes are best effort and never throw through a React render.
+- **Rationale**: `localStorage` is untrusted input. It outlives app versions and schema changes, survives interrupted writes, and is shared with anything else on the origin. Consumers dereference the getters directly, so one value of the wrong shape crashed the entire tree into the ErrorBoundary on installed PWAs. Hardening individual call sites twice did not remove the class of bug.
+- **Status**: Implemented in `storage.ts`, shielded by `src/test/storage-corruption-boundary.test.ts` and `tests/e2e/pwa-corrupt-storage.spec.ts`.
+- **Node**: `wiki/decisions/adr-008-trusted-local-storage-boundary.md` (the directory carries its own numbering, see `wiki/decisions/README.md`).

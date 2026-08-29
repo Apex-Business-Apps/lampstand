@@ -11,14 +11,15 @@ TheLampStand is a local-first, privacy-first Scripture companion built with Reac
 | Layer | Technology |
 |---|---|
 | UI | React 18 + Tailwind CSS + shadcn/ui |
-| Routing | react-router v6 (with desktop sidebar and mobile navigation) |
+| Routing | react-router-dom v7 (desktop side rail and mobile bottom navigation) |
 | Auth | Supabase magic-link (guest mode preserved by default) |
-| Persistence | localStorage-first typed modules in `src/lib/storage.ts` |
+| Persistence | localStorage-first typed modules in `src/lib/storage.ts`, which is the single trusted read and write boundary (ADR-012) |
 | AI Provider | `src/lib/adapters.ts`: Groq primary (`GroqAIAdapter`) + local fallback |
 | Agent Orchestration | `src/hooks/useAgentController.ts`: headless UI-agnostic runtime state |
 | Agent Runtime | `src/lib/runtime/agentRuntime.ts`: safety gate, turn pipeline, retrieval, circuit breaker |
 | Voice | `src/lib/voice.ts`: STT browser/null fallback, TTS cloud/browser/silent fallback |
 | SEO & GEO | Schema.org JSON-LD graph (WebSite, Organization, WebApplication, FAQPage, HowTo, BreadcrumbList) + robots.txt AI crawler allowlist |
+| PWA | `public/manifest.json` (`start_url` `/app`, standalone) + `public/sw.js` v5 offline shell |
 | Deploy | Cloudflare Workers static assets via `wrangler.json` / `wrangler.production.toml` |
 
 ---
@@ -117,7 +118,7 @@ npm run test:e2e
 npm run build
 ```
 
-All 48 Vitest suites (220 tests), ESLint checks, and Playwright E2E tests are configured to run with 100% pass rates.
+Last verified on 2026-08-29: 49 Vitest suites (252 tests), 13 Playwright specs, ESLint with 0 errors and 0 warnings, and a clean production build. The current counts and the commands that produced them are recorded in `omni-recall/state/checkpoints/current-status.md`.
 
 ---
 
