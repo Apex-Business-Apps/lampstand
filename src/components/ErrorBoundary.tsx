@@ -17,18 +17,39 @@ interface State {
  * and cannot be recovered by resetting React state alone, a full
  * page reload is required to load the updated asset manifest.
  */
-function isChunkLoadError(error: Error): boolean {
-  const msg = error?.message ?? '';
+function isChunkLoadError(error: unknown): boolean {
+  if (!error) return false;
+  const msg = (error instanceof Error ? error.message : String(error)).toLowerCase();
+  const name = (error instanceof Error ? error.name : '').toLowerCase();
   return (
-    msg.includes('Failed to fetch dynamically imported module') ||
-    msg.includes('Importing a module script failed') ||
+    name === 'chunkloaderror' ||
+    msg.includes('failed to fetch dynamically imported module') ||
+    msg.includes('importing a module script failed') ||
     msg.includes('error loading dynamically imported module') ||
-    msg.includes('Unable to preload CSS for')
+    msg.includes('unable to preload css for') ||
+    msg.includes('failed to load module script') ||
+    msg.includes('error resolving module specifier') ||
+    msg.includes('loading chunk') ||
+    msg.includes('loading css chunk') ||
+    msg.includes('failed to fetch') ||
+    msg.includes('dynamically imported module') ||
+    msg.includes('load failed')
   );
 }
 
 const CHUNK_RELOAD_KEY = 'lampstand_chunk_reload_at';
-const CHUNK_RELOAD_COOLDOWN_MS = 10_000; // 10 s: prevent infinite reload loops
+const CHUNK_RELOAD_COOLDOWN_MS = 10_000; // 10s: prevent infinite reload loops
+
+async function clearAppCaches(): Promise<void> {
+  if (typeof window !== 'undefined' && 'caches' in window) {
+    try {
+      const keys = await caches.keys();
+      await Promise.all(keys.map((k) => caches.delete(k)));
+    } catch {
+      /* ignore cache clearance failure */
+    }
+  }
+}
 
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false, error: null, isChunkError: false };
@@ -46,19 +67,28 @@ export class ErrorBoundary extends Component<Props, State> {
       const now = Date.now();
       if (now - lastReload > CHUNK_RELOAD_COOLDOWN_MS) {
         sessionStorage.setItem(CHUNK_RELOAD_KEY, String(now));
-        window.location.reload();
+        void clearAppCaches().then(() => {
+          window.location.reload();
+        });
       }
     }
   }
 
   handleReset = () => {
-    // For chunk errors a soft React reset won't re-fetch the missing asset;
-    // always do a hard reload so the browser picks up the latest index.html.
+    // For chunk errors or hard render exceptions, clear cache and reload cleanly
     if (this.state.isChunkError) {
-      window.location.reload();
+      void clearAppCaches().then(() => {
+        window.location.reload();
+      });
       return;
     }
     this.setState({ hasError: false, error: null, isChunkError: false });
+  };
+
+  handleReturnHome = () => {
+    void clearAppCaches().then(() => {
+      window.location.assign('/app');
+    });
   };
 
   render() {
@@ -87,7 +117,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </button>
               {!isChunkError && (
                 <button
-                  onClick={() => window.location.assign('/app')}
+                  onClick={this.handleReturnHome}
                   className="px-4 py-2 text-sm font-medium rounded-lg border border-border text-foreground hover:bg-accent transition-colors"
                 >
                   Return Home
