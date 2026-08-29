@@ -370,7 +370,8 @@ export function rankCandidates<T extends RankableCandidate>(
   override?: ResonanceFingerprint,
 ): RankedCandidate<T>[] {
   const fp = override ?? decay(loadFingerprint());
-  return candidates
+  const valid = (candidates || []).filter((c) => Boolean(c && typeof c === 'object' && c.passage && typeof c.passage === 'object' && c.passage.reference));
+  return valid
     .map((c) => scoreCandidate(c, fp))
     .sort((a, b) => b.score - a.score);
 }
@@ -379,7 +380,7 @@ function scoreCandidate<T extends RankableCandidate>(
   c: T,
   fp: ResonanceFingerprint,
 ): RankedCandidate<T> {
-  const theme = c.theme ?? '';
+  const theme = c?.theme ?? '';
 
   // Axis 1 - direct theme affinity (normalized 0..1)
   const rawAffinity = fp.themeAffinity[theme] ?? 0;
@@ -389,8 +390,9 @@ function scoreCandidate<T extends RankableCandidate>(
   const season = seasonFit(theme, fp.season);
 
   // Axis 3 - novelty bonus: avoid recently-shown refs/themes.
-  const refIdx = fp.recentRefs.indexOf(c.passage.reference);
-  const themeIdx = fp.recentThemes.indexOf(theme);
+  const ref = c?.passage?.reference ?? '';
+  const refIdx = ref ? fp.recentRefs.indexOf(ref) : -1;
+  const themeIdx = theme ? fp.recentThemes.indexOf(theme) : -1;
   const refPenalty = refIdx === -1 ? 0 : 1 - refIdx / Math.max(1, MAX_RECENT_REFS);
   const themePenalty = themeIdx === -1 ? 0 : 1 - themeIdx / Math.max(1, MAX_RECENT_THEMES);
   const novelty = 1 - 0.7 * refPenalty - 0.3 * themePenalty;

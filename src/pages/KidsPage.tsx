@@ -46,8 +46,8 @@ export default function KidsPage() {
 
         <div className="glow-card rounded-2xl p-6 space-y-4 animate-fade-in">
           <p className="text-xs font-semibold uppercase tracking-wider text-primary">Today's Story</p>
-          <p className="scripture-text text-base">{current.passage.text}</p>
-          <p className="text-xs text-muted-foreground">- {current.passage.reference}</p>
+          <p className="scripture-text text-base">{current?.passage?.text ?? ''}</p>
+          <p className="text-xs text-muted-foreground">- {current?.passage?.reference ?? ''}</p>
         </div>
 
         <div className="rounded-xl bg-secondary/50 p-5 space-y-3">

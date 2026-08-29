@@ -59,7 +59,9 @@ export default function DailyLightPage() {
   }, []);
 
   async function handleShare() {
-    const shareText = `TheLampStand Daily Light\n${today.passage.reference}\n"${today.passage.text}"\n\nReflection:\n${today.reflection}\n\nPrayer:\n${today.prayer}`;
+    const ref = today?.passage?.reference ?? '';
+    const text = today?.passage?.text ?? '';
+    const shareText = `TheLampStand Daily Light\n${ref}\n"${text}"\n\nReflection:\n${today?.reflection ?? ''}\n\nPrayer:\n${today?.prayer ?? ''}`;
     if (navigator.share) {
       try {
         await navigator.share({ title: 'TheLampStand Daily Light', text: shareText });
@@ -73,11 +75,13 @@ export default function DailyLightPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
-    recordSignal({ signal: 'shared', passage: today.passage, theme: today.theme });
+    if (today?.passage) {
+      recordSignal({ signal: 'shared', passage: today.passage, theme: today.theme });
+    }
   }
 
   function handleSave() {
-    if (saved) return;
+    if (saved || !today?.passage) return;
     const entry: SavedPassage = {
       id: crypto.randomUUID(),
       passage: today.passage,
@@ -90,7 +94,9 @@ export default function DailyLightPage() {
 
   function handleDeeper() {
     setShowDeeper(true);
-    recordSignal({ signal: 'reflected', passage: today.passage, theme: today.theme });
+    if (today?.passage) {
+      recordSignal({ signal: 'reflected', passage: today.passage, theme: today.theme });
+    }
   }
 
   function toggleSpeech() {
@@ -103,7 +109,9 @@ export default function DailyLightPage() {
     }
 
     window.speechSynthesis.cancel();
-    const textToSpeak = `${today.passage.reference}. ${today.passage.text}. Reflection: ${today.reflection}. Prayer: ${today.prayer}`;
+    const ref = today?.passage?.reference ?? '';
+    const text = today?.passage?.text ?? '';
+    const textToSpeak = `${ref}. ${text}. Reflection: ${today?.reflection ?? ''}. Prayer: ${today?.prayer ?? ''}`;
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.rate = 0.92;
     utterance.pitch = 1.0;
