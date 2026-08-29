@@ -146,6 +146,18 @@ describe('ResonanceEngine', () => {
     expect(after).toBe(before);
   });
 
+  it('safely filters out candidates with missing passage or reference without throwing', () => {
+    const invalidCandidates = [
+      { theme: 'peace', passage: p('p1', 'Peace 1') },
+      { theme: 'corrupt', passage: undefined as never },
+      { theme: 'no-ref', passage: { id: 'x' } as never },
+      null as never,
+    ];
+    const ranked = rankCandidates(invalidCandidates);
+    expect(ranked.length).toBe(1);
+    expect(ranked[0].candidate.passage.reference).toBe('Peace 1');
+  });
+
   describe('calculateTopicContinuity', () => {
     it('returns 0 when candidate theme is undefined or context themes are empty', async () => {
       const { calculateTopicContinuity } = await import('@/lib/resonance/ResonanceEngine');

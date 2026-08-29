@@ -74,8 +74,8 @@ export default function HomePage() {
                 <p className="text-sm text-muted-foreground">{today.theme}</p>
               </div>
             </div>
-            <p className="scripture-text text-base line-clamp-3">{today.passage.text}</p>
-            <p className="text-xs text-muted-foreground">- {today.passage.reference}</p>
+            <p className="scripture-text text-base line-clamp-3">{today?.passage?.text ?? ''}</p>
+            <p className="text-xs text-muted-foreground">- {today?.passage?.reference ?? ''}</p>
           </div>
         </button>
 

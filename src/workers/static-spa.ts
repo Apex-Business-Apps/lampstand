@@ -9,12 +9,12 @@ const FILE_EXT  = /\.[a-zA-Z0-9]{1,8}$/;
 // remove 'unsafe-eval' here too.
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-eval'",
+  "script-src 'self' 'unsafe-eval' https://static.cloudflareinsights.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https:",
   "media-src 'self' blob:",
-  "connect-src 'self' https://*.supabase.co https://api.groq.com wss://*.supabase.co",
+  "connect-src 'self' https://*.supabase.co https://api.groq.com wss://*.supabase.co https://cloudflareinsights.com",
   "worker-src 'self' blob:",
   "frame-ancestors 'none'",
 ].join("; ");

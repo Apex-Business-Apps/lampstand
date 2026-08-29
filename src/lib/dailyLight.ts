@@ -13,29 +13,31 @@ import { rankCandidates, loadFingerprint } from '@/lib/resonance/ResonanceEngine
 export function getDailyLight(date = new Date()): DailyLight {
   const localDate = formatLocalDate(date);
   const cached = getCachedDaily();
-  if (cached?.date === localDate) return cached;
+  if (cached?.date === localDate && cached?.passage?.reference) return cached;
 
   const fp = loadFingerprint();
-  let template: typeof DAILY_LIGHT_LIBRARY[number];
+  let template = DAILY_LIGHT_LIBRARY[0];
 
   if (fp.signalCount > 0) {
     // Personalized path - let Resonance order candidates and pick the top-ranked
     // one that is not the cached/last-shown reference (novelty already part of score).
     const ranked = rankCandidates(DAILY_LIGHT_LIBRARY, fp);
-    template = ranked[0]?.candidate ?? DAILY_LIGHT_LIBRARY[hashString(localDate) % DAILY_LIGHT_LIBRARY.length];
+    template = ranked[0]?.candidate ?? DAILY_LIGHT_LIBRARY[hashString(localDate) % DAILY_LIGHT_LIBRARY.length] ?? DAILY_LIGHT_LIBRARY[0];
   } else {
     // Cold-start path - deterministic by date for guests.
     const seed = hashString(localDate);
-    template = DAILY_LIGHT_LIBRARY[seed % DAILY_LIGHT_LIBRARY.length];
-    if (cached && DAILY_LIGHT_LIBRARY.length > 1 && template.passage.reference === cached.passage.reference) {
-      template = DAILY_LIGHT_LIBRARY[(seed + 1) % DAILY_LIGHT_LIBRARY.length];
+    template = DAILY_LIGHT_LIBRARY[seed % DAILY_LIGHT_LIBRARY.length] ?? DAILY_LIGHT_LIBRARY[0];
+    if (cached?.passage?.reference && DAILY_LIGHT_LIBRARY.length > 1 && template?.passage?.reference === cached.passage.reference) {
+      template = DAILY_LIGHT_LIBRARY[(seed + 1) % DAILY_LIGHT_LIBRARY.length] ?? template;
     }
   }
 
+  const passage = template?.passage ?? DAILY_LIGHT_LIBRARY[0].passage;
   const daily: DailyLight = {
-    id: `daily-${template.passage.id}-${localDate}`,
+    id: `daily-${passage.id}-${localDate}`,
     date: localDate,
     ...template,
+    passage,
   };
 
   setCachedDaily(daily);
@@ -49,7 +51,7 @@ export function getDailyLight(date = new Date()): DailyLight {
 export async function getDailyLightWithHistory(userId: string, date = new Date()): Promise<DailyLight> {
   const localDate = formatLocalDate(date);
   const cached = getCachedDaily();
-  if (cached?.date === localDate) return cached;
+  if (cached?.date === localDate && cached?.passage?.reference) return cached;
 
   // Fetch recent history (last 30 days) to avoid repeats
   const recentRefs = new Set<string>();
@@ -62,7 +64,7 @@ export async function getDailyLightWithHistory(userId: string, date = new Date()
       .limit(30);
     if (data) {
       for (const row of data) {
-        recentRefs.add(row.passage_ref);
+        if (row.passage_ref) recentRefs.add(row.passage_ref);
       }
     }
   } catch (error) {
@@ -75,17 +77,19 @@ export async function getDailyLightWithHistory(userId: string, date = new Date()
 
   // Filter out anything seen in last 30 days unless that would empty the pool.
   const eligible = recentRefs.size > 0 && recentRefs.size < lib.length
-    ? lib.filter((e) => !recentRefs.has(e.passage.reference))
+    ? lib.filter((e) => Boolean(e?.passage?.reference && !recentRefs.has(e.passage.reference)))
     : lib;
 
   // Rank the eligible pool with the Resonance Engine.
   const ranked = rankCandidates(eligible, fp);
   const selected = ranked[0]?.candidate ?? eligible[hashString(localDate) % eligible.length] ?? lib[0];
+  const passage = selected?.passage ?? lib[0].passage;
 
   const daily: DailyLight = {
-    id: `daily-${selected.passage.id}-${localDate}`,
+    id: `daily-${passage.id}-${localDate}`,
     date: localDate,
     ...selected,
+    passage,
   };
 
   setCachedDaily(daily);
@@ -96,7 +100,7 @@ export async function getDailyLightWithHistory(userId: string, date = new Date()
       .from('daily_light_history')
       .upsert({
         user_id: userId,
-        passage_ref: selected.passage.reference,
+        passage_ref: passage.reference,
         theme: selected.theme,
         shown_date: localDate,
       }, { onConflict: 'user_id,shown_date' });

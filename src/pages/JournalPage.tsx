@@ -156,7 +156,7 @@ export default function JournalPage() {
               onChange={(e) => setLinkPassage(e.target.checked)}
               className="rounded border-border"
             />
-            Link to today's passage ({today.passage.reference})
+            Link to today's passage ({today?.passage?.reference ?? ''})
           </label>
 
           <Button onClick={handleSave} disabled={!content.trim()} className="w-full gap-2">

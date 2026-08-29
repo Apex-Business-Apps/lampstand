@@ -23,4 +23,13 @@ describe('daily light rotation', () => {
     expect(second.date).not.toBe(first.date);
     expect(second.passage.reference).not.toBe(first.passage.reference);
   });
+
+  it('safely handles corrupted or partial cached entries in localStorage without throwing', () => {
+    // Simulate corrupted/legacy cache in localStorage missing passage
+    localStorage.setItem('lampstand_daily_light_cache', JSON.stringify({ date: '2026-04-10' }));
+    const result = getDailyLight(new Date(2026, 3, 10, 9, 30));
+    expect(result).toBeDefined();
+    expect(result.passage).toBeDefined();
+    expect(result.passage.reference).toBeTruthy();
+  });
 });

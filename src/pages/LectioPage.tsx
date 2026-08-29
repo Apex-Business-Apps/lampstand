@@ -51,9 +51,9 @@ export default function LectioPage() {
           {/* Show the passage on the first step (Lectio = Reading) */}
           {step === 0 && (
             <p className="scripture-text text-base text-center border-l-2 border-primary/40 pl-4 py-2">
-              {today.passage.text}
+              {today?.passage?.text ?? ''}
               <span className="block text-xs text-muted-foreground mt-1 not-italic">
-                - {today.passage.reference}
+                - {today?.passage?.reference ?? ''}
               </span>
             </p>
           )}
