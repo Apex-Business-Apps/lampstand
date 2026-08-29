@@ -23,7 +23,19 @@
 - `guidance/contextAssembler.ts`: Context window packager.
 - `safety.ts`: Crisis, injection, and abuse pattern matcher.
 - `voice.ts`: STT and TTS speech synthesis adapters.
-- `storage.ts`: Local storage accessor methods and atomic mutations.
+- `storage.ts`: The single trusted read and write boundary for every persisted record, plus atomic list mutations. See ADR-012.
+- `pwa/standalone.ts`: The only implementation of installed-app detection. Do not re-implement it locally.
+- `notifications/dailyReminder.ts`: Service worker registration and the local daily reminder timer.
 
 ### Edge Worker (`src/workers/`)
 - `static-spa.ts`: Cloudflare Worker static file server, CSP headers, and `/health` probe.
+
+### Progressive Web App (`public/`)
+- `manifest.json`: Installable manifest. `start_url` is `/app`, display `standalone`.
+- `sw.js`: Client service worker. See `wiki/architecture_nodes/edge-worker-and-security.md`.
+
+### Regression Shields (`src/test/`, `tests/e2e/`)
+- `storage-corruption-boundary.test.ts`: every storage getter against nine corruption shapes (ADR-012).
+- `pwa-corrupt-storage.spec.ts`: the real UI across five routes with each record key corrupted.
+- `pwa-service-worker.test.ts`, `pwa-manifest.test.ts`, `pwa-registration.test.ts`, `pwa-standalone.test.ts`, `pwa-html-wiring.test.ts`: PWA wiring invariants.
+- `guidance-safety.spec.ts`: crisis guardrail against the live UI.

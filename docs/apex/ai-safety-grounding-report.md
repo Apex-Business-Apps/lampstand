@@ -3,7 +3,7 @@
 ## Grounding Behavior
 - The live agent runtime (`src/lib/runtime/agentRuntime.ts`) retrieves candidate scripture passages via `RetrievalOrchestrator` and applies Resonance ranking (`src/lib/resonance/ResonanceEngine.ts`) before passing context to the AI provider.
 - Scripture-backed answers are verified and forced to include source references in `ensureRuntimeGrounding()` if the provider omits them.
-- When no source is retrieved, answers are prefixed with a LampStand unverifiable-source statement.
+- When no source is retrieved, answers are prefixed with a TheLampStand unverifiable-source statement.
 
 ## Guardrails
 - Input normalization and character cap (`MAX_AI_INPUT_CHARS = 1200`) is enforced by `src/lib/agent/Grounding.ts`.

@@ -1,4 +1,4 @@
-# LampStand Repo Inventory
+# TheLampStand Repo Inventory
 
 Verified on 2026-08-24 from `/workspace/lampstand`.
 
@@ -18,7 +18,7 @@ Verified on 2026-08-24 from `/workspace/lampstand`.
 - UI components: `src/components/`, `src/components/ui/`, `src/hooks/`, `src/index.css`, `src/App.css`.
 - AI/chat modules: `src/lib/agent/Grounding.ts`, `src/lib/agent/Prompts.ts`, `src/hooks/useAgentController.ts`, `src/lib/runtime/agentRuntime.ts`, `src/lib/groq.ts`, `src/lib/resonance/ResonanceEngine.ts`, `src/lib/guidance/contextAssembler.ts`.
 - Scripture/content modules: `src/data/contentLibrary.ts`, `src/data/seed.ts`, `src/lib/content/messagePatterns.ts`, `src/lib/content/voice.ts`, `src/lib/dailyLight.ts`, `src/components/ScriptureCard.tsx`.
-- Auth/session modules: `src/hooks/useAuth.tsx`, `src/contexts/AuthContext.tsx`, `src/components/AuthGuard.tsx`, `src/components/AuthProviderWrapper.tsx`, `src/integrations/supabase/client.ts`.
+- Auth/session modules: `src/hooks/useAuth.tsx` (which exports the `AuthProvider`), `src/components/AuthGuard.tsx`, `src/components/ProfileGuard.tsx`, `src/components/AuthStatus.tsx`, `src/integrations/supabase/client.ts`, `src/integrations/supabase/config.ts`.
 - Data/persistence modules: `src/lib/storage.ts`, `src/lib/supabaseSync.ts`, `src/integrations/supabase/types.ts`, `supabase/migrations/`.
 - Voice modules: `src/lib/voice.ts`, `src/lib/voice/`, `src/components/VoiceInput.tsx`, `src/lib/audioAnalyzer.ts`.
 - Notifications: `src/lib/notifications/dailyReminder.ts`.

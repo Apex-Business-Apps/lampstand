@@ -1,4 +1,7 @@
-/* TheLampStand: service worker v5
+/* TheLampStand: service worker v6
+ * v6: refresh the cached offline shell on every successful navigation, not
+ *     just at install (which only re-runs when this file's bytes change, so
+ *     the shell an offline launch fell back to could be many deploys old).
  * v5: bump cache name to clear stale v4 entries and ensure fresh chunk manifest.
  * v4: bump cache name to clear stale v3 entries and force client update.
  * v3: bump cache name to clear stale v2 entries (old chunk hashes).
@@ -6,7 +9,7 @@
  * Notification click handling from v1 is preserved unchanged.
  */
 
-const CACHE_NAME = 'lampstand-shell-v5';
+const CACHE_NAME = 'lampstand-shell-v6';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -42,7 +45,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Cache-first for hashed /assets/ (immutable — hash busts cache on deploy)
+  // Cache-first for hashed /assets/ (immutable: the hash busts cache on deploy)
   if (url.pathname.startsWith('/assets/')) {
     event.respondWith(
       caches.match(request).then(
@@ -60,18 +63,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Network-first for HTML navigation (ensures fresh SPA shell on each deploy)
+  // Network-first for HTML navigation (ensures fresh SPA shell on each deploy).
+  // Each successful navigation also refreshes the offline shell, so the copy an
+  // offline launch falls back to tracks the current deploy.
   if (request.mode === 'navigate') {
     event.respondWith(
-      fetch(request).catch(() =>
-        caches.match('/').then((r) => r ?? Response.error())
-      )
+      fetch(request)
+        .then((res) => {
+          if (res.ok) {
+            const clone = res.clone();
+            caches.open(CACHE_NAME).then((c) => c.put('/', clone)).catch(() => {});
+          }
+          return res;
+        })
+        .catch(() => caches.match('/').then((r) => r ?? Response.error()))
     );
     return;
   }
 });
 
-// Notification click handler (v1 — unchanged)
+// Notification click handler (v1, unchanged)
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   const targetUrl = (event.notification.data && event.notification.data.url) || '/daily';

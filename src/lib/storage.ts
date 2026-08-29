@@ -35,20 +35,60 @@ export interface PracticePreferences {
   hideStreak: boolean;
 }
 
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+/**
+ * Single trusted read boundary for every persisted record.
+ *
+ * localStorage is not a trusted store: its contents survive app versions,
+ * schema changes, interrupted writes, and anything else that shares the
+ * origin. Callers of the getters below dereference the result immediately
+ * (`getKnowledge().streak`, `getConsentState().localAdaptiveMemory`), so a
+ * value that does not match the current default shape must never escape this
+ * function. In particular a persisted literal `null` parses to `null` and,
+ * before this guard existed, was returned in place of the default, crashing
+ * the whole tree into the ErrorBoundary ("Something went wrong").
+ */
 function get<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
+    if (raw === null) return fallback;
+
+    const parsed = JSON.parse(raw) as unknown;
+
+    // A stored null or undefined never shadows a non-null default.
+    if (parsed === null || parsed === undefined) return fallback;
+
+    if (isPlainObject(fallback)) {
+      // Shape drift (an array, string, or number where a record is expected)
+      // falls back wholesale; a partial legacy record is completed from the
+      // current defaults so newly added fields are never undefined.
+      if (!isPlainObject(parsed)) return fallback;
+      return { ...fallback, ...parsed } as T;
+    }
+
+    if (Array.isArray(fallback) && !Array.isArray(parsed)) return fallback;
+
+    return parsed as T;
   } catch {
     return fallback;
   }
 }
 
+/**
+ * Single trusted write boundary. Persistence is best effort: a full or
+ * disabled store (private mode, an Android device at its origin quota) must
+ * degrade to in-memory behaviour, never throw through a React render.
+ * `getPresenceScore()` writes during render, so a throwing setItem here took
+ * the entire app down.
+ */
 function set(key: string, value: unknown) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
-  } catch {
-    /* private browsing / quota ceiling safety */
+  } catch (err) {
+    console.warn('[storage] write failed, continuing in memory:', key, err);
   }
 }
 
@@ -67,7 +107,10 @@ function writeListAtomically<T, M extends Record<string, unknown> = Record<strin
 }
 
 export function getProfile(): UserProfile | null {
-  return get<UserProfile | null>(KEYS.profile, null);
+  // A missing profile is legitimate and routes to onboarding, but a truthy
+  // non-record would pass ProfileGuard and reach pages that read fields off it.
+  const value = get<UserProfile | null>(KEYS.profile, null);
+  return isPlainObject(value) ? (value as UserProfile) : null;
 }
 export function saveProfile(p: UserProfile) { set(KEYS.profile, p); }
 export function clearProfile() {
@@ -291,21 +334,32 @@ export function saveSyncState(partial: Partial<SyncState>) {
 const defaultPresence: PresenceScore = { score: 10, state: 'ember', lastActivityAt: new Date().toISOString() };
 export function getPresenceScore(): PresenceScore {
   const value = get(KEYS.presenceScore, defaultPresence);
-  const lastTime = value?.lastActivityAt ? new Date(value.lastActivityAt).getTime() : Date.now();
-  const validLastTime = Number.isNaN(lastTime) ? Date.now() : lastTime;
-  const daysAway = Math.floor((Date.now() - validLastTime) / 86400000);
-  if (daysAway <= 2) return value;
-  const currentScore = typeof value?.score === 'number' && !Number.isNaN(value.score) ? value.score : 10;
+  // get() only validates that the record is a plain object; it does not
+  // validate individual field types, so a merged record can still carry a
+  // non-numeric score or an unparseable timestamp from a corrupt or partial
+  // write. Both are repaired here rather than propagated into arithmetic.
+  const currentScore = typeof value.score === 'number' && Number.isFinite(value.score) ? value.score : defaultPresence.score;
+  const lastActivityMs = new Date(value.lastActivityAt).getTime();
+  if (!Number.isFinite(lastActivityMs)) {
+    // An unparseable timestamp would make every downstream score NaN and
+    // then persist that NaN, so it resets to now and persists the repair
+    // rather than recomputing the same failure on every future read.
+    const repaired: PresenceScore = { ...value, score: currentScore, lastActivityAt: new Date().toISOString() };
+    set(KEYS.presenceScore, repaired);
+    return repaired;
+  }
+  const daysAway = Math.floor((Date.now() - lastActivityMs) / 86400000);
+  if (daysAway <= 2) return currentScore === value.score ? value : { ...value, score: currentScore };
   const decayed = Math.max(5, currentScore - daysAway * 2);
   const state = derivePresenceState(decayed);
-  const updated: PresenceScore = { score: decayed, state, lastActivityAt: value?.lastActivityAt || new Date().toISOString() };
+  const updated: PresenceScore = { score: decayed, state, lastActivityAt: value.lastActivityAt };
   set(KEYS.presenceScore, updated);
   return updated;
 }
 
 export function incrementPresenceScore(delta: number) {
   const current = getPresenceScore();
-  const currentScore = typeof current?.score === 'number' && !Number.isNaN(current.score) ? current.score : 10;
+  const currentScore = typeof current.score === 'number' && Number.isFinite(current.score) ? current.score : defaultPresence.score;
   const score = Math.min(100, currentScore + delta);
   set(KEYS.presenceScore, { score, state: derivePresenceState(score), lastActivityAt: new Date().toISOString() });
 }

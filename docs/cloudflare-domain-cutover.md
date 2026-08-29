@@ -22,8 +22,8 @@ Token resources must include the zone for:
 
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
-- `VITE_SUPABASE_URL` — set to `https://jfqivpqedhmgyqwqpwim.supabase.co`
-- `VITE_SUPABASE_PUBLISHABLE_KEY` — `anon` public key from the `jfqivpqedhmgyqwqpwim` project
+- `VITE_SUPABASE_URL`: set to `https://jfqivpqedhmgyqwqpwim.supabase.co`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`: `anon` public key from the `jfqivpqedhmgyqwqpwim` project
 
 > **Note:** if the Supabase project `jfqivpqedhmgyqwqpwim` is paused, restore it in the Supabase dashboard before running the deploy workflow. The build will embed the URL at compile time; a paused project will cause auth and sync to fail at runtime even if the build succeeds.
 

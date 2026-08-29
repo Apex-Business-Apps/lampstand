@@ -1,19 +1,19 @@
-# LampStand — UI Layer Stack (z-index Reference)
+# TheLampStand: UI Layer Stack (z-index Reference)
 
 **Version:** 2.1.0  
 **Last updated:** 2026-06-16  
 **Maintained by:** APEX Business Systems Ltd.  
-**Status:** Authoritative — all contributors MUST follow this specification.
+**Status:** Authoritative, all contributors MUST follow this specification.
 
 ---
 
 ## Overview
 
-LampStand's marketing page uses a custom canvas-based visual system that places
+TheLampStand's marketing page uses a custom canvas-based visual system that places
 `CandleRevealCanvas` (an obsidian mask with cursor-tracked amber reveal) at
 `z-index: 100`. All UI elements must be correctly positioned relative to this
 veil to render correctly. Modal/dialog primitives used to default to `z-index: 50`
-(Tailwind `z-50`), which caused them to render **behind** the veil — invisible to
+(Tailwind `z-50`), which caused them to render **behind** the veil, invisible to
 the user. This document defines the authoritative stacking order and enforces
 correct values across all UI primitives.
 
@@ -24,12 +24,12 @@ correct values across all UI primitives.
 ```
 z-index  │  Component(s)                    │  Description
 ─────────┼─────────────────────────────────┼──────────────────────────────────────
-  0      │  bible_page.png                 │  Bible texture — BELOW THE VEIL
-  10     │  cross_alpha.png                │  Cross silhouette — BELOW THE VEIL
+  0      │  bible_page.png                 │  Bible texture, BELOW THE VEIL
+  10     │  cross_alpha.png                │  Cross silhouette, BELOW THE VEIL
 ─────────┼─────────────────────────────────┼──────────────────────────────────────
-  100    │  CandleRevealCanvas             │  ⚑ THE VEIL — obsidian mask + glow
+  100    │  CandleRevealCanvas             │  ⚑ THE VEIL, obsidian mask + glow
 ─────────┼─────────────────────────────────┼──────────────────────────────────────
-  150    │  LampstandCanvas                │  Lamp hero video — ABOVE THE VEIL
+  150    │  LampstandCanvas                │  Lamp hero video, ABOVE THE VEIL
   200    │  MarketingPage header           │  Wordmark + Log In button
   200    │  MarketingPage hero (text+CTA)  │  "Walk with the Light" copy + buttons
   200    │  MarketingPage below-fold       │  Feature cards, footer
@@ -51,20 +51,20 @@ z-index  │  Component(s)                    │  Description
 
 ---
 
-## Invariants — NEVER violate these
+## Invariants: NEVER violate these
 
 1. **z-[100] is owned exclusively by `CandleRevealCanvas`.** Do not assign any
    other component to this value. Do not change CandleRevealCanvas's z-index.
 
 2. **Nothing below z-[100] may be visible on the marketing page.** The bible
-   page texture and cross silhouette exist below the veil by design — the veil
+   page texture and cross silhouette exist below the veil by design, the veil
    hides them and the cursor-tracked reveal "punches through" to expose them.
 
 3. **All Radix UI / shadcn modal primitives MUST use z-[500].** The Tailwind
    default `z-50` (= 50) is far below CandleRevealCanvas (100). Every time
    shadcn is upgraded, verify that overlay classes have NOT been silently
    reverted to `z-50`. The `LAYER-GUARD` comments at the top of each file
-   serve as regression markers — if they are missing, something was overwritten.
+   serve as regression markers, if they are missing, something was overwritten.
 
 4. **FloatingAgent must stay below z-[400].** It must not overlap modal overlays
    during consent, dialogs, or confirmations.
@@ -81,7 +81,7 @@ z-index  │  Component(s)                    │  Description
 
 | File | z-index(es) | Notes |
 |------|------------|-------|
-| `src/components/CandleRevealCanvas.tsx` | z-[100] | THE VEIL — do not touch |
+| `src/components/CandleRevealCanvas.tsx` | z-[100] | THE VEIL: do not touch |
 | `src/components/LampstandCanvas.tsx` | z-[150] | Lamp hero video wrapper |
 | `src/pages/MarketingPage.tsx` | z-[200], z-[500] | Header, hero, below-fold; hosts ConsentModal (Portal→body) |
 | `src/components/FloatingAgent.tsx` | z-[300] | Mini FAB + widget |
@@ -97,11 +97,11 @@ z-index  │  Component(s)                    │  Description
 
 When running `shadcn add` or manually upgrading any UI primitive:
 
-- [ ] `dialog.tsx` — confirm `DialogOverlay` and `DialogContent` both use `z-[500]`
-- [ ] `alert-dialog.tsx` — confirm `AlertDialogOverlay` and `AlertDialogContent` both use `z-[500]`
-- [ ] `sheet.tsx` — confirm `SheetOverlay` and `SheetContent` both use `z-[500]`
-- [ ] `drawer.tsx` — confirm `DrawerOverlay` and `DrawerContent` both use `z-[500]`
-- [ ] `toast.tsx` — confirm `ToastViewport` uses `z-[500]`
+- [ ] `dialog.tsx`: confirm `DialogOverlay` and `DialogContent` both use `z-[500]`
+- [ ] `alert-dialog.tsx`: confirm `AlertDialogOverlay` and `AlertDialogContent` both use `z-[500]`
+- [ ] `sheet.tsx`: confirm `SheetOverlay` and `SheetContent` both use `z-[500]`
+- [ ] `drawer.tsx`: confirm `DrawerOverlay` and `DrawerContent` both use `z-[500]`
+- [ ] `toast.tsx`: confirm `ToastViewport` uses `z-[500]`
 - [ ] Verify `LAYER-GUARD` comment is present at top of each patched component
 - [ ] Run `npm run test` and confirm `floating-agent.test.tsx` passes
 
