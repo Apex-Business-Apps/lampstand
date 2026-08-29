@@ -113,7 +113,13 @@ export function getProfile(): UserProfile | null {
   return isPlainObject(value) ? (value as UserProfile) : null;
 }
 export function saveProfile(p: UserProfile) { set(KEYS.profile, p); }
-export function clearProfile() { localStorage.removeItem(KEYS.profile); }
+export function clearProfile() {
+  try {
+    localStorage.removeItem(KEYS.profile);
+  } catch {
+    /* private browsing / quota safety */
+  }
+}
 
 export function getSavedPassages(): SavedPassage[] {
   const raw = get<SavedPassage[]>(KEYS.saved, []);
@@ -328,26 +334,33 @@ export function saveSyncState(partial: Partial<SyncState>) {
 const defaultPresence: PresenceScore = { score: 10, state: 'ember', lastActivityAt: new Date().toISOString() };
 export function getPresenceScore(): PresenceScore {
   const value = get(KEYS.presenceScore, defaultPresence);
-  // An unparseable timestamp would make every downstream score NaN and then
-  // persist that NaN, so it resets to now rather than propagating.
+  // get() only validates that the record is a plain object; it does not
+  // validate individual field types, so a merged record can still carry a
+  // non-numeric score or an unparseable timestamp from a corrupt or partial
+  // write. Both are repaired here rather than propagated into arithmetic.
+  const currentScore = typeof value.score === 'number' && Number.isFinite(value.score) ? value.score : defaultPresence.score;
   const lastActivityMs = new Date(value.lastActivityAt).getTime();
   if (!Number.isFinite(lastActivityMs)) {
-    const repaired = { ...value, lastActivityAt: new Date().toISOString() };
+    // An unparseable timestamp would make every downstream score NaN and
+    // then persist that NaN, so it resets to now and persists the repair
+    // rather than recomputing the same failure on every future read.
+    const repaired: PresenceScore = { ...value, score: currentScore, lastActivityAt: new Date().toISOString() };
     set(KEYS.presenceScore, repaired);
     return repaired;
   }
   const daysAway = Math.floor((Date.now() - lastActivityMs) / 86400000);
-  if (daysAway <= 2) return value;
-  const decayed = Math.max(5, value.score - daysAway * 2);
+  if (daysAway <= 2) return currentScore === value.score ? value : { ...value, score: currentScore };
+  const decayed = Math.max(5, currentScore - daysAway * 2);
   const state = derivePresenceState(decayed);
-  const updated = { score: decayed, state, lastActivityAt: value.lastActivityAt };
+  const updated: PresenceScore = { score: decayed, state, lastActivityAt: value.lastActivityAt };
   set(KEYS.presenceScore, updated);
   return updated;
 }
 
 export function incrementPresenceScore(delta: number) {
   const current = getPresenceScore();
-  const score = Math.min(100, current.score + delta);
+  const currentScore = typeof current.score === 'number' && Number.isFinite(current.score) ? current.score : defaultPresence.score;
+  const score = Math.min(100, currentScore + delta);
   set(KEYS.presenceScore, { score, state: derivePresenceState(score), lastActivityAt: new Date().toISOString() });
 }
 
@@ -366,9 +379,19 @@ export function pushVoiceTranscript(transcript: string) {
 }
 
 export function clearVoiceHistory() {
-  localStorage.removeItem(KEYS.voiceHistory);
+  try {
+    localStorage.removeItem(KEYS.voiceHistory);
+  } catch {
+    /* storage quota / private mode safe */
+  }
 }
 
 export function resetAllData() {
-  Object.values(KEYS).forEach((k) => localStorage.removeItem(k));
+  Object.values(KEYS).forEach((k) => {
+    try {
+      localStorage.removeItem(k);
+    } catch {
+      /* storage quota / private mode safe */
+    }
+  });
 }

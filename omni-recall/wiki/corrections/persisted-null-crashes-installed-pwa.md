@@ -41,3 +41,7 @@ Secondary defects found and closed in the same pass:
 
 ## Standing Rule
 `localStorage` is untrusted input. It survives app versions, schema changes, interrupted writes, and anything else sharing the origin. No getter in `src/lib/storage.ts` may return a value that is not the shape it declares, and no writer may throw into a render.
+
+## Postscript: PR #119 landed the same day, fixing a different root cause
+
+PR #119 merged to `main` while this fix was in review, addressing the identical ErrorBoundary symptom via a different mechanism (chunk-load recovery, and per-field guards added directly inside `getPresenceScore`/`incrementPresenceScore`). It did not touch `get()`/`set()`. Verified by isolating PR #119's `storage.ts`: `storage-corruption-boundary.test.ts` still fails 17 of 30 tests, and `pwa-corrupt-storage.spec.ts` still fails for `lampstand_knowledge`, `lampstand_consent`, and `lampstand_voice_preferences`. Merged `main` into this branch and kept both fixes' guards in `getPresenceScore`/`incrementPresenceScore` rather than choosing one. See `debugging-history.md` entries 9 and 10, and `logs/health_checks/2026-08-29-pwa-storage-boundary-verification.md`.

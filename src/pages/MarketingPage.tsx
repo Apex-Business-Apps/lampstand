@@ -103,11 +103,18 @@ export default function MarketingPage() {
     if (!existing) {
       saveProfile({
         id: crypto.randomUUID(),
-        name: "Seeker",
-        tone: "contemplative",
-        created_at: new Date().toISOString(),
-        privacyConsentGiven: true,
-        optionalCloudSync: false,
+        firstName: "Seeker",
+        toneStyle: "balanced",
+        faithFamiliarity: "familiar",
+        preferredUses: ["daily"],
+        kidsMode: false,
+        readingPreference: "balanced",
+        voiceGender: "male",
+        notificationsEnabled: false,
+        notificationTime: "08:00",
+        hideStreakVisuals: false,
+        onboardingComplete: true,
+        createdAt: new Date().toISOString(),
       });
       saveAuthState({ mode: "guest" });
     }

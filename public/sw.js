@@ -1,15 +1,15 @@
-/* TheLampStand: service worker v5
- * v5: refresh the cached offline shell on every successful navigation.
- *     `install` runs only when this file's bytes change, so the shell added
- *     there was frozen at install time and could be many deploys old by the
- *     time an offline launch fell back to it.
+/* TheLampStand: service worker v6
+ * v6: refresh the cached offline shell on every successful navigation, not
+ *     just at install (which only re-runs when this file's bytes change, so
+ *     the shell an offline launch fell back to could be many deploys old).
+ * v5: bump cache name to clear stale v4 entries and ensure fresh chunk manifest.
  * v4: bump cache name to clear stale v3 entries and force client update.
  * v3: bump cache name to clear stale v2 entries (old chunk hashes).
  * v2: adds cache-first strategy for hashed static assets.
  * Notification click handling from v1 is preserved unchanged.
  */
 
-const CACHE_NAME = 'lampstand-shell-v5';
+const CACHE_NAME = 'lampstand-shell-v6';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(

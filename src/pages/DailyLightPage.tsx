@@ -118,13 +118,12 @@ export default function DailyLightPage() {
     const entry: JournalEntry = {
       id: crypto.randomUUID(),
       content: `[Daily Light: ${today.passage.reference}]\n${journalNote.trim()}`,
-      passageId: today.passage.id,
-      themes: [today.theme || 'reflection'],
+      relatedPassage: today.passage,
       createdAt: new Date().toISOString(),
     };
     saveJournalEntry(entry);
     setJournalSaved(true);
-    recordSignal({ signal: 'journaled', passage: today.passage, theme: today.theme });
+    recordSignal({ signal: 'reflected', passage: today.passage, theme: today.theme });
     setTimeout(() => {
       setJournalSaved(false);
       setShowJournalInput(false);
