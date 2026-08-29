@@ -45,7 +45,11 @@ function get<T>(key: string, fallback: T): T {
 }
 
 function set(key: string, value: unknown) {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    /* private browsing / quota ceiling safety */
+  }
 }
 
 function normalizeIdempotencyKey(value: string): string {
@@ -66,7 +70,13 @@ export function getProfile(): UserProfile | null {
   return get<UserProfile | null>(KEYS.profile, null);
 }
 export function saveProfile(p: UserProfile) { set(KEYS.profile, p); }
-export function clearProfile() { localStorage.removeItem(KEYS.profile); }
+export function clearProfile() {
+  try {
+    localStorage.removeItem(KEYS.profile);
+  } catch {
+    /* private browsing / quota safety */
+  }
+}
 
 export function getSavedPassages(): SavedPassage[] {
   const raw = get<SavedPassage[]>(KEYS.saved, []);
@@ -281,18 +291,22 @@ export function saveSyncState(partial: Partial<SyncState>) {
 const defaultPresence: PresenceScore = { score: 10, state: 'ember', lastActivityAt: new Date().toISOString() };
 export function getPresenceScore(): PresenceScore {
   const value = get(KEYS.presenceScore, defaultPresence);
-  const daysAway = Math.floor((Date.now() - new Date(value.lastActivityAt).getTime()) / 86400000);
+  const lastTime = value?.lastActivityAt ? new Date(value.lastActivityAt).getTime() : Date.now();
+  const validLastTime = Number.isNaN(lastTime) ? Date.now() : lastTime;
+  const daysAway = Math.floor((Date.now() - validLastTime) / 86400000);
   if (daysAway <= 2) return value;
-  const decayed = Math.max(5, value.score - daysAway * 2);
+  const currentScore = typeof value?.score === 'number' && !Number.isNaN(value.score) ? value.score : 10;
+  const decayed = Math.max(5, currentScore - daysAway * 2);
   const state = derivePresenceState(decayed);
-  const updated = { score: decayed, state, lastActivityAt: value.lastActivityAt };
+  const updated: PresenceScore = { score: decayed, state, lastActivityAt: value?.lastActivityAt || new Date().toISOString() };
   set(KEYS.presenceScore, updated);
   return updated;
 }
 
 export function incrementPresenceScore(delta: number) {
   const current = getPresenceScore();
-  const score = Math.min(100, current.score + delta);
+  const currentScore = typeof current?.score === 'number' && !Number.isNaN(current.score) ? current.score : 10;
+  const score = Math.min(100, currentScore + delta);
   set(KEYS.presenceScore, { score, state: derivePresenceState(score), lastActivityAt: new Date().toISOString() });
 }
 
@@ -311,9 +325,19 @@ export function pushVoiceTranscript(transcript: string) {
 }
 
 export function clearVoiceHistory() {
-  localStorage.removeItem(KEYS.voiceHistory);
+  try {
+    localStorage.removeItem(KEYS.voiceHistory);
+  } catch {
+    /* storage quota / private mode safe */
+  }
 }
 
 export function resetAllData() {
-  Object.values(KEYS).forEach((k) => localStorage.removeItem(k));
+  Object.values(KEYS).forEach((k) => {
+    try {
+      localStorage.removeItem(k);
+    } catch {
+      /* storage quota / private mode safe */
+    }
+  });
 }
