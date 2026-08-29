@@ -31,6 +31,12 @@ describe('service worker (public/sw.js) invariants', () => {
     expect(sw).toContain("caches.match('/')");
   });
 
+  it('refreshes the cached offline shell on each successful navigation', () => {
+    // `install` only re-runs when this file changes, so without this the shell
+    // an offline launch falls back to stays frozen at install time.
+    expect(sw).toContain("c.put('/', clone)");
+  });
+
   it('handles notification clicks by focusing/opening the reminder target', () => {
     expect(sw).toContain("addEventListener('notificationclick'");
     expect(sw).toContain('clients.openWindow');

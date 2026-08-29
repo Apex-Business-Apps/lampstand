@@ -35,17 +35,61 @@ export interface PracticePreferences {
   hideStreak: boolean;
 }
 
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+/**
+ * Single trusted read boundary for every persisted record.
+ *
+ * localStorage is not a trusted store: its contents survive app versions,
+ * schema changes, interrupted writes, and anything else that shares the
+ * origin. Callers of the getters below dereference the result immediately
+ * (`getKnowledge().streak`, `getConsentState().localAdaptiveMemory`), so a
+ * value that does not match the current default shape must never escape this
+ * function. In particular a persisted literal `null` parses to `null` and,
+ * before this guard existed, was returned in place of the default, crashing
+ * the whole tree into the ErrorBoundary ("Something went wrong").
+ */
 function get<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
+    if (raw === null) return fallback;
+
+    const parsed = JSON.parse(raw) as unknown;
+
+    // A stored null or undefined never shadows a non-null default.
+    if (parsed === null || parsed === undefined) return fallback;
+
+    if (isPlainObject(fallback)) {
+      // Shape drift (an array, string, or number where a record is expected)
+      // falls back wholesale; a partial legacy record is completed from the
+      // current defaults so newly added fields are never undefined.
+      if (!isPlainObject(parsed)) return fallback;
+      return { ...fallback, ...parsed } as T;
+    }
+
+    if (Array.isArray(fallback) && !Array.isArray(parsed)) return fallback;
+
+    return parsed as T;
   } catch {
     return fallback;
   }
 }
 
+/**
+ * Single trusted write boundary. Persistence is best effort: a full or
+ * disabled store (private mode, an Android device at its origin quota) must
+ * degrade to in-memory behaviour, never throw through a React render.
+ * `getPresenceScore()` writes during render, so a throwing setItem here took
+ * the entire app down.
+ */
 function set(key: string, value: unknown) {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (err) {
+    console.warn('[storage] write failed, continuing in memory:', key, err);
+  }
 }
 
 function normalizeIdempotencyKey(value: string): string {
@@ -63,7 +107,10 @@ function writeListAtomically<T, M extends Record<string, unknown> = Record<strin
 }
 
 export function getProfile(): UserProfile | null {
-  return get<UserProfile | null>(KEYS.profile, null);
+  // A missing profile is legitimate and routes to onboarding, but a truthy
+  // non-record would pass ProfileGuard and reach pages that read fields off it.
+  const value = get<UserProfile | null>(KEYS.profile, null);
+  return isPlainObject(value) ? (value as UserProfile) : null;
 }
 export function saveProfile(p: UserProfile) { set(KEYS.profile, p); }
 export function clearProfile() { localStorage.removeItem(KEYS.profile); }
@@ -281,7 +328,15 @@ export function saveSyncState(partial: Partial<SyncState>) {
 const defaultPresence: PresenceScore = { score: 10, state: 'ember', lastActivityAt: new Date().toISOString() };
 export function getPresenceScore(): PresenceScore {
   const value = get(KEYS.presenceScore, defaultPresence);
-  const daysAway = Math.floor((Date.now() - new Date(value.lastActivityAt).getTime()) / 86400000);
+  // An unparseable timestamp would make every downstream score NaN and then
+  // persist that NaN, so it resets to now rather than propagating.
+  const lastActivityMs = new Date(value.lastActivityAt).getTime();
+  if (!Number.isFinite(lastActivityMs)) {
+    const repaired = { ...value, lastActivityAt: new Date().toISOString() };
+    set(KEYS.presenceScore, repaired);
+    return repaired;
+  }
+  const daysAway = Math.floor((Date.now() - lastActivityMs) / 86400000);
   if (daysAway <= 2) return value;
   const decayed = Math.max(5, value.score - daysAway * 2);
   const state = derivePresenceState(decayed);
