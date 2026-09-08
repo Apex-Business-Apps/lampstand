@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   BookOpen,
+  Download,
   ExternalLink,
   Flame,
   HeartHandshake,
@@ -14,11 +15,13 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { usePwaInstall } from "@/hooks/usePwaInstall";
 import { getProfile, saveProfile, saveAuthState } from "@/lib/storage";
 import CandleRevealCanvas from "@/components/CandleRevealCanvas";
 import LampstandCanvas from "@/components/LampstandCanvas";
 import { ConsentModal } from "@/components/ConsentModal";
 import { BrandAnthemPlayer } from "@/components/BrandAnthemPlayer";
+import { PwaDownloadModal } from "@/components/PwaDownloadModal";
 
 /* ════════════════════════════════════════════════════════════════════════════
  * MARKETING PAGE: LAYER STACK  (bottom → top)
@@ -83,6 +86,20 @@ const journey = [
 export default function MarketingPage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const { isInstalled, isInstallable, promptInstall } = usePwaInstall();
+  const [showDownloadModal, setShowDownloadModal] = React.useState(false);
+
+  const handleInstallClick = async () => {
+    if (isInstalled) {
+      navigate("/app");
+      return;
+    }
+    if (isInstallable) {
+      const accepted = await promptInstall();
+      if (accepted) return;
+    }
+    setShowDownloadModal(true);
+  };
 
   React.useEffect(() => {
     if (!loading && user) {
@@ -183,19 +200,29 @@ export default function MarketingPage() {
       </div>
 
       {/* ── z-200: Header: ABOVE THE VEIL, always visible ── */}
-      <header className="pointer-events-auto fixed left-8 right-8 top-4 z-[200] flex items-center justify-between lg:left-16 lg:right-16 lg:top-6">
+      <header className="pointer-events-auto fixed left-6 right-6 top-4 z-[200] flex items-center justify-between lg:left-16 lg:right-16 lg:top-6">
         <img
           src="/images/wordmark-logo.png"
           alt="TheLampStand"
           className="h-[3.24rem] w-auto sm:h-[3.78rem]"
           draggable={false}
         />
-        <Button
-          onClick={() => navigate("/auth")}
-          className="h-9 border border-[#D97736]/60 bg-gradient-to-br from-[#F2A649] to-[#D97736] px-5 text-sm font-semibold text-[#0a0a0a] shadow-[0_2px_12px_-2px_rgba(242,166,73,0.45)] hover:from-[#F5B560] hover:to-[#E08840]"
-        >
-          Log In
-        </Button>
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <Button
+            variant="outline"
+            onClick={handleInstallClick}
+            className="h-9 border-[#D97736]/50 bg-[#0a0a0a]/80 px-3 sm:px-4 text-xs sm:text-sm font-medium text-[#f5f5f5] backdrop-blur transition hover:border-[#D97736] hover:bg-[#D97736]/20 hover:text-white"
+          >
+            <Download className="mr-1.5 h-3.5 w-3.5 text-[#F2A649]" />
+            <span>{isInstalled ? "Open App" : "Download App"}</span>
+          </Button>
+          <Button
+            onClick={() => navigate("/auth")}
+            className="h-9 border border-[#D97736]/60 bg-gradient-to-br from-[#F2A649] to-[#D97736] px-4 sm:px-5 text-sm font-semibold text-[#0a0a0a] shadow-[0_2px_12px_-2px_rgba(242,166,73,0.45)] hover:from-[#F5B560] hover:to-[#E08840]"
+          >
+            Log In
+          </Button>
+        </div>
       </header>
 
       {/* ── z-200: Hero typography: ABOVE THE VEIL, always visible ── */}
@@ -229,7 +256,7 @@ export default function MarketingPage() {
           <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row sm:justify-center">
             <Button
               size="lg"
-              className="h-14 border-none bg-[#D97736] px-8 text-base font-semibold text-white shadow-[0_4px_20px_-4px_rgba(217,119,54,0.5)] hover:bg-[#c2682d]"
+              className="h-14 border-none bg-[#D97736] px-7 text-base font-semibold text-white shadow-[0_4px_20px_-4px_rgba(217,119,54,0.5)] hover:bg-[#c2682d]"
               onClick={() => navigate("/onboarding")}
             >
               Light your lamp
@@ -238,11 +265,23 @@ export default function MarketingPage() {
             <Button
               size="lg"
               variant="outline"
-              className="h-14 border-[hsl(var(--primary)/0.5)] bg-[#0a0a0a]/80 px-7 text-base text-[#d0d0d0] backdrop-blur hover:bg-[#D97736]/15 hover:text-white"
-              onClick={() => handleStartGuest("/app")}
+              className="h-14 border-[#D97736]/60 bg-[#0a0a0a]/80 px-6 text-base font-medium text-white backdrop-blur hover:border-[#D97736] hover:bg-[#D97736]/20"
+              onClick={handleInstallClick}
             >
-              Try in browser as guest
+              <Download className="mr-2 h-5 w-5 text-[#F2A649]" />
+              <span>{isInstalled ? "Open App" : "Download App"}</span>
             </Button>
+          </div>
+
+          <div className="pt-1">
+            <button
+              type="button"
+              onClick={() => handleStartGuest("/app")}
+              className="inline-flex items-center text-xs font-medium text-[#a0a0a0] transition hover:text-white"
+            >
+              <span>Or try in browser as guest</span>
+              <ArrowRight className="ml-1 h-3 w-3" />
+            </button>
           </div>
         </div>
       </div>
@@ -250,6 +289,11 @@ export default function MarketingPage() {
       <ConsentModal />
 
       <BrandAnthemPlayer />
+
+      <PwaDownloadModal
+        isOpen={showDownloadModal}
+        onClose={() => setShowDownloadModal(false)}
+      />
 
       {/* ── z-200: Below-the-fold: ABOVE THE VEIL, always visible ──
           ⚠️  MUST stay at z-[200] or higher. Lowering below z-100 hides
