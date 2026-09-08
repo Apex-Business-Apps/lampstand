@@ -12,6 +12,7 @@ import {
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { AuthStatus } from './AuthStatus';
+import { PwaInstallHarness } from './PwaInstallHarness';
 
 interface AppShellProps {
   children: ReactNode;
@@ -103,6 +104,7 @@ export function AppShell({ children, kidsMode }: AppShellProps) {
         </div>
 
         <div className="p-4 border-t border-border/40 space-y-3 bg-card/20">
+          <PwaInstallHarness compact />
           <div className="flex items-center justify-between">
             <AuthStatus />
           </div>

@@ -8,7 +8,7 @@
 
 - **Brand Standard**: `TheLampStand` unified across code, assets, UI copy, metadata, and `docs/`.
 - **Header Branding**: `/images/wordmark-logo.png` (`h-8` desktop, `h-7` mobile) in `AppShell.tsx`.
-- **Scripture Content**: 100+ canonical Scripture passages, 60+ Daily Light templates, 35+ homiletic sermons.
+- **Scripture Content**: 131 canonical Scripture passages, 161 Daily Light templates, 178 homiletic sermons.
 - **Typography Rule**: Zero em-dashes and en-dashes. Enforced across `src/`, `public/sw.js`, `docs/`, `MISSION.md`, and `.github/`. Occurrences remaining in `omni-recall/` are citations of the rule itself. `.agents/` and `.jules/` hold third-party agent contracts and are outside this rule.
 - **Local Storage**: `src/lib/storage.ts` is the single trusted read and write boundary (ADR-012). A getter never returns a shape it does not declare, and a write never throws through a render. `getPresenceScore()`/`incrementPresenceScore()` additionally guard the `score` field's type, since the boundary's object-level merge does not validate individual field types.
 - **Scripture & Resonance Resilience**: Defensive null-guards on `dailyLight`, `ResonanceEngine`, `storage`, and all scripture-rendering pages.
@@ -23,7 +23,10 @@
 |---|---|---|
 | Lint | `npm run lint` | exit 0, 0 errors, 0 warnings |
 | Types | `npm run typecheck` | exit 0 |
-| Unit | `npm test` | 51 files, 259 tests passed |
+| PWA Unit | `npm run test:pwa:unit` | 5 files, 27 tests passed |
+| PWA E2E | `npm run test:pwa` | 4 tests passed |
+| Unit | `npm test` | 52 files, 267 tests passed |
+| E2E | `npx playwright test` | 5 files, 19 tests passed |
 | Build | `npm run build` | exit 0 |
 
 ## Known Gaps (tracked, not silently carried)

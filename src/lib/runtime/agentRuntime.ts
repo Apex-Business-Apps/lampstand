@@ -16,12 +16,12 @@ const BOOK_ABBREVIATIONS: Record<string, string> = {
   Joshua: '(?:Josh(?:ua)?|Jos)',
   Judges: '(?:Judg(?:es)?|Jdg)',
   Ruth: '(?:Ruth?|Rth)',
-  '1 Samuel': '(?:1\\s*Sam(?:uel)?|1\\s*Sa)',
-  '2 Samuel': '(?:2\\s*Sam(?:uel)?|2\\s*Sa)',
-  '1 Kings': '(?:1\\s*K(?:in)?gs?|1\\s*Ki)',
-  '2 Kings': '(?:2\\s*K(?:in)?gs?|2\\s*Ki)',
-  '1 Chronicles': '(?:1\\s*Chr(?:onicles)?|1\\s*Ch)',
-  '2 Chronicles': '(?:2\\s*Chr(?:onicles)?|2\\s*Ch)',
+  '1 Samuel': '(?:(?:1|I)\\s*Sam(?:uel)?|(?:1|I)\\s*Sa)',
+  '2 Samuel': '(?:(?:2|II)\\s*Sam(?:uel)?|(?:2|II)\\s*Sa)',
+  '1 Kings': '(?:(?:1|I)\\s*K(?:in)?gs?|(?:1|I)\\s*Ki)',
+  '2 Kings': '(?:(?:2|II)\\s*K(?:in)?gs?|(?:2|II)\\s*Ki)',
+  '1 Chronicles': '(?:(?:1|I)\\s*Chr(?:onicles)?|(?:1|I)\\s*Ch)',
+  '2 Chronicles': '(?:(?:2|II)\\s*Chr(?:onicles)?|(?:2|II)\\s*Ch)',
   Ezra: '(?:Ezra?|Ezr)',
   Nehemiah: '(?:Neh(?:emiah)?|Ne)',
   Esther: '(?:Esth(?:er)?|Est)',
@@ -32,6 +32,13 @@ const BOOK_ABBREVIATIONS: Record<string, string> = {
   Ecclesiastes: '(?:Eccl(?:esiastes)?|Ecc)',
   'Song of Solomon': '(?:Song(?:\\s+of\\s+(?:Solomon|Songs))?|SOS|Canticles)',
   'Song of Songs': '(?:Song(?:\\s+of\\s+(?:Solomon|Songs))?|SOS|Canticles)',
+  Wisdom: '(?:Wis(?:dom)?|Ws)',
+  Sirach: '(?:Sir(?:ach)?|Ecclus?)',
+  Tobit: '(?:Tob(?:it)?)',
+  Judith: '(?:Jdt|Jud(?:ith)?)',
+  Baruch: '(?:Bar(?:uch)?)',
+  '1 Maccabees': '(?:(?:1|I)\\s*Macc(?:abees)?|(?:1|I)\\s*Mac)',
+  '2 Maccabees': '(?:(?:2|II)\\s*Macc(?:abees)?|(?:2|II)\\s*Mac)',
   Isaiah: '(?:Isa(?:iah)?|Is)',
   Jeremiah: '(?:Jer(?:emiah)?|Jr)',
   Lamentations: '(?:Lam(?:entations)?|La)',
@@ -55,27 +62,27 @@ const BOOK_ABBREVIATIONS: Record<string, string> = {
   John: '(?:John|Jn|Jhn)',
   Acts: '(?:Acts?|Ac)',
   Romans: '(?:Rom(?:ans)?|Ro)',
-  '1 Corinthians': '(?:1\\s*Cor(?:inthians)?|1\\s*Co)',
-  '2 Corinthians': '(?:2\\s*Cor(?:inthians)?|2\\s*Co)',
+  '1 Corinthians': '(?:(?:1|I)\\s*Cor(?:inthians)?|(?:1|I)\\s*Co)',
+  '2 Corinthians': '(?:(?:2|II)\\s*Cor(?:inthians)?|(?:2|II)\\s*Co)',
   Galatians: '(?:Gal(?:atians)?|Ga)',
   Ephesians: '(?:Eph(?:esians)?|Ep)',
   Philippians: '(?:Phil(?:ippians)?|Php)',
   Colossians: '(?:Col(?:ossians)?|Col)',
-  '1 Thessalonians': '(?:1\\s*Thess(?:alonians)?|1\\s*Th)',
-  '2 Thessalonians': '(?:2\\s*Thess(?:alonians)?|2\\s*Th)',
-  '1 Timothy': '(?:1\\s*Tim(?:othy)?|1\\s*Ti)',
-  '2 Timothy': '(?:2\\s*Tim(?:othy)?|2\\s*Ti)',
+  '1 Thessalonians': '(?:(?:1|I)\\s*Thess(?:alonians)?|(?:1|I)\\s*Th)',
+  '2 Thessalonians': '(?:(?:2|II)\\s*Thess(?:alonians)?|(?:2|II)\\s*Th)',
+  '1 Timothy': '(?:(?:1|I)\\s*Tim(?:othy)?|(?:1|I)\\s*Ti)',
+  '2 Timothy': '(?:(?:2|II)\\s*Tim(?:othy)?|(?:2|II)\\s*Ti)',
   Titus: '(?:Tit(?:us)?|Ti)',
   Philemon: '(?:Phlm|Philem(?:on)?|Phm)',
   Hebrews: '(?:Heb(?:rews)?|He)',
   James: '(?:Jas|James?|Jm)',
-  '1 Peter': '(?:1\\s*Pet(?:er)?|1\\s*Pe)',
-  '2 Peter': '(?:2\\s*Pet(?:er)?|2\\s*Pe)',
-  '1 John': '(?:1\\s*(?:John|Jn|Jhn)|1\\s*Jn)',
-  '2 John': '(?:2\\s*(?:John|Jn|Jhn)|2\\s*Jn)',
-  '3 John': '(?:3\\s*(?:John|Jn|Jhn)|3\\s*Jn)',
+  '1 Peter': '(?:(?:1|I)\\s*Pet(?:er)?|(?:1|I)\\s*Pe)',
+  '2 Peter': '(?:(?:2|II)\\s*Pet(?:er)?|(?:2|II)\\s*Pe)',
+  '1 John': '(?:(?:1|I)\\s*(?:John|Jn|Jhn)|(?:1|I)\\s*Jn)',
+  '2 John': '(?:(?:2|II)\\s*(?:John|Jn|Jhn)|(?:2|II)\\s*Jn)',
+  '3 John': '(?:(?:3|III)\\s*(?:John|Jn|Jhn)|(?:3|III)\\s*Jn)',
   Jude: '(?:Jude?|Jd)',
-  Revelation: '(?:Rev(?:elation)?|Rv)',
+  Revelation: '(?:Rev(?:elation)?|Rv|Apoc(?:alypse)?)',
 };
 
 export function hasScriptureCitation(text: string, passage: ScripturePassage | null): boolean {
@@ -281,8 +288,34 @@ export class TurnPipeline {
 
     const result = ensureRuntimeGrounding(synthesized, bestPassage);
 
+    if (!result.reflectionQuestions || result.reflectionQuestions.length === 0) {
+      result.reflectionQuestions = getAdaptiveReflectionQuestions(
+        result.themes?.[0],
+        context?.spiritualSeason,
+      );
+    }
+
     return result;
   }
+}
+
+export function getAdaptiveReflectionQuestions(theme?: string, season?: string): string[] {
+  if (season === 'wilderness') {
+    return ['Where in this quiet space might God be meeting you today?'];
+  }
+  if (season === 'waiting') {
+    return ["What would it mean to release the urgency of the timing into God's care?"];
+  }
+  if (season === 'returning') {
+    return ['What burden or shame can you lay down as you return to peace?'];
+  }
+  if (season === 'flourishing') {
+    return ['Who in your life can you encourage with this gift of hope?'];
+  }
+  if (theme === 'anxiety' || theme === 'fear') {
+    return ["What is the single small thing within your reach today, trusting God with tomorrow?"];
+  }
+  return ['What small, faithful step can you take in quiet trust right now?'];
 }
 
 /** Lightweight cancellation-state tracker for the agent turn pipeline.

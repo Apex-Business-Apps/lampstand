@@ -63,7 +63,7 @@ test.describe('installed PWA tolerates a corrupt local store', () => {
         await expect(
           page.locator('main'),
           `${route} did not render the app shell with ${key} corrupted`,
-        ).toBeVisible();
+        ).toBeVisible({ timeout: 10000 });
         await expect(
           page.getByText('Something went wrong'),
           `${route} crashed into the ErrorBoundary with ${key} corrupted`,

@@ -337,6 +337,256 @@ export const SEED_PASSAGES: ScripturePassage[] = [
     id: '2-cor-1-8-9', book: '2 Corinthians', chapter: 1, verseStart: 8, verseEnd: 9,
     text: '"For we do not want you to be unaware, brothers, of the affliction we experienced in Asia. For we were so utterly burdened beyond our strength that we despaired of life itself. Indeed, we felt that we had received the sentence of death. But that was to make us rely not on ourselves but on God who raises the dead."', translation: 'ESV', reference: '2 Corinthians 1:8-9',
   },
+  {
+    id: 'psalm-139-1-3', book: 'Psalms', chapter: 139, verseStart: 1, verseEnd: 3,
+    text: "\"LORD, you have probed me, you know me: you know when I sit and stand; you understand my thoughts from afar. My journeys and my rest you scrutinize; with all my ways you are familiar.\"",
+    translation: 'NABRE', reference: 'Psalm 139:1-3',
+  },
+  {
+    id: 'matt-6-25-27', book: 'Matthew', chapter: 6, verseStart: 25, verseEnd: 27,
+    text: "\"Therefore I tell you, do not worry about your life, what you will eat or drink, or about your body, what you will wear. Is not life more than food and the body more than clothing? Look at the birds in the sky; they do not sow or reap, they gather nothing into barns, yet your heavenly Father feeds them. Are not you more important than they? Can any of you by worrying add a single moment to your life-span?\"",
+    translation: 'NABRE', reference: 'Matthew 6:25-27',
+  },
+  {
+    id: 'phil-2-1-4', book: 'Philippians', chapter: 2, verseStart: 1, verseEnd: 4,
+    text: "\"If there is any encouragement in Christ, any solace in love, any participation in the Spirit, any compassion and mercy, complete my joy by being of the same mind, with the same love, united in heart, thinking one thing. Do nothing out of selfishness or out of vainglory; rather, humbly regard others as more important than yourselves, each looking out not for his own interests, but also everyone for those of others.\"",
+    translation: 'NABRE', reference: 'Philippians 2:1-4',
+  },
+  {
+    id: 'john-10-11-15', book: 'John', chapter: 10, verseStart: 11, verseEnd: 15,
+    text: "\"I am the good shepherd. A good shepherd lays down his life for the sheep. A hired man, who is not a shepherd and whose sheep are not his own, sees a wolf coming and leaves the sheep and runs away, and the wolf catches and scatters them. This is because he works for pay and has no concern for the sheep. I am the good shepherd, and I know mine and mine know me, just as the Father knows me and I know the Father; and I will lay down my life for the sheep.\"",
+    translation: 'NABRE', reference: 'John 10:11-15',
+  },
+  {
+    id: 'eph-6-10-13', book: 'Ephesians', chapter: 6, verseStart: 10, verseEnd: 13,
+    text: "\"Finally, draw your strength from the Lord and from his mighty power. Put on the armor of God so that you may be able to stand firm against the tactics of the devil. For our struggle is not with flesh and blood but with the principalities, with the powers, with the world rulers of this present darkness, with the evil spirits in the heavens. Therefore, put on the armor of God, that you may be able to resist on the evil day and, having done everything, to hold your ground.\"",
+    translation: 'NABRE', reference: 'Ephesians 6:10-13',
+  },
+  {
+    id: 'micah-7-7-8', book: 'Micah', chapter: 7, verseStart: 7, verseEnd: 8,
+    text: "\"But as for me, I will look to the LORD, I will put my trust in God my savior; my God will hear me! Rejoice not over me, my enemy! though I have fallen, I will arise; though I sit in darkness, the LORD is my light.\"",
+    translation: 'NABRE', reference: 'Micah 7:7-8',
+  },
+  {
+    id: 'psalm-27-1-3', book: 'Psalms', chapter: 27, verseStart: 1, verseEnd: 3,
+    text: "\"The LORD is my light and my salvation; whom should I fear? The LORD is my life's refuge; of whom should I be afraid? When evildoers approach me to devour my flesh, these my enemies and foes themselves stumble and fall. Though an army encamp against me, my heart will not fear; though war be waged upon me, even then will I trust.\"",
+    translation: 'NABRE', reference: 'Psalm 27:1-3',
+  },
+  {
+    id: 'psalm-19-1-4', book: 'Psalms', chapter: 19, verseStart: 1, verseEnd: 4,
+    text: "\"The heavens declare the glory of God; the firmament proclaims the works of his hands. Day unto day conveys the message; night unto night imparts the knowledge. Not a word, nor a discourse, whose voice is not heard; through all the earth their voice resounds, and to the ends of the world, their message.\"",
+    translation: 'NABRE', reference: 'Psalm 19:1-4',
+  },
+  {
+    id: 'col-1-15-17', book: 'Colossians', chapter: 1, verseStart: 15, verseEnd: 17,
+    text: "\"He is the image of the invisible God, the firstborn of all creation. For in him were created all things in heaven and on earth, the visible and the invisible, whether thrones or dominions or principalities or powers; all things were created through him and for him. He is before all things, and in him all things hold together.\"",
+    translation: 'NABRE', reference: 'Colossians 1:15-17',
+  },
+  {
+    id: 'deut-33-27', book: 'Deuteronomy', chapter: 33, verseStart: 27, verseEnd: 27,
+    text: "\"The eternal God is your refuge, and underneath are the everlasting arms. He drove out enemies before you, and he said: Destroy!\"",
+    translation: 'NABRE', reference: 'Deuteronomy 33:27',
+  },
+  {
+    id: '2-cor-5-17-19', book: '2 Corinthians', chapter: 5, verseStart: 17, verseEnd: 19,
+    text: "\"So whoever is in Christ is a new creation: the old things have passed away; behold, new things have come. And all this is from God, who has reconciled us to himself through Christ and given us the ministry of reconciliation, namely, God was reconciling the world to himself in Christ, not counting their trespasses against them and entrusting to us the message of reconciliation.\"",
+    translation: 'NABRE', reference: '2 Corinthians 5:17-19',
+  },
+  {
+    id: 'prov-4-23', book: 'Proverbs', chapter: 4, verseStart: 23, verseEnd: 23,
+    text: "\"With all vigilance guard your heart, for in it are the sources of life.\"",
+    translation: 'NABRE', reference: 'Proverbs 4:23',
+  },
+  {
+    id: 'matt-7-7-8', book: 'Matthew', chapter: 7, verseStart: 7, verseEnd: 8,
+    text: "\"Ask and it will be given to you; seek and you will find; knock and the door will be opened to you. For everyone who asks, receives; and the one who seeks, finds; and to the one who knocks, the door will be opened.\"",
+    translation: 'NABRE', reference: 'Matthew 7:7-8',
+  },
+  {
+    id: 'psalm-42-1-3', book: 'Psalms', chapter: 42, verseStart: 1, verseEnd: 3,
+    text: "\"As the deer longs for streams of water, so my soul longs for you, O God. My soul thirsts for God, the living God. When can I enter and see the face of God? My tears have been my food day and night, as they ask me all day long, 'Where is your God?'\"",
+    translation: 'NABRE', reference: 'Psalm 42:1-3',
+  },
+  {
+    id: 'psalm-84-1-4', book: 'Psalms', chapter: 84, verseStart: 1, verseEnd: 4,
+    text: "\"How lovely is your dwelling place, LORD of hosts! My soul yearns and pines for the courts of the LORD. My heart and flesh cry out for the living God. As the sparrow finds a home and the swallow a nest to settle her young, my home is by your altars, LORD of hosts, my king and my God! Blessed are those who dwell in your house! They never cease to praise you.\"",
+    translation: 'NABRE', reference: 'Psalm 84:1-4',
+  },
+  {
+    id: 'eph-4-1-3', book: 'Ephesians', chapter: 4, verseStart: 1, verseEnd: 3,
+    text: "\"I, then, a prisoner for the Lord, urge you to live in a manner worthy of the call you have received, with all humility and gentleness, with patience, bearing with one another through love, striving to preserve the unity of the spirit through the bond of peace.\"",
+    translation: 'NABRE', reference: 'Ephesians 4:1-3',
+  },
+  {
+    id: 'psalm-37-3-5', book: 'Psalms', chapter: 37, verseStart: 3, verseEnd: 5,
+    text: "\"Trust in the LORD and do good that you may dwell in the land and live secure. Find your delight in the LORD who will give you your heart's desire. Commit your way to the LORD; trust in him and he will act.\"",
+    translation: 'NABRE', reference: 'Psalm 37:3-5',
+  },
+  {
+    id: 'john-15-9-12', book: 'John', chapter: 15, verseStart: 9, verseEnd: 12,
+    text: "\"As the Father loves me, so I also love you. Remain in my love. If you keep my commandments, you will remain in my love, just as I have kept my Father's commandments and remain in his love. I have told you this so that my joy may be in you and your joy may be complete. This is my commandment: love one another as I love you.\"",
+    translation: 'NABRE', reference: 'John 15:9-12',
+  },
+  {
+    id: 'rom-12-9-13', book: 'Romans', chapter: 12, verseStart: 9, verseEnd: 13,
+    text: "\"Let love be sincere; hate what is evil, hold on to what is good; love one another with mutual affection; anticipate one another in showing honor. Do not grow slack in zeal, be fervent in spirit, serve the Lord. Rejoice in hope, endure in affliction, persevere in prayer. Contribute to the needs of the holy ones, exercise hospitality.\"",
+    translation: 'NABRE', reference: 'Romans 12:9-13',
+  },
+  {
+    id: 'matt-18-20', book: 'Matthew', chapter: 18, verseStart: 20, verseEnd: 20,
+    text: "\"For where two or three are gathered together in my name, there am I in the midst of them.\"",
+    translation: 'NABRE', reference: 'Matthew 18:20',
+  },
+  {
+    id: 'phil-3-12-14', book: 'Philippians', chapter: 3, verseStart: 12, verseEnd: 14,
+    text: "\"It is not that I have already taken hold of it or have already attained perfect maturity, but I continue my pursuit in hope that I may possess it, since I have indeed been taken possession of by Christ Jesus. Brothers, I for my part do not consider myself to have taken possession. Just one thing: forgetting what lies behind but straining forward to what lies ahead, I continue my pursuit toward the goal, the prize of God's upward calling, in Christ Jesus.\"",
+    translation: 'NABRE', reference: 'Philippians 3:12-14',
+  },
+  {
+    id: 'mark-10-43-45', book: 'Mark', chapter: 10, verseStart: 43, verseEnd: 45,
+    text: "\"Rather, whoever wishes to be great among you will be your servant; whoever wishes to be first among you will be the slave of all. For the Son of Man did not come to be served but to serve and to give his life as a ransom for many.\"",
+    translation: 'NABRE', reference: 'Mark 10:43-45',
+  },
+  {
+    id: 'isaiah-12-2-3', book: 'Isaiah', chapter: 12, verseStart: 2, verseEnd: 3,
+    text: "\"God indeed is my salvation; I am confident and unafraid. My strength and my courage is the LORD, and he has been my savior. With joy you will draw water from the fountains of salvation.\"",
+    translation: 'NABRE', reference: 'Isaiah 12:2-3',
+  },
+  {
+    id: '1-pet-1-3-5', book: '1 Peter', chapter: 1, verseStart: 3, verseEnd: 5,
+    text: "\"Blessed be the God and Father of our Lord Jesus Christ, who in his great mercy gave us a new birth to a living hope through the resurrection of Jesus Christ from the dead, to an inheritance that is imperishable, undefiled, and unfading, kept in heaven for you who by the power of God are safeguarded through faith to a salvation that is ready to be revealed in the final time.\"",
+    translation: 'NABRE', reference: '1 Peter 1:3-5',
+  },
+  {
+    id: 'psalm-147-3-5', book: 'Psalms', chapter: 147, verseStart: 3, verseEnd: 5,
+    text: "\"He heals the brokenhearted and binds up their wounds. He tells the number of the stars and calls each by name. Great is our Lord and mighty in power; to his wisdom there is no limit.\"",
+    translation: 'NABRE', reference: 'Psalm 147:3-5',
+  },
+  {
+    id: 'rom-8-31-34', book: 'Romans', chapter: 8, verseStart: 31, verseEnd: 34,
+    text: "\"What then shall we say to this? If God is for us, who can be against us? He who did not spare his own Son but handed him over for us all, how will he not also give us everything else along with him? Who will bring a charge against God's chosen ones? It is God who acquits us. Who will condemn? It is Christ Jesus who died, rather, was raised, who also is at the right hand of God, who indeed intercedes for us.\"",
+    translation: 'NABRE', reference: 'Romans 8:31-34',
+  },
+  {
+    id: 'matt-28-18-20', book: 'Matthew', chapter: 28, verseStart: 18, verseEnd: 20,
+    text: "\"Then Jesus approached and said to them, 'All power in heaven and on earth has been given to me. Go, therefore, and make disciples of all nations, baptizing them in the name of the Father, and of the Son, and of the holy Spirit, teaching them to observe all that I have commanded you. And behold, I am with you always, until the end of the age.'\"",
+    translation: 'NABRE', reference: 'Matthew 28:18-20',
+  },
+  {
+    id: 'psalm-126-5-6', book: 'Psalms', chapter: 126, verseStart: 5, verseEnd: 6,
+    text: "\"Those who sow in tears will reap with cries of joy. Those who go forth weeping, bearing sacks of seed, will return with shouts of joy, bearing their sheaves.\"",
+    translation: 'NABRE', reference: 'Psalm 126:5-6',
+  },
+  {
+    id: 'john-4-13-14', book: 'John', chapter: 4, verseStart: 13, verseEnd: 14,
+    text: "\"Jesus answered and said to her, 'Everyone who drinks this water will be thirsty again; but whoever drinks the water that I shall give will never thirst; the water that I shall give will become in him a spring of water welling up to eternal life.'\"",
+    translation: 'NABRE', reference: 'John 4:13-14',
+  },
+  {
+    id: 'rev-22-1-3', book: 'Revelation', chapter: 22, verseStart: 1, verseEnd: 3,
+    text: "\"Then the angel showed me the river of life-giving water, sparkling like crystal, flowing from the throne of God and of the Lamb down the middle of its street. On either side of the river grew the tree of life that produces fruit twelve times a year, once each month; the leaves of the trees serve as medicine for the nations. Nothing accursed will be found there anymore.\"",
+    translation: 'NABRE', reference: 'Revelation 22:1-3',
+  },
+  {
+    id: 'psalm-25-4-7', book: 'Psalms', chapter: 25, verseStart: 4, verseEnd: 7,
+    text: "\"Make known to me your ways, LORD; teach me your paths. Guide me by your fidelity and teach me, for you are God my savior, for you I wait all the day long. Remember your compassion and your mercy, O LORD, for they are ages old. Remember no more the sins of my youth; remember me according to your mercy, because of your goodness, LORD.\"",
+    translation: 'NABRE', reference: 'Psalm 25:4-7',
+  },
+  {
+    id: 'isaiah-40-28-29', book: 'Isaiah', chapter: 40, verseStart: 28, verseEnd: 29,
+    text: "\"Do you not know? Have you not heard? The LORD is the eternal God, creator of the ends of the earth. He does not faint nor grow weary, and his knowledge is beyond scrutiny. He gives strength to the fainting; for the weak he makes vigor abound.\"",
+    translation: 'NABRE', reference: 'Isaiah 40:28-29',
+  },
+  {
+    id: 'hebrews-10-22-24', book: 'Hebrews', chapter: 10, verseStart: 22, verseEnd: 24,
+    text: "\"Let us approach with a sincere heart and in absolute trust, with our hearts sprinkled clean from an evil conscience and our bodies washed in pure water. Let us hold unwaveringly to our confession that gives us hope, for he who made the promise is trustworthy. We must consider how to rouse one another to love and good works.\"",
+    translation: 'NABRE', reference: 'Hebrews 10:22-24',
+  },
+  {
+    id: '1-peter-2-9-10', book: '1 Peter', chapter: 2, verseStart: 9, verseEnd: 10,
+    text: "\"But you are 'a chosen race, a royal priesthood, a holy nation, a people of his own, so that you may announce the praises' of him who called you out of darkness into his wonderful light. Once you were 'no people' but now you are God's people; you 'had not received mercy' but now you have received mercy.\"",
+    translation: 'NABRE', reference: '1 Peter 2:9-10',
+  },
+  {
+    id: 'psalm-116-1-7', book: 'Psalms', chapter: 116, verseStart: 1, verseEnd: 7,
+    text: "\"I love the LORD, who listened to my voice in supplication, who turned an ear to me on the day I called. I was caught by the cords of death; the snares of Sheol had seized me; I had sorrow and trouble. Then I called upon the name of the LORD: 'LORD, save my life!' Gracious is the LORD and righteous; yes, our God is merciful. The LORD protects the simple; I was helpless and he saved me. Return, my soul, to your rest; the LORD has been good to you.\"",
+    translation: 'NABRE', reference: 'Psalm 116:1-7',
+  },
+  {
+    id: 'isaiah-49-14-16', book: 'Isaiah', chapter: 49, verseStart: 14, verseEnd: 16,
+    text: "\"Zion said, 'The LORD has forsaken me; my Lord has forgotten me.' Can a mother forget her infant, be without tenderness for the child of her womb? Even should she forget, I will never forget you. See, upon the palms of my hands I have engraved you; your walls are ever before me.\"",
+    translation: 'NABRE', reference: 'Isaiah 49:14-16',
+  },
+  {
+    id: 'luke-1-46-49', book: 'Luke', chapter: 1, verseStart: 46, verseEnd: 49,
+    text: "\"And Mary said: 'My soul proclaims the greatness of the Lord; my spirit rejoices in God my savior. For he has looked upon his handmaid's lowliness; behold, from now on will all ages call me blessed. The Mighty One has done great things for me, and holy is his name.'\"",
+    translation: 'NABRE', reference: 'Luke 1:46-49',
+  },
+  {
+    id: 'rom-14-7-9', book: 'Romans', chapter: 14, verseStart: 7, verseEnd: 9,
+    text: "\"None of us lives for oneself, and no one dies for oneself. For if we live, we live for the Lord, and if we die, we die for the Lord; so then, whether we live or die, we are the Lord's. For this is why Christ died and came to life, that he might be Lord of both the dead and the living.\"",
+    translation: 'NABRE', reference: 'Romans 14:7-9',
+  },
+  {
+    id: 'psalm-138-1-3', book: 'Psalms', chapter: 138, verseStart: 1, verseEnd: 3,
+    text: "\"I thank you, LORD, with all my heart; in the presence of the angels I sing your praise. I bow toward your holy temple and thank your name for your love and your fidelity, for you have made great over all your name and your promise. On the day I called, you answered me; you increased strength within my soul.\"",
+    translation: 'NABRE', reference: 'Psalm 138:1-3',
+  },
+  {
+    id: 'isaiah-32-17-18', book: 'Isaiah', chapter: 32, verseStart: 17, verseEnd: 18,
+    text: "\"The work of righteousness will be peace, the effect of righteousness, calm and security forever. My people will live in a peaceful dwelling, in secure homes, in quiet resting places.\"",
+    translation: 'NABRE', reference: 'Isaiah 32:17-18',
+  },
+  {
+    id: 'john-17-20-23', book: 'John', chapter: 17, verseStart: 20, verseEnd: 23,
+    text: "\"I pray not only for them, but also for those who will believe in me through their word, so that they may all be one, as you, Father, are in me and I in you, that they also may be in us, that the world may believe that you sent me. And I have given them the glory you gave me, so that they may be one, as we are one, I in them and you in me, that they may be brought to perfection as one, that the world may know that you sent me and that you loved them even as you loved me.\"",
+    translation: 'NABRE', reference: 'John 17:20-23',
+  },
+  {
+    id: 'psalm-145-17-19', book: 'Psalms', chapter: 145, verseStart: 17, verseEnd: 19,
+    text: "\"The LORD is just in all his ways, merciful in all his works. The LORD is near to all who call upon him, to all who call upon him in truth. He fulfills the desire of those who fear him; he hears their cry and saves them.\"",
+    translation: 'NABRE', reference: 'Psalm 145:17-19',
+  },
+  {
+    id: 'psalm-13-5-6', book: 'Psalms', chapter: 13, verseStart: 5, verseEnd: 6,
+    text: "\"But I trust in your mercy. Grant my heart joy in your salvation, I will sing to the LORD, for he has dealt bountifully with me!\"",
+    translation: 'NABRE', reference: 'Psalm 13:5-6',
+  },
+  {
+    id: 'psalm-30-11-12', book: 'Psalms', chapter: 30, verseStart: 11, verseEnd: 12,
+    text: "\"You changed my mourning into dancing; you took off my sackcloth and clothed me with gladness, that my soul might sing praise to you without ceasing. O LORD, my God, forever will I give you thanks.\"",
+    translation: 'NABRE', reference: 'Psalm 30:11-12',
+  },
+  {
+    id: 'hab-3-17-19', book: 'Habakkuk', chapter: 3, verseStart: 17, verseEnd: 19,
+    text: "\"For though the fig tree does not blossom and there is no crop on the vines, though the olive crop fails and the fields produce no grain... yet will I rejoice in the LORD, I will exult in my saving God! GOD, my Lord, is my strength; he makes my feet like those of a deer.\"",
+    translation: 'NABRE', reference: 'Habakkuk 3:17-19',
+  },
+  {
+    id: 'psalm-67-1-2', book: 'Psalms', chapter: 67, verseStart: 1, verseEnd: 2,
+    text: "\"May God be gracious to us and bless us; may his face shine upon us. So shall your way be known upon the earth, your saving power among all the nations.\"",
+    translation: 'NABRE', reference: 'Psalm 67:1-2',
+  },
+  {
+    id: '1-thess-3-12-13', book: '1 Thessalonians', chapter: 3, verseStart: 12, verseEnd: 13,
+    text: "\"May the Lord make you increase and abound in love for one another and for all, just as we have for you, so as to strengthen your hearts, to be blameless in holiness before our God and Father at the coming of our Lord Jesus with all his holy ones.\"",
+    translation: 'NABRE', reference: '1 Thessalonians 3:12-13',
+  },
+  {
+    id: 'nahum-1-7', book: 'Nahum', chapter: 1, verseStart: 7, verseEnd: 7,
+    text: "\"Good is the LORD, a stronghold in a day of distress; he knows those who take refuge in him.\"",
+    translation: 'NABRE', reference: 'Nahum 1:7',
+  },
+  {
+    id: 'eph-1-3-6', book: 'Ephesians', chapter: 1, verseStart: 3, verseEnd: 6,
+    text: "\"Blessed be the God and Father of our Lord Jesus Christ, who has blessed us in Christ with every spiritual blessing in the heavens, as he chose us in him, before the foundation of the world, to be holy and without blemish before him. In love he destined us for adoption to himself through Jesus Christ, in accord with the favor of his will, for the praise of the glory of his grace that he granted us in the beloved.\"",
+    translation: 'NABRE', reference: 'Ephesians 1:3-6',
+  },
+  {
+    id: 'psalm-100-1-5', book: 'Psalms', chapter: 100, verseStart: 1, verseEnd: 5,
+    text: "\"Shout joyfully to the LORD, all you lands; serve the LORD with gladness; come before him with joyful song. Know that the LORD is God; he made us, his we are; his people, the flock he tends. Enter his gates with thanksgiving, his courts with praise. Give thanks to him, bless his name; good indeed is the LORD, whose love endures forever, whose faithfulness lasts through every generation.\"",
+    translation: 'NABRE', reference: 'Psalm 100:1-5',
+  },
 ];
 
 export const SEED_SERMONS: Sermon[] = [

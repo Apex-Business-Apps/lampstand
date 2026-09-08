@@ -34,4 +34,24 @@ test.describe('PWA harness', () => {
     const manifest = await (await page.request.get(new URL('/manifest.json', baseURL).toString())).json();
     expect(metaThemeColor).toBe(manifest.theme_color);
   });
+
+  test('renders the PWA install harness in settings and desktop shell', async ({ page }) => {
+    await page.addInitScript(() => {
+      localStorage.setItem(
+        'lampstand_profile',
+        JSON.stringify({
+          firstName: 'Disciple',
+          onboardingComplete: true,
+          toneStyle: 'balanced',
+          readingPreference: 'balanced',
+          kidsMode: false,
+          notificationsEnabled: false,
+        }),
+      );
+    });
+
+    await page.goto('/settings');
+    const harness = page.locator('[data-testid="pwa-install-harness"]');
+    await expect(harness.first()).toBeVisible();
+  });
 });
