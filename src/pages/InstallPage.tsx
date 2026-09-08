@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 import { AppShell } from '@/components/AppShell';
-import { Share, Plus, Smartphone, Bell, CheckCircle2 } from 'lucide-react';
+import { Share, Plus, Smartphone, Bell, CheckCircle2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { isStandalone } from '@/lib/notifications/dailyReminder';
+import { usePwaInstall } from '@/hooks/usePwaInstall';
 
 type Platform = 'ios-safari' | 'ios-other' | 'android' | 'desktop' | 'unknown';
 
@@ -24,6 +25,7 @@ export default function InstallPage() {
   const navigate = useNavigate();
   const platform = useMemo(detectPlatform, []);
   const installed = useMemo(isStandalone, []);
+  const { isInstallable, promptInstall } = usePwaInstall();
 
   return (
     <AppShell>
@@ -45,14 +47,30 @@ export default function InstallPage() {
             </p>
             <Button variant="outline" onClick={() => navigate('/settings')}>Open Settings</Button>
           </div>
-        ) : platform === 'ios-safari' ? (
-          <IosSafariSteps />
-        ) : platform === 'ios-other' ? (
-          <IosWrongBrowser />
-        ) : platform === 'android' ? (
-          <AndroidSteps />
         ) : (
-          <DesktopSteps />
+          <>
+            {isInstallable && (
+              <div className="rounded-xl border border-primary/50 bg-primary/10 p-5 text-center space-y-3 shadow-sm animate-fade-in">
+                <Download className="h-8 w-8 text-primary mx-auto" />
+                <p className="font-medium text-foreground">One-click install is ready on this device</p>
+                <p className="text-xs text-muted-foreground">
+                  Tap below to add TheLampStand directly to your apps or home screen.
+                </p>
+                <Button onClick={promptInstall} className="gap-2">
+                  <Download className="h-4 w-4" /> Install Now
+                </Button>
+              </div>
+            )}
+            {platform === 'ios-safari' ? (
+              <IosSafariSteps />
+            ) : platform === 'ios-other' ? (
+              <IosWrongBrowser />
+            ) : platform === 'android' ? (
+              <AndroidSteps />
+            ) : (
+              <DesktopSteps />
+            )}
+          </>
         )}
 
         <div className="rounded-xl border border-border bg-card p-5 space-y-2">

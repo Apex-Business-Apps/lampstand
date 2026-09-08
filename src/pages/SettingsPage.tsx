@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AppShell } from '@/components/AppShell';
+import { PwaInstallHarness } from '@/components/PwaInstallHarness';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getProfile, saveProfile, getKnowledge, clearKnowledge, resetAllData, getConsentState, saveConsentState, getVoicePreferences, saveVoicePreferences, clearVoiceHistory, saveSyncState } from '@/lib/storage';
@@ -226,7 +227,9 @@ export default function SettingsPage() {
           <ResonanceCard />
         </Section>
 
-
+        <Section title="App & Installation">
+          <PwaInstallHarness />
+        </Section>
 
         <Section title="Consent & Permissions">
           <ConsentToggle label="Local adaptive memory" value={consent.localAdaptiveMemory} onChange={(v) => { const next = { ...consent, localAdaptiveMemory: v }; setConsent(next); saveConsentState({ localAdaptiveMemory: v }); }} />

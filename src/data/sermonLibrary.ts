@@ -830,6 +830,306 @@ A faithful response is to make goodness concrete enough to help someone else. Te
     relevance: `When circumstances seem to derail your plans, remember that God's purpose for your soul cannot be thwarted by earthly trouble. What He began in you, He will faithfully bring to completion. Rest in His enduring love.`,
     prayer: `Lord, fulfill your purpose for my life. When trouble surrounds me, stretch out your hand and preserve me. Do not forsake the work of your hands. Amen.`,
   },
+  'psalm-139-1-3': {
+    title: "Known Beyond Pretense",
+    reflection: "David begins Psalm 139 not with an abstract treatise on divine omniscience, but with the quiet vulnerability of being entirely perceived. The psalmist acknowledges that God knows his interior life before speech forms on his tongue. We live in a culture saturated with curated images and defensive walls. Here, the assurance that God discerns our hidden fragility offers genuine rest. You are not required to maintain an acceptable facade before the Holy One; his knowledge encompasses our fractures and still extends mercy." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When you feel unseen or misunderstood by colleagues or companions, remember that your interior burdens are completely known to God. You do not need to conceal your fatigue from the one who fashioned you.",
+    prayer: "Lord, you know every thought and quiet step. Free me from the exhausting impulse to perform, and grant me stillness in the truth that I am held in your gaze. Amen.",
+  },
+  'matt-6-25-27': {
+    title: "The Providence of the Sparrow",
+    reflection: "Jesus does not mock human vulnerability; he acknowledges the elemental needs for bread, water, and shelter. Yet he invites his listeners to observe the birds of the sky. Worry assumes that the burden of sustaining the cosmos falls entirely upon our shoulders. Christ gently exposes the futility of anxiety: fretting cannot extend our days by a single breath. Instead of compulsive self-reliance, he points toward the attentive generosity of the Father who sustains the fragile without fail." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "In an economy driven by scarcity and urgency, Christ invites us to slow our breathing. Prudence is good, but panic is not prudence. Trusting God with the provision of tomorrow frees you to love faithfully today.",
+    prayer: "Father, relieve my heart of the frantic need to control tomorrow. Teach me to trust your daily bread and rest in your fatherly care. Amen.",
+  },
+  'phil-2-1-4': {
+    title: "The Mind of Humble Fellowship",
+    reflection: "Paul grounds Christian community not in shared social status or uniform personalities, but in the tender consolations of the Spirit. When self-interest and rivalry infect human relationships, communities fracture into grievance. Paul offers the antidote of humility: choosing to value the neighbor above our own immediate convenience. This is not self-erasure; it is the generous posture of Christ, who poured himself out so that others might live in abundance." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "In workplaces, homes, and friendships where competition often breeds quiet bitterness, practicing this verse is transformative. Looking out for another person’s welfare disarms hostility and creates room for genuine communion.",
+    prayer: "Lord, soften my instinct toward pride and self-defense. Give me the humility to see others through your eyes and honor their good above my own. Amen.",
+  },
+  'john-10-11-15': {
+    title: "The Shepherd Who Will Not Flee",
+    reflection: "Jesus distinguishes himself from hired hands who abandon the flock when danger strikes. The hired hand evaluates risk based on profit, but the Good Shepherd is bound to the flock by covenant love. When the wolf approaches, Jesus stands in the gap, ultimately laying down his life so that the sheep may remain safe and whole. He knows each of his own intimately, with the same depth of mutual affection that exists between the Father and the Son." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Many people have suffered abandonment from mentors, institutions, or friends when difficulties arose. Jesus will never abandon you when darkness approaches. His commitment to your life is sealed with his own blood.",
+    prayer: "Good Shepherd, thank you for standing between me and every danger. Help me hear your voice today and follow you without dread. Amen.",
+  },
+  'eph-6-10-13': {
+    title: "Standing Firm in God’s Might",
+    reflection: "Paul reminds believers that spiritual conflict is not fought against our human neighbors, but against unseen spiritual deceits that divide, accuse, and wound. If we treat other human beings as our true enemies, we have already succumbed to the adversary’s strategy. God provides his own armor, truth, righteousness, peace, faith, and salvation, so that in the hour of trial we do not retreat, but stand firm in quiet conviction." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When interpersonal tension rises, do not direct your fury toward flesh and blood. Clothe your mind with truth and your heart with Christ’s peace, refusing to trade insult for insult.",
+    prayer: "Lord, clothe me today in your truth and peace. Guard my mind against despair and accusations, and give me grace to stand firm in love. Amen.",
+  },
+  'micah-7-7-8': {
+    title: "Though I Have Fallen, I Will Arise",
+    reflection: "Micah speaks out of a season of national collapse and personal isolation. Yet in the midst of ruins, the prophet makes a bold, defiant confession of trust: God hears. Even when he sits in darkness and experiences the humiliation of a fall, he refuses to surrender to despair. The darkness is not permanent; the fall is not the final chapter. The Lord himself becomes the light that illuminates the shadow and lifts the fallen." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Failure does not disqualify you from God’s mercy. If you have stumbled or find yourself seated in grief, Micah gives voice to hope. Turn your face toward God; he will lift you and illuminate your path.",
+    prayer: "God of my salvation, hear my cry in the quiet. When I fall, grant me the grace to rise again, knowing that you are my everlasting light. Amen.",
+  },
+  'psalm-27-1-3': {
+    title: "The Light That Banishes Dread",
+    reflection: "David begins Psalm 27 with an uncompromising question: if the Sovereign Creator is our light and salvation, what remains to be feared? The psalm acknowledges the reality of enemies and encamped armies, but shifts the gaze from the threat to the protector. When the Lord is the stronghold of your life, adversity loses its power to terrorize your soul. Courage is not the absence of pressure; it is trust in the presence of God." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When facing daunting projects, hostile environments, or sudden bad news, declare with the psalmist that God is your stronghold. You do not need to cower before circumstances when God stands with you.",
+    prayer: "Lord, you are my light and my salvation. Dispel the lingering shadows of dread from my heart, and help me walk with steady courage today. Amen.",
+  },
+  'psalm-19-1-4': {
+    title: "The Silent Symphony of Creation",
+    reflection: "Psalm 19 marvels at the speechless witness of the created cosmos. The stars, skies, sun, and changing seasons proclaim divine craftsmanship without speaking an audible syllable. Their message crosses every linguistic barrier and geographical boundary. In a culture inundated with empty chatter, the quiet fidelity of creation calls the soul to contemplative wonder, reminding us of the majesty and wisdom of the Creator." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When your world feels small, chaotic, or trapped within digital screens, step outside and look up. The vastness of creation declares that God is still on his throne, governing all things with wisdom.",
+    prayer: "Creator God, teach my heart to listen to the silent proclamation of your glory. Quiet my noisy thoughts so I may wonder at your great works. Amen.",
+  },
+  'col-1-15-17': {
+    title: "The One Who Holds All Things",
+    reflection: "Paul sings a majestic hymn to the supremacy of Jesus Christ. Far from being merely a moral teacher or wise prophet, Jesus is the very portrait of the invisible God and the architect of creation. Every power and authority is subordinate to him. Crucially, Paul declares that in him, all things hold together. When our personal world feels as though it is coming apart at the seams, Christ remains the unifying center of reality." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "You do not have to hold your universe together by sheer willpower. Release the illusion of ultimate control and trust the One whose hands created and sustain the cosmos.",
+    prayer: "Lord Jesus, preeminent and eternal, thank you that you hold all things together when my strength fails. Be the center of my life and decisions today. Amen.",
+  },
+  'deut-33-27': {
+    title: "Underneath Are the Everlasting Arms",
+    reflection: "In Moses’ final blessing over the tribes of Israel, he speaks one of the most tender metaphors in all of Scripture: underneath are the everlasting arms. Life can feel like free fall when health fails, stability crumbles, or familiar support vanishes. Yet Moses assures us that no matter how deep the fall, God’s arms are deeper still. You can never fall beyond the reach of divine mercy." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When you feel as though the ground has been pulled from beneath your feet, remember that you are supported from below. God’s everlasting arms are ready to catch, uphold, and restore your spirit.",
+    prayer: "Eternal God, thank you that your arms are underneath every trial I face. When my footing slips, uphold me with your everlasting grace. Amen.",
+  },
+  '2-cor-5-17-19': {
+    title: "Reconciliation and Renewal",
+    reflection: "Paul announces the cosmic revolution inaugurated by Jesus: anyone joined to Christ is a new creation. The former patterns of guilt, hostility, and condemnation are stripped of their authority. God has reconciled humanity to himself, choosing not to count our transgressions against us, and has conferred upon us the sacred responsibility of peacemakers. We are ambassadors of a kingdom founded on restorative grace." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "You are not trapped by your past mistakes or the labels others have placed on you. In Christ, you have a clean slate. Extend that same gift of reconciliation to those who have offended you.",
+    prayer: "Lord, thank you for making me a new creation. Cleanse me of old grievances and make me an instrument of reconciliation in my home and workplace today. Amen.",
+  },
+  'prov-4-23': {
+    title: "The Wellspring of the Heart",
+    reflection: "The sage of Proverbs identifies the heart as the reservoir from which all speech, ambition, and affection flow. If the wellspring is poisoned by resentment, lust, or greed, the entire life becomes contaminated. Guarding the heart is not paranoia; it is the vigilant curation of what we allow to capture our imagination, trust, and worship." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Pay attention to what you consume today, in conversations, media, and private reflections. Filter out bitterness and cultivate purity, for your exterior life will inevitably reflect your interior thoughts.",
+    prayer: "Lord, create in me a clean heart. Help me guard the door of my thoughts today against cynicism and malice, keeping the wellspring pure. Amen.",
+  },
+  'matt-7-7-8': {
+    title: "The Open Door of Prayer",
+    reflection: "Jesus invites his disciples into persistent, active communion with God through three progressive verbs: ask, seek, and knock. Prayer is not a mechanical transaction, but the deepening of relationship. The Father is not behind a locked door begrudging our petitions; he is eager to bestow good gifts upon those who come with childlike honesty and perseverance." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Do not abandon prayer simply because an answer has not arrived on your schedule. Keep asking with humility, seeking with diligence, and knocking with faith; God is at work behind the door.",
+    prayer: "Father, I bring my petitions to you with simple faith. Open the doors of your wisdom and grant me the grace to seek your face persistently. Amen.",
+  },
+  'psalm-42-1-3': {
+    title: "The Longing of the Thirsty Soul",
+    reflection: "The Sons of Korah articulate the painful ache of spiritual dryness. Like a parched deer panting in an arid wilderness, the psalmist longs for the living presence of God. The psalm does not shy away from tears or the mocking voices of doubt. True spirituality has room for holy grief; admitting our thirst is the first step toward drinking deeply from God’s fountain again." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "If you feel dry or disconnected from religious joy right now, do not condemn yourself. Acknowledge your hunger honestly before God; he honors the thirst that refuses to settle for counterfeit waters.",
+    prayer: "O living God, my soul thirsts for your presence. In my dryness, be my river of life and restore my hope in you. Amen.",
+  },
+  'psalm-84-1-4': {
+    title: "The Sparrow at the Altar",
+    reflection: "Psalm 84 sings of the joy of dwelling in the divine presence. The psalmist notices that even insignificant sparrows and swallows build their nests close to the sacred altars. If God provides a secure home for fragile birds near his sanctuary, how much more does he welcome and shelter his children? To dwell in God’s house is to make his presence our primary dwelling place throughout the day." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "You do not have to wander through life as a spiritual nomad. In Christ, you have an eternal home where your soul can rest and find safety, no matter where your daily obligations take you.",
+    prayer: "Lord of hosts, how lovely is your presence. Like the sparrow, let my soul find its secure home near your altar today. Amen.",
+  },
+  'eph-4-1-3': {
+    title: "Walking Worthy of the Calling",
+    reflection: "Paul writes from Roman imprisonment, not pleading for his own comfort, but urging the church toward a lifestyle worthy of Christ. The marks of this calling are humility, gentleness, and patient endurance with one another. True Christian unity is not uniformity; it is the deliberate choice to bear with each other’s flaws and preserve the bond of peace through love." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When family members or colleagues test your patience today, remember your calling. Respond with gentleness rather than retaliation, preserving peace wherever it depends on you.",
+    prayer: "Lord, grant me a humble and gentle spirit today. Help me bear patiently with others in love, preserving the unity of your peace. Amen.",
+  },
+  'psalm-37-3-5': {
+    title: "Commit Your Way to the Lord",
+    reflection: "Psalm 37 provides a practical blueprint for navigating an unjust world: trust, do good, delight, and commit. Instead of fretting over the apparent prosperity of the deceitful, David invites us to roll our burdens onto God. Delighting in the Lord realigns our desires so that our deepest longings match his good purposes, bringing security to the soul." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When you feel pressured to compromise or take shortcuts to achieve success, pause. Commit your career, family, and future to the Lord; trust him, and he will act with justice and care.",
+    prayer: "Lord, I commit my way into your hands today. Purify my desires so I find my joy in you, and grant me security in your care. Amen.",
+  },
+  'john-15-9-12': {
+    title: "The Measure of Complete Joy",
+    reflection: "Jesus reveals the astonishing depth of his affection: he loves his disciples with the very same love the Father has for him. He commands us to abide in this love, not as a cold duty, but so that his own joy may fill our hearts to overflowing. True Christian obedience is the natural fruit of dwelling securely in Christ’s affection and sharing that love with others." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Love is not an abstract concept; it is practical and costly. Today, treat someone with the same generous patience and kindness that Christ has extended to you.",
+    prayer: "Lord Jesus, thank you for loving me with the Father’s love. Help me remain in your love today and share your complete joy with everyone I meet. Amen.",
+  },
+  'rom-12-9-13': {
+    title: "The Practical Marks of Sincere Love",
+    reflection: "Paul provides a brisk, vivid portrait of authentic Christian love. Sincere love is without hypocrisy: it hates evil, clings to good, outdoes others in showing honor, and serves with spiritual fervor. In hard times, it rejoices in hope, bears affliction with dignity, and never abandons prayer. This is love translated into ordinary hands and hospitable tables." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Do not settle for sentimental affection. Look for one practical way to show honor to an exhausted coworker or provide hospitality to a lonely neighbor today.",
+    prayer: "Lord, purge my love of all pretense. Give me a fervent spirit to serve you, patience to endure trials, and a heart open in hospitality today. Amen.",
+  },
+  'matt-18-20': {
+    title: "Christ in the Smallest Gathering",
+    reflection: "Jesus promises his living presence not only in grand cathedrals or massive assemblies, but wherever even two or three assemble in his name. This reveals the humility of divine presence: God honors the intimate, the small, and the ordinary fellowship. In shared prayer, honest counsel, and mutual encouragement, Christ himself sits in the midst." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Do not discount small beginnings or quiet gatherings. When you pray with a spouse, encourage a friend, or share scripture with a child, Jesus is present with you.",
+    prayer: "Lord Jesus, thank you for being present whenever we gather in your name. Help me recognize your quiet presence in my conversations and shared prayers today. Amen.",
+  },
+  'phil-3-12-14': {
+    title: "Forgetting What Lies Behind",
+    reflection: "Paul models healthy spiritual honesty: he has not arrived at perfection, but he presses forward because Christ has already laid hold of him. To run the race effectively, the runner must refuse to dwell on past victories or past failures. Forgetting what lies behind is the intentional release of guilt and complacency, keeping our eyes fixed on the upward call of God." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Do not let past failures paralyze your present obedience. Leave yesterday’s regrets in God’s mercy and take the next faithful step toward Christ today.",
+    prayer: "Lord Jesus, you have taken hold of my life. Help me release the baggage of the past and press forward with joyful perseverance toward your calling today. Amen.",
+  },
+  'mark-10-43-45': {
+    title: "Greatness Measured by Service",
+    reflection: "Jesus completely overturns the world’s hierarchy of power and prestige. In earthly kingdoms, greatness is measured by how many people serve you; in Christ’s kingdom, greatness is measured by how humbly you serve others. The King of Glory did not come demanding tribute, but bent down to wash feet and give his life as a ransom for the broken." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Measure your day not by the status you accumulated, but by the quiet acts of service you offered to those who could never repay you.",
+    prayer: "Lord Jesus, deliver me from the craving for status and applause. Give me the heart of a servant, ready to bless and care for others today. Amen.",
+  },
+  'isaiah-12-2-3': {
+    title: "Drawing Water with Joy",
+    reflection: "Isaiah leads God’s people in a song of triumphant redemption. Notice the bold declaration: God himself is my salvation, not merely the provider of it. When the Lord is your strength, fear dissolves and joy springs up. Drawing water from the wells of salvation speaks of abundant, unending refreshment accessible to all who trust in him." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Do not approach your spiritual life with dread or exhaustion. Dip your bucket into the wells of God’s salvation today and drink deeply of his joy.",
+    prayer: "Lord God, you are my salvation, my strength, and my song. Fill my heart with courage and let me draw living water with joy today. Amen.",
+  },
+  '1-pet-1-3-5': {
+    title: "An Imperishable Inheritance",
+    reflection: "Peter writes to believers facing ostracism and fiery trials, grounding their courage in the resurrection of Jesus Christ. Through the resurrection, we are reborn into a living hope, not a fragile wish, and an inheritance that cannot spoil, rot, or fade. Even better, God’s power safeguards us through faith until the day of final restoration." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Earthly possessions, health, and reputations can fade overnight. But your inheritance in Christ is guarded by God himself. Let that eternal reality give you resilience today.",
+    prayer: "Father of our Lord Jesus Christ, thank you for giving me a living hope. Safeguard my faith today and remind me of the imperishable inheritance kept in heaven for me. Amen.",
+  },
+  'psalm-147-3-5': {
+    title: "The God Who Numbers Stars and Binds Wounds",
+    reflection: "Psalm 147 pairs two breathtaking truths about God: he numbers the billions of stars and calls each by name, and yet he bends down to bind up the wounds of the brokenhearted. The God whose power is limitless possesses a tenderness that notices every tear. His cosmic greatness does not distance him from human sorrow; it guarantees his ability to heal it." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "If your heart carries secret fractures today, do not imagine you are too small for God to care. The Architect of the galaxies is also your tender Physician.",
+    prayer: "Great and mighty Lord, you who name the stars, look upon my brokenness with mercy. Bind up my wounds and restore my heart in your limitless wisdom today. Amen.",
+  },
+  'rom-8-31-34': {
+    title: "If God Is for Us, Who Can Stand Against?",
+    reflection: "Paul reaches the zenith of his theological argument with courtroom clarity: if God is for us, every accuser is silenced. God demonstrated his radical commitment by giving his own Son for our sake; he will not withhold the grace needed for daily survival. Christ died, rose, and now continually intercedes for us at the right hand of the Father. There is no condemnation for those who belong to Jesus." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When self-doubt or guilt accuses you, remember who has the final verdict. God has justified you in Christ; walk in freedom and quiet confidence today.",
+    prayer: "Lord God, thank you that you are for me. Silence the voices of condemnation in my mind, and remind me that Christ intercedes for me this very hour. Amen.",
+  },
+  'matt-28-18-20': {
+    title: "The Sovereign Presence to the End of the Age",
+    reflection: "The final words of Matthew’s Gospel ground the Great Commission in Christ’s universal authority and his enduring presence. The disciples were sent into a hostile world with no political power or earthly wealth, but they carried the ultimate promise: I am with you always, even to the end of the age. Our mission is never performed in isolation; the risen King accompanies every faithful step." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Whatever difficult conversation or daunting duty lies ahead, you do not go alone. Christ walks beside you with all authority in heaven and earth.",
+    prayer: "Risen Lord Jesus, all authority belongs to you. Thank you for promising to be with me always. Help me live as your faithful disciple today. Amen.",
+  },
+  'psalm-126-5-6': {
+    title: "Sowing in Tears, Reaping in Joy",
+    reflection: "Psalm 126 acknowledges that some seasons of life require planting seeds through grief and exhaustion. The farmer who casts precious grain into hard soil while weeping understands the mystery of hope: tears do not destroy the seed. In God’s redemptive economy, the tears shed in faithful service water the ground for a future harvest of uncontainable joy." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "If you are serving or praying through sorrow today, do not lose heart. Your tears are not wasted; God sees them and will bring forth a harvest of joy in his season.",
+    prayer: "Lord, when I must sow in tears, sustain my faith. Remind me of your promise that those who weep in faithfulness will reap with shouts of joy. Amen.",
+  },
+  'john-4-13-14': {
+    title: "The Spring Welling Up to Eternal Life",
+    reflection: "At Jacob’s well, Jesus revealed the universal human dilemma: the water of this world can only satisfy for an hour before thirst returns. He offered the Samaritan woman something radically new: an internal spring of living water that wells up continually to eternal life. In Christ, the believer is no longer dependent on external circumstances to maintain spiritual vitality; the source resides within." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Stop running to broken cisterns of distraction or human approval to quench your thirst. Drink from Christ in quiet prayer, and let his spring overflow in your life.",
+    prayer: "Lord Jesus, give me this living water. Quench my restless desires and let your Spirit well up within me as a fountain of peace and life today. Amen.",
+  },
+  'rev-22-1-3': {
+    title: "The River and the Healing of the Nations",
+    reflection: "John’s apocalypse concludes with the ultimate restoration: the river of life flowing from the throne, flanked by the tree of life whose leaves bring healing to the nations. The curse of Genesis is entirely undone; sorrow, sickness, division, and death are vanquished forever. This vision is not escapism; it is the horizon that anchors our daily perseverance, reminding us of the eternal renewal awaiting creation." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When the brokenness of the world feels heavy, lift your eyes to this final destination. Evil and sickness do not have the last word; God’s healing river will wash over all things.",
+    prayer: "Sovereign Lord, thank you for the vision of your crystal river and the healing of the nations. Anchor my hope in your promised renewal as I serve you today. Amen.",
+  },
+  'psalm-25-4-7': {
+    title: "Teach Me Your Paths, O Lord",
+    reflection: "Psalm 25 is the prayer of an earnest disciple who desires divine direction more than self-will. David asks God to teach him his paths and guide him in truth. He anchors his petition in God’s ancient mercy, asking the Lord to forget the sins of youth and remember him solely through the lens of divine goodness. Humility is the prerequisite for spiritual discernment." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When you are uncertain about what path to choose, pray this psalm. God delights in guiding the humble who genuinely seek his ways rather than their own glory.",
+    prayer: "Lord, make known your paths to me today. Guide me by your truth, remember your ancient mercies, and lead me in your righteousness. Amen.",
+  },
+  'isaiah-40-28-29': {
+    title: "The God Who Never Faints",
+    reflection: "Isaiah rebukes the spiritual amnesia of exiles who believed God had forgotten them. The Creator of the cosmos does not suffer from fatigue or diminished understanding. While human strength inevitably tires and youthful vigor falters, God remains an inexhaustible reservoir of power, generously distributing strength to those who admit their weakness." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "If you feel physically or emotionally spent today, you do not need to muster false energy. Turn to the Lord who never tires and ask him to supply his sustaining vigor.",
+    prayer: "Eternal God, Creator of all things, you never grow weary. Pour out your strength into my tired spirit today and enable me to walk in your power. Amen.",
+  },
+  'hebrews-10-22-24': {
+    title: "Drawing Near with Full Assurance",
+    reflection: "The author of Hebrews invites us into the holy of holies through the blood of Jesus. We approach not with cowering fear, but with absolute trust, knowing our conscience has been cleansed. He issues a three-fold exhortation: let us draw near, let us hold fast our confession of hope, and let us stir up one another to love and good deeds." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Do not isolate yourself in your spiritual journey. Encourage someone today, spurring them on toward love, and hold fast to the promise of God who is utterly faithful.",
+    prayer: "Lord, I draw near to you with full assurance today. Strengthen my confession of hope and help me encourage those around me toward love and good works. Amen.",
+  },
+  '1-peter-2-9-10': {
+    title: "Called Out of Darkness into Marvelous Light",
+    reflection: "Peter confers the ancient titles of Israel upon the diverse, often marginalized followers of Christ. They are a chosen people, a royal priesthood, and God’s special possession. Their purpose is liturgical and missional: to announce the marvelous deeds of the God who called them out of spiritual darkness into his radiant light. Mercy is the bedrock of their collective identity." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "You are not defined by the rejection of the world or the obscurity of your daily routine. You are part of God’s royal priesthood, commissioned to reflect his light today.",
+    prayer: "Lord, thank you for calling me out of darkness into your marvelous light. Help me live today with the dignity of your chosen people, proclaiming your praise. Amen.",
+  },
+  'psalm-116-1-7': {
+    title: "Return, My Soul, to Your Rest",
+    reflection: "The psalmist recounts an intense deliverance from the cords of death. When all human resources were exhausted, he called upon the name of the Lord and found gracious rescue. His hard-won conclusion is addressed directly to his own anxious heart: return, my soul, to your rest, for the Lord has dealt bountifully with you. God’s past fidelity is the ground of our present peace." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When your thoughts spiral into frantic problem-solving, speak the psalmist’s words to your soul. God has delivered you before; return to his quiet rest today.",
+    prayer: "Gracious and righteous Lord, thank you for turning your ear to my voice. Settle my troubled soul and bring me back to your rest, knowing you have been good to me. Amen.",
+  },
+  'isaiah-49-14-16': {
+    title: "Engraved Upon the Palms of His Hands",
+    reflection: "Zion laments in exile that God has abandoned and forgotten her. God responds with one of the most tender maternal images in Scripture: even if a nursing mother could forget her infant, God will never forget his people. He reveals that our names are permanently inscribed upon the palms of his hands. Divine love is indelibly pledged to our redemption." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When loneliness makes you feel forgotten by God and man, look at this passage. God’s memory of you is not fragile; you are engraved upon the palms of his hands forever.",
+    prayer: "Lord, forgive my fear that you have forgotten me. Thank you for carving my name upon your hands and holding my life in your maternal tenderness today. Amen.",
+  },
+  'luke-1-46-49': {
+    title: "The Song of Holy Lowliness",
+    reflection: "Mary’s Magnificat erupts from a young woman of no social standing in an occupied province. Yet her spirit rejoices because God looks upon the lowly rather than the proud. God bypasses imperial palaces to fulfill his ancient promises through humble obedience. In Mary’s song, holiness is revealed not as cold separation, but as revolutionary mercy to the humble." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "You do not need wealth or prestige to be chosen by God. Bring your lowliness, your ordinary routine, and your willing heart to him, and he will do great things through your life.",
+    prayer: "My soul proclaims your greatness, O Lord, and my spirit rejoices in you, my Savior. Look upon my lowliness and let your holy name be glorified through my life today. Amen.",
+  },
+  'rom-14-7-9': {
+    title: "Whether We Live or Die, We Are the Lord’s",
+    reflection: "Paul establishes the ultimate foundation of Christian freedom and unity: we do not belong to ourselves. In a culture of fierce individualism, Paul reminds us that both our living and our dying are held within the lordship of Jesus Christ. Because Christ conquered death, our existence is enveloped in his sovereignty. We are permanently secure because we belong to him." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When you feel overwhelmed by the outcome of events, remember the ultimate reality: whether in triumph or trial, living or dying, you belong to Jesus. That ownership gives lasting dignity and peace.",
+    prayer: "Lord Jesus, I belong to you in life and in death. Direct my ambitions today for your glory, and grant me peace in the knowledge that I am yours forever. Amen.",
+  },
+  'psalm-138-1-3': {
+    title: "Strength Increased in the Soul",
+    reflection: "David gives thanks with his whole heart, unashamed to proclaim God’s fidelity before rulers and angels. When he called out in distress, God answered, not necessarily by instantly removing the obstacle, but by increasing strength within his soul. Sometimes divine deliverance comes as external rescue; more often, it comes as interior fortitude to endure and triumph." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "If your circumstances have not changed despite fervent prayer, look inward. God may be supplying the quiet, supernatural stamina you need to stand firm today.",
+    prayer: "Lord, thank you for your steadfast love and faithfulness. When I call upon you today, increase strength within my soul and grant me resilience to honor you. Amen.",
+  },
+  'isaiah-32-17-18': {
+    title: "The Peaceful Fruit of Righteousness",
+    reflection: "Isaiah reveals the deep organic connection between righteousness and peace. True shalom is not merely the absence of war; it is the natural fruit of living in alignment with God’s justice and truth. Where divine righteousness takes root, the result is quietness, confidence, and secure resting places. God promises to shelter his people in peace even when storms shake the surrounding landscape." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "If you desire peace in your home or relationships, cultivate the righteousness of Christ: speak truth gently, practice fairness, and forgive readily. Peace will follow in their wake.",
+    prayer: "God of righteousness, produce in my life the quiet fruit of your peace. Let my home be a dwelling of calm, security, and restoration today. Amen.",
+  },
+  'john-17-20-23': {
+    title: "The High Priestly Prayer for You",
+    reflection: "On the night before his crucifixion, Jesus prayed specifically for future generations of believers, including us today. His supreme desire is that we might participate in the intimate, unbreakable unity that exists between the Father and the Son. Christ shares his glory with us so that our mutual love may testify to a fractured world that the Father loves us just as he loves his only Son." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "You were on the heart of Jesus in his final hours. In times of loneliness or division, remember that you are prayed for by the Son of God, called to live in holy unity and divine love.",
+    prayer: "Lord Jesus, thank you for praying for me before the cross. Unite my heart with your church, and let me live today as one who is deeply loved by the Father. Amen.",
+  },
+  'psalm-145-17-19': {
+    title: "The Lord Is Near to All Who Call in Truth",
+    reflection: "David proclaims the justice, mercy, and intimate accessibility of God. The Lord is not distant or aloof; he is near to all who call upon him in truth. Sincerity of heart, not polished eloquence, is what draws divine nearness. God hears the honest cry of those who revere him, fulfilling their deepest longings with his saving presence." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "You do not need complicated religious formulas to reach God today. Cry out to him in honest truth from where you are, and you will find him immediately near.",
+    prayer: "Lord, you are just and merciful in all your ways. Thank you for drawing near to me when I call in truth. Hear my prayer and be my savior today. Amen.",
+  },
+  'psalm-13-5-6': {
+    title: "From Lament to Bountiful Praise",
+    reflection: "Psalm 13 begins with the agonized cry, 'How long, O Lord? Will you utterly forget me?' Yet within six short verses, the psalmist’s perspective shifts dramatically. He pivots upon a single resolute choice: 'But I trust in your mercy.' Even before his outward circumstances change, faith in God’s steadfast love unlocks rejoicing, turning tears into a song of bountiful deliverance." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "You can begin a day in sorrow and end it in quiet praise. The pivot happens when you choose to trust God’s mercy rather than the bleak forecast of your feelings.",
+    prayer: "Lord, when I feel weary of waiting, anchor my heart in your mercy. Turn my mourning into joy, for you have dealt bountifully with my soul. Amen.",
+  },
+  'psalm-30-11-12': {
+    title: "Mourning Transformed into Song",
+    reflection: "David recounts the sovereign mercy that turns human sorrow inside out. God does not leave the weeping soul in the dust; he strips away the rough sackcloth of grief and clothes the believer in enduring gladness. This divine reversal is not a superficial cheerfulness that ignores real heartbreak, but a deep redemption that causes our whole being to resound in ceaseless thanksgiving." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "If you carry heavy sorrow or disappointment today, know that mourning is not your permanent residence. God is quietly weaving a garment of praise for you, preparing your heart to sing thanksgiving once more.",
+    prayer: "Lord God, turn my grief into quiet gladness. Strip away the weight of despair and clothe me with your salvation, so that my soul may give you unceasing praise. Amen.",
+  },
+  'hab-3-17-19': {
+    title: "Rejoicing When Crops Fail",
+    reflection: "Habakkuk stands in a barren landscape where every visible resource has collapsed: no figs, no vines, no cattle in the stalls. Yet right in the teeth of total depletion, the prophet chooses a stubborn, joyful defiance: 'Yet will I rejoice in the Lord.' His confidence rests not on the abundance of the harvest, but on the unshakeable character of his saving God who makes him tread upon heights." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When accounts run low, plans fall apart, or expected results fail to materialize, you can still rejoice. Your primary security has never been your earthly surplus, but the God who supplies strength for every steep incline.",
+    prayer: "Sovereign Lord, when outward circumstances falter and resources dry up, let my faith remain unshaken. Be my strength, and make my feet steady upon high places. Amen.",
+  },
+  'psalm-67-1-2': {
+    title: "The Radiance of Divine Favor",
+    reflection: "The psalmist borrows the ancient priestly blessing of Aaron, asking that God's countenance shine upon his people. But this request is devoid of selfish hoarding: the blessing is sought so that 'your way be known upon the earth.' God pours out mercy upon our lives so that our conduct, kindness, and worship may display his saving power to a watching world." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Every blessing you receive, whether time, insight, material support, or patience, is meant to flow outward. Ask God to shine upon your life today so others may encounter his goodness through your presence.",
+    prayer: "Gracious God, cause your face to shine upon me today. Let the blessings you bestow become channels of your mercy to those who walk beside me. Amen.",
+  },
+  '1-thess-3-12-13': {
+    title: "Abounding in Unfeigned Charity",
+    reflection: "Paul's prayer for the church at Thessalonica is that their love would not remain stagnant or conditional, but actively increase and overflow. Love is not merely a warm sentiment; it is the spiritual ballast that strengthens human hearts in genuine holiness. When we love generously, our interior life is secured against cynicism and bitterness." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "In an impatient culture where relationships are quickly discarded, choosing to abound in love requires supernatural grace. Ask the Lord to widen the capacity of your heart for difficult colleagues or estranged friends.",
+    prayer: "Lord Jesus, enlarge my capacity to love. Uproot self-centeredness and irritation, and strengthen my heart in blameless affection toward all people today. Amen.",
+  },
+  'nahum-1-7': {
+    title: "A Stronghold in the Day of Trouble",
+    reflection: "In the midst of a prophecy confronting oppressive empires, Nahum sounds a clear bell of pastoral consolation: 'Good is the Lord.' When distress threatens to overwhelm ordinary lives, God does not remain an indifferent spectator. He is a fortified refuge, and he intimately knows every individual who turns to him for shelter." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When modern pressures and unpredictable crises press against you, do not run to fragile substitutes. Step into the fortress of God's presence through quiet prayer, knowing he recognizes your voice.",
+    prayer: "Lord, you are truly good, a fortress that cannot be breached. In every hour of distress, remind me to seek shelter beneath your wings, for you know my soul. Amen.",
+  },
+  'eph-1-3-6': {
+    title: "Chosen and Beloved from the Beginning",
+    reflection: "Paul opens Ephesians with a soaring hymn of praise celebrating our eternal adoption in Christ. Before the cosmic foundations were laid, God purposed to bestow upon us every spiritual blessing. We are not cosmic accidents or divine afterthoughts; we are beloved children destined to reflect his holiness and bask in the glory of his unearned grace." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "When feelings of insignificance or unworthiness attack your peace, remember where your true identity was settled. You were chosen in Christ before time began, held by an adoption that no earthly failure can undo.",
+    prayer: "Father of glory, thank you for blessing me with every heavenly gift in Christ. Free me from the hunger for worldly approval, and ground me in your eternal adoption. Amen.",
+  },
+  'psalm-100-1-5': {
+    title: "Entering His Courts with Thanksgiving",
+    reflection: "Psalm 100 provides the classic liturgical posture of the believer: exuberant gratitude grounded in the reality of who God is. We belong to him; we are the flock he tends. Because his goodness is eternal and his faithfulness spans all generations, praise is never misplaced. Entering his gates with thanksgiving reorients the weary soul to its true home." + '\n\n' + TONE_SUFFIX.balanced,
+    relevance: "Begin your routine today by enumerating God's enduring mercies rather than your immediate grievances. Thanksgiving is a spiritual practice that instantly shifts your vision from scarcity to divine provision.",
+    prayer: "Lord, I enter your presence with sincere thanksgiving. You made me, and you faithfully tend my soul. May my words and actions today bless your holy name. Amen.",
+  },
 };
 
 function buildFallbackDraft(passage: ScripturePassage, tone: ToneStyle): SermonDraft {
@@ -847,15 +1147,22 @@ ${TONE_SUFFIX[tone]}`,
 
 export function buildGroundedSermon(passage: ScripturePassage, tone: ToneStyle): Sermon {
   const draft = SERMON_LIBRARY[passage.id] ?? buildFallbackDraft(passage, tone);
+  let reflection = draft.reflection;
+  if (reflection.includes(TONE_SUFFIX.balanced)) {
+    if (tone === 'gentle') {
+      reflection = reflection.replace(TONE_SUFFIX.balanced, TONE_SUFFIX.gentle);
+    } else if (tone === 'traditional') {
+      reflection = reflection.replace(TONE_SUFFIX.balanced, TONE_SUFFIX.traditional);
+    }
+  } else {
+    reflection = `${reflection}\n\n${TONE_SUFFIX[tone]}`;
+  }
+
   return {
     id: `sermon-${passage.id}-${tone}`,
     title: tone === 'traditional' ? `Meditation: ${draft.title}` : draft.title,
     passage,
-    reflection: tone === 'gentle'
-      ? draft.reflection.replace(TONE_SUFFIX.balanced, TONE_SUFFIX.gentle)
-      : tone === 'traditional'
-        ? draft.reflection.replace(TONE_SUFFIX.balanced, TONE_SUFFIX.traditional)
-        : draft.reflection,
+    reflection,
     relevance: draft.relevance,
     prayer: draft.prayer,
     createdAt: new Date().toISOString(),

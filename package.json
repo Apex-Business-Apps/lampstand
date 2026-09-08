@@ -12,6 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:pwa": "playwright test tests/e2e/pwa.spec.ts",
+    "test:pwa:unit": "vitest run src/test/pwa-",
     "deploy": "npm run build && wrangler deploy --config wrangler.json",
     "typecheck": "tsc --noEmit",
     "deploy:ci": "npm ci && npm run deploy",
