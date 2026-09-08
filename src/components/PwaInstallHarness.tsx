@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { Download, Smartphone, CheckCircle2, Share, Plus, ExternalLink, X } from 'lucide-react';
+import { Download, Smartphone, CheckCircle2, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePwaInstall } from '@/hooks/usePwaInstall';
 import { useNavigate } from 'react-router-dom';
+import { PwaDownloadModal } from '@/components/PwaDownloadModal';
 
 interface PwaInstallHarnessProps {
   compact?: boolean;
 }
 
 export function PwaInstallHarness({ compact = false }: PwaInstallHarnessProps) {
-  const { isInstalled, isInstallable, platform, promptInstall } = usePwaInstall();
-  const [showIosModal, setShowIosModal] = useState(false);
+  const { isInstalled, isInstallable, promptInstall } = usePwaInstall();
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   if (isInstalled) {
@@ -47,13 +48,7 @@ export function PwaInstallHarness({ compact = false }: PwaInstallHarnessProps) {
       const success = await promptInstall();
       if (success) return;
     }
-
-    if (platform === 'ios-safari' || platform === 'ios-other') {
-      setShowIosModal(true);
-      return;
-    }
-
-    navigate('/install');
+    setShowModal(true);
   };
 
   if (compact) {
@@ -71,9 +66,10 @@ export function PwaInstallHarness({ compact = false }: PwaInstallHarnessProps) {
           </Button>
         </div>
 
-        {showIosModal && (
-          <IosInstallModal onClose={() => setShowIosModal(false)} />
-        )}
+        <PwaDownloadModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+        />
       </>
     );
   }
@@ -119,61 +115,10 @@ export function PwaInstallHarness({ compact = false }: PwaInstallHarnessProps) {
         </div>
       </div>
 
-      {showIosModal && (
-        <IosInstallModal onClose={() => setShowIosModal(false)} />
-      )}
+      <PwaDownloadModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+      />
     </>
-  );
-}
-
-function IosInstallModal({ onClose }: { onClose: () => void }) {
-  return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      className="fixed inset-0 z-[500] flex items-end sm:items-center justify-center p-4 bg-background/80 backdrop-blur-sm animate-fade-in"
-    >
-      <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-5 space-y-4 shadow-xl">
-        <div className="flex items-center justify-between">
-          <h3 className="text-base font-serif font-semibold text-foreground">Add to Home Screen</h3>
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="p-1 rounded-md text-muted-foreground hover:text-foreground"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          To install on iOS Safari, follow these two quick steps:
-        </p>
-
-        <ol className="space-y-3 text-xs">
-          <li className="flex gap-2.5 items-start">
-            <span className="flex-shrink-0 h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold flex items-center justify-center">
-              1
-            </span>
-            <div className="leading-relaxed pt-0.5">
-              Tap the <span className="inline-flex items-center gap-1 px-1 py-0.5 rounded bg-muted font-medium"><Share className="h-3 w-3" /> Share</span> button at the bottom of Safari.
-            </div>
-          </li>
-          <li className="flex gap-2.5 items-start">
-            <span className="flex-shrink-0 h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold flex items-center justify-center">
-              2
-            </span>
-            <div className="leading-relaxed pt-0.5">
-              Scroll down and tap <span className="inline-flex items-center gap-1 px-1 py-0.5 rounded bg-muted font-medium"><Plus className="h-3 w-3" /> Add to Home Screen</span>.
-            </div>
-          </li>
-        </ol>
-
-        <div className="pt-2 flex justify-end">
-          <Button size="sm" onClick={onClose} className="text-xs">
-            Got it
-          </Button>
-        </div>
-      </div>
-    </div>
   );
 }

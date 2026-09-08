@@ -4,6 +4,7 @@ test.describe('Production Surfaces & Runtime Reliability', () => {
   test.beforeEach(async ({ page }) => {
     // Seed authenticated/onboarded profile so app shell and interior routes render immediately
     await page.addInitScript(() => {
+      localStorage.setItem('lampstand_consent_given', 'true');
       localStorage.setItem(
         'lampstand_profile',
         JSON.stringify({
@@ -25,6 +26,27 @@ test.describe('Production Surfaces & Runtime Reliability', () => {
     await page.goto('/');
     await expect(page).toHaveTitle(/TheLampStand/i);
     await expect(page.locator('body')).toBeVisible();
+    expect(errors).toHaveLength(0);
+  });
+
+  test('verifies landing page renders PWA download button in header and hero with interactive install modal', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (err) => errors.push(err.message));
+
+    await page.goto('/');
+    const headerDownload = page.locator('header button:has-text("Download App")');
+    await expect(headerDownload).toBeVisible();
+
+    const heroDownload = page.locator('button:has-text("Download App")').nth(1);
+    await expect(heroDownload).toBeVisible();
+
+    await headerDownload.click();
+    await expect(page.locator('role=dialog')).toBeVisible();
+    await expect(page.locator('text=Install TheLampStand').first()).toBeVisible();
+
+    await page.locator('button[aria-label="Close dialog"]').click();
+    await expect(page.locator('role=dialog')).not.toBeVisible();
+
     expect(errors).toHaveLength(0);
   });
 

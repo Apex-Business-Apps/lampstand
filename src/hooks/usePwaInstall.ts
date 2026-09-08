@@ -21,22 +21,46 @@ export function detectPlatform(): Platform {
   return 'desktop';
 }
 
+let cachedPrompt: BeforeInstallPromptEvent | null = null;
+const promptListeners = new Set<(prompt: BeforeInstallPromptEvent | null) => void>();
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeinstallprompt', (e: Event) => {
+    e.preventDefault();
+    cachedPrompt = e as BeforeInstallPromptEvent;
+    promptListeners.forEach((listener) => listener(cachedPrompt));
+  });
+
+  window.addEventListener('appinstalled', () => {
+    cachedPrompt = null;
+    promptListeners.forEach((listener) => listener(null));
+  });
+}
+
 export function usePwaInstall() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(() => cachedPrompt);
   const [isInstalled, setIsInstalled] = useState<boolean>(isStandaloneDisplayMode);
-  const [platform, setPlatform] = useState<Platform>('unknown');
+  const [platform, setPlatform] = useState<Platform>(detectPlatform);
 
   useEffect(() => {
     setIsInstalled(isStandaloneDisplayMode());
     setPlatform(detectPlatform());
 
+    const updatePrompt = (prompt: BeforeInstallPromptEvent | null) => {
+      setDeferredPrompt(prompt);
+    };
+
+    promptListeners.add(updatePrompt);
+
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
+      cachedPrompt = e as BeforeInstallPromptEvent;
+      setDeferredPrompt(cachedPrompt);
     };
 
     const handleAppInstalled = () => {
       setIsInstalled(true);
+      cachedPrompt = null;
       setDeferredPrompt(null);
     };
 
@@ -44,18 +68,21 @@ export function usePwaInstall() {
     window.addEventListener('appinstalled', handleAppInstalled);
 
     return () => {
+      promptListeners.delete(updatePrompt);
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
       window.removeEventListener('appinstalled', handleAppInstalled);
     };
   }, []);
 
   const promptInstall = useCallback(async (): Promise<boolean> => {
-    if (!deferredPrompt) return false;
+    const promptToUse = deferredPrompt || cachedPrompt;
+    if (!promptToUse) return false;
     try {
-      await deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
+      await promptToUse.prompt();
+      const choice = await promptToUse.userChoice;
       if (choice.outcome === 'accepted') {
         setIsInstalled(true);
+        cachedPrompt = null;
         setDeferredPrompt(null);
         return true;
       }
@@ -67,7 +94,7 @@ export function usePwaInstall() {
 
   return {
     isInstalled,
-    isInstallable: Boolean(deferredPrompt),
+    isInstallable: Boolean(deferredPrompt || cachedPrompt),
     platform,
     promptInstall,
   };
