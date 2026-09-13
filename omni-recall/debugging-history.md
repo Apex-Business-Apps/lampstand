@@ -64,3 +64,9 @@
   3. Added optional chaining (`?.`) with empty string fallbacks across all page components rendering Scripture passages.
   4. Updated Cloudflare Worker SPA CSP in `static-spa.ts` to allow `https://static.cloudflareinsights.com` in `script-src` and `connect-src`.
 - **Regression Shield**: Added unit tests in `src/test/daily-light.test.ts` and `src/test/resonance.test.ts` validating corrupted local storage cache recovery and malformed candidate ranking resilience. All 51 test suites (259 tests) pass with exit code 0.
+
+## 12. Production Security Audit High Severity libheif Vulnerability in Sharp
+- **Symptom**: CI check `Security audit (block high/critical in production deps)` failed with exit code 1 on `npm audit --omit=dev --audit-level=high`.
+- **Root Cause**: `sharp <0.35.4` contained high severity vulnerabilities in `libheif` (GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545). The `package.json` overrides locked `sharp` to `^0.35.3`, resulting in `0.35.3` being resolved in production dependency tree via `@huggingface/transformers`.
+- **Fix**: Updated `package.json` overrides to `"sharp": "^0.35.4"` and refreshed `package-lock.json` lockfile.
+- **Regression Shield**: `npm audit --omit=dev --audit-level=high` passes with exit code 0 (0 high or critical vulnerabilities).

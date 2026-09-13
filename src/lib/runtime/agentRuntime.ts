@@ -111,7 +111,7 @@ export function hasScriptureCitation(text: string, passage: ScripturePassage | n
 
 export function sanitizeAIFiller(text: string): { sanitized: string; hadFiller: boolean } {
   const bannedPattern =
-    /(Absolutely|Certainly|Of course|Let's|I hear you|I appreciate that|That's a great question|I'm here for you|It's important to note|At the end of the day)/i;
+    /(Absolutely|Certainly|Of course|Let's|I hear you|I appreciate that|That's a great question|I'm here for you|It's important to note|At the end of the day|In this journey|It is worth noting|Diving into|Let's unpack|Navigating the complexities|Remember that|It is important to remember)/i;
 
   if (!bannedPattern.test(text)) {
     return { sanitized: text, hadFiller: false };
@@ -300,17 +300,23 @@ export class TurnPipeline {
 }
 
 export function getAdaptiveReflectionQuestions(theme?: string, season?: string): string[] {
-  if (season === 'wilderness') {
+  if (season === 'wilderness' || theme === 'lament' || theme === 'grief') {
     return ['Where in this quiet space might God be meeting you today?'];
   }
-  if (season === 'waiting') {
+  if (season === 'waiting' || theme === 'waiting' || theme === 'uncertainty') {
     return ["What would it mean to release the urgency of the timing into God's care?"];
   }
-  if (season === 'returning') {
+  if (season === 'returning' || theme === 'reconciliation' || theme === 'forgiveness') {
     return ['What burden or shame can you lay down as you return to peace?'];
   }
-  if (season === 'flourishing') {
+  if (season === 'flourishing' || theme === 'gratitude' || theme === 'praise') {
     return ['Who in your life can you encourage with this gift of hope?'];
+  }
+  if (theme === 'burnout' || theme === 'rest' || theme === 'weariness') {
+    return ['What expectation or self-imposed burden can you surrender to Christ today?'];
+  }
+  if (theme === 'vocation' || theme === 'purpose' || theme === 'calling') {
+    return ['How does knowing your identity is in God free your work from anxiety today?'];
   }
   if (theme === 'anxiety' || theme === 'fear') {
     return ["What is the single small thing within your reach today, trusting God with tomorrow?"];

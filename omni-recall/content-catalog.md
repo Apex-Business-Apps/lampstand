@@ -1,9 +1,9 @@
 # TheLampStand Content & Scripture Catalog
 
 ## Summary Statistics
-- **Total Canonical Scripture Passages**: 100+ passages (`SEED_PASSAGES` in `src/data/seed.ts` + expanded `EXTRA_PASSAGES` in `src/data/contentLibrary.ts`).
-- **Total Daily Light Templates**: 60+ curated reflections and prayers in `DAILY_LIGHT_LIBRARY`.
-- **Total Homiletic Sermon Drafts**: 35+ full sermon drafts in `SERMON_LIBRARY` (`src/data/sermonLibrary.ts`).
+- **Total Canonical Scripture Passages**: 290 passages (181 `SEED_PASSAGES` in `src/data/seed.ts` + 109 `EXTRA_PASSAGES` in `src/data/contentLibrary.ts`).
+- **Total Daily Light Templates**: 211 curated reflections and prayers in `DAILY_LIGHT_LIBRARY`.
+- **Total Homiletic Sermon Drafts**: 228 full sermon drafts in `SERMON_LIBRARY` (`src/data/sermonLibrary.ts`).
 - **Total Guidance Themes**: 16+ pastoral themes with dedicated scripture, framing, reflection inquiries, and prayers (`fear`, `grief`, `loneliness`, `forgiveness`, `purpose`, `peace`, `gratitude`, `temptation`, `conflict`, `uncertainty`, `anxiety`, `burnout`, `guilt`, `betrayal`, `waiting`, `strength`).
 
 ---

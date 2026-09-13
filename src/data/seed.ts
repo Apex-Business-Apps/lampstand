@@ -587,6 +587,256 @@ export const SEED_PASSAGES: ScripturePassage[] = [
     text: "\"Shout joyfully to the LORD, all you lands; serve the LORD with gladness; come before him with joyful song. Know that the LORD is God; he made us, his we are; his people, the flock he tends. Enter his gates with thanksgiving, his courts with praise. Give thanks to him, bless his name; good indeed is the LORD, whose love endures forever, whose faithfulness lasts through every generation.\"",
     translation: 'NABRE', reference: 'Psalm 100:1-5',
   },
+  {
+    id: 'psalm-8-1-4', book: 'Psalms', chapter: 8, verseStart: 1, verseEnd: 4,
+    text: "\"O LORD, our Lord, how awesome is your name through all the earth! You have set your majesty above the heavens! Out of the mouths of babes and infants you have drawn a defense against your foes... When I see your heavens, the work of your fingers, the moon and stars that you set in place, what is man that you are mindful of him, and a son of man that you care for him?\"",
+    translation: 'NABRE', reference: 'Psalm 8:1-4',
+  },
+  {
+    id: 'psalm-16-7-9', book: 'Psalms', chapter: 16, verseStart: 7, verseEnd: 9,
+    text: "\"I bless the LORD who counsels me; even at night my heart exhorts me. I keep the LORD always before me; with him at my right hand, I shall never be shaken. Therefore my heart is glad, my soul rejoices; my body also shall rest in safety.\"",
+    translation: 'NABRE', reference: 'Psalm 16:7-9',
+  },
+  {
+    id: 'psalm-19-7-10', book: 'Psalms', chapter: 19, verseStart: 7, verseEnd: 10,
+    text: "\"The law of the LORD is perfect, refreshing the soul. The decree of the LORD is trustworthy, giving wisdom to the simple. The precepts of the LORD are right, rejoicing the heart. The command of the LORD is clear, enlightening the eye.\"",
+    translation: 'NABRE', reference: 'Psalm 19:7-10',
+  },
+  {
+    id: 'psalm-25-4-5', book: 'Psalms', chapter: 25, verseStart: 4, verseEnd: 5,
+    text: "\"Make known to me your ways, LORD; teach me your paths. Guide me by your fidelity and teach me, for you are God my savior, for you I wait all the day long.\"",
+    translation: 'NABRE', reference: 'Psalm 25:4-5',
+  },
+  {
+    id: 'psalm-31-1-3', book: 'Psalms', chapter: 31, verseStart: 1, verseEnd: 3,
+    text: "\"In you, LORD, I take refuge; let me never be put to shame. In your justice rescue and deliver me; listen to me and help me! Be my rock of refuge, a stronghold to give me safety. You are my rock and my fortress; for your name's sake you will lead and guide me.\"",
+    translation: 'NABRE', reference: 'Psalm 31:1-3',
+  },
+  {
+    id: 'psalm-33-20-22', book: 'Psalms', chapter: 33, verseStart: 20, verseEnd: 22,
+    text: "\"Our soul waits for the LORD; he is our help and shield. For in him our hearts rejoice; in his holy name we trust. May your kindness, LORD, be upon us; we have put our hope in you.\"",
+    translation: 'NABRE', reference: 'Psalm 33:20-22',
+  },
+  {
+    id: 'psalm-37-23-24', book: 'Psalms', chapter: 37, verseStart: 23, verseEnd: 24,
+    text: "\"By the LORD are the steps of a man made firm, and he approves his way. Though he fall he does not lie prostrate, for the hand of the LORD sustains him.\"",
+    translation: 'NABRE', reference: 'Psalm 37:23-24',
+  },
+  {
+    id: 'psalm-51-10-12', book: 'Psalms', chapter: 51, verseStart: 10, verseEnd: 12,
+    text: "\"A clean heart create for me, God; renew within me a steadfast spirit. Do not drive me from before your face, nor take from me your holy spirit. Restore to me the gladness of your salvation; uphold me with a willing spirit.\"",
+    translation: 'NABRE', reference: 'Psalm 51:10-12',
+  },
+  {
+    id: 'psalm-63-1-3', book: 'Psalms', chapter: 63, verseStart: 1, verseEnd: 3,
+    text: "\"O God, you are my God, for you I long; for you my body yearns; for you my soul thirsts, like a land parched, lifeless, and without water. So I look to you in the sanctuary to see your power and glory. For your love is better than life; my lips shall ever praise you.\"",
+    translation: 'NABRE', reference: 'Psalm 63:1-3',
+  },
+  {
+    id: 'psalm-66-16-20', book: 'Psalms', chapter: 66, verseStart: 16, verseEnd: 20,
+    text: "\"Come and hear, all you who fear God, while I tell what he has done for me. I called to him with my mouth; praise was upon my tongue... Blessed be God, who did not reject my prayer and refuse his mercy to me.\"",
+    translation: 'NABRE', reference: 'Psalm 66:16-20',
+  },
+  {
+    id: 'psalm-86-11-13', book: 'Psalms', chapter: 86, verseStart: 11, verseEnd: 13,
+    text: "\"Teach me, LORD, your way that I may walk in your truth, single-hearted and revering your name. I will praise you with all my heart, Lord my God, and give glory to your name forever. For great is your love toward me; you have delivered my soul from the depths of Sheol.\"",
+    translation: 'NABRE', reference: 'Psalm 86:11-13',
+  },
+  {
+    id: 'psalm-90-1-2', book: 'Psalms', chapter: 90, verseStart: 1, verseEnd: 2,
+    text: "\"Lord, you have been our refuge through all generations. Before the mountains were born, the earth and the world brought forth, from eternity to eternity you are God.\"",
+    translation: 'NABRE', reference: 'Psalm 90:1-2',
+  },
+  {
+    id: 'psalm-92-1-4', book: 'Psalms', chapter: 92, verseStart: 1, verseEnd: 4,
+    text: "\"It is good to give thanks to the LORD, to sing praise to your name, Most High, to proclaim your love at daybreak, your faithfulness in the night, with the ten-stringed harp, with melody upon the lyre. For you make me jubilant, LORD, by your deeds; at the works of your hands I shout for joy.\"",
+    translation: 'NABRE', reference: 'Psalm 92:1-4',
+  },
+  {
+    id: 'psalm-103-8-12', book: 'Psalms', chapter: 103, verseStart: 8, verseEnd: 12,
+    text: "\"Merciful and gracious is the LORD, slow to anger and abounding in kindness. Not always does he chide, nor does he keep his wrath forever. Not according to our sins does he deal with us, nor does he requite us according to our crimes. For as the heavens tower over the earth, so his mercy towers over those who fear him.\"",
+    translation: 'NABRE', reference: 'Psalm 103:8-12',
+  },
+  {
+    id: 'psalm-111-1-4', book: 'Psalms', chapter: 111, verseStart: 1, verseEnd: 4,
+    text: "\"I will praise the LORD with all my heart in the assembled congregation of the upright. Great are the works of the LORD, studied by all who delight in them. Majestic and glorious is his work, his righteousness endures forever. He has won renown for his wondrous deeds; gracious and merciful is the LORD.\"",
+    translation: 'NABRE', reference: 'Psalm 111:1-4',
+  },
+  {
+    id: 'psalm-119-11-14', book: 'Psalms', chapter: 119, verseStart: 11, verseEnd: 14,
+    text: "\"In my heart I treasure your promise, that I may not sin against you. Blessed are you, O LORD; teach me your statutes. With my lips I recite all the edicts you have spoken. I find joy in the way of your testimonies more than in all riches.\"",
+    translation: 'NABRE', reference: 'Psalm 119:11-14',
+  },
+  {
+    id: 'psalm-130-5-6', book: 'Psalms', chapter: 130, verseStart: 5, verseEnd: 6,
+    text: "\"I wait for the LORD, my soul waits and I hope for his word. My soul looks for the Lord more than sentinels for daybreak; more than sentinels for daybreak, let Israel hope in the LORD.\"",
+    translation: 'NABRE', reference: 'Psalm 130:5-6',
+  },
+  {
+    id: 'psalm-143-8-10', book: 'Psalms', chapter: 143, verseStart: 8, verseEnd: 10,
+    text: "\"At dawn let me hear of your kindness, for in you I put my trust. Show me the path I should walk, for to you I lift up my soul. Rescue me, LORD, from my enemies, for in you I take shelter. Teach me to do your will, for you are my God. May your good spirit lead me on level ground.\"",
+    translation: 'NABRE', reference: 'Psalm 143:8-10',
+  },
+  {
+    id: 'psalm-146-5-8', book: 'Psalms', chapter: 146, verseStart: 5, verseEnd: 8,
+    text: "\"Blessed the one whose help is the God of Jacob, whose hope is in the LORD, his God, the maker of heaven and earth, the seas and all that is in them, who keeps faith forever, secures justice for the oppressed, gives food to the hungry. The LORD sets prisoners free; the LORD gives sight to the blind.\"",
+    translation: 'NABRE', reference: 'Psalm 146:5-8',
+  },
+  {
+    id: 'prov-16-3', book: 'Proverbs', chapter: 16, verseStart: 3, verseEnd: 3,
+    text: "\"Entrust your works to the LORD, and your plans will succeed.\"",
+    translation: 'NABRE', reference: 'Proverbs 16:3',
+  },
+  {
+    id: 'prov-18-10', book: 'Proverbs', chapter: 18, verseStart: 10, verseEnd: 10,
+    text: "\"The name of the LORD is a strong tower; the righteous runs into it and is safe.\"",
+    translation: 'NABRE', reference: 'Proverbs 18:10',
+  },
+  {
+    id: 'prov-27-17', book: 'Proverbs', chapter: 27, verseStart: 17, verseEnd: 17,
+    text: "\"Iron sharpens iron, and one person sharpens another.\"",
+    translation: 'NABRE', reference: 'Proverbs 27:17',
+  },
+  {
+    id: 'eccl-3-1-4', book: 'Ecclesiastes', chapter: 3, verseStart: 1, verseEnd: 4,
+    text: "\"There is an appointed time for everything, and a time for every affair under the heavens. A time to give birth, and a time to die; a time to plant, and a time to uproot the plant. A time to kill, and a time to heal; a time to tear down, and a time to build. A time to weep, and a time to laugh; a time to mourn, and a time to dance.\"",
+    translation: 'NABRE', reference: 'Ecclesiastes 3:1-4',
+  },
+  {
+    id: 'isaiah-25-1-4', book: 'Isaiah', chapter: 25, verseStart: 1, verseEnd: 4,
+    text: "\"O LORD, you are my God, I will extol you and praise your name; for you have fulfilled your wonderful plans of old, faithful and true... For you are a refuge to the poor, a refuge to the needy in distress, shelter from the rain, shade from the heat.\"",
+    translation: 'NABRE', reference: 'Isaiah 25:1-4',
+  },
+  {
+    id: 'isaiah-40-10-11', book: 'Isaiah', chapter: 40, verseStart: 10, verseEnd: 11,
+    text: "\"Here comes with power the Lord GOD, who rules with a strong arm; here is his reward with him, his recompense before him. Like a shepherd he feeds his flock; in his arms he gathers the lambs, carrying them in his bosom, leading the ewes with care.\"",
+    translation: 'NABRE', reference: 'Isaiah 40:10-11',
+  },
+  {
+    id: 'isaiah-44-2-4', book: 'Isaiah', chapter: 44, verseStart: 2, verseEnd: 4,
+    text: "\"Thus says the LORD who made you, your help, who formed you from the womb: Do not fear, O Jacob, my servant... for I will pour out water upon the thirsty ground, and streams upon the dry land; I will pour out my spirit upon your offspring, and my blessing upon your descendants.\"",
+    translation: 'NABRE', reference: 'Isaiah 44:2-4',
+  },
+  {
+    id: 'isaiah-54-17', book: 'Isaiah', chapter: 54, verseStart: 17, verseEnd: 17,
+    text: "\"No weapon fashioned against you shall prevail; every tongue that rises against you in judgment you shall prove in the wrong. This is the lot of the servants of the LORD, their vindication from me, oracle of the LORD.\"",
+    translation: 'NABRE', reference: 'Isaiah 54:17',
+  },
+  {
+    id: 'isaiah-61-1-3', book: 'Isaiah', chapter: 61, verseStart: 1, verseEnd: 3,
+    text: "\"The spirit of the Lord GOD is upon me, because the LORD has anointed me; he has sent me to bring good news to the afflicted, to bind up the brokenhearted, to proclaim liberty to the captives... to comfort all who mourn; to give them a diadem instead of ashes, the oil of gladness instead of mourning, a glorious mantle instead of a faint spirit.\"",
+    translation: 'NABRE', reference: 'Isaiah 61:1-3',
+  },
+  {
+    id: 'jer-33-2-3', book: 'Jeremiah', chapter: 33, verseStart: 2, verseEnd: 3,
+    text: "\"Thus says the LORD who made the earth, forming it and establishing it, the LORD is his name: Call to me, and I will answer you; I will tell you great and inscrutable things, things you do not know.\"",
+    translation: 'NABRE', reference: 'Jeremiah 33:2-3',
+  },
+  {
+    id: 'micah-7-18-19', book: 'Micah', chapter: 7, verseStart: 18, verseEnd: 19,
+    text: "\"Who is a God like you, who removes guilt and pardons sin for the remnant of his inheritance; who does not persist in anger forever, but delights in mercy, and will again have compassion on us, treading underfoot our guilt? You will cast into the depths of the sea all our sins.\"",
+    translation: 'NABRE', reference: 'Micah 7:18-19',
+  },
+  {
+    id: 'habakkuk-3-18-19', book: 'Habakkuk', chapter: 3, verseStart: 18, verseEnd: 19,
+    text: "\"Yet will I rejoice in the LORD, I will exult in my saving God! GOD, my Lord, is my strength; he makes my feet like those of a deer, and enables me to tread upon the heights.\"",
+    translation: 'NABRE', reference: 'Habakkuk 3:18-19',
+  },
+  {
+    id: 'zeph-3-14-17', book: 'Zephaniah', chapter: 3, verseStart: 14, verseEnd: 17,
+    text: "\"Shout for joy, daughter Zion! Sing joyfully, Israel! Be glad and exult with all your heart, daughter Jerusalem! The LORD has removed the judgment against you... The LORD, your God, is in your midst, a mighty savior, who will rejoice over you with gladness, and renew you in his love, who will sing joyfully because of you.\"",
+    translation: 'NABRE', reference: 'Zephaniah 3:14-17',
+  },
+  {
+    id: 'matt-18-19-20', book: 'Matthew', chapter: 18, verseStart: 19, verseEnd: 20,
+    text: "\"Again, amen, I say to you, if two of you agree on earth about anything for which they are to pray, it shall be granted to them by my heavenly Father. For where two or three are gathered together in my name, there am I in the midst of them.\"",
+    translation: 'NABRE', reference: 'Matthew 18:19-20',
+  },
+  {
+    id: 'mark-10-45', book: 'Mark', chapter: 10, verseStart: 45, verseEnd: 45,
+    text: "\"For the Son of Man did not come to be served but to serve and to give his life as a ransom for many.\"",
+    translation: 'NABRE', reference: 'Mark 10:45',
+  },
+  {
+    id: 'mark-12-29-31', book: 'Mark', chapter: 12, verseStart: 29, verseEnd: 31,
+    text: "\"Jesus replied, 'The first is this: Hear, O Israel! The Lord our God is Lord alone! You shall love the Lord your God with all your heart, with all your soul, with all your mind, and with all your strength. The second is this: You shall love your neighbor as yourself. There is no other commandment greater than these.'\"",
+    translation: 'NABRE', reference: 'Mark 12:29-31',
+  },
+  {
+    id: 'luke-10-41-42', book: 'Luke', chapter: 10, verseStart: 41, verseEnd: 42,
+    text: "\"The Lord said to her in reply, 'Martha, Martha, you are anxious and worried about many things. There is need of only one thing. Mary has chosen the better part and it will not be taken from her.'\"",
+    translation: 'NABRE', reference: 'Luke 10:41-42',
+  },
+  {
+    id: 'luke-12-32', book: 'Luke', chapter: 12, verseStart: 32, verseEnd: 32,
+    text: "\"Do not be afraid any longer, little flock, for your Father is pleased to give you the kingdom.\"",
+    translation: 'NABRE', reference: 'Luke 12:32',
+  },
+  {
+    id: 'luke-18-1-8', book: 'Luke', chapter: 18, verseStart: 1, verseEnd: 8,
+    text: "\"Then he told them a parable about the necessity for them to pray always without becoming weary... Will not God then secure the rights of his chosen ones who call out to him day and night? Will he be slow to answer them? I tell you, he will see to it that justice is done for them speedily.\"",
+    translation: 'NABRE', reference: 'Luke 18:1-8',
+  },
+  {
+    id: 'john-1-4-5', book: 'John', chapter: 1, verseStart: 4, verseEnd: 5,
+    text: "\"Through him was life, and this life was the light of the human race; the light shines in the darkness, and the darkness has not overcome it.\"",
+    translation: 'NABRE', reference: 'John 1:4-5',
+  },
+  {
+    id: 'rom-5-1-5', book: 'Romans', chapter: 5, verseStart: 1, verseEnd: 5,
+    text: "\"Therefore, since we have been justified by faith, we have peace with God through our Lord Jesus Christ, through whom we have gained access by faith to this grace in which we stand, and we boast in hope of the glory of God... and hope does not disappoint, because the love of God has been poured out into our hearts through the holy Spirit that has been given to us.\"",
+    translation: 'NABRE', reference: 'Romans 5:1-5',
+  },
+  {
+    id: '1-cor-15-58', book: '1 Corinthians', chapter: 15, verseStart: 58, verseEnd: 58,
+    text: "\"Therefore, my beloved brothers, be firm, steadfast, always fully devoted to the work of the Lord, knowing that in the Lord your labor is not in vain.\"",
+    translation: 'NABRE', reference: '1 Corinthians 15:58',
+  },
+  {
+    id: '2-cor-5-18-20', book: '2 Corinthians', chapter: 5, verseStart: 18, verseEnd: 20,
+    text: "\"And all this is from God, who has reconciled us to himself through Christ and given us the ministry of reconciliation, namely, God was reconciling the world to himself in Christ, not counting their trespasses against them and entrusting to us the message of reconciliation. So we are ambassadors for Christ, as if God were appealing through us.\"",
+    translation: 'NABRE', reference: '2 Corinthians 5:18-20',
+  },
+  {
+    id: 'eph-3-16-19', book: 'Ephesians', chapter: 3, verseStart: 16, verseEnd: 19,
+    text: "\"May he grant you in accord with the riches of his glory to be strengthened with power through his Spirit in the inner self, and that Christ may dwell in your hearts through faith; that you, rooted and grounded in love, may have strength to comprehend with all the holy ones what is the breadth and length and height and depth, and to know the love of Christ that surpasses knowledge, so that you may be filled with all the fullness of God.\"",
+    translation: 'NABRE', reference: 'Ephesians 3:16-19',
+  },
+  {
+    id: 'col-3-15-17', book: 'Colossians', chapter: 3, verseStart: 15, verseEnd: 17,
+    text: "\"And let the peace of Christ control your hearts, the peace into which you were also called in one body. And be thankful. Let the word of Christ dwell in you richly... And whatever you do, in word or in deed, do everything in the name of the Lord Jesus, giving thanks to God the Father through him.\"",
+    translation: 'NABRE', reference: 'Colossians 3:15-17',
+  },
+  {
+    id: '1-thess-5-23-24', book: '1 Thessalonians', chapter: 5, verseStart: 23, verseEnd: 24,
+    text: "\"May the God of peace himself make you perfectly holy and may you entirely, spirit, soul, and body, be preserved blameless for the coming of our Lord Jesus Christ. The one who calls you is faithful, and he will also accomplish it.\"",
+    translation: 'NABRE', reference: '1 Thessalonians 5:23-24',
+  },
+  {
+    id: '2-thess-3-16', book: '2 Thessalonians', chapter: 3, verseStart: 16, verseEnd: 16,
+    text: "\"May the Lord of peace himself give you peace at all times and in every way. The Lord be with all of you.\"",
+    translation: 'NABRE', reference: '2 Thessalonians 3:16',
+  },
+  {
+    id: '1-tim-6-11-12', book: '1 Timothy', chapter: 6, verseStart: 11, verseEnd: 12,
+    text: "\"Pursue righteousness, devotion, faith, love, patience, and gentleness. Compete well for the faith. Lay hold of eternal life, to which you were called when you made the noble confession in the presence of many witnesses.\"",
+    translation: 'NABRE', reference: '1 Timothy 6:11-12',
+  },
+  {
+    id: '2-tim-4-7-8', book: '2 Timothy', chapter: 4, verseStart: 7, verseEnd: 8,
+    text: "\"I have competed well; I have finished the race; I have kept the faith. From now on the crown of righteousness awaits me, which the Lord, the just judge, will award to me on that day, and not only to me, but to all who have longed for his appearance.\"",
+    translation: 'NABRE', reference: '2 Timothy 4:7-8',
+  },
+  {
+    id: 'heb-4-14-16', book: 'Hebrews', chapter: 4, verseStart: 14, verseEnd: 16,
+    text: "\"Therefore, since we have a great high priest who has passed through the heavens, Jesus, the Son of God, let us hold fast to our confession. For we do not have a high priest who is unable to sympathize with our weaknesses, but one who has similarly been tested in every way, yet without sin. So let us confidently approach the throne of grace to receive mercy and to find grace for timely help.\"",
+    translation: 'NABRE', reference: 'Hebrews 4:14-16',
+  },
+  {
+    id: '1-john-3-18-20', book: '1 John', chapter: 3, verseStart: 18, verseEnd: 20,
+    text: "\"Children, let us love not in word or speech but in deed and truth. Now this is how we shall know that we belong to the truth and reassure our hearts before him in whatever our hearts condemn, for God is greater than our hearts and knows everything.\"",
+    translation: 'NABRE', reference: '1 John 3:18-20',
+  },
 ];
 
 export const SEED_SERMONS: Sermon[] = [
