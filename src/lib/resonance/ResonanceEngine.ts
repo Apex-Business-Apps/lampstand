@@ -166,20 +166,20 @@ const SIGNAL_SENTIMENT: Record<ResonanceSignal, number> = {
 const STRUGGLE_THEMES = new Set([
   'shame', 'depression', 'grief', 'doubt', 'fear', 'anger',
   'betrayal', 'illness', 'exhaustion', 'abandonment', 'lament',
-  'mourning', 'release', 'consolation',
+  'mourning', 'release', 'consolation', 'burnout',
 ]);
 
 const FLOURISHING_THEMES = new Set([
   'delight', 'joy', 'gratitude', 'love', 'belonging', 'praise',
-  'rejoicing', 'flourishing',
+  'rejoicing', 'flourishing', 'vocation', 'steadfastness',
 ]);
 
 const WAITING_THEMES = new Set([
-  'waiting', 'uncertainty', 'discernment', 'patience', 'stillness',
+  'waiting', 'uncertainty', 'discernment', 'patience', 'stillness', 'calling',
 ]);
 
 const RETURNING_THEMES = new Set([
-  'returning', 'mercy', 'forgiveness', 'restoration',
+  'returning', 'mercy', 'forgiveness', 'restoration', 'reconciliation',
 ]);
 
 /**
@@ -426,20 +426,20 @@ function seasonFit(theme: string, season: SpiritualSeason): number {
   switch (season) {
     case 'wilderness':
       if (STRUGGLE_THEMES.has(theme)) return 0.85;
-      if (theme === 'consolation' || theme === 'nearness' || theme === 'rest' || theme === 'healing') return 1;
+      if (theme === 'consolation' || theme === 'nearness' || theme === 'rest' || theme === 'healing' || theme === 'burnout' || theme === 'lament') return 1;
       if (FLOURISHING_THEMES.has(theme)) return 0.35; // not jarring, but lower fit
       return 0.6;
     case 'waiting':
       if (WAITING_THEMES.has(theme)) return 1;
-      if (theme === 'faith' || theme === 'hope' || theme === 'trust') return 0.85;
+      if (theme === 'faith' || theme === 'hope' || theme === 'trust' || theme === 'calling' || theme === 'purpose') return 0.85;
       return 0.6;
     case 'flourishing':
       if (FLOURISHING_THEMES.has(theme)) return 1;
-      if (theme === 'service' || theme === 'mission' || theme === 'praise') return 0.8;
+      if (theme === 'service' || theme === 'mission' || theme === 'praise' || theme === 'vocation' || theme === 'steadfastness') return 0.85;
       return 0.55;
     case 'returning':
       if (RETURNING_THEMES.has(theme)) return 1;
-      if (theme === 'belonging' || theme === 'love' || theme === 'identity') return 0.8;
+      if (theme === 'belonging' || theme === 'love' || theme === 'identity' || theme === 'reconciliation') return 0.85;
       return 0.6;
     case 'steady':
     default:
@@ -452,13 +452,13 @@ function pastoralCare(theme: string, sentiment: number): number {
   // Strongly struggling - lift consoling themes, dampen anything sharp.
   if (sentiment <= -0.3) {
     if (theme === 'consolation' || theme === 'nearness' || theme === 'mercy' ||
-        theme === 'healing' || theme === 'rest' || theme === 'love') return 1;
+        theme === 'healing' || theme === 'rest' || theme === 'love' || theme === 'shelter') return 1;
     if (theme === 'judgment' || theme === 'correction' || theme === 'discipline') return 0.2;
     return 0.6;
   }
   // Flourishing - lift gratitude/service/mission.
   if (sentiment >= 0.4) {
-    if (theme === 'gratitude' || theme === 'praise' || theme === 'service') return 1;
+    if (theme === 'gratitude' || theme === 'praise' || theme === 'service' || theme === 'vocation') return 1;
     return 0.7;
   }
   return 0.7;

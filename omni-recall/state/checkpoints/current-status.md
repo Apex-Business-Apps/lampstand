@@ -1,14 +1,14 @@
 # Current Repository Status
 
-*As of: August 29, 2026*
-*Active Branch: `apex/lampstand/fix-passage-reference-null-crash`*
-*Base: `main` at `4a60566` (PR #120), merged in*
+*As of: September 13, 2026*
+*Active Branch: `apex/lampstand/elevate-agent-intelligence-expand-scriptures-50`*
+*Base: `main`*
 
 ## Operational Truth
 
 - **Brand Standard**: `TheLampStand` unified across code, assets, UI copy, metadata, and `docs/`.
 - **Header Branding**: `/images/wordmark-logo.png` (`h-8` desktop, `h-7` mobile) in `AppShell.tsx`.
-- **Scripture Content**: 131 canonical Scripture passages, 161 Daily Light templates, 178 homiletic sermons.
+- **Scripture Content**: 181 canonical Scripture passages, 211 Daily Light templates, 228 homiletic sermons.
 - **Typography Rule**: Zero em-dashes and en-dashes. Enforced across `src/`, `public/sw.js`, `docs/`, `MISSION.md`, and `.github/`. Occurrences remaining in `omni-recall/` are citations of the rule itself. `.agents/` and `.jules/` hold third-party agent contracts and are outside this rule.
 - **Local Storage**: `src/lib/storage.ts` is the single trusted read and write boundary (ADR-012). A getter never returns a shape it does not declare, and a write never throws through a render. `getPresenceScore()`/`incrementPresenceScore()` additionally guard the `score` field's type, since the boundary's object-level merge does not validate individual field types.
 - **Scripture & Resonance Resilience**: Defensive null-guards on `dailyLight`, `ResonanceEngine`, `storage`, and all scripture-rendering pages.

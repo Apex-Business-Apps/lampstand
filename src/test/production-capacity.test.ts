@@ -8,11 +8,11 @@ import { resetAllData } from '@/lib/storage';
 
 describe('Production Capacity & Invariant Verification', () => {
   it('verifies dataset expansion counts match exact production targets', () => {
-    expect(SEED_PASSAGES.length).toBe(131);
-    expect(CONTENT_PASSAGES.length).toBe(240);
-    expect(DAILY_LIGHT_LIBRARY.length).toBe(161);
+    expect(SEED_PASSAGES.length).toBe(181);
+    expect(CONTENT_PASSAGES.length).toBe(290);
+    expect(DAILY_LIGHT_LIBRARY.length).toBe(211);
     const drafts = getGroundedSermonDrafts();
-    expect(Object.keys(drafts).length).toBe(178);
+    expect(Object.keys(drafts).length).toBe(228);
   });
 
   it('verifies all SEED_PASSAGES have valid schemas, positive chapter/verses, and unique IDs', () => {
@@ -66,7 +66,7 @@ describe('Production Capacity & Invariant Verification', () => {
     }
   });
 
-  it('generates multi-tone grounded sermons for all 131 passages with proper tone suffixes', () => {
+  it('generates multi-tone grounded sermons for all 181 passages with proper tone suffixes', () => {
     for (const passage of SEED_PASSAGES) {
       const gentle = buildGroundedSermon(passage, 'gentle');
       const traditional = buildGroundedSermon(passage, 'traditional');
@@ -123,6 +123,7 @@ describe('Production Capacity & Invariant Verification', () => {
       'src/pages/InstallPage.tsx',
       'tests/e2e/pwa.spec.ts',
       'src/test/production-capacity.test.ts',
+      'src/lib/resonance/ResonanceEngine.ts',
       'package.json',
     ];
 
