@@ -10,9 +10,15 @@
   Cache-Control: public, max-age=31536000, immutable
   Access-Control-Allow-Origin: *
 
-# SPA HTML shell: always revalidate
+# Static discovery files
+/robots.txt
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/sitemap.xml
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# SPA HTML shell: always revalidate, never cache across builds
 /*.html
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: no-store
 
 # Service worker: never cache
 /sw.js
