@@ -174,12 +174,13 @@ export default {
       });
     }
 
-    const isNavigation =
+    const isSafeMethod = request.method === "GET" || request.method === "HEAD";
+    const isHtmlNavigation =
       request.method === "GET" &&
       (request.headers.get("accept") ?? "").includes("text/html");
 
     // Rate limit navigation requests only
-    if (isNavigation && env.RATE_LIMITER) {
+    if (isHtmlNavigation && env.RATE_LIMITER) {
       const key = extractRateLimitKey(request);
       const { success } = await env.RATE_LIMITER.limit({ key });
       if (!success) {
@@ -197,17 +198,20 @@ export default {
       }
     }
 
-    // SPA fallback: try the real path first; if 404 and no file extension, serve /
+    // SPA fallback: try the real path first; if 404 and no file extension on GET/HEAD, serve /
     let resp = await env.ASSETS.fetch(request);
-    if (isNavigation && resp.status === 404 && !FILE_EXT.test(pathname)) {
+    let fellBackToSpa = false;
+    if (isSafeMethod && resp.status === 404 && !FILE_EXT.test(pathname)) {
       resp = await env.ASSETS.fetch(
         new Request(new URL("/", request.url).toString(), request)
       );
+      fellBackToSpa = true;
     }
 
-    // Treat response as HTML if it's a navigation request or content-type says so
+    // Treat response as HTML if it fell back to SPA shell, is a navigation request, or content-type says so
     const isHtml =
-      isNavigation ||
+      fellBackToSpa ||
+      isHtmlNavigation ||
       (resp.headers.get("content-type") ?? "").includes("text/html");
 
     const headers = new Headers(resp.headers);
