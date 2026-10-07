@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
-import { getProfile, saveProfile, saveAuthState } from "@/lib/storage";
+import { getProfile, saveProfile, saveAuthState, ensureGuestProfile } from "@/lib/storage";
 import CandleRevealCanvas from "@/components/CandleRevealCanvas";
 import LampstandCanvas from "@/components/LampstandCanvas";
 import { ConsentModal } from "@/components/ConsentModal";
@@ -116,25 +116,7 @@ export default function MarketingPage() {
   }, []);
 
   const handleStartGuest = (targetPath = "/app") => {
-    const existing = getProfile();
-    if (!existing) {
-      saveProfile({
-        id: crypto.randomUUID(),
-        firstName: "Seeker",
-        toneStyle: "balanced",
-        faithFamiliarity: "familiar",
-        preferredUses: ["daily"],
-        kidsMode: false,
-        readingPreference: "balanced",
-        voiceGender: "male",
-        notificationsEnabled: false,
-        notificationTime: "08:00",
-        hideStreakVisuals: false,
-        onboardingComplete: true,
-        createdAt: new Date().toISOString(),
-      });
-      saveAuthState({ mode: "guest" });
-    }
+    ensureGuestProfile();
     navigate(targetPath);
   };
 
@@ -340,27 +322,51 @@ export default function MarketingPage() {
             </h3>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <Link to="/daily" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+            <Link
+              to="/daily"
+              onClick={() => ensureGuestProfile()}
+              className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card"
+            >
               <h4 className="font-semibold text-foreground">Daily Light & Reflections</h4>
               <p className="mt-1.5 text-xs text-muted-foreground">Fresh daily scripture readings and focused morning prayers.</p>
             </Link>
-            <Link to="/guidance" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+            <Link
+              to="/guidance"
+              onClick={() => ensureGuestProfile()}
+              className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card"
+            >
               <h4 className="font-semibold text-foreground">Pastoral AI Guidance</h4>
               <p className="mt-1.5 text-xs text-muted-foreground">The Burning Bush companion for prayerful discernment.</p>
             </Link>
-            <Link to="/sermon" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+            <Link
+              to="/sermon"
+              onClick={() => ensureGuestProfile()}
+              className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card"
+            >
               <h4 className="font-semibold text-foreground">Homiletic Sermon Mode</h4>
               <p className="mt-1.5 text-xs text-muted-foreground">Structured theological expositions for study and meditation.</p>
             </Link>
-            <Link to="/lectio" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+            <Link
+              to="/lectio"
+              onClick={() => ensureGuestProfile()}
+              className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card"
+            >
               <h4 className="font-semibold text-foreground">Lectio Divina</h4>
               <p className="mt-1.5 text-xs text-muted-foreground">The four classic monastic stages of divine reading and prayer.</p>
             </Link>
-            <Link to="/examen" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+            <Link
+              to="/examen"
+              onClick={() => ensureGuestProfile()}
+              className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card"
+            >
               <h4 className="font-semibold text-foreground">Ignatian Daily Examen</h4>
               <p className="mt-1.5 text-xs text-muted-foreground">Evening prayerful review to discern God's presence in daily life.</p>
             </Link>
-            <Link to="/journal" className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card">
+            <Link
+              to="/journal"
+              onClick={() => ensureGuestProfile()}
+              className="rounded-xl border border-border bg-background/60 p-5 transition hover:border-primary/50 hover:bg-card"
+            >
               <h4 className="font-semibold text-foreground">Encrypted Local Journal</h4>
               <p className="mt-1.5 text-xs text-muted-foreground">Private spiritual notebook with on-device resonance tracking.</p>
             </Link>

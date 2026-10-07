@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { getProfile } from "@/lib/storage";
+import { getProfile, ensureGuestProfile } from "@/lib/storage";
 import { useAuth } from "@/hooks/useAuth";
 import type { ReactNode } from "react";
 import { isStandaloneDisplayMode } from "@/lib/pwa/standalone";
@@ -25,11 +25,15 @@ export function ProfileGuard({ children }: ProfileGuardProps) {
     // CRITICAL ROUTING RULE (DO NOT DRIFT):
     // 1. If a user opens the installed PWA App (standalone display), they MUST
     //    go straight into the core App UI.
-    // 2. If a user tries to access /app or protected routes in a standard browser
-    //    without auth, they MUST be redirected to the Marketing Page (/).
+    // 2. If an unauthenticated visitor navigates directly to a deep feature route,
+    //    automatically initialize a guest profile so external visitors and monitors pass cleanly.
     // ========================================================================
     if (isStandaloneDisplayMode()) {
       // Let native/app traffic directly to core App UI
+      return children ? <>{children}</> : <Outlet />;
+    }
+    const guest = ensureGuestProfile();
+    if (guest) {
       return children ? <>{children}</> : <Outlet />;
     }
     return <Navigate to="/" replace />;

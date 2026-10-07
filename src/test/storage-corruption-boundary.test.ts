@@ -7,6 +7,7 @@ import {
   getPracticePreferences,
   getPresenceScore,
   getProfile,
+  ensureGuestProfile,
   getSafetyEvents,
   getSavedPassages,
   getSyncState,
@@ -133,5 +134,17 @@ describe('storage corruption boundary', () => {
       setItem.mockRestore();
       warn.mockRestore();
     }
+  });
+
+  it('ensureGuestProfile initializes conformant guest profile if none exists and preserves existing profile', () => {
+    localStorage.removeItem('lampstand_profile');
+    const guest = ensureGuestProfile();
+    expect(guest.firstName).toBe('Seeker');
+    expect(guest.onboardingComplete).toBe(true);
+    expect(getProfile()?.id).toBe(guest.id);
+
+    // Idempotent: does not overwrite existing profile
+    const second = ensureGuestProfile();
+    expect(second.id).toBe(guest.id);
   });
 });

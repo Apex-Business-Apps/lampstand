@@ -113,6 +113,28 @@ export function getProfile(): UserProfile | null {
   return isPlainObject(value) ? (value as UserProfile) : null;
 }
 export function saveProfile(p: UserProfile) { set(KEYS.profile, p); }
+export function ensureGuestProfile(): UserProfile {
+  const existing = getProfile();
+  if (existing) return existing;
+  const guest: UserProfile = {
+    id: typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : 'guest-' + Date.now(),
+    firstName: 'Seeker',
+    toneStyle: 'balanced',
+    faithFamiliarity: 'familiar',
+    preferredUses: ['daily'],
+    kidsMode: false,
+    readingPreference: 'balanced',
+    voiceGender: 'male',
+    notificationsEnabled: false,
+    notificationTime: '08:00',
+    hideStreakVisuals: false,
+    onboardingComplete: true,
+    createdAt: new Date().toISOString(),
+  };
+  saveProfile(guest);
+  saveAuthState({ mode: 'guest' });
+  return guest;
+}
 export function clearProfile() {
   try {
     localStorage.removeItem(KEYS.profile);

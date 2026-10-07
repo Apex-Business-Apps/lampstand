@@ -32,6 +32,39 @@ describe('static worker SPA fallback', () => {
     expect(assetsFetch).toHaveBeenCalledTimes(1);
   });
 
+  it('falls back to / on HEAD requests to SPA deep routes (e.g. curl -I /app, uptime probes)', async () => {
+    const assetsFetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response(null, { status: 404 }))
+      .mockResolvedValueOnce(new Response(null, { status: 200 }));
+    const env = { ASSETS: { fetch: assetsFetch } };
+
+    const headRequest = new Request('https://lampstand.test/daily', { method: 'HEAD' });
+    const response = await worker.fetch(headRequest, env as never);
+
+    expect(response.status).toBe(200);
+    expect(assetsFetch).toHaveBeenCalledTimes(2);
+    const fallbackRequest = assetsFetch.mock.calls[1][0] as Request;
+    expect(new URL(fallbackRequest.url).pathname).toBe('/');
+    expect(fallbackRequest.method).toBe('HEAD');
+  });
+
+  it('falls back to / on GET requests without accept: text/html (e.g. curl, link unfurlers)', async () => {
+    const assetsFetch = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('not found', { status: 404 }))
+      .mockResolvedValueOnce(new Response('<html>app</html>', { status: 200 }));
+    const env = { ASSETS: { fetch: assetsFetch } };
+
+    const plainGetRequest = new Request('https://lampstand.test/guidance', { method: 'GET' });
+    const response = await worker.fetch(plainGetRequest, env as never);
+
+    expect(response.status).toBe(200);
+    expect(assetsFetch).toHaveBeenCalledTimes(2);
+    const fallbackRequest = assetsFetch.mock.calls[1][0] as Request;
+    expect(new URL(fallbackRequest.url).pathname).toBe('/');
+  });
+
   it('serves a CSP that permits Google Fonts used by index.html', async () => {
     const assetsFetch = vi.fn().mockResolvedValue(new Response('<html></html>', { status: 200 }));
     const env = { ASSETS: { fetch: assetsFetch } };
