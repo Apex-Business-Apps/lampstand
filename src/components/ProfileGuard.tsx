@@ -29,7 +29,8 @@ export function ProfileGuard({ children }: ProfileGuardProps) {
     //    automatically initialize a guest profile so external visitors and monitors pass cleanly.
     // ========================================================================
     if (isStandaloneDisplayMode()) {
-      // Let native/app traffic directly to core App UI
+      // Let native/app traffic directly to core App UI as initialized local guest
+      ensureGuestProfile();
       return children ? <>{children}</> : <Outlet />;
     }
     const guest = ensureGuestProfile();

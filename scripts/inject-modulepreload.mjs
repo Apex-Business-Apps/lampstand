@@ -1,16 +1,22 @@
-// Injects <link rel="modulepreload"> for vendor-react and vendor-query
-// into dist/index.html after each production build.
+// Injects <link rel="modulepreload"> for entry chunks into dist/index.html
+// after each production build.
 // Runs automatically as the postbuild npm hook.
 
-import { readFileSync, writeFileSync, readdirSync } from 'fs';
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs';
 import { join } from 'path';
 
-const distAssets = readdirSync('./dist/assets');
-const chunks = ['vendor-react', 'vendor-query'];
+const distAssetsDir = './dist/assets';
+if (!existsSync(distAssetsDir)) {
+  console.log('[modulepreload] No dist/assets directory found: skipping.');
+  process.exit(0);
+}
+
+const distAssets = readdirSync(distAssetsDir);
+const chunks = ['App-', 'HomePage-'];
 
 const preloads = chunks
-  .map((name) => {
-    const file = distAssets.find((f) => f.startsWith(name) && f.endsWith('.js'));
+  .map((prefix) => {
+    const file = distAssets.find((f) => f.startsWith(prefix) && f.endsWith('.js'));
     return file ? `  <link rel="modulepreload" href="/assets/${file}" />` : null;
   })
   .filter(Boolean)
@@ -23,6 +29,8 @@ if (!preloads) {
 
 const htmlPath = join('./dist', 'index.html');
 const html = readFileSync(htmlPath, 'utf8');
-const updated = html.replace('</head>', `${preloads}\n</head>`);
-writeFileSync(htmlPath, updated);
-console.log('[modulepreload] Injected:\n' + preloads);
+if (!html.includes('link rel="modulepreload" href="/assets/App-')) {
+  const updated = html.replace('</head>', `${preloads}\n</head>`);
+  writeFileSync(htmlPath, updated);
+  console.log('[modulepreload] Injected:\n' + preloads);
+}

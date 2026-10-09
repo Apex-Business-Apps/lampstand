@@ -1,4 +1,6 @@
-/* TheLampStand: service worker v6
+/* TheLampStand: service worker v7
+ * v7: precache core shell routes and assets on install; enhance offline fallback
+ *     for standalone /app and feature routes; resilient error catching on fetch.
  * v6: refresh the cached offline shell on every successful navigation, not
  *     just at install (which only re-runs when this file's bytes change, so
  *     the shell an offline launch fell back to could be many deploys old).
@@ -9,11 +11,34 @@
  * Notification click handling from v1 is preserved unchanged.
  */
 
-const CACHE_NAME = 'lampstand-shell-v6';
+const CACHE_NAME = 'lampstand-shell-v7';
+const PRECACHE_URLS = [
+  '/',
+  '/app',
+  '/manifest.json',
+  '/favicon.ico',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.add('/'))
+    caches.open(CACHE_NAME).then(async (cache) => {
+      await cache.addAll(PRECACHE_URLS);
+      try {
+        const res = await cache.match('/');
+        if (res) {
+          const html = await res.text();
+          const matches = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.(?:js|css))"/g)];
+          const assets = Array.from(new Set(matches.map((m) => m[1])));
+          if (assets.length > 0) {
+            await cache.addAll(assets).catch(() => {});
+          }
+        }
+      } catch {
+        /* best-effort asset precache */
+      }
+    })
   );
   self.skipWaiting();
 });
@@ -54,10 +79,10 @@ self.addEventListener('fetch', (event) => {
           fetch(request).then((res) => {
             if (res.ok) {
               const clone = res.clone();
-              caches.open(CACHE_NAME).then((c) => c.put(request, clone));
+              caches.open(CACHE_NAME).then((c) => c.put(request, clone)).catch(() => {});
             }
             return res;
-          })
+          }).catch(() => caches.match(request).then((r) => r ?? Response.error()))
       )
     );
     return;
@@ -72,11 +97,19 @@ self.addEventListener('fetch', (event) => {
         .then((res) => {
           if (res.ok) {
             const clone = res.clone();
-            caches.open(CACHE_NAME).then((c) => c.put('/', clone)).catch(() => {});
+            caches.open(CACHE_NAME).then((c) => {
+              c.put('/', clone);
+              c.put('/app', res.clone()).catch(() => {});
+            }).catch(() => {});
           }
           return res;
         })
-        .catch(() => caches.match('/').then((r) => r ?? Response.error()))
+        .catch(() =>
+          caches.match(request)
+            .then((r) => r || caches.match('/app'))
+            .then((r) => r || caches.match('/'))
+            .then((r) => r ?? Response.error())
+        )
     );
     return;
   }

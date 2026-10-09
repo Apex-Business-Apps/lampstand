@@ -9,6 +9,8 @@ describe('PWA manifest', () => {
     expect(manifest.name).toBeTruthy();
     expect(manifest.short_name).toBeTruthy();
     expect(manifest.start_url).toBe('/app');
+    expect(manifest.scope).toBe('/');
+    expect(manifest.id).toBe('/');
     expect(manifest.display).toBe('standalone');
     expect(manifest.background_color).toMatch(/^#[0-9a-fA-F]{6}$/);
     expect(manifest.theme_color).toMatch(/^#[0-9a-fA-F]{6}$/);

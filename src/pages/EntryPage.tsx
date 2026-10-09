@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { getProfile } from "@/lib/storage";
+import { getProfile, ensureGuestProfile } from "@/lib/storage";
 import { supabase } from "@/integrations/supabase/client";
 import { isStandaloneDisplayMode } from "@/lib/pwa/standalone";
 
@@ -55,6 +55,7 @@ export default function EntryPage() {
     //    on the Marketing Page (/) before they can login.
     // ========================================================================
     if (isStandaloneDisplayMode()) {
+      ensureGuestProfile();
       navigate("/app", { replace: true });
       return;
     }
