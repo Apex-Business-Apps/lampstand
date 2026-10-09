@@ -12,6 +12,7 @@ test.describe('PWA harness', () => {
     const manifest = await res.json();
     expect(manifest.display).toBe('standalone');
     expect(manifest.start_url).toBe('/app');
+    expect(manifest.scope).toBe('/');
     expect(manifest.icons.some((i: { sizes: string }) => i.sizes === '512x512')).toBe(true);
   });
 

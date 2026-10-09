@@ -70,3 +70,15 @@
 - **Root Cause**: `sharp <0.35.4` contained high severity vulnerabilities in `libheif` (GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545). The `package.json` overrides locked `sharp` to `^0.35.3`, resulting in `0.35.3` being resolved in production dependency tree via `@huggingface/transformers`.
 - **Fix**: Updated `package.json` overrides to `"sharp": "^0.35.4"` and refreshed `package-lock.json` lockfile.
 - **Regression Shield**: `npm audit --omit=dev --audit-level=high` passes with exit code 0 (0 high or critical vulnerabilities).
+
+## 13. Installed Standalone PWA Fails to Open / Bounces to External Web Browser
+- **Symptom**: When a user installed/downloaded the PWA and launched it from desktop/mobile, the standalone PWA did not open or start up properly; only the web browser worked.
+- **Root Cause**:
+  1. `public/manifest.json` omitted `"id": "/"` and `"scope": "/"`. Chromium scoped the installed PWA to `start_url` (`/app`), so any navigation to `/onboarding`, `/daily`, `/guidance`, or root `/` was treated as out-of-scope and ejected out of the standalone PWA window into the default web browser.
+  2. `src/components/ProfileGuard.tsx` allowed `isStandaloneDisplayMode()` traffic through without calling `ensureGuestProfile()`. Consequently, clean PWA installs mounted `<HomePage />` (`/app`) with `profile === null`, triggering `HomePage` to call `navigate('/onboarding', { replace: true })`, which immediately escaped into the browser due to the narrow `/app` scope.
+  3. `public/sw.js` precached only `'/'` during `install`, leaving the compiled JavaScript chunks and CSS uncached on first install. Offline or slow-network PWA launches resulted in blank screens.
+- **Fix**:
+  1. Explicitly declared `"id": "/"` and `"scope": "/"` in `public/manifest.json`.
+  2. Updated `ProfileGuard.tsx` and `EntryPage.tsx` to invoke `ensureGuestProfile()` when `isStandaloneDisplayMode()` is detected, guaranteeing unauthenticated PWA installs enter guest mode directly with `onboardingComplete: true` and render the core App UI immediately.
+  3. Upgraded `public/sw.js` to `lampstand-shell-v7` with `PRECACHE_URLS` (`/`, `/app`, `/manifest.json`, icons) and enhanced `scripts/inject-modulepreload.mjs` postbuild hook to inject the entry JS chunk and CSS directly into `dist/sw.js` precache and `dist/index.html` modulepreloads.
+- **Regression Shield**: Added `tests/e2e/pwa-standalone-startup.spec.ts` asserting clean-install standalone startup into `/app` with guest profile initialization, zero bounce to `/onboarding`, and global manifest scope. All 53 Vitest suites (295 tests) and 22 Playwright E2E tests pass with exit code 0.
