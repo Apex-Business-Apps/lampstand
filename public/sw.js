@@ -23,7 +23,22 @@ const PRECACHE_URLS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS))
+    caches.open(CACHE_NAME).then(async (cache) => {
+      await cache.addAll(PRECACHE_URLS);
+      try {
+        const res = await cache.match('/');
+        if (res) {
+          const html = await res.text();
+          const matches = [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+\.(?:js|css))"/g)];
+          const assets = Array.from(new Set(matches.map((m) => m[1])));
+          if (assets.length > 0) {
+            await cache.addAll(assets).catch(() => {});
+          }
+        }
+      } catch {
+        /* best-effort asset precache */
+      }
+    })
   );
   self.skipWaiting();
 });
